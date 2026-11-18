@@ -34,7 +34,11 @@ jobs:
           distribution: temurin
           java-version: "17"
 
-      - uses: android-actions/setup-android@v3
+      - name: Prepare Android SDK
+        run: |
+          sdkmanager=$(ls "$ANDROID_HOME"/cmdline-tools/*/bin/sdkmanager | sort -V | tail -n 1)
+          yes | "$sdkmanager" --licenses > /dev/null || true
+          "$sdkmanager" "platforms;android-36" "build-tools;35.0.0"
 
       - uses: gradle/actions/setup-gradle@v4
         with:
@@ -53,7 +57,7 @@ jobs:
           apk=$(ls app/build/outputs/apk/debug/*.apk | head -n 1)
           test -s "$apk"
           unzip -tq "$apk"
-          "$ANDROID_HOME"/build-tools/*/apksigner verify "$apk"
+          "$(ls "$ANDROID_HOME"/build-tools/*/apksigner | sort -V | tail -n 1)" verify "$apk"
           mkdir -p ../dist
           cp "$apk" "../dist/MaterialEX-${TAG}-android-debug.apk"
 
