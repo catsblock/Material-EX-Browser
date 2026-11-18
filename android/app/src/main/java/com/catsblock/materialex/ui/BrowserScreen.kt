@@ -29,7 +29,11 @@ fun BrowserScreen(
     settings: BrowserSettings,
     onSubmit: (String) -> Boolean,
     onOpenTabs: () -> Unit,
+    isBookmarked: Boolean,
     onNewTab: () -> Unit,
+    onToggleBookmark: () -> Unit,
+    onOpenHistory: () -> Unit,
+    onOpenBookmarks: () -> Unit,
     onOpenSettings: () -> Unit
 ) {
     val state by engine.state.collectAsStateWithLifecycle()
@@ -66,6 +70,7 @@ fun BrowserScreen(
         FloatingSearchFrame(
             state = state,
             tabCount = tabs.tabs.size,
+            isBookmarked = isBookmarked,
             position = settings.toolbarPosition,
             onSubmit = onSubmit,
             onBack = engine::goBack,
@@ -74,6 +79,9 @@ fun BrowserScreen(
             onStop = engine::stop,
             onOpenTabs = onOpenTabs,
             onNewTab = onNewTab,
+            onToggleBookmark = onToggleBookmark,
+            onOpenHistory = onOpenHistory,
+            onOpenBookmarks = onOpenBookmarks,
             onOpenSettings = onOpenSettings,
             modifier = Modifier
                 .align(if (atTop) Alignment.TopCenter else Alignment.BottomCenter)

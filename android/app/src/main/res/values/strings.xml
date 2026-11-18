@@ -28,4 +28,18 @@
     <string name="action_new_tab">New tab</string>
     <string name="action_close_tab">Close tab</string>
     <string name="tab_untitled">Untitled</string>
+    <string name="history_title">History</string>
+    <string name="bookmarks_title">Bookmarks</string>
+    <string name="action_add_bookmark">Add bookmark</string>
+    <string name="action_remove_bookmark">Remove bookmark</string>
+    <string name="action_clear_history">Clear history</string>
+    <string name="clear_history_title">Clear history?</string>
+    <string name="clear_history_message">All browsing history will be deleted. This cannot be undone.</string>
+    <string name="action_cancel">Cancel</string>
+    <string name="action_delete">Delete</string>
+    <string name="action_rename">Rename</string>
+    <string name="rename_bookmark_title">Rename bookmark</string>
+    <string name="search_hint">Search</string>
+    <string name="empty_history">No history yet</string>
+    <string name="empty_bookmarks">No bookmarks yet</string>
 </resources>

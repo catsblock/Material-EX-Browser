@@ -21,6 +21,10 @@ import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.automirrored.filled.ArrowForward
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Close
+import androidx.compose.material.icons.filled.DateRange
+import androidx.compose.material.icons.filled.Favorite
+import androidx.compose.material.icons.filled.FavoriteBorder
+import androidx.compose.material.icons.filled.Star
 import androidx.compose.material.icons.filled.Lock
 import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.material.icons.filled.Refresh
@@ -63,6 +67,7 @@ import com.catsblock.materialex.engine.PageState
 fun FloatingSearchFrame(
     state: PageState,
     tabCount: Int,
+    isBookmarked: Boolean,
     position: ToolbarPosition,
     onSubmit: (String) -> Boolean,
     onBack: () -> Unit,
@@ -71,6 +76,9 @@ fun FloatingSearchFrame(
     onStop: () -> Unit,
     onOpenTabs: () -> Unit,
     onNewTab: () -> Unit,
+    onToggleBookmark: () -> Unit,
+    onOpenHistory: () -> Unit,
+    onOpenBookmarks: () -> Unit,
     onOpenSettings: () -> Unit,
     modifier: Modifier = Modifier
 ) {
@@ -205,6 +213,42 @@ fun FloatingSearchFrame(
                             onClick = {
                                 menuOpen = false
                                 onForward()
+                            }
+                        )
+                        DropdownMenuItem(
+                            text = {
+                                Text(
+                                    stringResource(
+                                        if (isBookmarked) R.string.action_remove_bookmark else R.string.action_add_bookmark
+                                    )
+                                )
+                            },
+                            leadingIcon = {
+                                Icon(
+                                    if (isBookmarked) Icons.Default.Favorite else Icons.Default.FavoriteBorder,
+                                    contentDescription = null
+                                )
+                            },
+                            enabled = state.url.startsWith("http"),
+                            onClick = {
+                                menuOpen = false
+                                onToggleBookmark()
+                            }
+                        )
+                        DropdownMenuItem(
+                            text = { Text(stringResource(R.string.bookmarks_title)) },
+                            leadingIcon = { Icon(Icons.Default.Star, contentDescription = null) },
+                            onClick = {
+                                menuOpen = false
+                                onOpenBookmarks()
+                            }
+                        )
+                        DropdownMenuItem(
+                            text = { Text(stringResource(R.string.history_title)) },
+                            leadingIcon = { Icon(Icons.Default.DateRange, contentDescription = null) },
+                            onClick = {
+                                menuOpen = false
+                                onOpenHistory()
                             }
                         )
                         DropdownMenuItem(

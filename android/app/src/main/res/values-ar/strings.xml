@@ -28,4 +28,18 @@
     <string name="action_new_tab">علامة تبويب جديدة</string>
     <string name="action_close_tab">إغلاق علامة التبويب</string>
     <string name="tab_untitled">بلا عنوان</string>
+    <string name="history_title">السجل</string>
+    <string name="bookmarks_title">المفضلة</string>
+    <string name="action_add_bookmark">إضافة إلى المفضلة</string>
+    <string name="action_remove_bookmark">إزالة من المفضلة</string>
+    <string name="action_clear_history">مسح السجل</string>
+    <string name="clear_history_title">مسح السجل؟</string>
+    <string name="clear_history_message">سيتم حذف كل سجل التصفح. لا يمكن التراجع عن هذا الإجراء.</string>
+    <string name="action_cancel">إلغاء</string>
+    <string name="action_delete">حذف</string>
+    <string name="action_rename">إعادة تسمية</string>
+    <string name="rename_bookmark_title">إعادة تسمية العلامة</string>
+    <string name="search_hint">بحث</string>
+    <string name="empty_history">لا يوجد سجل بعد</string>
+    <string name="empty_bookmarks">لا توجد مفضلة بعد</string>
 </resources>

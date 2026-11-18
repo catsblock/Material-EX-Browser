@@ -7,6 +7,7 @@ import androidx.activity.compose.BackHandler
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
@@ -16,14 +17,16 @@ import com.catsblock.materialex.core.Resolution
 import com.catsblock.materialex.core.SearchTemplates
 import com.catsblock.materialex.core.UrlResolver
 import com.catsblock.materialex.data.BrowserSettings
+import com.catsblock.materialex.ui.BookmarksScreen
 import com.catsblock.materialex.ui.BrowserScreen
+import com.catsblock.materialex.ui.HistoryScreen
 import com.catsblock.materialex.ui.SettingsScreen
 import com.catsblock.materialex.ui.TabSwitcherScreen
 import com.catsblock.materialex.ui.theme.MaterialExTheme
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 
-private enum class Screen { BROWSER, TABS, SETTINGS }
+private enum class Screen { BROWSER, TABS, SETTINGS, HISTORY, BOOKMARKS }
 
 class MainActivity : ComponentActivity() {
     private val app get() = application as MaterialExApp
@@ -38,6 +41,8 @@ class MainActivity : ComponentActivity() {
             MaterialExTheme {
                 val settings by app.settings.settings.collectAsStateWithLifecycle(initialValue = BrowserSettings())
                 val pageState by app.engine.state.collectAsStateWithLifecycle()
+                val isBookmarked by remember(pageState.url) { app.library.isBookmarked(pageState.url) }
+                    .collectAsStateWithLifecycle(false)
                 var screen by rememberSaveable { mutableStateOf(Screen.BROWSER) }
 
                 BackHandler(enabled = screen != Screen.BROWSER || pageState.canGoBack) {
@@ -49,6 +54,22 @@ class MainActivity : ComponentActivity() {
                         settings = settings,
                         repository = app.settings,
                         onClose = { screen = Screen.BROWSER }
+                    )
+                    Screen.HISTORY -> HistoryScreen(
+                        library = app.library,
+                        onClose = { screen = Screen.BROWSER },
+                        onOpen = { url ->
+                            app.engine.load(url)
+                            screen = Screen.BROWSER
+                        }
+                    )
+                    Screen.BOOKMARKS -> BookmarksScreen(
+                        library = app.library,
+                        onClose = { screen = Screen.BROWSER },
+                        onOpen = { url ->
+                            app.engine.load(url)
+                            screen = Screen.BROWSER
+                        }
                     )
                     Screen.TABS -> TabSwitcherScreen(
                         engine = app.engine,
@@ -64,7 +85,15 @@ class MainActivity : ComponentActivity() {
                         settings = settings,
                         onSubmit = { input -> submit(input, settings) },
                         onOpenTabs = { screen = Screen.TABS },
+                        isBookmarked = isBookmarked,
                         onNewTab = { app.engine.openTab(settings.homepage) },
+                        onToggleBookmark = {
+                            lifecycleScope.launch {
+                                app.library.toggleBookmark(pageState.url, pageState.title, isBookmarked)
+                            }
+                        },
+                        onOpenHistory = { screen = Screen.HISTORY },
+                        onOpenBookmarks = { screen = Screen.BOOKMARKS },
                         onOpenSettings = { screen = Screen.SETTINGS }
                     )
                 }

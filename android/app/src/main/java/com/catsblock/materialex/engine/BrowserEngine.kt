@@ -34,6 +34,9 @@ class BrowserEngine(context: Context) {
     private val pendingClose = ArrayList<GeckoSession>()
     private val pages = MutableStateFlow<Map<String, PageState>>(emptyMap())
     private val active = MutableStateFlow<GeckoSession?>(null)
+    private val lastVisit = HashMap<String, String>()
+
+    var onPageVisited: ((url: String, title: String) -> Unit)? = null
 
     val tabs: StateFlow<TabsState> = manager.state
     val pageStates: StateFlow<Map<String, PageState>> = pages.asStateFlow()
@@ -63,6 +66,7 @@ class BrowserEngine(context: Context) {
         manager.close(id)
         sessions.remove(id)?.let(pendingClose::add)
         pages.update { it - id }
+        lastVisit.remove(id)
         syncActive()
     }
 
@@ -119,6 +123,11 @@ class BrowserEngine(context: Context) {
 
             override fun onPageStop(session: GeckoSession, success: Boolean) {
                 change(id) { it.copy(isLoading = false, progress = 100) }
+                val page = pages.value[id]
+                if (success && page != null && page.url.isNotEmpty() && lastVisit[id] != page.url) {
+                    lastVisit[id] = page.url
+                    onPageVisited?.invoke(page.url, page.title)
+                }
             }
 
             override fun onProgressChange(session: GeckoSession, progress: Int) {
