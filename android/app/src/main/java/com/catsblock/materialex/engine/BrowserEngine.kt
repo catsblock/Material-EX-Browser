@@ -1,9 +1,17 @@
 package com.catsblock.materialex.engine
 
 import android.content.Context
+import com.catsblock.materialex.core.tabs.TabManager
+import com.catsblock.materialex.core.tabs.TabsState
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import org.mozilla.geckoview.GeckoRuntime
 import org.mozilla.geckoview.GeckoSession
@@ -20,12 +28,71 @@ data class PageState(
 
 class BrowserEngine(context: Context) {
     private val runtime: GeckoRuntime = GeckoRuntime.create(context.applicationContext)
-    private val mutableState = MutableStateFlow(PageState())
+    private val scope = CoroutineScope(SupervisorJob() + Dispatchers.Main.immediate)
+    private val manager = TabManager()
+    private val sessions = HashMap<String, GeckoSession>()
+    private val pendingClose = ArrayList<GeckoSession>()
+    private val pages = MutableStateFlow<Map<String, PageState>>(emptyMap())
+    private val active = MutableStateFlow<GeckoSession?>(null)
 
-    val session: GeckoSession = GeckoSession()
-    val state: StateFlow<PageState> = mutableState.asStateFlow()
+    val tabs: StateFlow<TabsState> = manager.state
+    val pageStates: StateFlow<Map<String, PageState>> = pages.asStateFlow()
+    val activeSession: StateFlow<GeckoSession?> = active.asStateFlow()
+    val state: StateFlow<PageState> = combine(manager.state, pages) { tabsState, map ->
+        tabsState.activeId?.let { map[it] } ?: PageState()
+    }.stateIn(scope, SharingStarted.Eagerly, PageState())
 
-    init {
+    fun openTab(url: String, select: Boolean = true): String {
+        val tab = manager.open(url, DEFAULT_PROFILE, false, select)
+        val session = GeckoSession()
+        attach(tab.id, session)
+        session.open(runtime)
+        sessions[tab.id] = session
+        pages.update { it + (tab.id to PageState(url = url)) }
+        syncActive()
+        if (url.isNotEmpty()) session.loadUri(url)
+        return tab.id
+    }
+
+    fun selectTab(id: String) {
+        manager.select(id)
+        syncActive()
+    }
+
+    fun closeTab(id: String) {
+        manager.close(id)
+        sessions.remove(id)?.let(pendingClose::add)
+        pages.update { it - id }
+        syncActive()
+    }
+
+    fun flushClosed() {
+        pendingClose.forEach { it.close() }
+        pendingClose.clear()
+    }
+
+    fun load(url: String) {
+        val session = active.value
+        if (session == null) openTab(url) else session.loadUri(url)
+    }
+
+    fun goBack() = active.value?.goBack()
+
+    fun goForward() = active.value?.goForward()
+
+    fun reload() = active.value?.reload()
+
+    fun stop() = active.value?.stop()
+
+    private fun syncActive() {
+        active.value = manager.state.value.activeId?.let { sessions[it] }
+    }
+
+    private fun change(id: String, block: (PageState) -> PageState) {
+        pages.update { map -> map[id]?.let { map + (id to block(it)) } ?: map }
+    }
+
+    private fun attach(id: String, session: GeckoSession) {
         session.navigationDelegate = object : GeckoSession.NavigationDelegate {
             override fun onLocationChange(
                 session: GeckoSession,
@@ -33,52 +100,47 @@ class BrowserEngine(context: Context) {
                 perms: List<GeckoSession.PermissionDelegate.ContentPermission>,
                 hasUserGesture: Boolean
             ) {
-                mutableState.update { it.copy(url = url.orEmpty()) }
+                change(id) { it.copy(url = url.orEmpty()) }
+                manager.update(id, url = url.orEmpty())
             }
 
             override fun onCanGoBack(session: GeckoSession, canGoBack: Boolean) {
-                mutableState.update { it.copy(canGoBack = canGoBack) }
+                change(id) { it.copy(canGoBack = canGoBack) }
             }
 
             override fun onCanGoForward(session: GeckoSession, canGoForward: Boolean) {
-                mutableState.update { it.copy(canGoForward = canGoForward) }
+                change(id) { it.copy(canGoForward = canGoForward) }
             }
         }
         session.progressDelegate = object : GeckoSession.ProgressDelegate {
             override fun onPageStart(session: GeckoSession, url: String) {
-                mutableState.update { it.copy(isLoading = true, progress = 0) }
+                change(id) { it.copy(isLoading = true, progress = 0) }
             }
 
             override fun onPageStop(session: GeckoSession, success: Boolean) {
-                mutableState.update { it.copy(isLoading = false, progress = 100) }
+                change(id) { it.copy(isLoading = false, progress = 100) }
             }
 
             override fun onProgressChange(session: GeckoSession, progress: Int) {
-                mutableState.update { it.copy(progress = progress) }
+                change(id) { it.copy(progress = progress) }
             }
 
             override fun onSecurityChange(
                 session: GeckoSession,
                 securityInfo: GeckoSession.ProgressDelegate.SecurityInformation
             ) {
-                mutableState.update { it.copy(isSecure = securityInfo.isSecure) }
+                change(id) { it.copy(isSecure = securityInfo.isSecure) }
             }
         }
         session.contentDelegate = object : GeckoSession.ContentDelegate {
             override fun onTitleChange(session: GeckoSession, title: String?) {
-                mutableState.update { it.copy(title = title.orEmpty()) }
+                change(id) { it.copy(title = title.orEmpty()) }
+                manager.update(id, title = title.orEmpty())
             }
         }
-        session.open(runtime)
     }
 
-    fun load(url: String) = session.loadUri(url)
-
-    fun goBack() = session.goBack()
-
-    fun goForward() = session.goForward()
-
-    fun reload() = session.reload()
-
-    fun stop() = session.stop()
+    private companion object {
+        const val DEFAULT_PROFILE = "default"
+    }
 }

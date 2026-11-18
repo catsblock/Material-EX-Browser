@@ -24,4 +24,8 @@
     <string name="settings_custom_template_hint" formatted="false">https://exemplo.com/busca?q=%s</string>
     <string name="settings_custom_template_invalid" formatted="false">A URL deve começar com https:// e conter %s exatamente uma vez</string>
     <string name="settings_search_engine_custom">Personalizado</string>
+    <string name="tabs_title">Abas</string>
+    <string name="action_new_tab">Nova aba</string>
+    <string name="action_close_tab">Fechar aba</string>
+    <string name="tab_untitled">Sem título</string>
 </resources>

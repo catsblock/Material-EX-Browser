@@ -28,9 +28,13 @@ fun BrowserScreen(
     engine: BrowserEngine,
     settings: BrowserSettings,
     onSubmit: (String) -> Boolean,
+    onOpenTabs: () -> Unit,
+    onNewTab: () -> Unit,
     onOpenSettings: () -> Unit
 ) {
     val state by engine.state.collectAsStateWithLifecycle()
+    val tabs by engine.tabs.collectAsStateWithLifecycle()
+    val session by engine.activeSession.collectAsStateWithLifecycle()
     val density = LocalDensity.current
     var frameHeight by remember { mutableStateOf(0.dp) }
     val atTop = settings.toolbarPosition == ToolbarPosition.TOP
@@ -43,7 +47,17 @@ fun BrowserScreen(
             .background(MaterialTheme.colorScheme.surface)
     ) {
         AndroidView(
-            factory = { context -> GeckoView(context).apply { setSession(engine.session) } },
+            factory = { context -> GeckoView(context) },
+            update = { view ->
+                val target = session
+                if (target == null) {
+                    view.releaseSession()
+                } else if (view.session !== target) {
+                    view.releaseSession()
+                    view.setSession(target)
+                }
+                engine.flushClosed()
+            },
             onRelease = { view -> view.releaseSession() },
             modifier = Modifier
                 .fillMaxSize()
@@ -51,12 +65,15 @@ fun BrowserScreen(
         )
         FloatingSearchFrame(
             state = state,
+            tabCount = tabs.tabs.size,
             position = settings.toolbarPosition,
             onSubmit = onSubmit,
             onBack = engine::goBack,
             onForward = engine::goForward,
             onReload = engine::reload,
             onStop = engine::stop,
+            onOpenTabs = onOpenTabs,
+            onNewTab = onNewTab,
             onOpenSettings = onOpenSettings,
             modifier = Modifier
                 .align(if (atTop) Alignment.TopCenter else Alignment.BottomCenter)

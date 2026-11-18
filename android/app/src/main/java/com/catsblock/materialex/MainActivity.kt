@@ -18,9 +18,12 @@ import com.catsblock.materialex.core.UrlResolver
 import com.catsblock.materialex.data.BrowserSettings
 import com.catsblock.materialex.ui.BrowserScreen
 import com.catsblock.materialex.ui.SettingsScreen
+import com.catsblock.materialex.ui.TabSwitcherScreen
 import com.catsblock.materialex.ui.theme.MaterialExTheme
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
+
+private enum class Screen { BROWSER, TABS, SETTINGS }
 
 class MainActivity : ComponentActivity() {
     private val app get() = application as MaterialExApp
@@ -35,24 +38,34 @@ class MainActivity : ComponentActivity() {
             MaterialExTheme {
                 val settings by app.settings.settings.collectAsStateWithLifecycle(initialValue = BrowserSettings())
                 val pageState by app.engine.state.collectAsStateWithLifecycle()
-                var showSettings by rememberSaveable { mutableStateOf(false) }
+                var screen by rememberSaveable { mutableStateOf(Screen.BROWSER) }
 
-                BackHandler(enabled = showSettings || pageState.canGoBack) {
-                    if (showSettings) showSettings = false else app.engine.goBack()
+                BackHandler(enabled = screen != Screen.BROWSER || pageState.canGoBack) {
+                    if (screen != Screen.BROWSER) screen = Screen.BROWSER else app.engine.goBack()
                 }
 
-                if (showSettings) {
-                    SettingsScreen(
+                when (screen) {
+                    Screen.SETTINGS -> SettingsScreen(
                         settings = settings,
                         repository = app.settings,
-                        onClose = { showSettings = false }
+                        onClose = { screen = Screen.BROWSER }
                     )
-                } else {
-                    BrowserScreen(
+                    Screen.TABS -> TabSwitcherScreen(
+                        engine = app.engine,
+                        onClose = { screen = Screen.BROWSER },
+                        onNewTab = {
+                            app.engine.openTab(settings.homepage)
+                            screen = Screen.BROWSER
+                        },
+                        onCloseTab = { id -> closeTab(id, settings.homepage) }
+                    )
+                    Screen.BROWSER -> BrowserScreen(
                         engine = app.engine,
                         settings = settings,
                         onSubmit = { input -> submit(input, settings) },
-                        onOpenSettings = { showSettings = true }
+                        onOpenTabs = { screen = Screen.TABS },
+                        onNewTab = { app.engine.openTab(settings.homepage) },
+                        onOpenSettings = { screen = Screen.SETTINGS }
                     )
                 }
             }
@@ -65,14 +78,20 @@ class MainActivity : ComponentActivity() {
         lifecycleScope.launch { openFromIntent(intent) }
     }
 
+    private fun closeTab(id: String, homepage: String) {
+        app.engine.closeTab(id)
+        app.engine.flushClosed()
+        if (app.engine.tabs.value.tabs.isEmpty()) app.engine.openTab(homepage)
+    }
+
     private suspend fun openFromIntent(intent: Intent?) {
         val target = intentUrl(intent)
         if (target != null) {
-            app.engine.load(target)
+            app.engine.openTab(target)
             return
         }
-        if (app.engine.state.value.url.isEmpty()) {
-            app.engine.load(app.settings.settings.first().homepage)
+        if (app.engine.tabs.value.tabs.isEmpty()) {
+            app.engine.openTab(app.settings.settings.first().homepage)
         }
     }
 

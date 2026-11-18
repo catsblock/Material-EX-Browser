@@ -1,6 +1,8 @@
 package com.catsblock.materialex.ui
 
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.WindowInsets
@@ -17,6 +19,7 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.automirrored.filled.ArrowForward
+import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.Lock
 import androidx.compose.material.icons.filled.MoreVert
@@ -44,6 +47,8 @@ import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.TextRange
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
@@ -57,12 +62,15 @@ import com.catsblock.materialex.engine.PageState
 @Composable
 fun FloatingSearchFrame(
     state: PageState,
+    tabCount: Int,
     position: ToolbarPosition,
     onSubmit: (String) -> Boolean,
     onBack: () -> Unit,
     onForward: () -> Unit,
     onReload: () -> Unit,
     onStop: () -> Unit,
+    onOpenTabs: () -> Unit,
+    onNewTab: () -> Unit,
     onOpenSettings: () -> Unit,
     modifier: Modifier = Modifier
 ) {
@@ -156,11 +164,31 @@ fun FloatingSearchFrame(
                         Icon(Icons.Default.Refresh, contentDescription = stringResource(R.string.action_reload))
                     }
                 }
+                val tabsDescription = stringResource(R.string.tabs_title)
+                IconButton(onClick = onOpenTabs) {
+                    Box(
+                        modifier = Modifier
+                            .size(24.dp)
+                            .border(2.dp, MaterialTheme.colorScheme.onSurface, RoundedCornerShape(8.dp))
+                            .semantics { contentDescription = tabsDescription },
+                        contentAlignment = Alignment.Center
+                    ) {
+                        Text(text = tabCount.toString(), style = MaterialTheme.typography.labelSmall)
+                    }
+                }
                 Box {
                     IconButton(onClick = { menuOpen = true }) {
                         Icon(Icons.Default.MoreVert, contentDescription = stringResource(R.string.action_menu))
                     }
                     DropdownMenu(expanded = menuOpen, onDismissRequest = { menuOpen = false }) {
+                        DropdownMenuItem(
+                            text = { Text(stringResource(R.string.action_new_tab)) },
+                            leadingIcon = { Icon(Icons.Default.Add, contentDescription = null) },
+                            onClick = {
+                                menuOpen = false
+                                onNewTab()
+                            }
+                        )
                         DropdownMenuItem(
                             text = { Text(stringResource(R.string.action_back)) },
                             leadingIcon = { Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = null) },
