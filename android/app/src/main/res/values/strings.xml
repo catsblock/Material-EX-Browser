@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Material EX</string>
+    <string name="address_placeholder">Search or type a URL</string>
+    <string name="action_back">Back</string>
+    <string name="action_forward">Forward</string>
+    <string name="action_reload">Reload</string>
+    <string name="action_stop">Stop loading</string>
+    <string name="action_menu">Menu</string>
+    <string name="action_settings">Settings</string>
+    <string name="action_save">Save</string>
+    <string name="security_secure">Secure connection</string>
+    <string name="security_insecure">Connection is not secure</string>
+    <string name="input_rejected">This address cannot be opened</string>
+    <string name="settings_title">Settings</string>
+    <string name="settings_toolbar_position">Toolbar position</string>
+    <string name="settings_toolbar_position_description">Where the floating search frame appears</string>
+    <string name="settings_toolbar_top">Top</string>
+    <string name="settings_toolbar_bottom">Bottom</string>
+    <string name="settings_homepage">Homepage</string>
+    <string name="settings_homepage_invalid">Enter a valid http or https address</string>
+    <string name="settings_search_engine">Default search engine</string>
+    <string name="settings_custom_template">Custom search URL</string>
+    <string name="settings_custom_template_hint" formatted="false">https://example.com/search?q=%s</string>
+    <string name="settings_custom_template_invalid" formatted="false">The URL must start with https:// and contain %s exactly once</string>
+    <string name="settings_search_engine_custom">Custom</string>
+</resources>

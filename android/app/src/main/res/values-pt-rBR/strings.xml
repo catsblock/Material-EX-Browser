@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Material EX</string>
+    <string name="address_placeholder">Pesquise ou digite um endereço</string>
+    <string name="action_back">Voltar</string>
+    <string name="action_forward">Avançar</string>
+    <string name="action_reload">Recarregar</string>
+    <string name="action_stop">Parar carregamento</string>
+    <string name="action_menu">Menu</string>
+    <string name="action_settings">Configurações</string>
+    <string name="action_save">Salvar</string>
+    <string name="security_secure">Conexão segura</string>
+    <string name="security_insecure">A conexão não é segura</string>
+    <string name="input_rejected">Este endereço não pode ser aberto</string>
+    <string name="settings_title">Configurações</string>
+    <string name="settings_toolbar_position">Posição da barra</string>
+    <string name="settings_toolbar_position_description">Onde a barra de pesquisa flutuante aparece</string>
+    <string name="settings_toolbar_top">Superior</string>
+    <string name="settings_toolbar_bottom">Inferior</string>
+    <string name="settings_homepage">Página inicial</string>
+    <string name="settings_homepage_invalid">Informe um endereço http ou https válido</string>
+    <string name="settings_search_engine">Mecanismo de busca padrão</string>
+    <string name="settings_custom_template">URL de busca personalizada</string>
+    <string name="settings_custom_template_hint" formatted="false">https://exemplo.com/busca?q=%s</string>
+    <string name="settings_custom_template_invalid" formatted="false">A URL deve começar com https:// e conter %s exatamente uma vez</string>
+    <string name="settings_search_engine_custom">Personalizado</string>
+</resources>
