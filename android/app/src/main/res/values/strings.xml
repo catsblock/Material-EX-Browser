@@ -73,6 +73,7 @@
     <string name="onboarding_google_connected">Connected as %1$s</string>
     <string name="onboarding_google_disconnect">Disconnect</string>
     <string name="onboarding_google_error">Google sign-in isn\'t available right now. You can skip this step and connect later.</string>
+    <string name="onboarding_google_error_code">Error code: %1$s</string>
     <string name="perm_prompt_title">%1$s wants access to %2$s</string>
     <string name="perm_camera">Camera</string>
     <string name="perm_microphone">Microphone</string>

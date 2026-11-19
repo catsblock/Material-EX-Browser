@@ -71,6 +71,7 @@
     <string name="onboarding_google_connected">Verbunden als %1$s</string>
     <string name="onboarding_google_disconnect">Trennen</string>
     <string name="onboarding_google_error">Die Google-Anmeldung ist derzeit nicht verfügbar. Du kannst diesen Schritt überspringen und später verbinden.</string>
+    <string name="onboarding_google_error_code">Fehlercode: %1$s</string>
     <string name="perm_prompt_title">%1$s möchte auf %2$s zugreifen</string>
     <string name="perm_camera">Kamera</string>
     <string name="perm_microphone">Mikrofon</string>

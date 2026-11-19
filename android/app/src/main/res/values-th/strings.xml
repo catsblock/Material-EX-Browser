@@ -71,6 +71,7 @@
     <string name="onboarding_google_connected">เชื่อมต่อในชื่อ %1$s</string>
     <string name="onboarding_google_disconnect">ยกเลิกการเชื่อมต่อ</string>
     <string name="onboarding_google_error">ไม่สามารถลงชื่อเข้าใช้ Google ได้ในขณะนี้ คุณสามารถข้ามขั้นตอนนี้และเชื่อมต่อภายหลังได้</string>
+    <string name="onboarding_google_error_code">รหัสข้อผิดพลาด: %1$s</string>
     <string name="perm_prompt_title">%1$s ต้องการเข้าถึง%2$s</string>
     <string name="perm_camera">กล้อง</string>
     <string name="perm_microphone">ไมโครโฟน</string>

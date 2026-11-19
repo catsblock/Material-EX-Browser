@@ -71,6 +71,7 @@
     <string name="onboarding_google_connected">Подключено как %1$s</string>
     <string name="onboarding_google_disconnect">Отключить</string>
     <string name="onboarding_google_error">Вход через Google сейчас недоступен. Этот шаг можно пропустить и подключиться позже.</string>
+    <string name="onboarding_google_error_code">Код ошибки: %1$s</string>
     <string name="perm_prompt_title">%1$s запрашивает доступ: %2$s</string>
     <string name="perm_camera">Камера</string>
     <string name="perm_microphone">Микрофон</string>

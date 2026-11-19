@@ -73,6 +73,7 @@
     <string name="onboarding_google_connected">متصل باسم %1$s</string>
     <string name="onboarding_google_disconnect">قطع الاتصال</string>
     <string name="onboarding_google_error">تسجيل الدخول عبر Google غير متاح حاليًا. يمكنك تخطي هذه الخطوة والربط لاحقًا.</string>
+    <string name="onboarding_google_error_code">رمز الخطأ: %1$s</string>
     <string name="perm_prompt_title">يريد %1$s الوصول إلى %2$s</string>
     <string name="perm_camera">الكاميرا</string>
     <string name="perm_microphone">الميكروفون</string>

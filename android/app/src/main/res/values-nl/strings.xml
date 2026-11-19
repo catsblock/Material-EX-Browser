@@ -71,6 +71,7 @@
     <string name="onboarding_google_connected">Gekoppeld als %1$s</string>
     <string name="onboarding_google_disconnect">Ontkoppelen</string>
     <string name="onboarding_google_error">Inloggen met Google is nu niet beschikbaar. Je kunt deze stap overslaan en later koppelen.</string>
+    <string name="onboarding_google_error_code">Foutcode: %1$s</string>
     <string name="perm_prompt_title">%1$s wil toegang tot %2$s</string>
     <string name="perm_camera">Camera</string>
     <string name="perm_microphone">Microfoon</string>

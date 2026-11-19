@@ -71,6 +71,7 @@
     <string name="onboarding_google_connected">%1$s के रूप में कनेक्टेड</string>
     <string name="onboarding_google_disconnect">डिस्कनेक्ट करें</string>
     <string name="onboarding_google_error">Google साइन-इन अभी उपलब्ध नहीं है। आप यह चरण छोड़कर बाद में कनेक्ट कर सकते हैं।</string>
+    <string name="onboarding_google_error_code">त्रुटि कोड: %1$s</string>
     <string name="perm_prompt_title">%1$s को %2$s का एक्सेस चाहिए</string>
     <string name="perm_camera">कैमरा</string>
     <string name="perm_microphone">माइक्रोफ़ोन</string>

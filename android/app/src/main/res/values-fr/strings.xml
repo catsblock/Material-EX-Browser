@@ -71,6 +71,7 @@
     <string name="onboarding_google_connected">Connecté en tant que %1$s</string>
     <string name="onboarding_google_disconnect">Déconnecter</string>
     <string name="onboarding_google_error">La connexion Google n\'est pas disponible pour le moment. Vous pouvez ignorer cette étape et vous connecter plus tard.</string>
+    <string name="onboarding_google_error_code">Code d\'erreur : %1$s</string>
     <string name="perm_prompt_title">%1$s souhaite accéder à : %2$s</string>
     <string name="perm_camera">Caméra</string>
     <string name="perm_microphone">Microphone</string>

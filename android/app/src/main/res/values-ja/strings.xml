@@ -71,6 +71,7 @@
     <string name="onboarding_google_connected">%1$s として接続済み</string>
     <string name="onboarding_google_disconnect">接続解除</string>
     <string name="onboarding_google_error">現在Googleログインを利用できません。この手順をスキップして後で接続できます。</string>
+    <string name="onboarding_google_error_code">エラーコード: %1$s</string>
     <string name="perm_prompt_title">%1$s が %2$s へのアクセスを求めています</string>
     <string name="perm_camera">カメラ</string>
     <string name="perm_microphone">マイク</string>

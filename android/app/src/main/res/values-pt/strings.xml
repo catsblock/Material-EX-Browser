@@ -71,6 +71,7 @@
     <string name="onboarding_google_connected">Ligado como %1$s</string>
     <string name="onboarding_google_disconnect">Desligar</string>
     <string name="onboarding_google_error">O início de sessão Google não está disponível neste momento. Pode ignorar este passo e ligar mais tarde.</string>
+    <string name="onboarding_google_error_code">Código de erro: %1$s</string>
     <string name="perm_prompt_title">%1$s quer aceder a %2$s</string>
     <string name="perm_camera">Câmara</string>
     <string name="perm_microphone">Microfone</string>

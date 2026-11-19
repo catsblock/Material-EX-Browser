@@ -71,6 +71,7 @@
     <string name="onboarding_google_connected">Połączono jako %1$s</string>
     <string name="onboarding_google_disconnect">Rozłącz</string>
     <string name="onboarding_google_error">Logowanie przez Google jest teraz niedostępne. Możesz pominąć ten krok i połączyć konto później.</string>
+    <string name="onboarding_google_error_code">Kod błędu: %1$s</string>
     <string name="perm_prompt_title">%1$s chce uzyskać dostęp do: %2$s</string>
     <string name="perm_camera">Aparat</string>
     <string name="perm_microphone">Mikrofon</string>

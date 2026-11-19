@@ -71,6 +71,7 @@
     <string name="onboarding_google_connected">Terhubung sebagai %1$s</string>
     <string name="onboarding_google_disconnect">Putuskan</string>
     <string name="onboarding_google_error">Masuk dengan Google tidak tersedia saat ini. Anda dapat melewati langkah ini dan menghubungkan nanti.</string>
+    <string name="onboarding_google_error_code">Kode kesalahan: %1$s</string>
     <string name="perm_prompt_title">%1$s ingin mengakses %2$s</string>
     <string name="perm_camera">Kamera</string>
     <string name="perm_microphone">Mikrofon</string>

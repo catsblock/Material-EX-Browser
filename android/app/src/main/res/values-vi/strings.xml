@@ -71,6 +71,7 @@
     <string name="onboarding_google_connected">Đã kết nối với tư cách %1$s</string>
     <string name="onboarding_google_disconnect">Ngắt kết nối</string>
     <string name="onboarding_google_error">Đăng nhập Google hiện không khả dụng. Bạn có thể bỏ qua bước này và kết nối sau.</string>
+    <string name="onboarding_google_error_code">Mã lỗi: %1$s</string>
     <string name="perm_prompt_title">%1$s muốn truy cập %2$s</string>
     <string name="perm_camera">Máy ảnh</string>
     <string name="perm_microphone">Micrô</string>

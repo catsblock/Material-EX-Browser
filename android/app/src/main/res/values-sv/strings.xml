@@ -71,6 +71,7 @@
     <string name="onboarding_google_connected">Ansluten som %1$s</string>
     <string name="onboarding_google_disconnect">Koppla från</string>
     <string name="onboarding_google_error">Google-inloggning är inte tillgänglig just nu. Du kan hoppa över steget och ansluta senare.</string>
+    <string name="onboarding_google_error_code">Felkod: %1$s</string>
     <string name="perm_prompt_title">%1$s vill få åtkomst till %2$s</string>
     <string name="perm_camera">Kamera</string>
     <string name="perm_microphone">Mikrofon</string>

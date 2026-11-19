@@ -77,6 +77,7 @@ import com.catsblock.materialex.data.LocaleApplier
 import com.google.android.gms.auth.api.identity.AuthorizationRequest
 import com.google.android.gms.auth.api.identity.Identity
 import com.google.android.gms.common.Scopes
+import com.google.android.gms.common.api.ApiException
 import com.google.android.gms.common.api.Scope
 import androidx.activity.result.IntentSenderRequest
 
@@ -355,14 +356,25 @@ private fun ConsentRow(label: String, checked: Boolean, onChecked: (Boolean) -> 
 private fun GoogleStep(email: String, onConnected: (String) -> Unit, onDisconnect: () -> Unit) {
     val context = LocalContext.current
     var failed by rememberSaveable { mutableStateOf(false) }
+    var errorCode by rememberSaveable { mutableStateOf("") }
     val client = remember { Identity.getAuthorizationClient(context) }
     val launcher = rememberLauncherForActivityResult(ActivityResultContracts.StartIntentSenderForResult()) { result ->
         runCatching { client.getAuthorizationResultFromIntent(result.data) }
             .onSuccess { authorization ->
                 val mail = authorization.toGoogleSignInAccount()?.email
-                if (mail.isNullOrEmpty()) failed = true else { failed = false; onConnected(mail) }
+                if (mail.isNullOrEmpty()) {
+                    failed = true
+                    errorCode = "NO_EMAIL"
+                } else {
+                    failed = false
+                    errorCode = ""
+                    onConnected(mail)
+                }
             }
-            .onFailure { failed = true }
+            .onFailure { error ->
+                failed = true
+                errorCode = (error as? ApiException)?.statusCode?.toString() ?: error.javaClass.simpleName
+            }
     }
     Column(modifier = Modifier.verticalScroll(rememberScrollState())) {
         HeroHeader(
@@ -392,10 +404,20 @@ private fun GoogleStep(email: String, onConnected: (String) -> Unit, onDisconnec
                             launcher.launch(IntentSenderRequest.Builder(pending.intentSender).build())
                         } else {
                             val mail = authorization.toGoogleSignInAccount()?.email
-                            if (mail.isNullOrEmpty()) failed = true else { failed = false; onConnected(mail) }
+                            if (mail.isNullOrEmpty()) {
+                                failed = true
+                                errorCode = "NO_EMAIL"
+                            } else {
+                                failed = false
+                                errorCode = ""
+                                onConnected(mail)
+                            }
                         }
                     }
-                    .addOnFailureListener { failed = true }
+                    .addOnFailureListener { error ->
+                        failed = true
+                        errorCode = (error as? ApiException)?.statusCode?.toString() ?: error.javaClass.simpleName
+                    }
             }) { Text(stringResource(R.string.onboarding_google_action)) }
             if (failed) {
                 Spacer(Modifier.height(12.dp))
@@ -404,6 +426,14 @@ private fun GoogleStep(email: String, onConnected: (String) -> Unit, onDisconnec
                     style = MaterialTheme.typography.bodyMedium,
                     color = MaterialTheme.colorScheme.error
                 )
+                if (errorCode.isNotEmpty()) {
+                    Spacer(Modifier.height(4.dp))
+                    Text(
+                        text = stringResource(R.string.onboarding_google_error_code, errorCode),
+                        style = MaterialTheme.typography.labelMedium,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant
+                    )
+                }
             }
         }
     }

@@ -71,6 +71,7 @@
     <string name="onboarding_google_connected">Yhdistetty tilillä %1$s</string>
     <string name="onboarding_google_disconnect">Katkaise yhteys</string>
     <string name="onboarding_google_error">Google-kirjautuminen ei ole nyt käytettävissä. Voit ohittaa tämän vaiheen ja yhdistää myöhemmin.</string>
+    <string name="onboarding_google_error_code">Virhekoodi: %1$s</string>
     <string name="perm_prompt_title">%1$s haluaa käyttää: %2$s</string>
     <string name="perm_camera">Kamera</string>
     <string name="perm_microphone">Mikrofoni</string>
