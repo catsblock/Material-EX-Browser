@@ -273,6 +273,7 @@ class BrowserEngine(context: Context, permissionManager: PermissionManager) {
             }
 
             override fun onNewSession(session: GeckoSession, uri: String): GeckoResult<GeckoSession>? {
+                if (!PopupPolicy.schemeAllowed(uri)) return GeckoResult.fromValue(null)
                 val opener = popupFlow.value.firstOrNull { it.id == id }?.openerId ?: id
                 return GeckoResult.fromValue(createPopup(opener))
             }

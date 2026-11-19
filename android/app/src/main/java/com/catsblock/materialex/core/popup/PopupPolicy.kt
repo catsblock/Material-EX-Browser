@@ -21,6 +21,12 @@ object PopupPolicy {
         return lastGestureAt > 0L && now - lastGestureAt in 0..GESTURE_WINDOW_MS
     }
 
+    fun schemeAllowed(uri: String): Boolean {
+        val lower = uri.trim().lowercase()
+        return lower.isEmpty() || lower == "about:blank" ||
+            lower.startsWith("https://") || lower.startsWith("http://")
+    }
+
     fun foreground(popups: List<PopupWindow>, openerId: String?): PopupWindow? =
         popups.lastOrNull { it.openerId == openerId && !it.minimized }
 

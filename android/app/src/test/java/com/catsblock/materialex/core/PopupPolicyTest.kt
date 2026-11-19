@@ -48,4 +48,16 @@ class PopupPolicyTest {
         assertNull(PopupPolicy.foreground(popups, "tab3"))
         assertEquals(listOf("b"), PopupPolicy.minimized(popups, "tab1").map { it.id })
     }
+
+    @Test
+    fun onlyWebAndBlankSchemesAreAllowed() {
+        assertTrue(PopupPolicy.schemeAllowed("https://example.com/auth"))
+        assertTrue(PopupPolicy.schemeAllowed("http://example.com"))
+        assertTrue(PopupPolicy.schemeAllowed("about:blank"))
+        assertTrue(PopupPolicy.schemeAllowed(""))
+        assertFalse(PopupPolicy.schemeAllowed("javascript:alert(1)"))
+        assertFalse(PopupPolicy.schemeAllowed("file:///data/data/app/secret"))
+        assertFalse(PopupPolicy.schemeAllowed("intent://x#Intent;end"))
+        assertFalse(PopupPolicy.schemeAllowed("data:text/html,hi"))
+    }
 }
