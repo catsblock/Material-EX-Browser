@@ -131,6 +131,8 @@ class MainActivity : ComponentActivity() {
                 settings = settings,
                 repository = app.settings,
                 library = app.library,
+                onGoogleConnected = { email -> lifecycleScope.launch { app.settings.setGoogleEmail(email) } },
+                onGoogleDisconnect = { lifecycleScope.launch { app.settings.setGoogleEmail("") } },
                 onClose = { screen = Screen.BROWSER }
             )
             Screen.HISTORY -> HistoryScreen(

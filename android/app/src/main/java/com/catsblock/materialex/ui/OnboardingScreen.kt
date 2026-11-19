@@ -74,11 +74,6 @@ import androidx.compose.ui.unit.dp
 import com.catsblock.materialex.R
 import com.catsblock.materialex.core.AppLanguages
 import com.catsblock.materialex.data.LocaleApplier
-import com.google.android.gms.auth.api.identity.AuthorizationRequest
-import com.google.android.gms.auth.api.identity.Identity
-import com.google.android.gms.common.Scopes
-import com.google.android.gms.common.api.Scope
-import androidx.activity.result.IntentSenderRequest
 
 private enum class Step { WELCOME, LEGAL, GOOGLE, DEFAULT, DONE }
 
@@ -353,17 +348,7 @@ private fun ConsentRow(label: String, checked: Boolean, onChecked: (Boolean) -> 
 @OptIn(ExperimentalMaterial3ExpressiveApi::class)
 @Composable
 private fun GoogleStep(email: String, onConnected: (String) -> Unit, onDisconnect: () -> Unit) {
-    val context = LocalContext.current
-    var failed by rememberSaveable { mutableStateOf(false) }
-    val client = remember { Identity.getAuthorizationClient(context) }
-    val launcher = rememberLauncherForActivityResult(ActivityResultContracts.StartIntentSenderForResult()) { result ->
-        runCatching { client.getAuthorizationResultFromIntent(result.data) }
-            .onSuccess { authorization ->
-                val mail = authorization.toGoogleSignInAccount()?.email
-                if (mail.isNullOrEmpty()) failed = true else { failed = false; onConnected(mail) }
-            }
-            .onFailure { failed = true }
-    }
+    val picker = rememberGoogleAccountPicker(onConnected)
     Column(modifier = Modifier.verticalScroll(rememberScrollState())) {
         HeroHeader(
             icon = Icons.Default.Person,
@@ -382,22 +367,10 @@ private fun GoogleStep(email: String, onConnected: (String) -> Unit, onDisconnec
             TextButton(onClick = onDisconnect) { Text(stringResource(R.string.onboarding_google_disconnect)) }
         } else {
             FilledTonalButton(onClick = {
-                val request = AuthorizationRequest.builder()
-                    .setRequestedScopes(listOf(Scope(Scopes.EMAIL), Scope(Scopes.PROFILE)))
-                    .build()
-                client.authorize(request)
-                    .addOnSuccessListener { authorization ->
-                        val pending = authorization.pendingIntent
-                        if (authorization.hasResolution() && pending != null) {
-                            launcher.launch(IntentSenderRequest.Builder(pending.intentSender).build())
-                        } else {
-                            val mail = authorization.toGoogleSignInAccount()?.email
-                            if (mail.isNullOrEmpty()) failed = true else { failed = false; onConnected(mail) }
-                        }
-                    }
-                    .addOnFailureListener { failed = true }
+                picker.clearError()
+                picker.open()
             }) { Text(stringResource(R.string.onboarding_google_action)) }
-            if (failed) {
+            if (picker.failed) {
                 Spacer(Modifier.height(12.dp))
                 Text(
                     text = stringResource(R.string.onboarding_google_error),

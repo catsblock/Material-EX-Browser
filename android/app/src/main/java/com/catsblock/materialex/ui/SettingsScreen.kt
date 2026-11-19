@@ -53,6 +53,8 @@ fun SettingsScreen(
     settings: BrowserSettings,
     repository: SettingsRepository,
     library: LibraryRepository,
+    onGoogleConnected: (String) -> Unit,
+    onGoogleDisconnect: () -> Unit,
     onClose: () -> Unit
 ) {
     val scope = rememberCoroutineScope()
@@ -80,6 +82,7 @@ fun SettingsScreen(
                 .padding(horizontal = 16.dp, vertical = 8.dp),
             verticalArrangement = Arrangement.spacedBy(28.dp)
         ) {
+            AccountAndDefaultsSection(settings.googleEmail, onGoogleConnected, onGoogleDisconnect)
             Column {
                 Text(stringResource(R.string.settings_toolbar_position), style = MaterialTheme.typography.titleMedium)
                 Text(
