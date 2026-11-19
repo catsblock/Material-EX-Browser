@@ -4,6 +4,9 @@ import android.content.Context
 import com.catsblock.materialex.core.ScrollChromeTracker
 import com.catsblock.materialex.core.memory.MemoryBudget
 import com.catsblock.materialex.core.permission.PermissionBroker
+import com.catsblock.materialex.core.security.BypassGate
+import com.catsblock.materialex.core.security.ThreatInfo
+import com.catsblock.materialex.core.security.ThreatKind
 import com.catsblock.materialex.core.permission.PermissionManager
 import com.catsblock.materialex.core.permission.PermissionType
 import com.catsblock.materialex.core.popup.PopupPolicy
@@ -24,10 +27,12 @@ import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import org.mozilla.geckoview.GeckoResult
+import org.mozilla.geckoview.ContentBlocking
 import org.mozilla.geckoview.GeckoRuntime
 import org.mozilla.geckoview.GeckoSession
 import org.mozilla.geckoview.GeckoSessionSettings
 import org.mozilla.geckoview.MediaSession
+import org.mozilla.geckoview.WebRequestError
 import org.mozilla.geckoview.WebResponse
 
 data class PageState(
@@ -61,6 +66,8 @@ class BrowserEngine(context: Context, permissionManager: PermissionManager) {
     private val popupSessions = HashMap<String, GeckoSession>()
     private val savedStates = HashMap<String, GeckoSession.SessionState>()
     private var trimLevel = 0
+    private val bypass = BypassGate()
+    private val threatFlow = MutableStateFlow<Map<String, ThreatInfo>>(emptyMap())
     private var lastGestureAt = 0L
 
     val permissions = PermissionBroker(permissionManager, DEFAULT_PROFILE)
@@ -74,6 +81,64 @@ class BrowserEngine(context: Context, permissionManager: PermissionManager) {
             field = value
             enforceLoadLimit()
         }
+
+    val threats: StateFlow<Map<String, ThreatInfo>> = threatFlow.asStateFlow()
+
+    var safeBrowsingEnabled: Boolean = true
+        set(value) {
+            field = value
+            applySafeBrowsing()
+        }
+
+    var cookieBannerHandling: Boolean = true
+        set(value) {
+            field = value
+            runtime.settings.contentBlocking.setCookieBannerMode(
+                if (value) ContentBlocking.CookieBannerMode.COOKIE_BANNER_MODE_REJECT_OR_ACCEPT
+                else ContentBlocking.CookieBannerMode.COOKIE_BANNER_MODE_DISABLED
+            )
+        }
+
+    private fun applySafeBrowsing() {
+        val on = safeBrowsingEnabled && !bypass.isActive()
+        runtime.settings.contentBlocking.setSafeBrowsing(
+            if (on) ContentBlocking.SafeBrowsing.DEFAULT else ContentBlocking.SafeBrowsing.NONE
+        )
+    }
+
+    fun leaveThreat(id: String) {
+        threatFlow.update { it - id }
+        val session = sessions[id] ?: return
+        if (pages.value[id]?.canGoBack == true) session.goBack() else session.loadUri("about:blank")
+    }
+
+    fun continueDespiteThreat(id: String) {
+        val info = threatFlow.value[id] ?: return
+        val session = sessions[id] ?: return
+        bypass.begin(id, info.url)
+        applySafeBrowsing()
+        threatFlow.update { it - id }
+        session.loadUri(info.url)
+    }
+
+    private fun endBypassFor(id: String) {
+        if (bypass.endIfFor(id)) applySafeBrowsing()
+    }
+
+    private fun threatKind(code: Int): ThreatKind? = when (code) {
+        WebRequestError.ERROR_SAFEBROWSING_PHISHING_URI -> ThreatKind.PHISHING
+        WebRequestError.ERROR_SAFEBROWSING_MALWARE_URI -> ThreatKind.MALWARE
+        WebRequestError.ERROR_SAFEBROWSING_UNWANTED_URI -> ThreatKind.UNWANTED
+        WebRequestError.ERROR_SAFEBROWSING_HARMFUL_URI -> ThreatKind.HARMFUL
+        else -> null
+    }
+
+    private fun threatCodeName(kind: ThreatKind): String = when (kind) {
+        ThreatKind.PHISHING -> "ERROR_SAFEBROWSING_PHISHING_URI"
+        ThreatKind.MALWARE -> "ERROR_SAFEBROWSING_MALWARE_URI"
+        ThreatKind.UNWANTED -> "ERROR_SAFEBROWSING_UNWANTED_URI"
+        ThreatKind.HARMFUL -> "ERROR_SAFEBROWSING_HARMFUL_URI"
+    }
 
     fun trimMemory(level: Int) {
         trimLevel = level
@@ -136,6 +201,8 @@ class BrowserEngine(context: Context, permissionManager: PermissionManager) {
     fun moveTab(id: String, toIndex: Int) = manager.move(id, toIndex)
 
     private fun dropSession(id: String) {
+        threatFlow.update { it - id }
+        endBypassFor(id)
         closePopupsFor(id)
         sessions.remove(id)?.let(pendingClose::add)
         pages.update { it - id }
@@ -317,8 +384,31 @@ class BrowserEngine(context: Context, permissionManager: PermissionManager) {
                 perms: List<GeckoSession.PermissionDelegate.ContentPermission>,
                 hasUserGesture: Boolean
             ) {
-                change(id) { it.copy(url = url.orEmpty()) }
-                manager.update(id, url = url.orEmpty())
+                val threat = threatFlow.value[id]
+                val shown = if (threat != null && url.orEmpty().startsWith("data:")) threat.url else url.orEmpty()
+                if (threat != null && !url.orEmpty().startsWith("data:")) threatFlow.update { it - id }
+                change(id) { it.copy(url = shown) }
+                manager.update(id, url = shown)
+            }
+
+            override fun onLoadError(
+                session: GeckoSession,
+                uri: String?,
+                error: WebRequestError
+            ): GeckoResult<String>? {
+                val kind = if (error.category == WebRequestError.ERROR_CATEGORY_SAFEBROWSING) threatKind(error.code) else null
+                if (kind == null || uri.isNullOrEmpty()) {
+                    endBypassFor(id)
+                    return null
+                }
+                if (bypass.isActiveFor(id)) {
+                    endBypassFor(id)
+                    return null
+                }
+                threatFlow.update {
+                    it + (id to ThreatInfo(id, uri, kind, error.code, threatCodeName(kind), System.currentTimeMillis()))
+                }
+                return GeckoResult.fromValue("data:text/html;charset=utf-8,")
             }
 
             override fun onNewSession(session: GeckoSession, uri: String): GeckoResult<GeckoSession>? {
@@ -349,6 +439,7 @@ class BrowserEngine(context: Context, permissionManager: PermissionManager) {
             }
 
             override fun onPageStop(session: GeckoSession, success: Boolean) {
+                endBypassFor(id)
                 change(id) { it.copy(isLoading = false, progress = 100) }
                 val page = pages.value[id]
                 if (success && page != null && page.url.isNotEmpty() && lastVisit[id] != page.url) {

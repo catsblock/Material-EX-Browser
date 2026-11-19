@@ -115,6 +115,8 @@ class MainActivity : ComponentActivity() {
         val recent by remember { app.library.recentPages(6) }.collectAsStateWithLifecycle(emptyList())
         val homeBookmarks by remember { app.library.bookmarks("") }.collectAsStateWithLifecycle(emptyList())
         LaunchedEffect(settings.popupBlocking) { app.engine.popupBlocking = settings.popupBlocking }
+        LaunchedEffect(settings.safeBrowsing) { app.engine.safeBrowsingEnabled = settings.safeBrowsing }
+        LaunchedEffect(settings.cookieBanner) { app.engine.cookieBannerHandling = settings.cookieBanner }
         LaunchedEffect(settings.memoryMode, settings.customLoadedTabs) {
             val info = ActivityManager.MemoryInfo()
             (getSystemService(ACTIVITY_SERVICE) as ActivityManager).getMemoryInfo(info)

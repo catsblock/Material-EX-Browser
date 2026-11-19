@@ -92,6 +92,8 @@ fun BrowserScreen(
     val tabs by engine.tabs.collectAsStateWithLifecycle()
     val session by engine.activeSession.collectAsStateWithLifecycle()
     val chromeVisible by engine.chromeVisible.collectAsStateWithLifecycle()
+    val threats by engine.threats.collectAsStateWithLifecycle()
+    val threat = tabs.activeId?.let { threats[it] }
     val atTop = settings.toolbarPosition == ToolbarPosition.TOP
     var findOpen by remember { mutableStateOf(false) }
     val atPageTop by engine.atTop.collectAsStateWithLifecycle()
@@ -205,6 +207,13 @@ fun BrowserScreen(
             openerId = tabs.activeId,
             dockAtBottom = atTop
         )
+        threat?.let {
+            ThreatPage(
+                threat = it,
+                onLeave = { engine.leaveThreat(it.tabId) },
+                onContinue = { engine.continueDespiteThreat(it.tabId) }
+            )
+        }
         FloatingSearchFrame(
             state = state,
             tabCount = tabs.tabs.size,

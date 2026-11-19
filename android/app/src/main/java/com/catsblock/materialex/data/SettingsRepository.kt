@@ -65,7 +65,9 @@ data class BrowserSettings(
     val tabLayout: TabLayout = TabLayout.GRID,
     val popupBlocking: Boolean = true,
     val memoryMode: MemoryMode = MemoryMode.AUTOMATIC,
-    val customLoadedTabs: Int = 5
+    val customLoadedTabs: Int = 5,
+    val safeBrowsing: Boolean = true,
+    val cookieBanner: Boolean = true
 ) {
     companion object {
         const val DEFAULT_HOMEPAGE = "https://www.google.com/"
@@ -90,6 +92,8 @@ class SettingsRepository(private val context: Context) {
     private val showBookmarksKey = booleanPreferencesKey("home_show_bookmarks")
     private val tabLayoutKey = stringPreferencesKey("tab_layout")
     private val popupBlockingKey = booleanPreferencesKey("popup_blocking")
+    private val safeBrowsingKey = booleanPreferencesKey("safe_browsing")
+    private val cookieBannerKey = booleanPreferencesKey("cookie_banner")
     private val memoryModeKey = stringPreferencesKey("memory_mode")
     private val customLoadedTabsKey = intPreferencesKey("custom_loaded_tabs")
     private val shortcutsSeededKey = booleanPreferencesKey("shortcuts_seeded")
@@ -103,6 +107,14 @@ class SettingsRepository(private val context: Context) {
 
     suspend fun setAutoHideFrame(enabled: Boolean) {
         context.settingsStore.edit { it[autoHideKey] = enabled }
+    }
+
+    suspend fun setSafeBrowsing(enabled: Boolean) {
+        context.settingsStore.edit { it[safeBrowsingKey] = enabled }
+    }
+
+    suspend fun setCookieBanner(enabled: Boolean) {
+        context.settingsStore.edit { it[cookieBannerKey] = enabled }
     }
 
     suspend fun setMemoryMode(mode: MemoryMode) {
@@ -203,6 +215,8 @@ class SettingsRepository(private val context: Context) {
         tabLayout = TabLayout.fromId(preferences[tabLayoutKey]),
         popupBlocking = preferences[popupBlockingKey] ?: true,
         memoryMode = MemoryMode.fromId(preferences[memoryModeKey]),
-        customLoadedTabs = (preferences[customLoadedTabsKey] ?: 5).coerceIn(1, 30)
+        customLoadedTabs = (preferences[customLoadedTabsKey] ?: 5).coerceIn(1, 30),
+        safeBrowsing = preferences[safeBrowsingKey] ?: true,
+        cookieBanner = preferences[cookieBannerKey] ?: true
     )
 }

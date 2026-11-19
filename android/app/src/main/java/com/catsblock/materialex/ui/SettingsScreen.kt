@@ -1,5 +1,9 @@
 package com.catsblock.materialex.ui
 
+import androidx.activity.compose.BackHandler
+import androidx.compose.foundation.clickable
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.material3.FilterChip
@@ -65,13 +69,16 @@ fun SettingsScreen(
     var homepageInvalid by remember { mutableStateOf(false) }
     var template by remember(settings.customSearchTemplate) { mutableStateOf(settings.customSearchTemplate) }
     var templateInvalid by remember { mutableStateOf(false) }
+    var category by rememberSaveable { mutableStateOf<SettingsCategory?>(null) }
+    var query by rememberSaveable { mutableStateOf("") }
+    BackHandler(enabled = category != null) { category = null }
 
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text(stringResource(R.string.settings_title)) },
+                title = { Text(stringResource(category?.title ?: R.string.settings_title)) },
                 navigationIcon = {
-                    IconButton(onClick = onClose) {
+                    IconButton(onClick = { if (category != null) category = null else onClose() }) {
                         Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = stringResource(R.string.action_back))
                     }
                 }
@@ -85,190 +92,243 @@ fun SettingsScreen(
                 .padding(horizontal = 16.dp, vertical = 8.dp),
             verticalArrangement = Arrangement.spacedBy(28.dp)
         ) {
-            Column {
-                Text(stringResource(R.string.settings_toolbar_position), style = MaterialTheme.typography.titleMedium)
-                Text(
-                    stringResource(R.string.settings_toolbar_position_description),
-                    style = MaterialTheme.typography.bodyMedium,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant
-                )
-                ToolbarPosition.entries.forEach { position ->
-                    val label = when (position) {
-                        ToolbarPosition.TOP -> stringResource(R.string.settings_toolbar_top)
-                        ToolbarPosition.BOTTOM -> stringResource(R.string.settings_toolbar_bottom)
-                    }
-                    ChoiceRow(
-                        label = label,
-                        selected = settings.toolbarPosition == position,
-                        onSelect = { scope.launch { repository.setToolbarPosition(position) } }
-                    )
-                }
-            }
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .toggleable(
-                        value = settings.autoHideFrame,
-                        role = Role.Switch,
-                        onValueChange = { scope.launch { repository.setAutoHideFrame(it) } }
-                    ),
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                Column(modifier = Modifier.weight(1f)) {
-                    Text(stringResource(R.string.settings_frame_autohide), style = MaterialTheme.typography.titleMedium)
-                    Text(
-                        stringResource(R.string.settings_frame_autohide_description),
-                        style = MaterialTheme.typography.bodyMedium,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant
-                    )
-                }
-                Spacer(Modifier.width(16.dp))
-                Switch(checked = settings.autoHideFrame, onCheckedChange = null)
-            }
-            SectionSwitch(R.string.settings_popup_block, settings.popupBlocking) {
-                scope.launch { repository.setPopupBlocking(it) }
-            }
-            Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
-                Text(stringResource(R.string.settings_memory_title), style = MaterialTheme.typography.titleMedium)
-                Text(
-                    stringResource(R.string.settings_memory_description),
-                    style = MaterialTheme.typography.bodyMedium,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant
-                )
-                FlowRow(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                    MemoryMode.entries.forEach { mode ->
-                        FilterChip(
-                            selected = settings.memoryMode == mode,
-                            onClick = { scope.launch { repository.setMemoryMode(mode) } },
-                            label = { Text(stringResource(memoryModeLabel(mode))) }
-                        )
-                    }
-                }
-                if (settings.memoryMode == MemoryMode.CUSTOM) {
-                    Text(
-                        stringResource(R.string.settings_memory_custom, settings.customLoadedTabs),
-                        style = MaterialTheme.typography.bodyMedium
-                    )
-                    var sliderValue by remember(settings.customLoadedTabs) { mutableFloatStateOf(settings.customLoadedTabs.toFloat()) }
-                    Slider(
-                        value = sliderValue,
-                        onValueChange = { sliderValue = it },
-                        onValueChangeFinished = { scope.launch { repository.setCustomLoadedTabs(sliderValue.toInt()) } },
-                        valueRange = 1f..30f,
-                        steps = 28
-                    )
-                }
-            }
-            Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
-                Text(stringResource(R.string.settings_homepage), style = MaterialTheme.typography.titleMedium)
+            if (category == null) {
                 OutlinedTextField(
-                    value = homepage,
-                    onValueChange = {
-                        homepage = it
-                        homepageInvalid = false
-                    },
+                    value = query,
+                    onValueChange = { query = it },
                     singleLine = true,
-                    isError = homepageInvalid,
-                    supportingText = if (homepageInvalid) {
-                        { Text(stringResource(R.string.settings_homepage_invalid)) }
-                    } else {
-                        null
-                    },
+                    label = { Text(stringResource(R.string.settings_search_hint)) },
                     modifier = Modifier.fillMaxWidth()
                 )
-                Button(onClick = {
-                    scope.launch { homepageInvalid = !repository.setHomepage(homepage) }
-                }) {
-                    Text(stringResource(R.string.action_save))
+                val needle = query.trim()
+                if (needle.isEmpty()) {
+                    SettingsCategory.entries.forEach { entry ->
+                        CategoryRow(stringResource(entry.title)) { category = entry }
+                    }
+                } else {
+                    val matches = SettingsCategory.index.filter {
+                        stringResource(it.first).contains(needle, ignoreCase = true)
+                    }
+                    if (matches.isEmpty()) {
+                        Text(stringResource(R.string.settings_no_results), style = MaterialTheme.typography.bodyLarge)
+                    }
+                    matches.forEach { (label, target) ->
+                        CategoryRow(stringResource(label), stringResource(target.title)) {
+                            query = ""
+                            category = target
+                        }
+                    }
                 }
             }
-            Column {
-                Text(stringResource(R.string.settings_search_engine), style = MaterialTheme.typography.titleMedium)
-                SearchEngine.entries.forEach { engine ->
-                    ChoiceRow(
-                        label = engineLabel(engine),
-                        selected = settings.searchEngine == engine,
-                        onSelect = { scope.launch { repository.setSearchEngine(engine) } }
-                    )
-                }
-            }
-            if (settings.searchEngine == SearchEngine.CUSTOM) {
+            if (category == SettingsCategory.GENERAL) {
                 Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
-                    Text(stringResource(R.string.settings_custom_template), style = MaterialTheme.typography.titleMedium)
+                    Text(stringResource(R.string.settings_homepage), style = MaterialTheme.typography.titleMedium)
                     OutlinedTextField(
-                        value = template,
+                        value = homepage,
                         onValueChange = {
-                            template = it
-                            templateInvalid = false
+                            homepage = it
+                            homepageInvalid = false
                         },
                         singleLine = true,
-                        isError = templateInvalid,
-                        placeholder = { Text(stringResource(R.string.settings_custom_template_hint)) },
-                        supportingText = if (templateInvalid) {
-                            { Text(stringResource(R.string.settings_custom_template_invalid)) }
+                        isError = homepageInvalid,
+                        supportingText = if (homepageInvalid) {
+                            { Text(stringResource(R.string.settings_homepage_invalid)) }
                         } else {
                             null
                         },
                         modifier = Modifier.fillMaxWidth()
                     )
                     Button(onClick = {
-                        scope.launch { templateInvalid = !repository.setCustomSearchTemplate(template) }
+                        scope.launch { homepageInvalid = !repository.setHomepage(homepage) }
                     }) {
                         Text(stringResource(R.string.action_save))
                     }
                 }
-            }
-            Column {
-                Text(stringResource(R.string.settings_suggestions), style = MaterialTheme.typography.titleMedium)
-                SuggestionProvider.entries.forEach { provider ->
-                    ChoiceRow(
-                        label = providerLabel(provider),
-                        selected = settings.suggestionProvider == provider,
-                        onSelect = { scope.launch { repository.setSuggestionProvider(provider) } }
-                    )
-                }
-                TextButton(onClick = { scope.launch { library.clearSearches() } }) {
-                    Text(stringResource(R.string.settings_clear_searches))
-                }
-            }
-            Column {
-                Text(stringResource(R.string.settings_home_sections), style = MaterialTheme.typography.titleMedium)
-                SectionSwitch(R.string.settings_show_shortcuts, settings.showShortcuts) {
-                    scope.launch { repository.setHomeSection(HomeSection.SHORTCUTS, it) }
-                }
-                SectionSwitch(R.string.settings_show_frequent, settings.showFrequent) {
-                    scope.launch { repository.setHomeSection(HomeSection.FREQUENT, it) }
-                }
-                SectionSwitch(R.string.settings_show_bookmarks, settings.showBookmarks) {
-                    scope.launch { repository.setHomeSection(HomeSection.BOOKMARKS, it) }
-                }
-                SectionSwitch(R.string.settings_show_recent, settings.showRecent) {
-                    scope.launch { repository.setHomeSection(HomeSection.RECENT, it) }
-                }
-                TextButton(onClick = {
-                    scope.launch {
-                        repository.resetHomeSettings()
-                        library.restoreDefaultShortcuts()
+                Column {
+                    Text(stringResource(R.string.settings_home_sections), style = MaterialTheme.typography.titleMedium)
+                    SectionSwitch(R.string.settings_show_shortcuts, settings.showShortcuts) {
+                        scope.launch { repository.setHomeSection(HomeSection.SHORTCUTS, it) }
                     }
-                }) {
-                    Text(stringResource(R.string.settings_restore_home))
+                    SectionSwitch(R.string.settings_show_frequent, settings.showFrequent) {
+                        scope.launch { repository.setHomeSection(HomeSection.FREQUENT, it) }
+                    }
+                    SectionSwitch(R.string.settings_show_bookmarks, settings.showBookmarks) {
+                        scope.launch { repository.setHomeSection(HomeSection.BOOKMARKS, it) }
+                    }
+                    SectionSwitch(R.string.settings_show_recent, settings.showRecent) {
+                        scope.launch { repository.setHomeSection(HomeSection.RECENT, it) }
+                    }
+                    TextButton(onClick = {
+                        scope.launch {
+                            repository.resetHomeSettings()
+                            library.restoreDefaultShortcuts()
+                        }
+                    }) {
+                        Text(stringResource(R.string.settings_restore_home))
+                    }
                 }
             }
-            Column {
-                Text(stringResource(R.string.settings_tab_layout), style = MaterialTheme.typography.titleMedium)
-                TabLayout.entries.forEach { layout ->
-                    ChoiceRow(
-                        label = stringResource(
-                            when (layout) {
-                                TabLayout.GRID -> R.string.tab_layout_grid
-                                TabLayout.LIST -> R.string.tab_layout_list
-                                TabLayout.COVER_FLOW -> R.string.tab_layout_cover
-                            }
-                        ),
-                        selected = settings.tabLayout == layout,
-                        onSelect = { scope.launch { repository.setTabLayout(layout) } }
-                    )
+            if (category == SettingsCategory.SEARCH) {
+                Column {
+                    Text(stringResource(R.string.settings_search_engine), style = MaterialTheme.typography.titleMedium)
+                    SearchEngine.entries.forEach { engine ->
+                        ChoiceRow(
+                            label = engineLabel(engine),
+                            selected = settings.searchEngine == engine,
+                            onSelect = { scope.launch { repository.setSearchEngine(engine) } }
+                        )
+                    }
                 }
+                if (settings.searchEngine == SearchEngine.CUSTOM) {
+                    Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
+                        Text(stringResource(R.string.settings_custom_template), style = MaterialTheme.typography.titleMedium)
+                        OutlinedTextField(
+                            value = template,
+                            onValueChange = {
+                                template = it
+                                templateInvalid = false
+                            },
+                            singleLine = true,
+                            isError = templateInvalid,
+                            placeholder = { Text(stringResource(R.string.settings_custom_template_hint)) },
+                            supportingText = if (templateInvalid) {
+                                { Text(stringResource(R.string.settings_custom_template_invalid)) }
+                            } else {
+                                null
+                            },
+                            modifier = Modifier.fillMaxWidth()
+                        )
+                        Button(onClick = {
+                            scope.launch { templateInvalid = !repository.setCustomSearchTemplate(template) }
+                        }) {
+                            Text(stringResource(R.string.action_save))
+                        }
+                    }
+                }
+                Column {
+                    Text(stringResource(R.string.settings_suggestions), style = MaterialTheme.typography.titleMedium)
+                    SuggestionProvider.entries.forEach { provider ->
+                        ChoiceRow(
+                            label = providerLabel(provider),
+                            selected = settings.suggestionProvider == provider,
+                            onSelect = { scope.launch { repository.setSuggestionProvider(provider) } }
+                        )
+                    }
+                    TextButton(onClick = { scope.launch { library.clearSearches() } }) {
+                        Text(stringResource(R.string.settings_clear_searches))
+                    }
+                }
+            }
+            if (category == SettingsCategory.APPEARANCE) {
+                Column {
+                    Text(stringResource(R.string.settings_toolbar_position), style = MaterialTheme.typography.titleMedium)
+                    Text(
+                        stringResource(R.string.settings_toolbar_position_description),
+                        style = MaterialTheme.typography.bodyMedium,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant
+                    )
+                    ToolbarPosition.entries.forEach { position ->
+                        val label = when (position) {
+                            ToolbarPosition.TOP -> stringResource(R.string.settings_toolbar_top)
+                            ToolbarPosition.BOTTOM -> stringResource(R.string.settings_toolbar_bottom)
+                        }
+                        ChoiceRow(
+                            label = label,
+                            selected = settings.toolbarPosition == position,
+                            onSelect = { scope.launch { repository.setToolbarPosition(position) } }
+                        )
+                    }
+                }
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .toggleable(
+                            value = settings.autoHideFrame,
+                            role = Role.Switch,
+                            onValueChange = { scope.launch { repository.setAutoHideFrame(it) } }
+                        ),
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Column(modifier = Modifier.weight(1f)) {
+                        Text(stringResource(R.string.settings_frame_autohide), style = MaterialTheme.typography.titleMedium)
+                        Text(
+                            stringResource(R.string.settings_frame_autohide_description),
+                            style = MaterialTheme.typography.bodyMedium,
+                            color = MaterialTheme.colorScheme.onSurfaceVariant
+                        )
+                    }
+                    Spacer(Modifier.width(16.dp))
+                    Switch(checked = settings.autoHideFrame, onCheckedChange = null)
+                }
+            }
+            if (category == SettingsCategory.PRIVACY) {
+                SectionSwitch(R.string.settings_popup_block, settings.popupBlocking) {
+                    scope.launch { repository.setPopupBlocking(it) }
+                }
+                SectionSwitch(R.string.settings_safe_browsing, settings.safeBrowsing) {
+                    scope.launch { repository.setSafeBrowsing(it) }
+                }
+                SectionSwitch(R.string.settings_cookie_banner, settings.cookieBanner) {
+                    scope.launch { repository.setCookieBanner(it) }
+                }
+            }
+            if (category == SettingsCategory.PERFORMANCE) {
+                Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
+                    Text(stringResource(R.string.settings_memory_title), style = MaterialTheme.typography.titleMedium)
+                    Text(
+                        stringResource(R.string.settings_memory_description),
+                        style = MaterialTheme.typography.bodyMedium,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant
+                    )
+                    FlowRow(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                        MemoryMode.entries.forEach { mode ->
+                            FilterChip(
+                                selected = settings.memoryMode == mode,
+                                onClick = { scope.launch { repository.setMemoryMode(mode) } },
+                                label = { Text(stringResource(memoryModeLabel(mode))) }
+                            )
+                        }
+                    }
+                    if (settings.memoryMode == MemoryMode.CUSTOM) {
+                        Text(
+                            stringResource(R.string.settings_memory_custom, settings.customLoadedTabs),
+                            style = MaterialTheme.typography.bodyMedium
+                        )
+                        var sliderValue by remember(settings.customLoadedTabs) { mutableFloatStateOf(settings.customLoadedTabs.toFloat()) }
+                        Slider(
+                            value = sliderValue,
+                            onValueChange = { sliderValue = it },
+                            onValueChangeFinished = { scope.launch { repository.setCustomLoadedTabs(sliderValue.toInt()) } },
+                            valueRange = 1f..30f,
+                            steps = 28
+                        )
+                    }
+                }
+            }
+            if (category == SettingsCategory.TABS) {
+                Column {
+                    Text(stringResource(R.string.settings_tab_layout), style = MaterialTheme.typography.titleMedium)
+                    TabLayout.entries.forEach { layout ->
+                        ChoiceRow(
+                            label = stringResource(
+                                when (layout) {
+                                    TabLayout.GRID -> R.string.tab_layout_grid
+                                    TabLayout.LIST -> R.string.tab_layout_list
+                                    TabLayout.COVER_FLOW -> R.string.tab_layout_cover
+                                }
+                            ),
+                            selected = settings.tabLayout == layout,
+                            onSelect = { scope.launch { repository.setTabLayout(layout) } }
+                        )
+                    }
+                }
+            }
+            if (category == SettingsCategory.ABOUT) {
+                val context = LocalContext.current
+                val version = remember {
+                    runCatching { context.packageManager.getPackageInfo(context.packageName, 0).versionName }.getOrNull().orEmpty()
+                }
+                Text(stringResource(R.string.settings_about_version, version), style = MaterialTheme.typography.bodyLarge)
             }
         }
     }
@@ -331,5 +391,47 @@ private fun SectionSwitch(label: Int, checked: Boolean, onChange: (Boolean) -> U
     ) {
         Text(stringResource(label), style = MaterialTheme.typography.bodyLarge, modifier = Modifier.weight(1f))
         Switch(checked = checked, onCheckedChange = null)
+    }
+}
+
+
+private enum class SettingsCategory(val title: Int) {
+    GENERAL(R.string.settings_cat_general),
+    SEARCH(R.string.settings_cat_search),
+    APPEARANCE(R.string.settings_cat_appearance),
+    PRIVACY(R.string.settings_cat_privacy),
+    PERFORMANCE(R.string.settings_cat_performance),
+    TABS(R.string.settings_cat_tabs),
+    ABOUT(R.string.settings_cat_about);
+
+    companion object {
+        val index: List<Pair<Int, SettingsCategory>> = listOf(
+            R.string.settings_homepage to GENERAL,
+            R.string.settings_home_sections to GENERAL,
+            R.string.settings_search_engine to SEARCH,
+            R.string.settings_suggestions to SEARCH,
+            R.string.settings_toolbar_position to APPEARANCE,
+            R.string.settings_frame_autohide to APPEARANCE,
+            R.string.settings_popup_block to PRIVACY,
+            R.string.settings_safe_browsing to PRIVACY,
+            R.string.settings_cookie_banner to PRIVACY,
+            R.string.settings_memory_title to PERFORMANCE,
+            R.string.settings_tab_layout to TABS
+        )
+    }
+}
+
+@Composable
+private fun CategoryRow(title: String, subtitle: String? = null, onClick: () -> Unit) {
+    Column(
+        modifier = Modifier
+            .fillMaxWidth()
+            .clickable(onClick = onClick)
+            .padding(vertical = 14.dp)
+    ) {
+        Text(title, style = MaterialTheme.typography.titleMedium)
+        if (subtitle != null) {
+            Text(subtitle, style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
+        }
     }
 }
