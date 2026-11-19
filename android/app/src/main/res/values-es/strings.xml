@@ -141,4 +141,12 @@
     <string name="popup_minimize">Minimizar ventana emergente</string>
     <string name="popup_restore">Restaurar ventana emergente</string>
     <string name="settings_popup_block">Bloquear ventanas emergentes no deseadas</string>
+    <string name="settings_memory_title">Límite de uso de memoria</string>
+    <string name="settings_memory_description">Objetivo de memoria flexible: limita cuántas pestañas permanecen cargadas y descarga las inactivas, restaurándolas al abrirlas. Android y el motor no permiten un límite de RAM estricto.</string>
+    <string name="settings_memory_custom">Pestañas cargadas: %1$d</string>
+    <string name="settings_memory_automatic">Automático</string>
+    <string name="settings_memory_low">Bajo</string>
+    <string name="settings_memory_balanced">Equilibrado</string>
+    <string name="settings_memory_high">Alto</string>
+    <string name="settings_memory_custom_mode">Personalizado</string>
 </resources>

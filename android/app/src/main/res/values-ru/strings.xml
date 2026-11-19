@@ -141,4 +141,12 @@
     <string name="popup_minimize">Свернуть всплывающее окно</string>
     <string name="popup_restore">Восстановить всплывающее окно</string>
     <string name="settings_popup_block">Блокировать нежелательные всплывающие окна</string>
+    <string name="settings_memory_title">Лимит использования памяти</string>
+    <string name="settings_memory_description">Мягкая цель по памяти: ограничивает число загруженных вкладок и выгружает неактивные, восстанавливая их при открытии. Android и движок не позволяют задать жёсткий лимит ОЗУ.</string>
+    <string name="settings_memory_custom">Загружено вкладок: %1$d</string>
+    <string name="settings_memory_automatic">Автоматически</string>
+    <string name="settings_memory_low">Низкий</string>
+    <string name="settings_memory_balanced">Сбалансированный</string>
+    <string name="settings_memory_high">Высокий</string>
+    <string name="settings_memory_custom_mode">Свой</string>
 </resources>

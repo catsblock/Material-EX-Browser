@@ -141,4 +141,12 @@
     <string name="popup_minimize">Pop-up minimaliseren</string>
     <string name="popup_restore">Pop-up herstellen</string>
     <string name="settings_popup_block">Ongewenste pop-ups blokkeren</string>
+    <string name="settings_memory_title">Limiet geheugengebruik</string>
+    <string name="settings_memory_description">Een zacht geheugendoel: beperkt het aantal geladen tabbladen en ontlaadt inactieve tabbladen, die bij openen worden hersteld. Android en de engine staan geen harde RAM-limiet toe.</string>
+    <string name="settings_memory_custom">Geladen tabbladen: %1$d</string>
+    <string name="settings_memory_automatic">Automatisch</string>
+    <string name="settings_memory_low">Laag</string>
+    <string name="settings_memory_balanced">Gebalanceerd</string>
+    <string name="settings_memory_high">Hoog</string>
+    <string name="settings_memory_custom_mode">Aangepast</string>
 </resources>

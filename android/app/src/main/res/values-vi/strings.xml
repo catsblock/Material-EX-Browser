@@ -141,4 +141,12 @@
     <string name="popup_minimize">Thu nhỏ cửa sổ bật lên</string>
     <string name="popup_restore">Khôi phục cửa sổ bật lên</string>
     <string name="settings_popup_block">Chặn cửa sổ bật lên không mong muốn</string>
+    <string name="settings_memory_title">Giới hạn sử dụng bộ nhớ</string>
+    <string name="settings_memory_description">Mục tiêu bộ nhớ mềm: giới hạn số tab được tải và gỡ các tab không hoạt động, khôi phục khi mở lại. Android và công cụ không cho phép giới hạn RAM cứng.</string>
+    <string name="settings_memory_custom">Tab đã tải: %1$d</string>
+    <string name="settings_memory_automatic">Tự động</string>
+    <string name="settings_memory_low">Thấp</string>
+    <string name="settings_memory_balanced">Cân bằng</string>
+    <string name="settings_memory_high">Cao</string>
+    <string name="settings_memory_custom_mode">Tùy chỉnh</string>
 </resources>

@@ -141,4 +141,12 @@
     <string name="popup_minimize">Popup minimieren</string>
     <string name="popup_restore">Popup wiederherstellen</string>
     <string name="settings_popup_block">Unerwünschte Popups blockieren</string>
+    <string name="settings_memory_title">Speichernutzungslimit</string>
+    <string name="settings_memory_description">Ein weiches Speicherziel: begrenzt die Zahl geladener Tabs und entlädt inaktive Tabs, die beim Öffnen wiederhergestellt werden. Android und die Engine erlauben kein hartes RAM-Limit.</string>
+    <string name="settings_memory_custom">Geladene Tabs: %1$d</string>
+    <string name="settings_memory_automatic">Automatisch</string>
+    <string name="settings_memory_low">Niedrig</string>
+    <string name="settings_memory_balanced">Ausgewogen</string>
+    <string name="settings_memory_high">Hoch</string>
+    <string name="settings_memory_custom_mode">Benutzerdefiniert</string>
 </resources>

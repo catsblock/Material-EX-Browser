@@ -141,4 +141,12 @@
     <string name="popup_minimize">Zminimalizuj okno podręczne</string>
     <string name="popup_restore">Przywróć okno podręczne</string>
     <string name="settings_popup_block">Blokuj niechciane wyskakujące okna</string>
+    <string name="settings_memory_title">Limit użycia pamięci</string>
+    <string name="settings_memory_description">Miękki cel pamięci: ogranicza liczbę załadowanych kart i zwalnia nieaktywne, przywracając je po otwarciu. Android i silnik nie pozwalają na sztywny limit RAM.</string>
+    <string name="settings_memory_custom">Załadowane karty: %1$d</string>
+    <string name="settings_memory_automatic">Automatyczny</string>
+    <string name="settings_memory_low">Niski</string>
+    <string name="settings_memory_balanced">Zrównoważony</string>
+    <string name="settings_memory_high">Wysoki</string>
+    <string name="settings_memory_custom_mode">Własny</string>
 </resources>

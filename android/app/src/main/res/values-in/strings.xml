@@ -141,4 +141,12 @@
     <string name="popup_minimize">Kecilkan jendela pop-up</string>
     <string name="popup_restore">Pulihkan jendela pop-up</string>
     <string name="settings_popup_block">Blokir pop-up yang tidak diinginkan</string>
+    <string name="settings_memory_title">Batas penggunaan memori</string>
+    <string name="settings_memory_description">Target memori lunak: membatasi jumlah tab yang dimuat dan membongkar tab tidak aktif, lalu memulihkannya saat dibuka. Android dan mesin tidak mengizinkan batas RAM yang ketat.</string>
+    <string name="settings_memory_custom">Tab dimuat: %1$d</string>
+    <string name="settings_memory_automatic">Otomatis</string>
+    <string name="settings_memory_low">Rendah</string>
+    <string name="settings_memory_balanced">Seimbang</string>
+    <string name="settings_memory_high">Tinggi</string>
+    <string name="settings_memory_custom_mode">Kustom</string>
 </resources>

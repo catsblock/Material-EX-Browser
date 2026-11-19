@@ -143,4 +143,12 @@
     <string name="popup_minimize">Minimize popup</string>
     <string name="popup_restore">Restore popup</string>
     <string name="settings_popup_block">Block unwanted popups</string>
+    <string name="settings_memory_title">Memory usage limit</string>
+    <string name="settings_memory_description">A soft memory target: it limits how many tabs stay loaded and unloads inactive tabs, restoring them when opened. Android and the engine do not allow a hard RAM limit.</string>
+    <string name="settings_memory_custom">Loaded tabs: %1$d</string>
+    <string name="settings_memory_automatic">Automatic</string>
+    <string name="settings_memory_low">Low</string>
+    <string name="settings_memory_balanced">Balanced</string>
+    <string name="settings_memory_high">High</string>
+    <string name="settings_memory_custom_mode">Custom</string>
 </resources>

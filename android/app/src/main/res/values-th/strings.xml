@@ -141,4 +141,12 @@
     <string name="popup_minimize">ย่อหน้าต่างป๊อปอัป</string>
     <string name="popup_restore">คืนค่าหน้าต่างป๊อปอัป</string>
     <string name="settings_popup_block">บล็อกป๊อปอัปที่ไม่ต้องการ</string>
+    <string name="settings_memory_title">ขีดจำกัดการใช้หน่วยความจำ</string>
+    <string name="settings_memory_description">เป้าหมายหน่วยความจำแบบยืดหยุ่น: จำกัดจำนวนแท็บที่โหลดและยกเลิกการโหลดแท็บที่ไม่ใช้งาน แล้วกู้คืนเมื่อเปิด Android และเอนจินไม่รองรับขีดจำกัด RAM แบบเข้มงวด</string>
+    <string name="settings_memory_custom">แท็บที่โหลด: %1$d</string>
+    <string name="settings_memory_automatic">อัตโนมัติ</string>
+    <string name="settings_memory_low">ต่ำ</string>
+    <string name="settings_memory_balanced">สมดุล</string>
+    <string name="settings_memory_high">สูง</string>
+    <string name="settings_memory_custom_mode">กำหนดเอง</string>
 </resources>

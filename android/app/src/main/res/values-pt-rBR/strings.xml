@@ -143,4 +143,12 @@
     <string name="popup_minimize">Minimizar janela pop-up</string>
     <string name="popup_restore">Restaurar janela pop-up</string>
     <string name="settings_popup_block">Bloquear pop-ups indesejados</string>
+    <string name="settings_memory_title">Limite de uso de memória</string>
+    <string name="settings_memory_description">Meta de memória flexível: limita quantas abas ficam carregadas e descarrega as inativas, restaurando-as ao abrir. O Android e o mecanismo não permitem um limite de RAM rígido.</string>
+    <string name="settings_memory_custom">Abas carregadas: %1$d</string>
+    <string name="settings_memory_automatic">Automático</string>
+    <string name="settings_memory_low">Baixo</string>
+    <string name="settings_memory_balanced">Equilibrado</string>
+    <string name="settings_memory_high">Alto</string>
+    <string name="settings_memory_custom_mode">Personalizado</string>
 </resources>

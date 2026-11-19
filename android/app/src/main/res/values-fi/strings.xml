@@ -141,4 +141,12 @@
     <string name="popup_minimize">Pienennä ponnahdusikkuna</string>
     <string name="popup_restore">Palauta ponnahdusikkuna</string>
     <string name="settings_popup_block">Estä ei-toivotut ponnahdusikkunat</string>
+    <string name="settings_memory_title">Muistinkäytön raja</string>
+    <string name="settings_memory_description">Pehmeä muistitavoite: rajoittaa ladattujen välilehtien määrää ja vapauttaa passiiviset välilehdet, jotka palautetaan avattaessa. Android ja moottori eivät salli kovaa RAM-rajaa.</string>
+    <string name="settings_memory_custom">Ladatut välilehdet: %1$d</string>
+    <string name="settings_memory_automatic">Automaattinen</string>
+    <string name="settings_memory_low">Matala</string>
+    <string name="settings_memory_balanced">Tasapainoinen</string>
+    <string name="settings_memory_high">Korkea</string>
+    <string name="settings_memory_custom_mode">Mukautettu</string>
 </resources>

@@ -141,4 +141,12 @@
     <string name="popup_minimize">Minimera popup-fönster</string>
     <string name="popup_restore">Återställ popup-fönster</string>
     <string name="settings_popup_block">Blockera oönskade popup-fönster</string>
+    <string name="settings_memory_title">Minnesanvändningsgräns</string>
+    <string name="settings_memory_description">Ett mjukt minnesmål: begränsar hur många flikar som är laddade och avlastar inaktiva flikar, som återställs när de öppnas. Android och motorn tillåter ingen hård RAM-gräns.</string>
+    <string name="settings_memory_custom">Laddade flikar: %1$d</string>
+    <string name="settings_memory_automatic">Automatisk</string>
+    <string name="settings_memory_low">Låg</string>
+    <string name="settings_memory_balanced">Balanserad</string>
+    <string name="settings_memory_high">Hög</string>
+    <string name="settings_memory_custom_mode">Anpassad</string>
 </resources>

@@ -141,4 +141,12 @@
     <string name="popup_minimize">ポップアップを最小化</string>
     <string name="popup_restore">ポップアップを元に戻す</string>
     <string name="settings_popup_block">不要なポップアップをブロック</string>
+    <string name="settings_memory_title">メモリ使用量の上限</string>
+    <string name="settings_memory_description">ソフトなメモリ目標です。読み込み済みタブ数を制限し、非アクティブなタブをアンロードして、開くときに復元します。Android とエンジンはハードな RAM 上限を許可していません。</string>
+    <string name="settings_memory_custom">読み込み済みタブ: %1$d</string>
+    <string name="settings_memory_automatic">自動</string>
+    <string name="settings_memory_low">低</string>
+    <string name="settings_memory_balanced">バランス</string>
+    <string name="settings_memory_high">高</string>
+    <string name="settings_memory_custom_mode">カスタム</string>
 </resources>

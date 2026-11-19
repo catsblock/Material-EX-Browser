@@ -1,10 +1,12 @@
 package com.catsblock.materialex
 
+import android.app.ActivityManager
 import android.content.Intent
 import android.net.Uri
 import android.provider.Settings
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.material3.AlertDialog
+import com.catsblock.materialex.core.memory.MemoryBudget
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.ui.res.stringResource
@@ -53,6 +55,11 @@ class MainActivity : ComponentActivity() {
     private val app get() = application as MaterialExApp
 
     private var osCallback: ((Boolean) -> Unit)? = null
+
+    override fun onTrimMemory(level: Int) {
+        super.onTrimMemory(level)
+        app.engine.trimMemory(level)
+    }
 
     private val osPermissionLauncher =
         registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) { results ->
@@ -108,6 +115,15 @@ class MainActivity : ComponentActivity() {
         val recent by remember { app.library.recentPages(6) }.collectAsStateWithLifecycle(emptyList())
         val homeBookmarks by remember { app.library.bookmarks("") }.collectAsStateWithLifecycle(emptyList())
         LaunchedEffect(settings.popupBlocking) { app.engine.popupBlocking = settings.popupBlocking }
+        LaunchedEffect(settings.memoryMode, settings.customLoadedTabs) {
+            val info = ActivityManager.MemoryInfo()
+            (getSystemService(ACTIVITY_SERVICE) as ActivityManager).getMemoryInfo(info)
+            app.engine.loadedLimit = MemoryBudget.loadedLimit(
+                settings.memoryMode,
+                settings.customLoadedTabs,
+                info.totalMem / (1024L * 1024L)
+            )
+        }
         var query by remember { mutableStateOf("") }
         var suggestions by remember { mutableStateOf(emptyList<Suggestion>()) }
         LaunchedEffect(query, settings.suggestionProvider) {

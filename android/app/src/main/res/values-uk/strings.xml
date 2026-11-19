@@ -141,4 +141,12 @@
     <string name="popup_minimize">Згорнути спливаюче вікно</string>
     <string name="popup_restore">Відновити спливаюче вікно</string>
     <string name="settings_popup_block">Блокувати небажані спливаючі вікна</string>
+    <string name="settings_memory_title">Ліміт використання пам\'яті</string>
+    <string name="settings_memory_description">М\'яка ціль пам\'яті: обмежує кількість завантажених вкладок і вивантажує неактивні, відновлюючи їх під час відкриття. Android і рушій не дозволяють жорсткого ліміту RAM.</string>
+    <string name="settings_memory_custom">Завантажених вкладок: %1$d</string>
+    <string name="settings_memory_automatic">Автоматично</string>
+    <string name="settings_memory_low">Низький</string>
+    <string name="settings_memory_balanced">Збалансований</string>
+    <string name="settings_memory_high">Високий</string>
+    <string name="settings_memory_custom_mode">Власний</string>
 </resources>

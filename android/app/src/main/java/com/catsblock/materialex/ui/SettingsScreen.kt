@@ -1,6 +1,11 @@
 package com.catsblock.materialex.ui
 
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.FlowRow
+import androidx.compose.material3.FilterChip
+import androidx.compose.material3.Slider
+import androidx.compose.runtime.mutableFloatStateOf
+import com.catsblock.materialex.core.memory.MemoryMode
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -47,7 +52,7 @@ import com.catsblock.materialex.data.TabLayout
 import com.catsblock.materialex.data.ToolbarPosition
 import kotlinx.coroutines.launch
 
-@OptIn(ExperimentalMaterial3Api::class)
+@OptIn(ExperimentalMaterial3Api::class, androidx.compose.foundation.layout.ExperimentalLayoutApi::class)
 @Composable
 fun SettingsScreen(
     settings: BrowserSettings,
@@ -122,6 +127,37 @@ fun SettingsScreen(
             }
             SectionSwitch(R.string.settings_popup_block, settings.popupBlocking) {
                 scope.launch { repository.setPopupBlocking(it) }
+            }
+            Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
+                Text(stringResource(R.string.settings_memory_title), style = MaterialTheme.typography.titleMedium)
+                Text(
+                    stringResource(R.string.settings_memory_description),
+                    style = MaterialTheme.typography.bodyMedium,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant
+                )
+                FlowRow(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                    MemoryMode.entries.forEach { mode ->
+                        FilterChip(
+                            selected = settings.memoryMode == mode,
+                            onClick = { scope.launch { repository.setMemoryMode(mode) } },
+                            label = { Text(stringResource(memoryModeLabel(mode))) }
+                        )
+                    }
+                }
+                if (settings.memoryMode == MemoryMode.CUSTOM) {
+                    Text(
+                        stringResource(R.string.settings_memory_custom, settings.customLoadedTabs),
+                        style = MaterialTheme.typography.bodyMedium
+                    )
+                    var sliderValue by remember(settings.customLoadedTabs) { mutableFloatStateOf(settings.customLoadedTabs.toFloat()) }
+                    Slider(
+                        value = sliderValue,
+                        onValueChange = { sliderValue = it },
+                        onValueChangeFinished = { scope.launch { repository.setCustomLoadedTabs(sliderValue.toInt()) } },
+                        valueRange = 1f..30f,
+                        steps = 28
+                    )
+                }
             }
             Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
                 Text(stringResource(R.string.settings_homepage), style = MaterialTheme.typography.titleMedium)
@@ -274,6 +310,14 @@ private fun providerLabel(provider: SuggestionProvider): String = when (provider
     SuggestionProvider.BRAVE -> "Brave Search"
     SuggestionProvider.ECOSIA -> "Ecosia"
     SuggestionProvider.KAGI -> "Kagi"
+}
+
+private fun memoryModeLabel(mode: MemoryMode): Int = when (mode) {
+    MemoryMode.AUTOMATIC -> R.string.settings_memory_automatic
+    MemoryMode.LOW -> R.string.settings_memory_low
+    MemoryMode.BALANCED -> R.string.settings_memory_balanced
+    MemoryMode.HIGH -> R.string.settings_memory_high
+    MemoryMode.CUSTOM -> R.string.settings_memory_custom_mode
 }
 
 @Composable

@@ -2,11 +2,13 @@ package com.catsblock.materialex.engine
 
 import android.content.Context
 import com.catsblock.materialex.core.ScrollChromeTracker
+import com.catsblock.materialex.core.memory.MemoryBudget
 import com.catsblock.materialex.core.permission.PermissionBroker
 import com.catsblock.materialex.core.permission.PermissionManager
 import com.catsblock.materialex.core.permission.PermissionType
 import com.catsblock.materialex.core.popup.PopupPolicy
 import com.catsblock.materialex.core.popup.PopupWindow
+import com.catsblock.materialex.core.tabs.TabLifecycle
 import com.catsblock.materialex.core.tabs.TabManager
 import com.catsblock.materialex.core.tabs.TabsState
 import kotlinx.coroutines.CoroutineScope
@@ -57,6 +59,8 @@ class BrowserEngine(context: Context, permissionManager: PermissionManager) {
     private val scrollTops = HashMap<String, Int>()
     private val popupFlow = MutableStateFlow<List<PopupWindow>>(emptyList())
     private val popupSessions = HashMap<String, GeckoSession>()
+    private val savedStates = HashMap<String, GeckoSession.SessionState>()
+    private var trimLevel = 0
     private var lastGestureAt = 0L
 
     val permissions = PermissionBroker(permissionManager, DEFAULT_PROFILE)
@@ -65,6 +69,17 @@ class BrowserEngine(context: Context, permissionManager: PermissionManager) {
     val atTop: StateFlow<Boolean> = atTopFlow.asStateFlow()
     val popups: StateFlow<List<PopupWindow>> = popupFlow.asStateFlow()
     var popupBlocking: Boolean = true
+    var loadedLimit: Int = TabLifecycle.DEFAULT_LOADED
+        set(value) {
+            field = value
+            enforceLoadLimit()
+        }
+
+    fun trimMemory(level: Int) {
+        trimLevel = level
+        enforceLoadLimit()
+        trimLevel = 0
+    }
     var androidPermissionRequester: ((Array<String>, (Boolean) -> Unit) -> Unit)? = null
     var onDownload: ((WebResponse) -> Unit)? = null
     var onPageVisited: ((url: String, title: String) -> Unit)? = null
@@ -124,6 +139,7 @@ class BrowserEngine(context: Context, permissionManager: PermissionManager) {
         closePopupsFor(id)
         sessions.remove(id)?.let(pendingClose::add)
         pages.update { it - id }
+        savedStates.remove(id)
         lastVisit.remove(id)
         trackers.remove(id)
         scrollTops.remove(id)
@@ -250,7 +266,40 @@ class BrowserEngine(context: Context, permissionManager: PermissionManager) {
         active.value?.finder?.clear()
     }
 
+    private fun reviveActive() {
+        val id = manager.state.value.activeId ?: return
+        if (sessions.containsKey(id)) return
+        val tab = manager.state.value.tabs.firstOrNull { it.id == id } ?: return
+        val url = pages.value[id]?.url?.ifEmpty { null } ?: tab.url
+        val session = GeckoSession()
+        attach(id, session)
+        session.open(runtime)
+        sessions[id] = session
+        trackers.getOrPut(id) { ScrollChromeTracker() }
+        pages.update { it + (id to (it[id] ?: PageState(url = url))) }
+        val saved = savedStates.remove(id)
+        if (saved != null) session.restoreState(saved) else if (url.isNotEmpty()) session.loadUri(url)
+    }
+
+    private fun enforceLoadLimit() {
+        val state = manager.state.value
+        val limit = MemoryBudget.effectiveLimit(loadedLimit, trimLevel)
+        val keep = TabLifecycle.loadedSet(state, limit).toMutableSet()
+        keep += MemoryBudget.protectedIds(
+            audibleIds = pages.value.filterValues { it.audible }.keys,
+            openerIds = popupFlow.value.map { it.openerId }.toSet()
+        )
+        state.activeId?.let(keep::add)
+        sessions.keys.filter { it !in keep }.forEach { id ->
+            val session = sessions.remove(id) ?: return@forEach
+            session.close()
+            change(id) { it.copy(isLoading = false, progress = 0, audible = false) }
+        }
+    }
+
     private fun syncActive() {
+        reviveActive()
+        enforceLoadLimit()
         active.value = manager.state.value.activeId?.let { sessions[it] }
         chromeFlow.value = true
         atTopFlow.value = manager.state.value.activeId?.let { (scrollTops[it] ?: 0) <= 0 } ?: true
@@ -287,6 +336,10 @@ class BrowserEngine(context: Context, permissionManager: PermissionManager) {
             }
         }
         session.progressDelegate = object : GeckoSession.ProgressDelegate {
+            override fun onSessionStateChange(session: GeckoSession, sessionState: GeckoSession.SessionState) {
+                if (sessions[id] === session) savedStates[id] = sessionState
+            }
+
             override fun onPageStart(session: GeckoSession, url: String) {
                 change(id) { it.copy(isLoading = true, progress = 0) }
                 trackers[id]?.reset()

@@ -143,4 +143,12 @@
     <string name="popup_minimize">تصغير النافذة المنبثقة</string>
     <string name="popup_restore">استعادة النافذة المنبثقة</string>
     <string name="settings_popup_block">حظر النوافذ المنبثقة غير المرغوبة</string>
+    <string name="settings_memory_title">حد استخدام الذاكرة</string>
+    <string name="settings_memory_description">هدف مرن للذاكرة: يحدّ من عدد علامات التبويب المحمّلة ويُفرغ غير النشطة منها ثم يستعيدها عند فتحها. لا يسمح Android والمحرك بحد صارم للذاكرة.</string>
+    <string name="settings_memory_custom">علامات التبويب المحمّلة: %1$d</string>
+    <string name="settings_memory_automatic">تلقائي</string>
+    <string name="settings_memory_low">منخفض</string>
+    <string name="settings_memory_balanced">متوازن</string>
+    <string name="settings_memory_high">مرتفع</string>
+    <string name="settings_memory_custom_mode">مخصص</string>
 </resources>

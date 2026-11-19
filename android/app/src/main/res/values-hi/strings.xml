@@ -141,4 +141,12 @@
     <string name="popup_minimize">पॉपअप छोटा करें</string>
     <string name="popup_restore">पॉपअप पुनर्स्थापित करें</string>
     <string name="settings_popup_block">अवांछित पॉपअप ब्लॉक करें</string>
+    <string name="settings_memory_title">मेमोरी उपयोग सीमा</string>
+    <string name="settings_memory_description">एक सॉफ़्ट मेमोरी लक्ष्य: यह लोड रहने वाले टैब की संख्या सीमित करता है और निष्क्रिय टैब को अनलोड करता है, खोलने पर उन्हें पुनर्स्थापित करता है। Android और इंजन कठोर RAM सीमा की अनुमति नहीं देते।</string>
+    <string name="settings_memory_custom">लोड किए गए टैब: %1$d</string>
+    <string name="settings_memory_automatic">स्वचालित</string>
+    <string name="settings_memory_low">कम</string>
+    <string name="settings_memory_balanced">संतुलित</string>
+    <string name="settings_memory_high">अधिक</string>
+    <string name="settings_memory_custom_mode">कस्टम</string>
 </resources>

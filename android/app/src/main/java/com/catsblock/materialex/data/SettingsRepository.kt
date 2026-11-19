@@ -9,6 +9,7 @@ import androidx.datastore.preferences.core.longPreferencesKey
 import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.datastore.preferences.preferencesDataStore
 import com.catsblock.materialex.core.Resolution
+import com.catsblock.materialex.core.memory.MemoryMode
 import com.catsblock.materialex.core.SearchEngine
 import com.catsblock.materialex.core.SearchTemplates
 import com.catsblock.materialex.core.SuggestionProvider
@@ -62,7 +63,9 @@ data class BrowserSettings(
     val showRecent: Boolean = true,
     val showBookmarks: Boolean = true,
     val tabLayout: TabLayout = TabLayout.GRID,
-    val popupBlocking: Boolean = true
+    val popupBlocking: Boolean = true,
+    val memoryMode: MemoryMode = MemoryMode.AUTOMATIC,
+    val customLoadedTabs: Int = 5
 ) {
     companion object {
         const val DEFAULT_HOMEPAGE = "https://www.google.com/"
@@ -87,6 +90,8 @@ class SettingsRepository(private val context: Context) {
     private val showBookmarksKey = booleanPreferencesKey("home_show_bookmarks")
     private val tabLayoutKey = stringPreferencesKey("tab_layout")
     private val popupBlockingKey = booleanPreferencesKey("popup_blocking")
+    private val memoryModeKey = stringPreferencesKey("memory_mode")
+    private val customLoadedTabsKey = intPreferencesKey("custom_loaded_tabs")
     private val shortcutsSeededKey = booleanPreferencesKey("shortcuts_seeded")
     private val legalAcceptedAtKey = longPreferencesKey("legal_accepted_at")
 
@@ -98,6 +103,14 @@ class SettingsRepository(private val context: Context) {
 
     suspend fun setAutoHideFrame(enabled: Boolean) {
         context.settingsStore.edit { it[autoHideKey] = enabled }
+    }
+
+    suspend fun setMemoryMode(mode: MemoryMode) {
+        context.settingsStore.edit { it[memoryModeKey] = mode.name }
+    }
+
+    suspend fun setCustomLoadedTabs(count: Int) {
+        context.settingsStore.edit { it[customLoadedTabsKey] = count.coerceIn(1, 30) }
     }
 
     suspend fun setPopupBlocking(enabled: Boolean) {
@@ -188,6 +201,8 @@ class SettingsRepository(private val context: Context) {
         showRecent = preferences[showRecentKey] ?: true,
         showBookmarks = preferences[showBookmarksKey] ?: true,
         tabLayout = TabLayout.fromId(preferences[tabLayoutKey]),
-        popupBlocking = preferences[popupBlockingKey] ?: true
+        popupBlocking = preferences[popupBlockingKey] ?: true,
+        memoryMode = MemoryMode.fromId(preferences[memoryModeKey]),
+        customLoadedTabs = (preferences[customLoadedTabsKey] ?: 5).coerceIn(1, 30)
     )
 }

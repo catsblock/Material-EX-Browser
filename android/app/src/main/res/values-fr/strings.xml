@@ -141,4 +141,12 @@
     <string name="popup_minimize">Réduire la fenêtre contextuelle</string>
     <string name="popup_restore">Restaurer la fenêtre contextuelle</string>
     <string name="settings_popup_block">Bloquer les fenêtres contextuelles indésirables</string>
+    <string name="settings_memory_title">Limite d\'utilisation de la mémoire</string>
+    <string name="settings_memory_description">Objectif de mémoire souple : limite le nombre d\'onglets chargés et décharge les onglets inactifs, puis les restaure à l\'ouverture. Android et le moteur n\'autorisent pas de limite de RAM stricte.</string>
+    <string name="settings_memory_custom">Onglets chargés : %1$d</string>
+    <string name="settings_memory_automatic">Automatique</string>
+    <string name="settings_memory_low">Faible</string>
+    <string name="settings_memory_balanced">Équilibrée</string>
+    <string name="settings_memory_high">Élevée</string>
+    <string name="settings_memory_custom_mode">Personnalisée</string>
 </resources>

@@ -141,4 +141,12 @@
     <string name="popup_minimize">Riduci a icona il popup</string>
     <string name="popup_restore">Ripristina popup</string>
     <string name="settings_popup_block">Blocca i popup indesiderati</string>
+    <string name="settings_memory_title">Limite di utilizzo della memoria</string>
+    <string name="settings_memory_description">Obiettivo di memoria flessibile: limita il numero di schede caricate e scarica quelle inattive, ripristinandole all\'apertura. Android e il motore non consentono un limite RAM rigido.</string>
+    <string name="settings_memory_custom">Schede caricate: %1$d</string>
+    <string name="settings_memory_automatic">Automatico</string>
+    <string name="settings_memory_low">Basso</string>
+    <string name="settings_memory_balanced">Bilanciato</string>
+    <string name="settings_memory_high">Alto</string>
+    <string name="settings_memory_custom_mode">Personalizzato</string>
 </resources>
