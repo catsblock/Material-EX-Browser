@@ -1,6 +1,7 @@
 package com.catsblock.materialex.engine
 
 import android.content.Context
+import com.catsblock.materialex.core.ScrollChromeTracker
 import com.catsblock.materialex.core.permission.PermissionBroker
 import com.catsblock.materialex.core.permission.PermissionManager
 import com.catsblock.materialex.core.permission.PermissionType
@@ -42,9 +43,12 @@ class BrowserEngine(context: Context, permissionManager: PermissionManager) {
     private val lastVisit = HashMap<String, String>()
 
     private val osBlockedFlow = MutableStateFlow(false)
+    private val trackers = HashMap<String, ScrollChromeTracker>()
+    private val chromeFlow = MutableStateFlow(true)
 
     val permissions = PermissionBroker(permissionManager, DEFAULT_PROFILE)
     val osBlocked: StateFlow<Boolean> = osBlockedFlow.asStateFlow()
+    val chromeVisible: StateFlow<Boolean> = chromeFlow.asStateFlow()
     var androidPermissionRequester: ((Array<String>, (Boolean) -> Unit) -> Unit)? = null
     var onPageVisited: ((url: String, title: String) -> Unit)? = null
 
@@ -61,6 +65,7 @@ class BrowserEngine(context: Context, permissionManager: PermissionManager) {
         attach(tab.id, session)
         session.open(runtime)
         sessions[tab.id] = session
+        trackers[tab.id] = ScrollChromeTracker()
         pages.update { it + (tab.id to PageState(url = url)) }
         syncActive()
         if (url.isNotEmpty()) session.loadUri(url)
@@ -77,6 +82,7 @@ class BrowserEngine(context: Context, permissionManager: PermissionManager) {
         sessions.remove(id)?.let(pendingClose::add)
         pages.update { it - id }
         lastVisit.remove(id)
+        trackers.remove(id)
         syncActive()
     }
 
@@ -104,6 +110,7 @@ class BrowserEngine(context: Context, permissionManager: PermissionManager) {
 
     private fun syncActive() {
         active.value = manager.state.value.activeId?.let { sessions[it] }
+        chromeFlow.value = true
     }
 
     private fun change(id: String, block: (PageState) -> PageState) {
@@ -133,6 +140,8 @@ class BrowserEngine(context: Context, permissionManager: PermissionManager) {
         session.progressDelegate = object : GeckoSession.ProgressDelegate {
             override fun onPageStart(session: GeckoSession, url: String) {
                 change(id) { it.copy(isLoading = true, progress = 0) }
+                trackers[id]?.reset()
+                if (manager.state.value.activeId == id) chromeFlow.value = true
             }
 
             override fun onPageStop(session: GeckoSession, success: Boolean) {
@@ -153,6 +162,13 @@ class BrowserEngine(context: Context, permissionManager: PermissionManager) {
                 securityInfo: GeckoSession.ProgressDelegate.SecurityInformation
             ) {
                 change(id) { it.copy(isSecure = securityInfo.isSecure) }
+            }
+        }
+        session.scrollDelegate = object : GeckoSession.ScrollDelegate {
+            override fun onScrollChanged(session: GeckoSession, scrollX: Int, scrollY: Int) {
+                val tracker = trackers[id] ?: return
+                val visible = tracker.onScroll(scrollY)
+                if (manager.state.value.activeId == id && chromeFlow.value != visible) chromeFlow.value = visible
             }
         }
         session.permissionDelegate = object : GeckoSession.PermissionDelegate {

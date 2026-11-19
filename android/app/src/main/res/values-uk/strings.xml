@@ -96,4 +96,6 @@
     <string name="perm_open_os_settings">Відкрити налаштування системи</string>
     <string name="site_info_title">Інформація про сайт</string>
     <string name="site_info_permissions">Дозволи</string>
+    <string name="settings_frame_autohide">Приховувати рамку під час прокручування</string>
+    <string name="settings_frame_autohide_description">Плаваюча рамка пошуку ховається під час прокручування вниз і повертається під час прокручування вгору</string>
 </resources>

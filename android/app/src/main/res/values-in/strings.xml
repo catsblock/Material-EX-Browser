@@ -96,4 +96,6 @@
     <string name="perm_open_os_settings">Buka pengaturan sistem</string>
     <string name="site_info_title">Informasi situs</string>
     <string name="site_info_permissions">Izin</string>
+    <string name="settings_frame_autohide">Sembunyikan bingkai saat menggulir</string>
+    <string name="settings_frame_autohide_description">Bingkai pencarian mengambang tersembunyi saat menggulir ke bawah dan muncul lagi saat menggulir ke atas</string>
 </resources>

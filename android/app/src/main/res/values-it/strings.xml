@@ -96,4 +96,6 @@
     <string name="perm_open_os_settings">Apri impostazioni di sistema</string>
     <string name="site_info_title">Informazioni sul sito</string>
     <string name="site_info_permissions">Autorizzazioni</string>
+    <string name="settings_frame_autohide">Nascondi il riquadro durante lo scorrimento</string>
+    <string name="settings_frame_autohide_description">Il riquadro di ricerca flottante si nasconde scorrendo verso il basso e riappare scorrendo verso l\'alto</string>
 </resources>

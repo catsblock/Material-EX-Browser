@@ -96,4 +96,6 @@
     <string name="perm_open_os_settings">Avaa järjestelmäasetukset</string>
     <string name="site_info_title">Sivuston tiedot</string>
     <string name="site_info_permissions">Käyttöoikeudet</string>
+    <string name="settings_frame_autohide">Piilota kehys vieritettäessä</string>
+    <string name="settings_frame_autohide_description">Kelluva hakukehys piiloutuu alas vieritettäessä ja palaa ylös vieritettäessä</string>
 </resources>

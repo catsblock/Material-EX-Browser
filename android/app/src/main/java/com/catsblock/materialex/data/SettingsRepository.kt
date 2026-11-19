@@ -35,7 +35,8 @@ data class BrowserSettings(
     val language: String = "",
     val legalVersion: Int = 0,
     val legalAcceptedAt: Long = 0L,
-    val googleEmail: String = ""
+    val googleEmail: String = "",
+    val autoHideFrame: Boolean = true
 ) {
     companion object {
         const val DEFAULT_HOMEPAGE = "https://www.google.com/"
@@ -52,12 +53,17 @@ class SettingsRepository(private val context: Context) {
     private val languageKey = stringPreferencesKey("app_language")
     private val legalVersionKey = intPreferencesKey("legal_version")
     private val googleEmailKey = stringPreferencesKey("google_email")
+    private val autoHideKey = booleanPreferencesKey("auto_hide_frame")
     private val legalAcceptedAtKey = longPreferencesKey("legal_accepted_at")
 
     val settings: Flow<BrowserSettings> = context.settingsStore.data.map(::read)
 
     suspend fun setToolbarPosition(position: ToolbarPosition) {
         context.settingsStore.edit { it[toolbarKey] = position.name }
+    }
+
+    suspend fun setAutoHideFrame(enabled: Boolean) {
+        context.settingsStore.edit { it[autoHideKey] = enabled }
     }
 
     suspend fun setHomepage(input: String): Boolean {
@@ -104,6 +110,7 @@ class SettingsRepository(private val context: Context) {
         language = preferences[languageKey].orEmpty(),
         legalVersion = preferences[legalVersionKey] ?: 0,
         legalAcceptedAt = preferences[legalAcceptedAtKey] ?: 0L,
-        googleEmail = preferences[googleEmailKey].orEmpty()
+        googleEmail = preferences[googleEmailKey].orEmpty(),
+        autoHideFrame = preferences[autoHideKey] ?: true
     )
 }

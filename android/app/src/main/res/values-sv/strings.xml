@@ -96,4 +96,6 @@
     <string name="perm_open_os_settings">Öppna systeminställningar</string>
     <string name="site_info_title">Webbplatsinformation</string>
     <string name="site_info_permissions">Behörigheter</string>
+    <string name="settings_frame_autohide">Dölj ramen vid skrollning</string>
+    <string name="settings_frame_autohide_description">Den flytande sökramen döljs när du skrollar nedåt och visas igen när du skrollar uppåt</string>
 </resources>

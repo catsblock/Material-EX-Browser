@@ -96,4 +96,6 @@
     <string name="perm_open_os_settings">Systemeinstellungen öffnen</string>
     <string name="site_info_title">Websiteinformationen</string>
     <string name="site_info_permissions">Berechtigungen</string>
+    <string name="settings_frame_autohide">Rahmen beim Scrollen ausblenden</string>
+    <string name="settings_frame_autohide_description">Der schwebende Suchrahmen verschwindet beim Abwärtsscrollen und kehrt beim Aufwärtsscrollen zurück</string>
 </resources>

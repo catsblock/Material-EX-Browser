@@ -96,4 +96,6 @@
     <string name="perm_open_os_settings">सिस्टम सेटिंग खोलें</string>
     <string name="site_info_title">साइट की जानकारी</string>
     <string name="site_info_permissions">अनुमतियाँ</string>
+    <string name="settings_frame_autohide">स्क्रॉल करते समय फ्रेम छिपाएँ</string>
+    <string name="settings_frame_autohide_description">नीचे स्क्रॉल करने पर फ़्लोटिंग सर्च फ़्रेम छिप जाता है और ऊपर स्क्रॉल करने पर लौट आता है</string>
 </resources>

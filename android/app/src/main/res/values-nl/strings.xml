@@ -96,4 +96,6 @@
     <string name="perm_open_os_settings">Systeeminstellingen openen</string>
     <string name="site_info_title">Site-informatie</string>
     <string name="site_info_permissions">Machtigingen</string>
+    <string name="settings_frame_autohide">Kader verbergen tijdens scrollen</string>
+    <string name="settings_frame_autohide_description">Het zwevende zoekkader verdwijnt bij omlaag scrollen en keert terug bij omhoog scrollen</string>
 </resources>

@@ -96,4 +96,6 @@
     <string name="perm_open_os_settings">시스템 설정 열기</string>
     <string name="site_info_title">사이트 정보</string>
     <string name="site_info_permissions">권한</string>
+    <string name="settings_frame_autohide">스크롤 시 프레임 숨기기</string>
+    <string name="settings_frame_autohide_description">아래로 스크롤하면 플로팅 검색 프레임이 숨겨지고 위로 스크롤하면 다시 나타납니다</string>
 </resources>

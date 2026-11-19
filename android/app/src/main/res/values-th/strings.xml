@@ -96,4 +96,6 @@
     <string name="perm_open_os_settings">เปิดการตั้งค่าระบบ</string>
     <string name="site_info_title">ข้อมูลไซต์</string>
     <string name="site_info_permissions">สิทธิ์</string>
+    <string name="settings_frame_autohide">ซ่อนกรอบขณะเลื่อน</string>
+    <string name="settings_frame_autohide_description">กรอบค้นหาแบบลอยจะซ่อนเมื่อเลื่อนลงและกลับมาเมื่อเลื่อนขึ้น</string>
 </resources>

@@ -96,4 +96,6 @@
     <string name="perm_open_os_settings">Ouvrir les paramètres système</string>
     <string name="site_info_title">Informations sur le site</string>
     <string name="site_info_permissions">Autorisations</string>
+    <string name="settings_frame_autohide">Masquer le cadre au défilement</string>
+    <string name="settings_frame_autohide_description">Le cadre de recherche flottant se masque en faisant défiler vers le bas et réapparaît vers le haut</string>
 </resources>

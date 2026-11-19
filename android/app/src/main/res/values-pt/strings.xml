@@ -96,4 +96,6 @@
     <string name="perm_open_os_settings">Abrir definições do sistema</string>
     <string name="site_info_title">Informações do site</string>
     <string name="site_info_permissions">Permissões</string>
+    <string name="settings_frame_autohide">Ocultar a moldura ao deslocar</string>
+    <string name="settings_frame_autohide_description">A moldura de pesquisa flutuante oculta-se ao deslocar para baixo e reaparece ao deslocar para cima</string>
 </resources>

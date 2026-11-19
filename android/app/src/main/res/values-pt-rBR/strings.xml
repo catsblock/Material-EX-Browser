@@ -98,4 +98,6 @@
     <string name="perm_open_os_settings">Abrir configurações do sistema</string>
     <string name="site_info_title">Informações do site</string>
     <string name="site_info_permissions">Permissões</string>
+    <string name="settings_frame_autohide">Ocultar o quadro ao rolar</string>
+    <string name="settings_frame_autohide_description">O quadro de busca flutuante se oculta ao rolar para baixo e reaparece ao rolar para cima</string>
 </resources>

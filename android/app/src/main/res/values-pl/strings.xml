@@ -96,4 +96,6 @@
     <string name="perm_open_os_settings">Otwórz ustawienia systemu</string>
     <string name="site_info_title">Informacje o witrynie</string>
     <string name="site_info_permissions">Uprawnienia</string>
+    <string name="settings_frame_autohide">Ukrywaj ramkę podczas przewijania</string>
+    <string name="settings_frame_autohide_description">Pływająca ramka wyszukiwania znika podczas przewijania w dół i wraca po przewinięciu w górę</string>
 </resources>

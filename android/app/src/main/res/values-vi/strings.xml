@@ -96,4 +96,6 @@
     <string name="perm_open_os_settings">Mở cài đặt hệ thống</string>
     <string name="site_info_title">Thông tin trang</string>
     <string name="site_info_permissions">Quyền</string>
+    <string name="settings_frame_autohide">Ẩn khung khi cuộn</string>
+    <string name="settings_frame_autohide_description">Khung tìm kiếm nổi sẽ ẩn khi cuộn xuống và hiện lại khi cuộn lên</string>
 </resources>

@@ -96,4 +96,6 @@
     <string name="perm_open_os_settings">Открыть настройки системы</string>
     <string name="site_info_title">О сайте</string>
     <string name="site_info_permissions">Разрешения</string>
+    <string name="settings_frame_autohide">Скрывать рамку при прокрутке</string>
+    <string name="settings_frame_autohide_description">Плавающая строка поиска скрывается при прокрутке вниз и возвращается при прокрутке вверх</string>
 </resources>

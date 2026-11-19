@@ -98,4 +98,6 @@
     <string name="perm_open_os_settings">فتح إعدادات النظام</string>
     <string name="site_info_title">معلومات الموقع</string>
     <string name="site_info_permissions">الأذونات</string>
+    <string name="settings_frame_autohide">إخفاء الإطار أثناء التمرير</string>
+    <string name="settings_frame_autohide_description">يختفي إطار البحث العائم عند تمرير الصفحة للأسفل ويعود عند التمرير للأعلى</string>
 </resources>

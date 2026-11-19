@@ -98,4 +98,6 @@
     <string name="perm_open_os_settings">Open system settings</string>
     <string name="site_info_title">Site information</string>
     <string name="site_info_permissions">Permissions</string>
+    <string name="settings_frame_autohide">Hide frame while scrolling</string>
+    <string name="settings_frame_autohide_description">The floating search frame hides when you scroll down and returns when you scroll up</string>
 </resources>

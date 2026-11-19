@@ -96,4 +96,6 @@
     <string name="perm_open_os_settings">Abrir ajustes del sistema</string>
     <string name="site_info_title">Información del sitio</string>
     <string name="site_info_permissions">Permisos</string>
+    <string name="settings_frame_autohide">Ocultar el marco al desplazarse</string>
+    <string name="settings_frame_autohide_description">El marco de búsqueda flotante se oculta al bajar y reaparece al subir</string>
 </resources>

@@ -1,6 +1,17 @@
 package com.catsblock.materialex.ui
 
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.core.spring
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.slideInVertically
+import androidx.compose.animation.slideOutVertically
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.border
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.widthIn
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.unit.IntOffset
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.layout.Column
@@ -69,6 +80,7 @@ fun FloatingSearchFrame(
     tabCount: Int,
     isBookmarked: Boolean,
     position: ToolbarPosition,
+    hidden: Boolean,
     onSubmit: (String) -> Boolean,
     onBack: () -> Unit,
     onForward: () -> Unit,
@@ -93,14 +105,28 @@ fun FloatingSearchFrame(
     val insets = WindowInsets.safeDrawing.only(WindowInsetsSides.Horizontal + edge)
     val shown = if (focused) field else TextFieldValue(state.url)
 
+    val concealed = hidden && !focused && !menuOpen
+    val fromTop = position == ToolbarPosition.TOP
+
+    AnimatedVisibility(
+        visible = !concealed,
+        modifier = modifier,
+        enter = slideInVertically(spring(dampingRatio = 0.8f, stiffness = 380f)) { full -> if (fromTop) -full else full } +
+            fadeIn(spring(stiffness = 380f)),
+        exit = slideOutVertically(spring(dampingRatio = 0.9f, stiffness = 500f)) { full -> if (fromTop) -full else full } +
+            fadeOut(spring(stiffness = 500f))
+    ) {
     Surface(
-        modifier = modifier
-            .fillMaxWidth()
+        modifier = Modifier
             .windowInsetsPadding(insets)
-            .padding(horizontal = 12.dp, vertical = 8.dp),
-        shape = MaterialTheme.shapes.extraLarge,
+            .padding(horizontal = 12.dp, vertical = 8.dp)
+            .widthIn(max = 560.dp)
+            .fillMaxWidth(),
+        shape = MaterialTheme.shapes.large,
         color = MaterialTheme.colorScheme.surfaceContainerHigh,
-        shadowElevation = 3.dp
+        tonalElevation = 6.dp,
+        shadowElevation = 10.dp,
+        border = BorderStroke(1.dp, MaterialTheme.colorScheme.outlineVariant)
     ) {
         Column {
             Row(verticalAlignment = Alignment.CenterVertically) {
@@ -278,12 +304,13 @@ fun FloatingSearchFrame(
             if (state.isLoading) {
                 LinearProgressIndicator(
                     progress = { state.progress / 100f },
+                    trackColor = Color.Transparent,
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(horizontal = 24.dp)
-                        .padding(bottom = 6.dp)
+                        .height(3.dp)
                 )
             }
         }
+    }
     }
 }
