@@ -122,11 +122,7 @@ fun NewTabPage(
                                     .background(MaterialTheme.colorScheme.surfaceContainerHighest, tileShapes[index % tileShapes.size]),
                                 contentAlignment = Alignment.Center
                             ) {
-                                Text(
-                                    text = shortcut.title.firstOrNull()?.uppercase().orEmpty(),
-                                    style = MaterialTheme.typography.titleLarge,
-                                    color = MaterialTheme.colorScheme.onSurface
-                                )
+                                Favicon(url = shortcut.url, size = 36.dp)
                             }
                             Text(
                                 text = shortcut.title,

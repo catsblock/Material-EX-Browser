@@ -190,7 +190,6 @@ private fun TabEntry(
     var menuOpen by remember { mutableStateOf(false) }
     val title = page?.title?.ifBlank { null } ?: tab.title.ifBlank { null } ?: stringResource(R.string.tab_untitled)
     val address = page?.url?.ifBlank { null } ?: tab.url
-    val letter = title.firstOrNull()?.uppercase().orEmpty()
 
     OutlinedCard(
         onClick = onSelect,
@@ -208,7 +207,7 @@ private fun TabEntry(
                     .background(MaterialTheme.colorScheme.surfaceContainerHighest),
                 contentAlignment = Alignment.Center
             ) {
-                Text(letter, style = MaterialTheme.typography.displayMedium, color = MaterialTheme.colorScheme.onSurfaceVariant)
+                Favicon(url = address, size = 56.dp, enabled = !tab.isPrivate)
                 Row(
                     modifier = Modifier.align(Alignment.TopStart).padding(8.dp),
                     horizontalArrangement = Arrangement.spacedBy(6.dp)
@@ -222,13 +221,7 @@ private fun TabEntry(
             verticalAlignment = Alignment.CenterVertically
         ) {
             if (!tall) {
-                Box(
-                    modifier = Modifier
-                        .size(36.dp)
-                        .clip(CircleShape)
-                        .background(MaterialTheme.colorScheme.surfaceContainerHighest),
-                    contentAlignment = Alignment.Center
-                ) { Text(letter, style = MaterialTheme.typography.titleMedium) }
+                Favicon(url = address, size = 36.dp, enabled = !tab.isPrivate)
                 Box(modifier = Modifier.size(12.dp))
             }
             Column(modifier = Modifier.weight(1f)) {
