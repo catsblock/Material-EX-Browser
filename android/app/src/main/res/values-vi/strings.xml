@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="onboarding_welcome_title">Chào mừng đến với Material EX Browser!</string>
+    <string name="onboarding_welcome_body">Chọn ngôn ngữ để bắt đầu. Bạn có thể thay đổi sau trong Cài đặt.</string>
+    <string name="onboarding_language_label">Ngôn ngữ</string>
+    <string name="onboarding_language_system">Mặc định của hệ thống</string>
+    <string name="onboarding_continue">Tiếp tục</string>
+    <string name="onboarding_back">Quay lại</string>
+    <string name="onboarding_step_counter">Bước %1$d/%2$d</string>
+    <string name="onboarding_legal_title">Trước khi bắt đầu</string>
+    <string name="onboarding_legal_body">Vui lòng xem và chấp nhận các nội dung sau để dùng Material EX.</string>
+    <string name="onboarding_accept_terms">Tôi chấp nhận Điều khoản dịch vụ</string>
+    <string name="onboarding_accept_privacy">Tôi đã đọc Chính sách quyền riêng tư</string>
+    <string name="onboarding_accept_license">Tôi hiểu rằng Material EX được cấp phép theo GPL 3.0</string>
+    <string name="onboarding_read">Đọc</string>
+    <string name="onboarding_close">Đóng</string>
+    <string name="onboarding_default_title">Đặt Material EX làm trình duyệt mặc định</string>
+    <string name="onboarding_default_body">Liên kết mở từ ứng dụng khác sẽ mở tại đây. Android sẽ yêu cầu bạn xác nhận.</string>
+    <string name="onboarding_default_action">Đặt làm trình duyệt mặc định</string>
+    <string name="onboarding_default_done">Material EX là trình duyệt mặc định của bạn</string>
+    <string name="onboarding_skip">Để sau</string>
+    <string name="onboarding_done_title">Đã sẵn sàng</string>
+    <string name="onboarding_done_body">Bạn có thể đổi ngôn ngữ, trang chủ và mọi thứ khác trong Cài đặt bất cứ lúc nào.</string>
+    <string name="onboarding_finish">Bắt đầu duyệt web</string>
+    <string name="doc_terms">Điều khoản dịch vụ</string>
+    <string name="doc_privacy">Chính sách quyền riêng tư</string>
+    <string name="doc_license">Thông tin giấy phép GPL 3.0</string>
+</resources>

@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="onboarding_welcome_title">Ласкаво просимо до Material EX Browser!</string>
+    <string name="onboarding_welcome_body">Виберіть мову, щоб почати. Її можна змінити пізніше в Налаштуваннях.</string>
+    <string name="onboarding_language_label">Мова</string>
+    <string name="onboarding_language_system">Як у системі</string>
+    <string name="onboarding_continue">Продовжити</string>
+    <string name="onboarding_back">Назад</string>
+    <string name="onboarding_step_counter">Крок %1$d з %2$d</string>
+    <string name="onboarding_legal_title">Перш ніж почати</string>
+    <string name="onboarding_legal_body">Перегляньте та прийміть наведене нижче, щоб користуватися Material EX.</string>
+    <string name="onboarding_accept_terms">Я приймаю Умови використання</string>
+    <string name="onboarding_accept_privacy">Я прочитав(-ла) Політику конфіденційності</string>
+    <string name="onboarding_accept_license">Я розумію, що Material EX поширюється за ліцензією GPL 3.0</string>
+    <string name="onboarding_read">Читати</string>
+    <string name="onboarding_close">Закрити</string>
+    <string name="onboarding_default_title">Зробіть Material EX браузером за промовчанням</string>
+    <string name="onboarding_default_body">Посилання з інших застосунків відкриватимуться тут. Android попросить підтвердження.</string>
+    <string name="onboarding_default_action">Зробити браузером за промовчанням</string>
+    <string name="onboarding_default_done">Material EX — ваш браузер за промовчанням</string>
+    <string name="onboarding_skip">Не зараз</string>
+    <string name="onboarding_done_title">Усе готово</string>
+    <string name="onboarding_done_body">Мову, домашню сторінку та решту можна змінити в Налаштуваннях будь-коли.</string>
+    <string name="onboarding_finish">Почати перегляд</string>
+    <string name="doc_terms">Умови використання</string>
+    <string name="doc_privacy">Політика конфіденційності</string>
+    <string name="doc_license">Відомості про ліцензію GPL 3.0</string>
+</resources>

@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="onboarding_welcome_title">Material EX Browser へようこそ！</string>
+    <string name="onboarding_welcome_body">言語を選んで始めましょう。後から設定で変更できます。</string>
+    <string name="onboarding_language_label">言語</string>
+    <string name="onboarding_language_system">システムの既定</string>
+    <string name="onboarding_continue">続ける</string>
+    <string name="onboarding_back">戻る</string>
+    <string name="onboarding_step_counter">ステップ %1$d / %2$d</string>
+    <string name="onboarding_legal_title">はじめに</string>
+    <string name="onboarding_legal_body">Material EX を使うには、以下を確認して同意してください。</string>
+    <string name="onboarding_accept_terms">利用規約に同意します</string>
+    <string name="onboarding_accept_privacy">プライバシーポリシーを読みました</string>
+    <string name="onboarding_accept_license">Material EX が GPL 3.0 でライセンスされていることを理解しました</string>
+    <string name="onboarding_read">読む</string>
+    <string name="onboarding_close">閉じる</string>
+    <string name="onboarding_default_title">Material EX を既定のブラウザにする</string>
+    <string name="onboarding_default_body">他のアプリで開いたリンクがここで開きます。Android が確認を求めます。</string>
+    <string name="onboarding_default_action">既定のブラウザに設定</string>
+    <string name="onboarding_default_done">Material EX は既定のブラウザです</string>
+    <string name="onboarding_skip">今はしない</string>
+    <string name="onboarding_done_title">準備完了です</string>
+    <string name="onboarding_done_body">言語、ホームページなどは、いつでも設定から変更できます。</string>
+    <string name="onboarding_finish">閲覧を開始</string>
+    <string name="doc_terms">利用規約</string>
+    <string name="doc_privacy">プライバシーポリシー</string>
+    <string name="doc_license">GPL 3.0 ライセンス情報</string>
+</resources>

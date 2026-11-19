@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="onboarding_welcome_title">Selamat datang di Material EX Browser!</string>
+    <string name="onboarding_welcome_body">Pilih bahasa Anda untuk memulai. Anda dapat mengubahnya nanti di Pengaturan.</string>
+    <string name="onboarding_language_label">Bahasa</string>
+    <string name="onboarding_language_system">Default sistem</string>
+    <string name="onboarding_continue">Lanjutkan</string>
+    <string name="onboarding_back">Kembali</string>
+    <string name="onboarding_step_counter">Langkah %1$d dari %2$d</string>
+    <string name="onboarding_legal_title">Sebelum memulai</string>
+    <string name="onboarding_legal_body">Tinjau dan setujui hal berikut untuk menggunakan Material EX.</string>
+    <string name="onboarding_accept_terms">Saya menyetujui Ketentuan Layanan</string>
+    <string name="onboarding_accept_privacy">Saya telah membaca Kebijakan Privasi</string>
+    <string name="onboarding_accept_license">Saya memahami bahwa Material EX dilisensikan di bawah GPL 3.0</string>
+    <string name="onboarding_read">Baca</string>
+    <string name="onboarding_close">Tutup</string>
+    <string name="onboarding_default_title">Jadikan Material EX browser default Anda</string>
+    <string name="onboarding_default_body">Tautan yang Anda buka di aplikasi lain akan terbuka di sini. Android akan meminta konfirmasi.</string>
+    <string name="onboarding_default_action">Setel sebagai browser default</string>
+    <string name="onboarding_default_done">Material EX adalah browser default Anda</string>
+    <string name="onboarding_skip">Nanti saja</string>
+    <string name="onboarding_done_title">Semua siap</string>
+    <string name="onboarding_done_body">Bahasa, beranda, dan lainnya dapat diubah di Pengaturan kapan saja.</string>
+    <string name="onboarding_finish">Mulai menjelajah</string>
+    <string name="doc_terms">Ketentuan Layanan</string>
+    <string name="doc_privacy">Kebijakan Privasi</string>
+    <string name="doc_license">Informasi lisensi GPL 3.0</string>
+</resources>

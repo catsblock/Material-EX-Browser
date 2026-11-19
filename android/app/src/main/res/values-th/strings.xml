@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="onboarding_welcome_title">ยินดีต้อนรับสู่ Material EX Browser!</string>
+    <string name="onboarding_welcome_body">เลือกภาษาเพื่อเริ่มต้น คุณสามารถเปลี่ยนภายหลังได้ในการตั้งค่า</string>
+    <string name="onboarding_language_label">ภาษา</string>
+    <string name="onboarding_language_system">ค่าเริ่มต้นของระบบ</string>
+    <string name="onboarding_continue">ดำเนินการต่อ</string>
+    <string name="onboarding_back">ย้อนกลับ</string>
+    <string name="onboarding_step_counter">ขั้นตอนที่ %1$d จาก %2$d</string>
+    <string name="onboarding_legal_title">ก่อนเริ่มต้น</string>
+    <string name="onboarding_legal_body">โปรดอ่านและยอมรับสิ่งต่อไปนี้เพื่อใช้ Material EX</string>
+    <string name="onboarding_accept_terms">ฉันยอมรับข้อกำหนดในการให้บริการ</string>
+    <string name="onboarding_accept_privacy">ฉันได้อ่านนโยบายความเป็นส่วนตัวแล้ว</string>
+    <string name="onboarding_accept_license">ฉันเข้าใจว่า Material EX ได้รับอนุญาตภายใต้ GPL 3.0</string>
+    <string name="onboarding_read">อ่าน</string>
+    <string name="onboarding_close">ปิด</string>
+    <string name="onboarding_default_title">ตั้ง Material EX เป็นเบราว์เซอร์เริ่มต้น</string>
+    <string name="onboarding_default_body">ลิงก์ที่เปิดจากแอปอื่นจะเปิดที่นี่ Android จะขอให้คุณยืนยัน</string>
+    <string name="onboarding_default_action">ตั้งเป็นเบราว์เซอร์เริ่มต้น</string>
+    <string name="onboarding_default_done">Material EX เป็นเบราว์เซอร์เริ่มต้นของคุณ</string>
+    <string name="onboarding_skip">ไว้ทีหลัง</string>
+    <string name="onboarding_done_title">พร้อมแล้ว</string>
+    <string name="onboarding_done_body">คุณเปลี่ยนภาษา หน้าแรก และอื่นๆ ได้ทุกเมื่อในการตั้งค่า</string>
+    <string name="onboarding_finish">เริ่มท่องเว็บ</string>
+    <string name="doc_terms">ข้อกำหนดในการให้บริการ</string>
+    <string name="doc_privacy">นโยบายความเป็นส่วนตัว</string>
+    <string name="doc_license">ข้อมูลใบอนุญาต GPL 3.0</string>
+</resources>

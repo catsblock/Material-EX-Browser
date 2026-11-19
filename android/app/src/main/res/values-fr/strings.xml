@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="onboarding_welcome_title">Bienvenue dans Material EX Browser !</string>
+    <string name="onboarding_welcome_body">Choisissez votre langue pour commencer. Vous pourrez la modifier plus tard dans les Paramètres.</string>
+    <string name="onboarding_language_label">Langue</string>
+    <string name="onboarding_language_system">Paramètre du système</string>
+    <string name="onboarding_continue">Continuer</string>
+    <string name="onboarding_back">Retour</string>
+    <string name="onboarding_step_counter">Étape %1$d sur %2$d</string>
+    <string name="onboarding_legal_title">Avant de commencer</string>
+    <string name="onboarding_legal_body">Veuillez lire et accepter ce qui suit pour utiliser Material EX.</string>
+    <string name="onboarding_accept_terms">J\'accepte les Conditions d\'utilisation</string>
+    <string name="onboarding_accept_privacy">J\'ai lu la Politique de confidentialité</string>
+    <string name="onboarding_accept_license">Je comprends que Material EX est sous licence GPL 3.0</string>
+    <string name="onboarding_read">Lire</string>
+    <string name="onboarding_close">Fermer</string>
+    <string name="onboarding_default_title">Définir Material EX comme navigateur par défaut</string>
+    <string name="onboarding_default_body">Les liens ouverts depuis d\'autres applications s\'ouvriront ici. Android vous demandera de confirmer.</string>
+    <string name="onboarding_default_action">Définir comme navigateur par défaut</string>
+    <string name="onboarding_default_done">Material EX est votre navigateur par défaut</string>
+    <string name="onboarding_skip">Pas maintenant</string>
+    <string name="onboarding_done_title">Tout est prêt</string>
+    <string name="onboarding_done_body">Vous pouvez modifier la langue, la page d\'accueil et le reste dans les Paramètres à tout moment.</string>
+    <string name="onboarding_finish">Commencer à naviguer</string>
+    <string name="doc_terms">Conditions d\'utilisation</string>
+    <string name="doc_privacy">Politique de confidentialité</string>
+    <string name="doc_license">Informations sur la licence GPL 3.0</string>
+</resources>

@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="onboarding_welcome_title">Material EX Browser में आपका स्वागत है!</string>
+    <string name="onboarding_welcome_body">शुरू करने के लिए अपनी भाषा चुनें। आप इसे बाद में सेटिंग में बदल सकते हैं।</string>
+    <string name="onboarding_language_label">भाषा</string>
+    <string name="onboarding_language_system">सिस्टम डिफ़ॉल्ट</string>
+    <string name="onboarding_continue">जारी रखें</string>
+    <string name="onboarding_back">वापस</string>
+    <string name="onboarding_step_counter">चरण %1$d / %2$d</string>
+    <string name="onboarding_legal_title">शुरू करने से पहले</string>
+    <string name="onboarding_legal_body">Material EX का उपयोग करने के लिए कृपया नीचे दिए गए को पढ़ें और स्वीकार करें।</string>
+    <string name="onboarding_accept_terms">मैं सेवा की शर्तें स्वीकार करता/करती हूँ</string>
+    <string name="onboarding_accept_privacy">मैंने गोपनीयता नीति पढ़ ली है</string>
+    <string name="onboarding_accept_license">मैं समझता/समझती हूँ कि Material EX GPL 3.0 के अंतर्गत लाइसेंस प्राप्त है</string>
+    <string name="onboarding_read">पढ़ें</string>
+    <string name="onboarding_close">बंद करें</string>
+    <string name="onboarding_default_title">Material EX को अपना डिफ़ॉल्ट ब्राउज़र बनाएँ</string>
+    <string name="onboarding_default_body">अन्य ऐप में खोले गए लिंक यहाँ खुलेंगे। Android आपसे पुष्टि माँगेगा।</string>
+    <string name="onboarding_default_action">डिफ़ॉल्ट ब्राउज़र के रूप में सेट करें</string>
+    <string name="onboarding_default_done">Material EX आपका डिफ़ॉल्ट ब्राउज़र है</string>
+    <string name="onboarding_skip">अभी नहीं</string>
+    <string name="onboarding_done_title">सब तैयार है</string>
+    <string name="onboarding_done_body">भाषा, होमपेज और बाकी सब कुछ आप कभी भी सेटिंग में बदल सकते हैं।</string>
+    <string name="onboarding_finish">ब्राउज़िंग शुरू करें</string>
+    <string name="doc_terms">सेवा की शर्तें</string>
+    <string name="doc_privacy">गोपनीयता नीति</string>
+    <string name="doc_license">GPL 3.0 लाइसेंस की जानकारी</string>
+</resources>

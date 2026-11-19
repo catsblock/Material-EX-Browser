@@ -35,6 +35,12 @@ android {
         compilerOptions { jvmTarget.set(JvmTarget.JVM_17) }
     }
 
+    sourceSets {
+        getByName("main") {
+            assets.srcDir("../../legal")
+        }
+    }
+
     buildFeatures {
         compose = true
         buildConfig = true

@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="onboarding_welcome_title">Welkom bij Material EX Browser!</string>
+    <string name="onboarding_welcome_body">Kies je taal om te beginnen. Je kunt dit later wijzigen in Instellingen.</string>
+    <string name="onboarding_language_label">Taal</string>
+    <string name="onboarding_language_system">Systeemstandaard</string>
+    <string name="onboarding_continue">Doorgaan</string>
+    <string name="onboarding_back">Terug</string>
+    <string name="onboarding_step_counter">Stap %1$d van %2$d</string>
+    <string name="onboarding_legal_title">Voordat je begint</string>
+    <string name="onboarding_legal_body">Lees en accepteer het volgende om Material EX te gebruiken.</string>
+    <string name="onboarding_accept_terms">Ik accepteer de Servicevoorwaarden</string>
+    <string name="onboarding_accept_privacy">Ik heb het Privacybeleid gelezen</string>
+    <string name="onboarding_accept_license">Ik begrijp dat Material EX is gelicentieerd onder GPL 3.0</string>
+    <string name="onboarding_read">Lezen</string>
+    <string name="onboarding_close">Sluiten</string>
+    <string name="onboarding_default_title">Maak Material EX je standaardbrowser</string>
+    <string name="onboarding_default_body">Links die je in andere apps opent, worden hier geopend. Android vraagt om bevestiging.</string>
+    <string name="onboarding_default_action">Instellen als standaardbrowser</string>
+    <string name="onboarding_default_done">Material EX is je standaardbrowser</string>
+    <string name="onboarding_skip">Niet nu</string>
+    <string name="onboarding_done_title">Alles is klaar</string>
+    <string name="onboarding_done_body">Je kunt taal, startpagina en alles andere altijd wijzigen in Instellingen.</string>
+    <string name="onboarding_finish">Begin met browsen</string>
+    <string name="doc_terms">Servicevoorwaarden</string>
+    <string name="doc_privacy">Privacybeleid</string>
+    <string name="doc_license">Informatie over de GPL 3.0-licentie</string>
+</resources>

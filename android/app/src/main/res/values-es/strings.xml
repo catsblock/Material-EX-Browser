@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="onboarding_welcome_title">¡Te damos la bienvenida a Material EX Browser!</string>
+    <string name="onboarding_welcome_body">Elige tu idioma para empezar. Podrás cambiarlo más tarde en Ajustes.</string>
+    <string name="onboarding_language_label">Idioma</string>
+    <string name="onboarding_language_system">Predeterminado del sistema</string>
+    <string name="onboarding_continue">Continuar</string>
+    <string name="onboarding_back">Atrás</string>
+    <string name="onboarding_step_counter">Paso %1$d de %2$d</string>
+    <string name="onboarding_legal_title">Antes de empezar</string>
+    <string name="onboarding_legal_body">Revisa y acepta lo siguiente para usar Material EX.</string>
+    <string name="onboarding_accept_terms">Acepto los Términos del servicio</string>
+    <string name="onboarding_accept_privacy">He leído la Política de privacidad</string>
+    <string name="onboarding_accept_license">Entiendo que Material EX tiene licencia GPL 3.0</string>
+    <string name="onboarding_read">Leer</string>
+    <string name="onboarding_close">Cerrar</string>
+    <string name="onboarding_default_title">Haz de Material EX tu navegador predeterminado</string>
+    <string name="onboarding_default_body">Los enlaces que abras en otras apps se abrirán aquí. Android te pedirá confirmación.</string>
+    <string name="onboarding_default_action">Establecer como navegador predeterminado</string>
+    <string name="onboarding_default_done">Material EX es tu navegador predeterminado</string>
+    <string name="onboarding_skip">Ahora no</string>
+    <string name="onboarding_done_title">Todo listo</string>
+    <string name="onboarding_done_body">Puedes cambiar el idioma, la página de inicio y todo lo demás en Ajustes cuando quieras.</string>
+    <string name="onboarding_finish">Empezar a navegar</string>
+    <string name="doc_terms">Términos del servicio</string>
+    <string name="doc_privacy">Política de privacidad</string>
+    <string name="doc_license">Información de la licencia GPL 3.0</string>
+</resources>

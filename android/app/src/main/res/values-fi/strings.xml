@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="onboarding_welcome_title">Tervetuloa Material EX Browseriin!</string>
+    <string name="onboarding_welcome_body">Valitse kieli aloittaaksesi. Voit vaihtaa sen myöhemmin asetuksissa.</string>
+    <string name="onboarding_language_label">Kieli</string>
+    <string name="onboarding_language_system">Järjestelmän oletus</string>
+    <string name="onboarding_continue">Jatka</string>
+    <string name="onboarding_back">Takaisin</string>
+    <string name="onboarding_step_counter">Vaihe %1$d/%2$d</string>
+    <string name="onboarding_legal_title">Ennen kuin aloitat</string>
+    <string name="onboarding_legal_body">Lue ja hyväksy seuraavat käyttääksesi Material EX:ää.</string>
+    <string name="onboarding_accept_terms">Hyväksyn käyttöehdot</string>
+    <string name="onboarding_accept_privacy">Olen lukenut tietosuojakäytännön</string>
+    <string name="onboarding_accept_license">Ymmärrän, että Material EX on lisensoitu GPL 3.0 -lisenssillä</string>
+    <string name="onboarding_read">Lue</string>
+    <string name="onboarding_close">Sulje</string>
+    <string name="onboarding_default_title">Aseta Material EX oletusselaimeksi</string>
+    <string name="onboarding_default_body">Muissa sovelluksissa avaamasi linkit avautuvat täällä. Android pyytää vahvistuksen.</string>
+    <string name="onboarding_default_action">Aseta oletusselaimeksi</string>
+    <string name="onboarding_default_done">Material EX on oletusselaimesi</string>
+    <string name="onboarding_skip">Ei nyt</string>
+    <string name="onboarding_done_title">Kaikki on valmista</string>
+    <string name="onboarding_done_body">Voit muuttaa kielen, aloitussivun ja kaiken muun asetuksissa milloin tahansa.</string>
+    <string name="onboarding_finish">Aloita selaaminen</string>
+    <string name="doc_terms">Käyttöehdot</string>
+    <string name="doc_privacy">Tietosuojakäytäntö</string>
+    <string name="doc_license">GPL 3.0 -lisenssin tiedot</string>
+</resources>

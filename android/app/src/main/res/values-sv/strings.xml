@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="onboarding_welcome_title">Välkommen till Material EX Browser!</string>
+    <string name="onboarding_welcome_body">Välj ditt språk för att komma igång. Du kan ändra det senare i Inställningar.</string>
+    <string name="onboarding_language_label">Språk</string>
+    <string name="onboarding_language_system">Systemstandard</string>
+    <string name="onboarding_continue">Fortsätt</string>
+    <string name="onboarding_back">Tillbaka</string>
+    <string name="onboarding_step_counter">Steg %1$d av %2$d</string>
+    <string name="onboarding_legal_title">Innan du börjar</string>
+    <string name="onboarding_legal_body">Läs och godkänn följande för att använda Material EX.</string>
+    <string name="onboarding_accept_terms">Jag godkänner användarvillkoren</string>
+    <string name="onboarding_accept_privacy">Jag har läst integritetspolicyn</string>
+    <string name="onboarding_accept_license">Jag förstår att Material EX är licensierat under GPL 3.0</string>
+    <string name="onboarding_read">Läs</string>
+    <string name="onboarding_close">Stäng</string>
+    <string name="onboarding_default_title">Gör Material EX till din standardwebbläsare</string>
+    <string name="onboarding_default_body">Länkar du öppnar i andra appar öppnas här. Android ber dig bekräfta.</string>
+    <string name="onboarding_default_action">Ange som standardwebbläsare</string>
+    <string name="onboarding_default_done">Material EX är din standardwebbläsare</string>
+    <string name="onboarding_skip">Inte nu</string>
+    <string name="onboarding_done_title">Allt är klart</string>
+    <string name="onboarding_done_body">Du kan ändra språk, startsida och allt annat i Inställningar när som helst.</string>
+    <string name="onboarding_finish">Börja surfa</string>
+    <string name="doc_terms">Användarvillkor</string>
+    <string name="doc_privacy">Integritetspolicy</string>
+    <string name="doc_license">Information om GPL 3.0-licensen</string>
+</resources>
