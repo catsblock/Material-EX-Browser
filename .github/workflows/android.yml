@@ -38,7 +38,7 @@ jobs:
       - name: Report build errors
         if: failure()
         run: |
-          grep -E "^(e: |.*FAILED|.*error:|.*What went wrong)" "$RUNNER_TEMP/gradle-unit.log" | grep -v "^\s*at " | sed 's#/home/runner/work/Material-EX-Browser/Material-EX-Browser/##' | cut -c1-400 | awk '!seen[$0]++' | head -n 9 | while IFS= read -r line; do echo "::error::$line"; done
+          { grep -A12 "What went wrong" "$RUNNER_TEMP/gradle-unit.log" | cut -c1-300 | tr '\n' '~' | sed 's/~/ | /g'; echo; grep -E "^e: " "$RUNNER_TEMP/gradle-unit.log" | sed 's#/home/runner/work/Material-EX-Browser/Material-EX-Browser/##' | cut -c1-300 | awk '!seen[$0]++' | head -n 8; } | while IFS= read -r line; do [ -n "$line" ] && echo "::error::$line"; done
 
       - name: Assemble debug APK
         run: |
@@ -48,7 +48,7 @@ jobs:
       - name: Report assemble errors
         if: failure()
         run: |
-          grep -E "^(e: |.*FAILED|.*error:|.*What went wrong)" "$RUNNER_TEMP/gradle-assemble.log" | grep -v "^\s*at " | sed 's#/home/runner/work/Material-EX-Browser/Material-EX-Browser/##' | cut -c1-400 | awk '!seen[$0]++' | head -n 9 | while IFS= read -r line; do echo "::error::$line"; done
+          { grep -A12 "What went wrong" "$RUNNER_TEMP/gradle-assemble.log" | cut -c1-300 | tr '\n' '~' | sed 's/~/ | /g'; echo; grep -E "^e: " "$RUNNER_TEMP/gradle-assemble.log" | sed 's#/home/runner/work/Material-EX-Browser/Material-EX-Browser/##' | cut -c1-300 | awk '!seen[$0]++' | head -n 8; } | while IFS= read -r line; do [ -n "$line" ] && echo "::error::$line"; done
 
       - name: Validate APK
         run: |
