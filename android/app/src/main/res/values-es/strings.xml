@@ -119,4 +119,21 @@
     <string name="action_find">Buscar en la página</string>
     <string name="action_desktop_view">Vista de escritorio</string>
     <string name="suggestion_delete">Quitar sugerencia</string>
+    <string name="tab_duplicate">Duplicar pestaña</string>
+    <string name="tab_close_others">Cerrar otras pestañas</string>
+    <string name="tab_close_right">Cerrar pestañas a la derecha</string>
+    <string name="tab_restore_closed">Restaurar pestaña cerrada</string>
+    <string name="tab_copy_url">Copiar dirección</string>
+    <string name="tab_audio_playing">Reproduciendo audio</string>
+    <string name="settings_tab_layout">Diseño de pestañas</string>
+    <string name="tab_layout_grid">Cuadrícula compacta</string>
+    <string name="tab_layout_list">Lista</string>
+    <string name="tab_layout_cover">Cover Flow</string>
+    <string name="action_downloads">Descargas</string>
+    <string name="downloads_empty">Aún no hay descargas</string>
+    <string name="download_failed">Descarga fallida</string>
+    <string name="download_cancelled">Descarga cancelada</string>
+    <string name="download_completed">Completada</string>
+    <string name="download_missing">Falta el archivo</string>
+    <string name="downloads_clear_finished">Borrar finalizadas</string>
 </resources>

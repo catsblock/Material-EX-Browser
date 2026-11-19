@@ -22,6 +22,8 @@ import org.mozilla.geckoview.GeckoResult
 import org.mozilla.geckoview.GeckoRuntime
 import org.mozilla.geckoview.GeckoSession
 import org.mozilla.geckoview.GeckoSessionSettings
+import org.mozilla.geckoview.MediaSession
+import org.mozilla.geckoview.WebResponse
 
 data class PageState(
     val url: String = "",
@@ -31,7 +33,8 @@ data class PageState(
     val isSecure: Boolean = false,
     val canGoBack: Boolean = false,
     val canGoForward: Boolean = false,
-    val desktopMode: Boolean = false
+    val desktopMode: Boolean = false,
+    val audible: Boolean = false
 )
 
 class BrowserEngine(context: Context, permissionManager: PermissionManager) {
@@ -47,11 +50,15 @@ class BrowserEngine(context: Context, permissionManager: PermissionManager) {
     private val osBlockedFlow = MutableStateFlow(false)
     private val trackers = HashMap<String, ScrollChromeTracker>()
     private val chromeFlow = MutableStateFlow(true)
+    private val atTopFlow = MutableStateFlow(true)
+    private val scrollTops = HashMap<String, Int>()
 
     val permissions = PermissionBroker(permissionManager, DEFAULT_PROFILE)
     val osBlocked: StateFlow<Boolean> = osBlockedFlow.asStateFlow()
     val chromeVisible: StateFlow<Boolean> = chromeFlow.asStateFlow()
+    val atTop: StateFlow<Boolean> = atTopFlow.asStateFlow()
     var androidPermissionRequester: ((Array<String>, (Boolean) -> Unit) -> Unit)? = null
+    var onDownload: ((WebResponse) -> Unit)? = null
     var onPageVisited: ((url: String, title: String) -> Unit)? = null
 
     val tabs: StateFlow<TabsState> = manager.state
@@ -63,15 +70,54 @@ class BrowserEngine(context: Context, permissionManager: PermissionManager) {
 
     fun openTab(url: String, select: Boolean = true): String {
         val tab = manager.open(url, DEFAULT_PROFILE, false, select)
+        launch(tab.id, url)
+        return tab.id
+    }
+
+    private fun launch(id: String, url: String) {
         val session = GeckoSession()
-        attach(tab.id, session)
+        attach(id, session)
         session.open(runtime)
-        sessions[tab.id] = session
-        trackers[tab.id] = ScrollChromeTracker()
-        pages.update { it + (tab.id to PageState(url = url)) }
+        sessions[id] = session
+        trackers[id] = ScrollChromeTracker()
+        pages.update { it + (id to PageState(url = url)) }
         syncActive()
         if (url.isNotEmpty()) session.loadUri(url)
-        return tab.id
+    }
+
+    fun duplicateTab(id: String) {
+        val url = pages.value[id]?.url ?: return
+        val tab = manager.duplicate(id) ?: return
+        launch(tab.id, url)
+    }
+
+    fun restoreClosedTab() {
+        val tab = manager.restoreLastClosed() ?: return
+        launch(tab.id, tab.url)
+    }
+
+    fun closeOthers(id: String) {
+        manager.closeOthers(id)
+        val keep = manager.state.value.tabs.map { it.id }.toSet()
+        sessions.keys.filter { it !in keep }.forEach(::dropSession)
+        syncActive()
+    }
+
+    fun closeTabsToRight(id: String) {
+        val tabs = manager.state.value.tabs
+        val index = tabs.indexOfFirst { it.id == id }
+        if (index < 0) return
+        tabs.drop(index + 1).forEach { closeTab(it.id) }
+    }
+
+    fun moveTab(id: String, toIndex: Int) = manager.move(id, toIndex)
+
+    private fun dropSession(id: String) {
+        sessions.remove(id)?.let(pendingClose::add)
+        pages.update { it - id }
+        lastVisit.remove(id)
+        trackers.remove(id)
+        scrollTops.remove(id)
     }
 
     fun selectTab(id: String) {
@@ -81,10 +127,7 @@ class BrowserEngine(context: Context, permissionManager: PermissionManager) {
 
     fun closeTab(id: String) {
         manager.close(id)
-        sessions.remove(id)?.let(pendingClose::add)
-        pages.update { it - id }
-        lastVisit.remove(id)
-        trackers.remove(id)
+        dropSession(id)
         syncActive()
     }
 
@@ -139,6 +182,7 @@ class BrowserEngine(context: Context, permissionManager: PermissionManager) {
     private fun syncActive() {
         active.value = manager.state.value.activeId?.let { sessions[it] }
         chromeFlow.value = true
+        atTopFlow.value = manager.state.value.activeId?.let { (scrollTops[it] ?: 0) <= 0 } ?: true
     }
 
     private fun change(id: String, block: (PageState) -> PageState) {
@@ -169,6 +213,8 @@ class BrowserEngine(context: Context, permissionManager: PermissionManager) {
             override fun onPageStart(session: GeckoSession, url: String) {
                 change(id) { it.copy(isLoading = true, progress = 0) }
                 trackers[id]?.reset()
+                scrollTops[id] = 0
+                if (manager.state.value.activeId == id) atTopFlow.value = true
                 if (manager.state.value.activeId == id) chromeFlow.value = true
             }
 
@@ -194,9 +240,28 @@ class BrowserEngine(context: Context, permissionManager: PermissionManager) {
         }
         session.scrollDelegate = object : GeckoSession.ScrollDelegate {
             override fun onScrollChanged(session: GeckoSession, scrollX: Int, scrollY: Int) {
+                scrollTops[id] = scrollY
+                if (manager.state.value.activeId == id) atTopFlow.value = scrollY <= 0
                 val tracker = trackers[id] ?: return
                 val visible = tracker.onScroll(scrollY)
                 if (manager.state.value.activeId == id && chromeFlow.value != visible) chromeFlow.value = visible
+            }
+        }
+        session.mediaSessionDelegate = object : MediaSession.Delegate {
+            override fun onPlay(session: GeckoSession, mediaSession: MediaSession) {
+                change(id) { it.copy(audible = true) }
+            }
+
+            override fun onPause(session: GeckoSession, mediaSession: MediaSession) {
+                change(id) { it.copy(audible = false) }
+            }
+
+            override fun onStop(session: GeckoSession, mediaSession: MediaSession) {
+                change(id) { it.copy(audible = false) }
+            }
+
+            override fun onDeactivated(session: GeckoSession, mediaSession: MediaSession) {
+                change(id) { it.copy(audible = false) }
             }
         }
         session.permissionDelegate = object : GeckoSession.PermissionDelegate {
@@ -269,6 +334,10 @@ class BrowserEngine(context: Context, permissionManager: PermissionManager) {
             }
         }
         session.contentDelegate = object : GeckoSession.ContentDelegate {
+            override fun onExternalResponse(session: GeckoSession, response: WebResponse) {
+                onDownload?.invoke(response)
+            }
+
             override fun onTitleChange(session: GeckoSession, title: String?) {
                 change(id) { it.copy(title = title.orEmpty()) }
                 manager.update(id, title = title.orEmpty())

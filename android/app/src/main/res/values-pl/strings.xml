@@ -119,4 +119,21 @@
     <string name="action_find">Znajdź na stronie</string>
     <string name="action_desktop_view">Widok komputerowy</string>
     <string name="suggestion_delete">Usuń podpowiedź</string>
+    <string name="tab_duplicate">Duplikuj kartę</string>
+    <string name="tab_close_others">Zamknij pozostałe karty</string>
+    <string name="tab_close_right">Zamknij karty po prawej</string>
+    <string name="tab_restore_closed">Przywróć zamkniętą kartę</string>
+    <string name="tab_copy_url">Kopiuj adres</string>
+    <string name="tab_audio_playing">Odtwarzanie dźwięku</string>
+    <string name="settings_tab_layout">Układ kart</string>
+    <string name="tab_layout_grid">Zwarta siatka</string>
+    <string name="tab_layout_list">Lista</string>
+    <string name="tab_layout_cover">Cover Flow</string>
+    <string name="action_downloads">Pobrane</string>
+    <string name="downloads_empty">Brak pobranych plików</string>
+    <string name="download_failed">Pobieranie nie powiodło się</string>
+    <string name="download_cancelled">Pobieranie anulowane</string>
+    <string name="download_completed">Zakończono</string>
+    <string name="download_missing">Brak pliku</string>
+    <string name="downloads_clear_finished">Wyczyść zakończone</string>
 </resources>

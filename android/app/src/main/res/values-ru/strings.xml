@@ -119,4 +119,21 @@
     <string name="action_find">Найти на странице</string>
     <string name="action_desktop_view">Версия для ПК</string>
     <string name="suggestion_delete">Удалить подсказку</string>
+    <string name="tab_duplicate">Дублировать вкладку</string>
+    <string name="tab_close_others">Закрыть другие вкладки</string>
+    <string name="tab_close_right">Закрыть вкладки справа</string>
+    <string name="tab_restore_closed">Восстановить закрытую вкладку</string>
+    <string name="tab_copy_url">Копировать адрес</string>
+    <string name="tab_audio_playing">Воспроизводится звук</string>
+    <string name="settings_tab_layout">Вид вкладок</string>
+    <string name="tab_layout_grid">Компактная сетка</string>
+    <string name="tab_layout_list">Список</string>
+    <string name="tab_layout_cover">Cover Flow</string>
+    <string name="action_downloads">Загрузки</string>
+    <string name="downloads_empty">Загрузок пока нет</string>
+    <string name="download_failed">Загрузка не удалась</string>
+    <string name="download_cancelled">Загрузка отменена</string>
+    <string name="download_completed">Завершено</string>
+    <string name="download_missing">Файл отсутствует</string>
+    <string name="downloads_clear_finished">Очистить завершённые</string>
 </resources>

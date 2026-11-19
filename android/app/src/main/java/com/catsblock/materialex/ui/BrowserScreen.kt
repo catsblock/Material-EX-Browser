@@ -1,5 +1,25 @@
 package com.catsblock.materialex.ui
 
+import androidx.compose.animation.core.Spring
+import androidx.compose.animation.core.animateFloatAsState
+import androidx.compose.animation.core.spring
+import androidx.compose.foundation.gestures.awaitEachGesture
+import androidx.compose.foundation.gestures.awaitFirstDown
+import androidx.compose.foundation.layout.offset
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.layout.statusBars
+import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
+import androidx.compose.material3.LoadingIndicator
+import androidx.compose.runtime.mutableFloatStateOf
+import androidx.compose.runtime.rememberUpdatedState
+import androidx.compose.ui.graphics.graphicsLayer
+import androidx.compose.ui.input.pointer.PointerEventPass
+import androidx.compose.ui.input.pointer.pointerInput
+import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.unit.IntOffset
+import kotlin.math.abs
+import kotlin.math.roundToInt
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
@@ -45,6 +65,7 @@ import com.catsblock.materialex.data.ToolbarPosition
 import com.catsblock.materialex.engine.BrowserEngine
 import org.mozilla.geckoview.GeckoView
 
+@OptIn(ExperimentalMaterial3ExpressiveApi::class)
 @Composable
 fun BrowserScreen(
     engine: BrowserEngine,
@@ -63,6 +84,7 @@ fun BrowserScreen(
     onOpenSettings: () -> Unit,
     onOpenSiteInfo: () -> Unit,
     onShare: () -> Unit,
+    onOpenDownloads: () -> Unit,
     newTabContent: @Composable () -> Unit
 ) {
     val state by engine.state.collectAsStateWithLifecycle()
@@ -71,6 +93,18 @@ fun BrowserScreen(
     val chromeVisible by engine.chromeVisible.collectAsStateWithLifecycle()
     val atTop = settings.toolbarPosition == ToolbarPosition.TOP
     var findOpen by remember { mutableStateOf(false) }
+    val atPageTop by engine.atTop.collectAsStateWithLifecycle()
+    val currentAtTop by rememberUpdatedState(atPageTop)
+    val density = LocalDensity.current
+    val thresholdPx = with(density) { 88.dp.toPx() }
+    val frameAllowancePx = with(density) { (if (atTop) 76.dp else 8.dp).toPx() }
+    val indicatorPx = with(density) { 48.dp.toPx() }
+    var pull by remember { mutableFloatStateOf(0f) }
+    val shownPull by animateFloatAsState(
+        targetValue = pull,
+        animationSpec = spring(dampingRatio = 0.75f, stiffness = Spring.StiffnessMediumLow),
+        label = "pull"
+    )
 
     DisposableEffect(state.url) {
         onDispose {
@@ -82,6 +116,36 @@ fun BrowserScreen(
         modifier = Modifier
             .fillMaxSize()
             .background(MaterialTheme.colorScheme.surface)
+            .pointerInput(thresholdPx) {
+                val slop = viewConfiguration.touchSlop
+                awaitEachGesture {
+                    val down = awaitFirstDown(requireUnconsumed = false, pass = PointerEventPass.Initial)
+                    if (!currentAtTop) return@awaitEachGesture
+                    var tracking = false
+                    var aborted = false
+                    while (true) {
+                        val event = awaitPointerEvent(PointerEventPass.Initial)
+                        if (event.changes.size > 1) aborted = true
+                        val change = event.changes.firstOrNull { it.id == down.id } ?: break
+                        if (!change.pressed) break
+                        val dy = change.position.y - down.position.y
+                        val dx = abs(change.position.x - down.position.x)
+                        if (!tracking && !aborted) {
+                            if (dy < -slop || dx > slop * 3) {
+                                aborted = true
+                            } else if (change.uptimeMillis - down.uptimeMillis > LONG_PRESS_MS) {
+                                aborted = true
+                            } else if (dy > slop && dy > dx * 2) {
+                                tracking = true
+                            }
+                        }
+                        pull = if (tracking && !aborted && currentAtTop) (dy * 0.5f).coerceIn(0f, thresholdPx * 1.4f) else 0f
+                    }
+                    val fire = tracking && !aborted && pull >= thresholdPx
+                    pull = 0f
+                    if (fire) engine.reload()
+                }
+            }
     ) {
         AndroidView(
             factory = { context -> GeckoView(context) },
@@ -99,6 +163,26 @@ fun BrowserScreen(
             modifier = Modifier.fillMaxSize()
         )
         if (state.url.isEmpty() && !state.isLoading) newTabContent()
+        if (shownPull > 1f) {
+            val progress = (shownPull / thresholdPx).coerceIn(0f, 1f)
+            Surface(
+                shape = CircleShape,
+                color = MaterialTheme.colorScheme.surfaceContainerHigh,
+                shadowElevation = 6.dp,
+                modifier = Modifier
+                    .align(Alignment.TopCenter)
+                    .windowInsetsPadding(WindowInsets.statusBars)
+                    .offset { IntOffset(0, (frameAllowancePx - indicatorPx * 0.8f + shownPull * 0.8f).roundToInt()) }
+                    .size(48.dp)
+                    .graphicsLayer {
+                        alpha = progress
+                        scaleX = 0.6f + 0.4f * progress
+                        scaleY = 0.6f + 0.4f * progress
+                    }
+            ) {
+                LoadingIndicator(progress = { progress }, modifier = Modifier.padding(8.dp))
+            }
+        }
         if (findOpen) {
             FindBar(
                 engine = engine,
@@ -121,6 +205,7 @@ fun BrowserScreen(
             onPickSuggestion = onPickSuggestion,
             onDeleteSuggestion = onDeleteSuggestion,
             onShare = onShare,
+            onOpenDownloads = onOpenDownloads,
             onFind = { findOpen = true },
             onToggleDesktop = { engine.setDesktopMode(!state.desktopMode) },
             onSubmit = onSubmit,
@@ -139,6 +224,8 @@ fun BrowserScreen(
         )
     }
 }
+
+private const val LONG_PRESS_MS = 400L
 
 @Composable
 private fun FindBar(engine: BrowserEngine, onClose: () -> Unit, modifier: Modifier = Modifier) {

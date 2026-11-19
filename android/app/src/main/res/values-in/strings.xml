@@ -119,4 +119,21 @@
     <string name="action_find">Cari di halaman</string>
     <string name="action_desktop_view">Tampilan desktop</string>
     <string name="suggestion_delete">Hapus saran</string>
+    <string name="tab_duplicate">Duplikat tab</string>
+    <string name="tab_close_others">Tutup tab lainnya</string>
+    <string name="tab_close_right">Tutup tab di sebelah kanan</string>
+    <string name="tab_restore_closed">Pulihkan tab yang ditutup</string>
+    <string name="tab_copy_url">Salin alamat</string>
+    <string name="tab_audio_playing">Memutar audio</string>
+    <string name="settings_tab_layout">Tata letak tab</string>
+    <string name="tab_layout_grid">Kisi ringkas</string>
+    <string name="tab_layout_list">Daftar</string>
+    <string name="tab_layout_cover">Cover Flow</string>
+    <string name="action_downloads">Unduhan</string>
+    <string name="downloads_empty">Belum ada unduhan</string>
+    <string name="download_failed">Unduhan gagal</string>
+    <string name="download_cancelled">Unduhan dibatalkan</string>
+    <string name="download_completed">Selesai</string>
+    <string name="download_missing">File tidak ditemukan</string>
+    <string name="downloads_clear_finished">Hapus yang selesai</string>
 </resources>

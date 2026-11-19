@@ -6,8 +6,8 @@ import androidx.room.migration.Migration
 import androidx.sqlite.db.SupportSQLiteDatabase
 
 @Database(
-    entities = [HistoryEntry::class, Bookmark::class, SitePermission::class, SearchEntry::class, Shortcut::class],
-    version = 3,
+    entities = [HistoryEntry::class, Bookmark::class, SitePermission::class, SearchEntry::class, Shortcut::class, DownloadRecord::class],
+    version = 4,
     exportSchema = true
 )
 abstract class AppDatabase : RoomDatabase() {
@@ -21,7 +21,21 @@ abstract class AppDatabase : RoomDatabase() {
 
     abstract fun shortcuts(): ShortcutDao
 
+    abstract fun downloads(): DownloadDao
+
     companion object {
+        val MIGRATION_3_4 = object : Migration(3, 4) {
+            override fun migrate(db: SupportSQLiteDatabase) {
+                db.execSQL(
+                    "CREATE TABLE IF NOT EXISTS `downloads` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, " +
+                        "`fileName` TEXT NOT NULL, `sourceUrl` TEXT NOT NULL, `mimeType` TEXT NOT NULL, `fileUri` TEXT NOT NULL, " +
+                        "`totalBytes` INTEGER NOT NULL, `downloadedBytes` INTEGER NOT NULL, `status` TEXT NOT NULL, " +
+                        "`createdAt` INTEGER NOT NULL)"
+                )
+                db.execSQL("CREATE INDEX IF NOT EXISTS `index_downloads_createdAt` ON `downloads` (`createdAt`)")
+            }
+        }
+
         val MIGRATION_2_3 = object : Migration(2, 3) {
             override fun migrate(db: SupportSQLiteDatabase) {
                 db.execSQL("CREATE TABLE IF NOT EXISTS `search_history` (`text` TEXT NOT NULL, `searchedAt` INTEGER NOT NULL, PRIMARY KEY(`text`))")

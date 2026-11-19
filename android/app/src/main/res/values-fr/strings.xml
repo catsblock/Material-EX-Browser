@@ -119,4 +119,21 @@
     <string name="action_find">Rechercher dans la page</string>
     <string name="action_desktop_view">Version pour ordinateur</string>
     <string name="suggestion_delete">Supprimer la suggestion</string>
+    <string name="tab_duplicate">Dupliquer l\'onglet</string>
+    <string name="tab_close_others">Fermer les autres onglets</string>
+    <string name="tab_close_right">Fermer les onglets à droite</string>
+    <string name="tab_restore_closed">Rouvrir l\'onglet fermé</string>
+    <string name="tab_copy_url">Copier l\'adresse</string>
+    <string name="tab_audio_playing">Lecture audio en cours</string>
+    <string name="settings_tab_layout">Disposition des onglets</string>
+    <string name="tab_layout_grid">Grille compacte</string>
+    <string name="tab_layout_list">Liste</string>
+    <string name="tab_layout_cover">Cover Flow</string>
+    <string name="action_downloads">Téléchargements</string>
+    <string name="downloads_empty">Aucun téléchargement</string>
+    <string name="download_failed">Échec du téléchargement</string>
+    <string name="download_cancelled">Téléchargement annulé</string>
+    <string name="download_completed">Terminé</string>
+    <string name="download_missing">Fichier introuvable</string>
+    <string name="downloads_clear_finished">Effacer les terminés</string>
 </resources>

@@ -43,6 +43,7 @@ import com.catsblock.materialex.data.BrowserSettings
 import com.catsblock.materialex.data.HomeSection
 import com.catsblock.materialex.data.LibraryRepository
 import com.catsblock.materialex.data.SettingsRepository
+import com.catsblock.materialex.data.TabLayout
 import com.catsblock.materialex.data.ToolbarPosition
 import kotlinx.coroutines.launch
 
@@ -212,6 +213,22 @@ fun SettingsScreen(
                     }
                 }) {
                     Text(stringResource(R.string.settings_restore_home))
+                }
+            }
+            Column {
+                Text(stringResource(R.string.settings_tab_layout), style = MaterialTheme.typography.titleMedium)
+                TabLayout.entries.forEach { layout ->
+                    ChoiceRow(
+                        label = stringResource(
+                            when (layout) {
+                                TabLayout.GRID -> R.string.tab_layout_grid
+                                TabLayout.LIST -> R.string.tab_layout_list
+                                TabLayout.COVER_FLOW -> R.string.tab_layout_cover
+                            }
+                        ),
+                        selected = settings.tabLayout == layout,
+                        onSelect = { scope.launch { repository.setTabLayout(layout) } }
+                    )
                 }
             }
         }

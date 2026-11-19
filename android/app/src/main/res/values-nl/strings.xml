@@ -119,4 +119,21 @@
     <string name="action_find">Zoeken op pagina</string>
     <string name="action_desktop_view">Desktopweergave</string>
     <string name="suggestion_delete">Suggestie verwijderen</string>
+    <string name="tab_duplicate">Tabblad dupliceren</string>
+    <string name="tab_close_others">Andere tabbladen sluiten</string>
+    <string name="tab_close_right">Tabbladen rechts sluiten</string>
+    <string name="tab_restore_closed">Gesloten tabblad herstellen</string>
+    <string name="tab_copy_url">Adres kopiëren</string>
+    <string name="tab_audio_playing">Audio wordt afgespeeld</string>
+    <string name="settings_tab_layout">Tabbladindeling</string>
+    <string name="tab_layout_grid">Compact raster</string>
+    <string name="tab_layout_list">Lijst</string>
+    <string name="tab_layout_cover">Cover Flow</string>
+    <string name="action_downloads">Downloads</string>
+    <string name="downloads_empty">Nog geen downloads</string>
+    <string name="download_failed">Download mislukt</string>
+    <string name="download_cancelled">Download geannuleerd</string>
+    <string name="download_completed">Voltooid</string>
+    <string name="download_missing">Bestand ontbreekt</string>
+    <string name="downloads_clear_finished">Voltooide wissen</string>
 </resources>

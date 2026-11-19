@@ -119,4 +119,21 @@
     <string name="action_find">पृष्ठ में खोजें</string>
     <string name="action_desktop_view">डेस्कटॉप दृश्य</string>
     <string name="suggestion_delete">सुझाव हटाएँ</string>
+    <string name="tab_duplicate">टैब की प्रतिलिपि बनाएँ</string>
+    <string name="tab_close_others">अन्य टैब बंद करें</string>
+    <string name="tab_close_right">दाईं ओर के टैब बंद करें</string>
+    <string name="tab_restore_closed">बंद टैब बहाल करें</string>
+    <string name="tab_copy_url">पता कॉपी करें</string>
+    <string name="tab_audio_playing">ऑडियो चल रहा है</string>
+    <string name="settings_tab_layout">टैब लेआउट</string>
+    <string name="tab_layout_grid">कॉम्पैक्ट ग्रिड</string>
+    <string name="tab_layout_list">सूची</string>
+    <string name="tab_layout_cover">कवर फ़्लो</string>
+    <string name="action_downloads">डाउनलोड</string>
+    <string name="downloads_empty">अभी कोई डाउनलोड नहीं</string>
+    <string name="download_failed">डाउनलोड विफल</string>
+    <string name="download_cancelled">डाउनलोड रद्द किया गया</string>
+    <string name="download_completed">पूर्ण</string>
+    <string name="download_missing">फ़ाइल गुम है</string>
+    <string name="downloads_clear_finished">पूर्ण साफ़ करें</string>
 </resources>

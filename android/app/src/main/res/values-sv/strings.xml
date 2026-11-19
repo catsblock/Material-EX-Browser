@@ -119,4 +119,21 @@
     <string name="action_find">Sök på sidan</string>
     <string name="action_desktop_view">Datorversion</string>
     <string name="suggestion_delete">Ta bort förslag</string>
+    <string name="tab_duplicate">Duplicera flik</string>
+    <string name="tab_close_others">Stäng andra flikar</string>
+    <string name="tab_close_right">Stäng flikar till höger</string>
+    <string name="tab_restore_closed">Återställ stängd flik</string>
+    <string name="tab_copy_url">Kopiera adress</string>
+    <string name="tab_audio_playing">Ljud spelas</string>
+    <string name="settings_tab_layout">Fliklayout</string>
+    <string name="tab_layout_grid">Kompakt rutnät</string>
+    <string name="tab_layout_list">Lista</string>
+    <string name="tab_layout_cover">Cover Flow</string>
+    <string name="action_downloads">Nedladdningar</string>
+    <string name="downloads_empty">Inga nedladdningar än</string>
+    <string name="download_failed">Nedladdningen misslyckades</string>
+    <string name="download_cancelled">Nedladdningen avbröts</string>
+    <string name="download_completed">Klar</string>
+    <string name="download_missing">Filen saknas</string>
+    <string name="downloads_clear_finished">Rensa avslutade</string>
 </resources>

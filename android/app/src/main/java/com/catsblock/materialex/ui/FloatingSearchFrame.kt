@@ -32,6 +32,7 @@ import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.automirrored.filled.ArrowForward
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Check
+import androidx.compose.material.icons.filled.KeyboardArrowDown
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.Share
 import androidx.compose.foundation.clickable
@@ -92,6 +93,7 @@ fun FloatingSearchFrame(
     onPickSuggestion: (String) -> Unit,
     onDeleteSuggestion: (String) -> Unit,
     onShare: () -> Unit,
+    onOpenDownloads: () -> Unit,
     onFind: () -> Unit,
     onToggleDesktop: () -> Unit,
     onSubmit: (String) -> Boolean,
@@ -318,6 +320,14 @@ fun FloatingSearchFrame(
                             onClick = {
                                 menuOpen = false
                                 onOpenBookmarks()
+                            }
+                        )
+                        DropdownMenuItem(
+                            text = { Text(stringResource(R.string.action_downloads)) },
+                            leadingIcon = { Icon(Icons.Default.KeyboardArrowDown, contentDescription = null) },
+                            onClick = {
+                                menuOpen = false
+                                onOpenDownloads()
                             }
                         )
                         DropdownMenuItem(

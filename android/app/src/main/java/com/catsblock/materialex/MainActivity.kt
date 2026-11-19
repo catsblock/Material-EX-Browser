@@ -38,6 +38,7 @@ import com.catsblock.materialex.data.Suggestion
 import com.catsblock.materialex.ui.NewTabPage
 import kotlinx.coroutines.delay
 import com.catsblock.materialex.ui.BrowserScreen
+import com.catsblock.materialex.ui.DownloadsScreen
 import com.catsblock.materialex.ui.HistoryScreen
 import com.catsblock.materialex.ui.OnboardingScreen
 import com.catsblock.materialex.ui.SettingsScreen
@@ -46,7 +47,7 @@ import com.catsblock.materialex.ui.theme.MaterialExTheme
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 
-private enum class Screen { BROWSER, TABS, SETTINGS, HISTORY, BOOKMARKS }
+private enum class Screen { BROWSER, TABS, SETTINGS, HISTORY, BOOKMARKS, DOWNLOADS }
 
 class MainActivity : ComponentActivity() {
     private val app get() = application as MaterialExApp
@@ -148,8 +149,13 @@ class MainActivity : ComponentActivity() {
                     screen = Screen.BROWSER
                 }
             )
+            Screen.DOWNLOADS -> DownloadsScreen(
+                controller = app.downloads,
+                onClose = { screen = Screen.BROWSER }
+            )
             Screen.TABS -> TabSwitcherScreen(
                 engine = app.engine,
+                layout = settings.tabLayout,
                 onClose = { screen = Screen.BROWSER },
                 onNewTab = {
                     app.engine.openTab("")
@@ -173,6 +179,7 @@ class MainActivity : ComponentActivity() {
                     }
                 },
                 onShare = { share(pageState.url) },
+                onOpenDownloads = { screen = Screen.DOWNLOADS },
                 newTabContent = {
                     NewTabPage(
                         settings = settings,

@@ -119,4 +119,21 @@
     <string name="action_find">ページ内検索</string>
     <string name="action_desktop_view">デスクトップ版サイト</string>
     <string name="suggestion_delete">候補を削除</string>
+    <string name="tab_duplicate">タブを複製</string>
+    <string name="tab_close_others">他のタブを閉じる</string>
+    <string name="tab_close_right">右側のタブを閉じる</string>
+    <string name="tab_restore_closed">閉じたタブを復元</string>
+    <string name="tab_copy_url">アドレスをコピー</string>
+    <string name="tab_audio_playing">音声を再生中</string>
+    <string name="settings_tab_layout">タブのレイアウト</string>
+    <string name="tab_layout_grid">コンパクトグリッド</string>
+    <string name="tab_layout_list">リスト</string>
+    <string name="tab_layout_cover">カバーフロー</string>
+    <string name="action_downloads">ダウンロード</string>
+    <string name="downloads_empty">ダウンロードはまだありません</string>
+    <string name="download_failed">ダウンロードに失敗しました</string>
+    <string name="download_cancelled">ダウンロードをキャンセルしました</string>
+    <string name="download_completed">完了</string>
+    <string name="download_missing">ファイルが見つかりません</string>
+    <string name="downloads_clear_finished">完了分を消去</string>
 </resources>

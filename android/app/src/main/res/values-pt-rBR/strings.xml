@@ -121,4 +121,21 @@
     <string name="action_find">Localizar na página</string>
     <string name="action_desktop_view">Versão para computador</string>
     <string name="suggestion_delete">Remover sugestão</string>
+    <string name="tab_duplicate">Duplicar guia</string>
+    <string name="tab_close_others">Fechar outras guias</string>
+    <string name="tab_close_right">Fechar guias à direita</string>
+    <string name="tab_restore_closed">Restaurar guia fechada</string>
+    <string name="tab_copy_url">Copiar endereço</string>
+    <string name="tab_audio_playing">Reproduzindo áudio</string>
+    <string name="settings_tab_layout">Layout das guias</string>
+    <string name="tab_layout_grid">Grade compacta</string>
+    <string name="tab_layout_list">Lista</string>
+    <string name="tab_layout_cover">Cover Flow</string>
+    <string name="action_downloads">Downloads</string>
+    <string name="downloads_empty">Nenhum download ainda</string>
+    <string name="download_failed">Falha no download</string>
+    <string name="download_cancelled">Download cancelado</string>
+    <string name="download_completed">Concluído</string>
+    <string name="download_missing">Arquivo ausente</string>
+    <string name="downloads_clear_finished">Limpar concluídos</string>
 </resources>

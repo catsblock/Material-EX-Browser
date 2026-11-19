@@ -48,3 +48,16 @@ data class FrequentSite(
     val title: String,
     val visits: Int
 )
+
+@Entity(tableName = "downloads", indices = [Index("createdAt")])
+data class DownloadRecord(
+    @PrimaryKey(autoGenerate = true) val id: Long = 0,
+    val fileName: String,
+    val sourceUrl: String,
+    val mimeType: String,
+    val fileUri: String,
+    val totalBytes: Long,
+    val downloadedBytes: Long,
+    val status: String,
+    val createdAt: Long
+)

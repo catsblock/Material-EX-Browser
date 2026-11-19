@@ -119,4 +119,21 @@
     <string name="action_find">Etsi sivulta</string>
     <string name="action_desktop_view">Työpöytänäkymä</string>
     <string name="suggestion_delete">Poista ehdotus</string>
+    <string name="tab_duplicate">Kaksoiskappale välilehdestä</string>
+    <string name="tab_close_others">Sulje muut välilehdet</string>
+    <string name="tab_close_right">Sulje oikealla olevat välilehdet</string>
+    <string name="tab_restore_closed">Palauta suljettu välilehti</string>
+    <string name="tab_copy_url">Kopioi osoite</string>
+    <string name="tab_audio_playing">Ääni toistuu</string>
+    <string name="settings_tab_layout">Välilehtien asettelu</string>
+    <string name="tab_layout_grid">Tiivis ruudukko</string>
+    <string name="tab_layout_list">Luettelo</string>
+    <string name="tab_layout_cover">Cover Flow</string>
+    <string name="action_downloads">Lataukset</string>
+    <string name="downloads_empty">Ei vielä latauksia</string>
+    <string name="download_failed">Lataus epäonnistui</string>
+    <string name="download_cancelled">Lataus peruttu</string>
+    <string name="download_completed">Valmis</string>
+    <string name="download_missing">Tiedosto puuttuu</string>
+    <string name="downloads_clear_finished">Tyhjennä valmiit</string>
 </resources>

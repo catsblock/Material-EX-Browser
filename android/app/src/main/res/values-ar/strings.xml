@@ -121,4 +121,21 @@
     <string name="action_find">بحث في الصفحة</string>
     <string name="action_desktop_view">عرض سطح المكتب</string>
     <string name="suggestion_delete">إزالة الاقتراح</string>
+    <string name="tab_duplicate">تكرار علامة التبويب</string>
+    <string name="tab_close_others">إغلاق علامات التبويب الأخرى</string>
+    <string name="tab_close_right">إغلاق علامات التبويب على اليمين</string>
+    <string name="tab_restore_closed">استعادة علامة تبويب مغلقة</string>
+    <string name="tab_copy_url">نسخ العنوان</string>
+    <string name="tab_audio_playing">يتم تشغيل الصوت</string>
+    <string name="settings_tab_layout">تخطيط علامات التبويب</string>
+    <string name="tab_layout_grid">شبكة مضغوطة</string>
+    <string name="tab_layout_list">قائمة</string>
+    <string name="tab_layout_cover">عرض متدرج</string>
+    <string name="action_downloads">التنزيلات</string>
+    <string name="downloads_empty">لا توجد تنزيلات بعد</string>
+    <string name="download_failed">فشل التنزيل</string>
+    <string name="download_cancelled">أُلغي التنزيل</string>
+    <string name="download_completed">اكتمل</string>
+    <string name="download_missing">الملف مفقود</string>
+    <string name="downloads_clear_finished">مسح المنتهية</string>
 </resources>

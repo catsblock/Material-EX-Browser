@@ -119,4 +119,21 @@
     <string name="action_find">Auf Seite suchen</string>
     <string name="action_desktop_view">Desktop-Ansicht</string>
     <string name="suggestion_delete">Vorschlag entfernen</string>
+    <string name="tab_duplicate">Tab duplizieren</string>
+    <string name="tab_close_others">Andere Tabs schließen</string>
+    <string name="tab_close_right">Tabs rechts schließen</string>
+    <string name="tab_restore_closed">Geschlossenen Tab wiederherstellen</string>
+    <string name="tab_copy_url">Adresse kopieren</string>
+    <string name="tab_audio_playing">Audio wird wiedergegeben</string>
+    <string name="settings_tab_layout">Tab-Layout</string>
+    <string name="tab_layout_grid">Kompaktes Raster</string>
+    <string name="tab_layout_list">Liste</string>
+    <string name="tab_layout_cover">Cover Flow</string>
+    <string name="action_downloads">Downloads</string>
+    <string name="downloads_empty">Noch keine Downloads</string>
+    <string name="download_failed">Download fehlgeschlagen</string>
+    <string name="download_cancelled">Download abgebrochen</string>
+    <string name="download_completed">Abgeschlossen</string>
+    <string name="download_missing">Datei fehlt</string>
+    <string name="downloads_clear_finished">Beendete löschen</string>
 </resources>

@@ -119,4 +119,21 @@
     <string name="action_find">ค้นหาในหน้า</string>
     <string name="action_desktop_view">มุมมองเดสก์ท็อป</string>
     <string name="suggestion_delete">ลบคำแนะนำ</string>
+    <string name="tab_duplicate">ทำสำเนาแท็บ</string>
+    <string name="tab_close_others">ปิดแท็บอื่น</string>
+    <string name="tab_close_right">ปิดแท็บทางขวา</string>
+    <string name="tab_restore_closed">กู้คืนแท็บที่ปิด</string>
+    <string name="tab_copy_url">คัดลอกที่อยู่</string>
+    <string name="tab_audio_playing">กำลังเล่นเสียง</string>
+    <string name="settings_tab_layout">เลย์เอาต์แท็บ</string>
+    <string name="tab_layout_grid">ตารางกะทัดรัด</string>
+    <string name="tab_layout_list">รายการ</string>
+    <string name="tab_layout_cover">Cover Flow</string>
+    <string name="action_downloads">ดาวน์โหลด</string>
+    <string name="downloads_empty">ยังไม่มีการดาวน์โหลด</string>
+    <string name="download_failed">ดาวน์โหลดล้มเหลว</string>
+    <string name="download_cancelled">ยกเลิกการดาวน์โหลดแล้ว</string>
+    <string name="download_completed">เสร็จสมบูรณ์</string>
+    <string name="download_missing">ไม่พบไฟล์</string>
+    <string name="downloads_clear_finished">ล้างที่เสร็จแล้ว</string>
 </resources>

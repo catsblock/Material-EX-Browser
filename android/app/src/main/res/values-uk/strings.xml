@@ -119,4 +119,21 @@
     <string name="action_find">Знайти на сторінці</string>
     <string name="action_desktop_view">Версія для комп’ютера</string>
     <string name="suggestion_delete">Видалити підказку</string>
+    <string name="tab_duplicate">Дублювати вкладку</string>
+    <string name="tab_close_others">Закрити інші вкладки</string>
+    <string name="tab_close_right">Закрити вкладки праворуч</string>
+    <string name="tab_restore_closed">Відновити закриту вкладку</string>
+    <string name="tab_copy_url">Копіювати адресу</string>
+    <string name="tab_audio_playing">Відтворюється звук</string>
+    <string name="settings_tab_layout">Вигляд вкладок</string>
+    <string name="tab_layout_grid">Компактна сітка</string>
+    <string name="tab_layout_list">Список</string>
+    <string name="tab_layout_cover">Cover Flow</string>
+    <string name="action_downloads">Завантаження</string>
+    <string name="downloads_empty">Завантажень ще немає</string>
+    <string name="download_failed">Помилка завантаження</string>
+    <string name="download_cancelled">Завантаження скасовано</string>
+    <string name="download_completed">Завершено</string>
+    <string name="download_missing">Файл відсутній</string>
+    <string name="downloads_clear_finished">Очистити завершені</string>
 </resources>

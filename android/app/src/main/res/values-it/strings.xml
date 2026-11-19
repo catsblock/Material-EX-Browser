@@ -119,4 +119,21 @@
     <string name="action_find">Trova nella pagina</string>
     <string name="action_desktop_view">Versione desktop</string>
     <string name="suggestion_delete">Rimuovi suggerimento</string>
+    <string name="tab_duplicate">Duplica scheda</string>
+    <string name="tab_close_others">Chiudi altre schede</string>
+    <string name="tab_close_right">Chiudi schede a destra</string>
+    <string name="tab_restore_closed">Ripristina scheda chiusa</string>
+    <string name="tab_copy_url">Copia indirizzo</string>
+    <string name="tab_audio_playing">Riproduzione audio</string>
+    <string name="settings_tab_layout">Layout delle schede</string>
+    <string name="tab_layout_grid">Griglia compatta</string>
+    <string name="tab_layout_list">Elenco</string>
+    <string name="tab_layout_cover">Cover Flow</string>
+    <string name="action_downloads">Download</string>
+    <string name="downloads_empty">Nessun download</string>
+    <string name="download_failed">Download non riuscito</string>
+    <string name="download_cancelled">Download annullato</string>
+    <string name="download_completed">Completato</string>
+    <string name="download_missing">File mancante</string>
+    <string name="downloads_clear_finished">Cancella completati</string>
 </resources>

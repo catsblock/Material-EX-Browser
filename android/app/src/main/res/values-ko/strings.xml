@@ -119,4 +119,21 @@
     <string name="action_find">페이지에서 찾기</string>
     <string name="action_desktop_view">데스크톱 보기</string>
     <string name="suggestion_delete">추천 삭제</string>
+    <string name="tab_duplicate">탭 복제</string>
+    <string name="tab_close_others">다른 탭 닫기</string>
+    <string name="tab_close_right">오른쪽 탭 닫기</string>
+    <string name="tab_restore_closed">닫은 탭 복원</string>
+    <string name="tab_copy_url">주소 복사</string>
+    <string name="tab_audio_playing">오디오 재생 중</string>
+    <string name="settings_tab_layout">탭 레이아웃</string>
+    <string name="tab_layout_grid">간결한 그리드</string>
+    <string name="tab_layout_list">목록</string>
+    <string name="tab_layout_cover">커버 플로우</string>
+    <string name="action_downloads">다운로드</string>
+    <string name="downloads_empty">다운로드 없음</string>
+    <string name="download_failed">다운로드 실패</string>
+    <string name="download_cancelled">다운로드 취소됨</string>
+    <string name="download_completed">완료됨</string>
+    <string name="download_missing">파일 없음</string>
+    <string name="downloads_clear_finished">완료 항목 삭제</string>
 </resources>

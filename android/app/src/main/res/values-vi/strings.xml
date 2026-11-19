@@ -119,4 +119,21 @@
     <string name="action_find">Tìm trong trang</string>
     <string name="action_desktop_view">Chế độ máy tính</string>
     <string name="suggestion_delete">Xóa gợi ý</string>
+    <string name="tab_duplicate">Nhân đôi tab</string>
+    <string name="tab_close_others">Đóng các tab khác</string>
+    <string name="tab_close_right">Đóng các tab bên phải</string>
+    <string name="tab_restore_closed">Khôi phục tab đã đóng</string>
+    <string name="tab_copy_url">Sao chép địa chỉ</string>
+    <string name="tab_audio_playing">Đang phát âm thanh</string>
+    <string name="settings_tab_layout">Bố cục tab</string>
+    <string name="tab_layout_grid">Lưới gọn</string>
+    <string name="tab_layout_list">Danh sách</string>
+    <string name="tab_layout_cover">Cover Flow</string>
+    <string name="action_downloads">Tải xuống</string>
+    <string name="downloads_empty">Chưa có tệp tải xuống</string>
+    <string name="download_failed">Tải xuống thất bại</string>
+    <string name="download_cancelled">Đã hủy tải xuống</string>
+    <string name="download_completed">Hoàn tất</string>
+    <string name="download_missing">Thiếu tệp</string>
+    <string name="downloads_clear_finished">Xóa mục đã xong</string>
 </resources>

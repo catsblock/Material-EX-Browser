@@ -19,6 +19,16 @@ import kotlinx.coroutines.flow.map
 
 private val Context.settingsStore by preferencesDataStore(name = "settings")
 
+enum class TabLayout {
+    GRID,
+    LIST,
+    COVER_FLOW;
+
+    companion object {
+        fun fromId(id: String?): TabLayout = entries.firstOrNull { it.name == id } ?: GRID
+    }
+}
+
 enum class HomeSection {
     SHORTCUTS,
     FREQUENT,
@@ -50,7 +60,8 @@ data class BrowserSettings(
     val showShortcuts: Boolean = true,
     val showFrequent: Boolean = true,
     val showRecent: Boolean = true,
-    val showBookmarks: Boolean = true
+    val showBookmarks: Boolean = true,
+    val tabLayout: TabLayout = TabLayout.GRID
 ) {
     companion object {
         const val DEFAULT_HOMEPAGE = "https://www.google.com/"
@@ -73,6 +84,7 @@ class SettingsRepository(private val context: Context) {
     private val showFrequentKey = booleanPreferencesKey("home_show_frequent")
     private val showRecentKey = booleanPreferencesKey("home_show_recent")
     private val showBookmarksKey = booleanPreferencesKey("home_show_bookmarks")
+    private val tabLayoutKey = stringPreferencesKey("tab_layout")
     private val shortcutsSeededKey = booleanPreferencesKey("shortcuts_seeded")
     private val legalAcceptedAtKey = longPreferencesKey("legal_accepted_at")
 
@@ -84,6 +96,10 @@ class SettingsRepository(private val context: Context) {
 
     suspend fun setAutoHideFrame(enabled: Boolean) {
         context.settingsStore.edit { it[autoHideKey] = enabled }
+    }
+
+    suspend fun setTabLayout(layout: TabLayout) {
+        context.settingsStore.edit { it[tabLayoutKey] = layout.name }
     }
 
     suspend fun setSuggestionProvider(provider: SuggestionProvider) {
@@ -164,6 +180,7 @@ class SettingsRepository(private val context: Context) {
         showShortcuts = preferences[showShortcutsKey] ?: true,
         showFrequent = preferences[showFrequentKey] ?: true,
         showRecent = preferences[showRecentKey] ?: true,
-        showBookmarks = preferences[showBookmarksKey] ?: true
+        showBookmarks = preferences[showBookmarksKey] ?: true,
+        tabLayout = TabLayout.fromId(preferences[tabLayoutKey])
     )
 }

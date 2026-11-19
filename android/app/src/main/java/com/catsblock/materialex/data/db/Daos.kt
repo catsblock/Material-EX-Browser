@@ -119,3 +119,36 @@ interface SitePermissionDao {
     @androidx.room.Query("DELETE FROM site_permissions WHERE profileId = :profileId")
     suspend fun clearProfile(profileId: String)
 }
+
+@Dao
+interface DownloadDao {
+    @Insert
+    suspend fun insert(record: DownloadRecord): Long
+
+    @Query("SELECT * FROM downloads ORDER BY createdAt DESC")
+    fun observe(): Flow<List<DownloadRecord>>
+
+    @Query("SELECT * FROM downloads WHERE id = :id")
+    suspend fun find(id: Long): DownloadRecord?
+
+    @Query("UPDATE downloads SET downloadedBytes = :downloaded, totalBytes = :total WHERE id = :id")
+    suspend fun progress(id: Long, downloaded: Long, total: Long)
+
+    @Query("UPDATE downloads SET status = :status, downloadedBytes = :downloaded, totalBytes = :total WHERE id = :id")
+    suspend fun finish(id: Long, status: String, downloaded: Long, total: Long)
+
+    @Query("UPDATE downloads SET status = :status WHERE id = :id")
+    suspend fun setStatus(id: Long, status: String)
+
+    @Query("UPDATE downloads SET status = 'FAILED' WHERE status = 'ACTIVE'")
+    suspend fun failInterrupted()
+
+    @Query("DELETE FROM downloads WHERE id = :id")
+    suspend fun delete(id: Long)
+
+    @Query("SELECT * FROM downloads WHERE status != 'ACTIVE'")
+    suspend fun finished(): List<DownloadRecord>
+
+    @Query("DELETE FROM downloads WHERE status != 'ACTIVE'")
+    suspend fun clearFinished()
+}
