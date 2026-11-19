@@ -39,6 +39,7 @@ import androidx.compose.material.icons.filled.Check
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.Lock
+import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.Button
 import androidx.compose.material3.Checkbox
@@ -73,8 +74,13 @@ import androidx.compose.ui.unit.dp
 import com.catsblock.materialex.R
 import com.catsblock.materialex.core.AppLanguages
 import com.catsblock.materialex.data.LocaleApplier
+import com.google.android.gms.auth.api.identity.AuthorizationRequest
+import com.google.android.gms.auth.api.identity.Identity
+import com.google.android.gms.common.Scopes
+import com.google.android.gms.common.api.Scope
+import androidx.activity.result.IntentSenderRequest
 
-private enum class Step { WELCOME, LEGAL, DEFAULT, DONE }
+private enum class Step { WELCOME, LEGAL, GOOGLE, DEFAULT, DONE }
 
 private enum class LegalDoc(val asset: String, val title: Int) {
     TERMS("TERMS_OF_SERVICE.md", R.string.doc_terms),
@@ -87,6 +93,9 @@ private enum class LegalDoc(val asset: String, val title: Int) {
 fun OnboardingScreen(
     selectedLanguage: String,
     onLanguageSelected: (String) -> Unit,
+    googleEmail: String,
+    onGoogleConnected: (String) -> Unit,
+    onGoogleDisconnect: () -> Unit,
     onFinish: () -> Unit
 ) {
     var stepIndex by rememberSaveable { mutableStateOf(0) }
@@ -135,12 +144,15 @@ fun OnboardingScreen(
                         onRead = { openDoc = it.name }
                     )
                     Step.DEFAULT -> DefaultBrowserStep()
-                    Step.DONE -> HeroHeader(
-                        icon = Icons.Default.Check,
-                        shape = MaterialShapes.Sunny.toShape(),
-                        title = stringResource(R.string.onboarding_done_title),
-                        body = stringResource(R.string.onboarding_done_body)
-                    )
+                    Step.GOOGLE -> GoogleStep(googleEmail, onGoogleConnected, onGoogleDisconnect)
+                    Step.DONE -> Column(modifier = Modifier.verticalScroll(rememberScrollState())) {
+                        HeroHeader(
+                            icon = Icons.Default.Check,
+                            shape = MaterialShapes.Sunny.toShape(),
+                            title = stringResource(R.string.onboarding_done_title),
+                            body = stringResource(R.string.onboarding_done_body)
+                        )
+                    }
                 }
             }
 
@@ -156,7 +168,7 @@ fun OnboardingScreen(
                 }
                 val canContinue = step != Step.LEGAL || (termsAccepted && privacyAccepted && licenseAccepted)
                 Row(verticalAlignment = Alignment.CenterVertically) {
-                    if (step == Step.DEFAULT) {
+                    if (step == Step.DEFAULT || (step == Step.GOOGLE && googleEmail.isEmpty())) {
                         TextButton(onClick = { stepIndex += 1 }) { Text(stringResource(R.string.onboarding_skip)) }
                     }
                     Button(
@@ -183,7 +195,7 @@ fun OnboardingScreen(
 @OptIn(ExperimentalMaterial3ExpressiveApi::class)
 @Composable
 private fun HeroHeader(icon: ImageVector, shape: Shape, title: String, body: String) {
-    Column(modifier = Modifier.fillMaxWidth().verticalScroll(rememberScrollState())) {
+    Column(modifier = Modifier.fillMaxWidth()) {
         Box(
             modifier = Modifier.size(80.dp).clip(shape).background(MaterialTheme.colorScheme.primaryContainer),
             contentAlignment = Alignment.Center
@@ -239,7 +251,7 @@ private fun WelcomeStep(selectedLanguage: String, onLanguageSelected: (String) -
         )
         Spacer(Modifier.height(4.dp))
         LazyColumn(
-            modifier = Modifier.fillMaxWidth().clip(RoundedCornerShape(28.dp))
+            modifier = Modifier.fillMaxWidth().weight(1f).clip(RoundedCornerShape(28.dp))
                 .background(MaterialTheme.colorScheme.surfaceContainerLow)
         ) {
             item {
@@ -335,6 +347,65 @@ private fun ConsentRow(label: String, checked: Boolean, onChecked: (Boolean) -> 
             style = MaterialTheme.typography.bodyLarge
         )
         TextButton(onClick = onRead) { Text(stringResource(R.string.onboarding_read)) }
+    }
+}
+
+@OptIn(ExperimentalMaterial3ExpressiveApi::class)
+@Composable
+private fun GoogleStep(email: String, onConnected: (String) -> Unit, onDisconnect: () -> Unit) {
+    val context = LocalContext.current
+    var failed by rememberSaveable { mutableStateOf(false) }
+    val client = remember { Identity.getAuthorizationClient(context) }
+    val launcher = rememberLauncherForActivityResult(ActivityResultContracts.StartIntentSenderForResult()) { result ->
+        runCatching { client.getAuthorizationResultFromIntent(result.data) }
+            .onSuccess { authorization ->
+                val mail = authorization.toGoogleSignInAccount()?.email
+                if (mail.isNullOrEmpty()) failed = true else { failed = false; onConnected(mail) }
+            }
+            .onFailure { failed = true }
+    }
+    Column(modifier = Modifier.verticalScroll(rememberScrollState())) {
+        HeroHeader(
+            icon = Icons.Default.Person,
+            shape = MaterialShapes.Clover4Leaf.toShape(),
+            title = stringResource(R.string.onboarding_google_title),
+            body = stringResource(R.string.onboarding_google_body)
+        )
+        Spacer(Modifier.height(24.dp))
+        if (email.isNotEmpty()) {
+            Text(
+                text = stringResource(R.string.onboarding_google_connected, email),
+                style = MaterialTheme.typography.titleMedium,
+                color = MaterialTheme.colorScheme.primary
+            )
+            Spacer(Modifier.height(8.dp))
+            TextButton(onClick = onDisconnect) { Text(stringResource(R.string.onboarding_google_disconnect)) }
+        } else {
+            FilledTonalButton(onClick = {
+                val request = AuthorizationRequest.builder()
+                    .setRequestedScopes(listOf(Scope(Scopes.EMAIL), Scope(Scopes.PROFILE)))
+                    .build()
+                client.authorize(request)
+                    .addOnSuccessListener { authorization ->
+                        val pending = authorization.pendingIntent
+                        if (authorization.hasResolution() && pending != null) {
+                            launcher.launch(IntentSenderRequest.Builder(pending.intentSender).build())
+                        } else {
+                            val mail = authorization.toGoogleSignInAccount()?.email
+                            if (mail.isNullOrEmpty()) failed = true else { failed = false; onConnected(mail) }
+                        }
+                    }
+                    .addOnFailureListener { failed = true }
+            }) { Text(stringResource(R.string.onboarding_google_action)) }
+            if (failed) {
+                Spacer(Modifier.height(12.dp))
+                Text(
+                    text = stringResource(R.string.onboarding_google_error),
+                    style = MaterialTheme.typography.bodyMedium,
+                    color = MaterialTheme.colorScheme.error
+                )
+            }
+        }
     }
 }
 

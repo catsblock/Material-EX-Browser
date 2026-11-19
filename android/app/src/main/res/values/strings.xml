@@ -67,4 +67,10 @@
     <string name="doc_terms">Terms of Service</string>
     <string name="doc_privacy">Privacy Policy</string>
     <string name="doc_license">GPL 3.0 license information</string>
+    <string name="onboarding_google_title">Connect your Google account</string>
+    <string name="onboarding_google_body">Optional. Sign in with Google through Android to link your account to Material EX. No Material EX server is involved and the app never sees your password.</string>
+    <string name="onboarding_google_action">Connect Google account</string>
+    <string name="onboarding_google_connected">Connected as %1$s</string>
+    <string name="onboarding_google_disconnect">Disconnect</string>
+    <string name="onboarding_google_error">Google sign-in isn\'t available right now. You can skip this step and connect later.</string>
 </resources>

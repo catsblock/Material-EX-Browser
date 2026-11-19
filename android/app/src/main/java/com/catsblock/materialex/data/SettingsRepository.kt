@@ -34,7 +34,8 @@ data class BrowserSettings(
     val onboardingCompleted: Boolean = false,
     val language: String = "",
     val legalVersion: Int = 0,
-    val legalAcceptedAt: Long = 0L
+    val legalAcceptedAt: Long = 0L,
+    val googleEmail: String = ""
 ) {
     companion object {
         const val DEFAULT_HOMEPAGE = "https://www.google.com/"
@@ -50,6 +51,7 @@ class SettingsRepository(private val context: Context) {
     private val onboardingKey = booleanPreferencesKey("onboarding_completed")
     private val languageKey = stringPreferencesKey("app_language")
     private val legalVersionKey = intPreferencesKey("legal_version")
+    private val googleEmailKey = stringPreferencesKey("google_email")
     private val legalAcceptedAtKey = longPreferencesKey("legal_accepted_at")
 
     val settings: Flow<BrowserSettings> = context.settingsStore.data.map(::read)
@@ -79,6 +81,12 @@ class SettingsRepository(private val context: Context) {
         context.settingsStore.edit { it[languageKey] = tag }
     }
 
+    suspend fun setGoogleEmail(email: String) {
+        context.settingsStore.edit {
+            if (email.isEmpty()) it.remove(googleEmailKey) else it[googleEmailKey] = email
+        }
+    }
+
     suspend fun completeOnboarding(acceptedAt: Long) {
         context.settingsStore.edit {
             it[legalVersionKey] = BrowserSettings.LEGAL_VERSION
@@ -95,6 +103,7 @@ class SettingsRepository(private val context: Context) {
         onboardingCompleted = preferences[onboardingKey] ?: false,
         language = preferences[languageKey].orEmpty(),
         legalVersion = preferences[legalVersionKey] ?: 0,
-        legalAcceptedAt = preferences[legalAcceptedAtKey] ?: 0L
+        legalAcceptedAt = preferences[legalAcceptedAtKey] ?: 0L,
+        googleEmail = preferences[googleEmailKey].orEmpty()
     )
 }

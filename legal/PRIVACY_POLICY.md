@@ -13,6 +13,7 @@ The following data is stored locally in the application's private storage on you
 - Open tabs and their navigation state.
 - Website data kept by the browser engine (cookies, cache, site storage), as with any browser.
 - Records of the legal agreements you accepted (version and time of acceptance).
+- If you choose to connect a Google account during onboarding, the email address of that account. Authentication is handled by Google Play services on your device. Material EX does not receive your password, does not store access tokens and uses no server of its own. Disconnecting removes the stored email address from the app.
 This data is not sent to the developers. Uninstalling the application removes it.
 
 3. Data sent over the network

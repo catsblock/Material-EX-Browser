@@ -67,4 +67,10 @@
     <string name="doc_terms">Termos de Serviço</string>
     <string name="doc_privacy">Política de Privacidade</string>
     <string name="doc_license">Informações da licença GPL 3.0</string>
+    <string name="onboarding_google_title">Conectar sua conta Google</string>
+    <string name="onboarding_google_body">Opcional. Entre com o Google pelo Android para vincular sua conta ao Material EX. Nenhum servidor do Material EX é usado e o app nunca vê sua senha.</string>
+    <string name="onboarding_google_action">Conectar conta Google</string>
+    <string name="onboarding_google_connected">Conectado como %1$s</string>
+    <string name="onboarding_google_disconnect">Desconectar</string>
+    <string name="onboarding_google_error">O login com Google não está disponível agora. Você pode pular esta etapa e conectar depois.</string>
 </resources>

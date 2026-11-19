@@ -67,4 +67,10 @@
     <string name="doc_terms">شروط الخدمة</string>
     <string name="doc_privacy">سياسة الخصوصية</string>
     <string name="doc_license">معلومات ترخيص GPL 3.0</string>
+    <string name="onboarding_google_title">ربط حساب Google</string>
+    <string name="onboarding_google_body">اختياري. سجّل الدخول باستخدام Google عبر Android لربط حسابك بـ Material EX. لا يتدخل أي خادم تابع لـ Material EX ولا يرى التطبيق كلمة مرورك أبدًا.</string>
+    <string name="onboarding_google_action">ربط حساب Google</string>
+    <string name="onboarding_google_connected">متصل باسم %1$s</string>
+    <string name="onboarding_google_disconnect">قطع الاتصال</string>
+    <string name="onboarding_google_error">تسجيل الدخول عبر Google غير متاح حاليًا. يمكنك تخطي هذه الخطوة والربط لاحقًا.</string>
 </resources>

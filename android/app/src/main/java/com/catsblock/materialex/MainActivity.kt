@@ -57,6 +57,9 @@ class MainActivity : ComponentActivity() {
                                 LocaleApplier.apply(this@MainActivity, tag)
                             }
                         },
+                        googleEmail = current.googleEmail,
+                        onGoogleConnected = { email -> lifecycleScope.launch { app.settings.setGoogleEmail(email) } },
+                        onGoogleDisconnect = { lifecycleScope.launch { app.settings.setGoogleEmail("") } },
                         onFinish = {
                             lifecycleScope.launch { app.settings.completeOnboarding(System.currentTimeMillis()) }
                         }
