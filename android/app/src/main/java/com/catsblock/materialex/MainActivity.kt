@@ -33,6 +33,10 @@ import com.catsblock.materialex.core.UrlResolver
 import com.catsblock.materialex.data.BrowserSettings
 import com.catsblock.materialex.data.LocaleApplier
 import com.catsblock.materialex.ui.BookmarksScreen
+import androidx.compose.runtime.LaunchedEffect
+import com.catsblock.materialex.data.Suggestion
+import com.catsblock.materialex.ui.NewTabPage
+import kotlinx.coroutines.delay
 import com.catsblock.materialex.ui.BrowserScreen
 import com.catsblock.materialex.ui.HistoryScreen
 import com.catsblock.materialex.ui.OnboardingScreen
@@ -98,6 +102,20 @@ class MainActivity : ComponentActivity() {
         val pageState by app.engine.state.collectAsStateWithLifecycle()
         val isBookmarked by remember(pageState.url) { app.library.isBookmarked(pageState.url) }
             .collectAsStateWithLifecycle(false)
+        val shortcuts by remember { app.library.shortcuts() }.collectAsStateWithLifecycle(emptyList())
+        val frequent by remember { app.library.frequentSites(6) }.collectAsStateWithLifecycle(emptyList())
+        val recent by remember { app.library.recentPages(6) }.collectAsStateWithLifecycle(emptyList())
+        val homeBookmarks by remember { app.library.bookmarks("") }.collectAsStateWithLifecycle(emptyList())
+        var query by remember { mutableStateOf("") }
+        var suggestions by remember { mutableStateOf(emptyList<Suggestion>()) }
+        LaunchedEffect(query, settings.suggestionProvider) {
+            if (query.isBlank()) {
+                suggestions = emptyList()
+            } else {
+                delay(SUGGESTION_DEBOUNCE_MS)
+                suggestions = app.suggestions.load(query, settings.suggestionProvider, false)
+            }
+        }
         var screen by rememberSaveable { mutableStateOf(Screen.BROWSER) }
         var siteInfoOpen by rememberSaveable { mutableStateOf(false) }
         val prompt by app.engine.permissions.prompt.collectAsStateWithLifecycle()
@@ -111,6 +129,7 @@ class MainActivity : ComponentActivity() {
             Screen.SETTINGS -> SettingsScreen(
                 settings = settings,
                 repository = app.settings,
+                library = app.library,
                 onClose = { screen = Screen.BROWSER }
             )
             Screen.HISTORY -> HistoryScreen(
@@ -133,7 +152,7 @@ class MainActivity : ComponentActivity() {
                 engine = app.engine,
                 onClose = { screen = Screen.BROWSER },
                 onNewTab = {
-                    app.engine.openTab(settings.homepage)
+                    app.engine.openTab("")
                     screen = Screen.BROWSER
                 },
                 onCloseTab = { id -> closeTab(id, settings.homepage) }
@@ -141,10 +160,38 @@ class MainActivity : ComponentActivity() {
             Screen.BROWSER -> BrowserScreen(
                 engine = app.engine,
                 settings = settings,
+                suggestions = suggestions,
+                onQueryChange = { query = it },
+                onPickSuggestion = { text ->
+                    query = ""
+                    submit(text, settings)
+                },
+                onDeleteSuggestion = { text ->
+                    lifecycleScope.launch {
+                        app.library.deleteSearch(text)
+                        suggestions = suggestions.filterNot { it.text == text && it.fromHistory }
+                    }
+                },
+                onShare = { share(pageState.url) },
+                newTabContent = {
+                    NewTabPage(
+                        settings = settings,
+                        shortcuts = shortcuts,
+                        frequent = frequent,
+                        recent = recent,
+                        bookmarks = homeBookmarks,
+                        onOpen = { url -> app.engine.load(url) },
+                        onSaveShortcut = { id, title, url ->
+                            lifecycleScope.launch { app.library.saveShortcut(id, title, url) }
+                        },
+                        onDeleteShortcut = { id -> lifecycleScope.launch { app.library.deleteShortcut(id) } },
+                        onMoveShortcut = { id, delta -> lifecycleScope.launch { app.library.moveShortcut(id, delta) } }
+                    )
+                },
                 onSubmit = { input -> submit(input, settings) },
                 onOpenTabs = { screen = Screen.TABS },
                 isBookmarked = isBookmarked,
-                onNewTab = { app.engine.openTab(settings.homepage) },
+                onNewTab = { app.engine.openTab("") },
                 onToggleBookmark = {
                     lifecycleScope.launch {
                         app.library.toggleBookmark(pageState.url, pageState.title, isBookmarked)
@@ -214,6 +261,15 @@ class MainActivity : ComponentActivity() {
         }
     }
 
+    private fun share(url: String) {
+        if (!url.startsWith("http")) return
+        val send = Intent(Intent.ACTION_SEND).apply {
+            type = "text/plain"
+            putExtra(Intent.EXTRA_TEXT, url)
+        }
+        startActivity(Intent.createChooser(send, null))
+    }
+
     private fun intentUrl(intent: Intent?): String? {
         if (intent?.action != Intent.ACTION_VIEW) return null
         val data = intent.dataString ?: return null
@@ -227,10 +283,15 @@ class MainActivity : ComponentActivity() {
                 true
             }
             is Resolution.Search -> {
+                lifecycleScope.launch { app.library.recordSearch(resolution.query) }
                 val url = SearchTemplates.resolveUrl(settings.searchEngine, settings.customSearchTemplate, resolution.query)
                 if (url != null) app.engine.load(url)
                 url != null
             }
             Resolution.Rejected -> false
         }
+
+    private companion object {
+        const val SUGGESTION_DEBOUNCE_MS = 250L
+    }
 }

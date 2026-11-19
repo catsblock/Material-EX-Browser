@@ -31,7 +31,11 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.automirrored.filled.ArrowForward
 import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.Check
 import androidx.compose.material.icons.filled.Close
+import androidx.compose.material.icons.filled.Share
+import androidx.compose.foundation.clickable
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.material.icons.filled.DateRange
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.FavoriteBorder
@@ -71,6 +75,7 @@ import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.style.TextDirection
 import androidx.compose.ui.unit.dp
 import com.catsblock.materialex.R
+import com.catsblock.materialex.data.Suggestion
 import com.catsblock.materialex.data.ToolbarPosition
 import com.catsblock.materialex.engine.PageState
 
@@ -81,6 +86,14 @@ fun FloatingSearchFrame(
     isBookmarked: Boolean,
     position: ToolbarPosition,
     hidden: Boolean,
+    desktopMode: Boolean,
+    suggestions: List<Suggestion>,
+    onQueryChange: (String) -> Unit,
+    onPickSuggestion: (String) -> Unit,
+    onDeleteSuggestion: (String) -> Unit,
+    onShare: () -> Unit,
+    onFind: () -> Unit,
+    onToggleDesktop: () -> Unit,
     onSubmit: (String) -> Boolean,
     onBack: () -> Unit,
     onForward: () -> Unit,
@@ -158,6 +171,7 @@ fun FloatingSearchFrame(
                     onValueChange = {
                         field = it
                         rejected = false
+                        onQueryChange(it.text)
                     },
                     singleLine = true,
                     textStyle = LocalTextStyle.current.copy(
@@ -179,6 +193,7 @@ fun FloatingSearchFrame(
                                 field = TextFieldValue(state.url, TextRange(0, state.url.length))
                                 rejected = false
                             }
+                            if (!it.isFocused && focused) onQueryChange("")
                             focused = it.isFocused
                         },
                     decorationBox = { inner ->
@@ -226,6 +241,37 @@ fun FloatingSearchFrame(
                             onClick = {
                                 menuOpen = false
                                 onNewTab()
+                            }
+                        )
+                        DropdownMenuItem(
+                            text = { Text(stringResource(R.string.action_share)) },
+                            leadingIcon = { Icon(Icons.Default.Share, contentDescription = null) },
+                            enabled = state.url.startsWith("http"),
+                            onClick = {
+                                menuOpen = false
+                                onShare()
+                            }
+                        )
+                        DropdownMenuItem(
+                            text = { Text(stringResource(R.string.action_find)) },
+                            leadingIcon = { Icon(Icons.Default.Search, contentDescription = null) },
+                            enabled = state.url.startsWith("http"),
+                            onClick = {
+                                menuOpen = false
+                                onFind()
+                            }
+                        )
+                        DropdownMenuItem(
+                            text = { Text(stringResource(R.string.action_desktop_view)) },
+                            trailingIcon = if (desktopMode) {
+                                { Icon(Icons.Default.Check, contentDescription = null) }
+                            } else {
+                                null
+                            },
+                            enabled = state.url.startsWith("http"),
+                            onClick = {
+                                menuOpen = false
+                                onToggleDesktop()
                             }
                         )
                         DropdownMenuItem(
@@ -290,6 +336,45 @@ fun FloatingSearchFrame(
                                 onOpenSettings()
                             }
                         )
+                    }
+                }
+            }
+            if (focused && suggestions.isNotEmpty()) {
+                suggestions.forEach { suggestion ->
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically,
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .clickable {
+                                onPickSuggestion(suggestion.text)
+                                focusManager.clearFocus()
+                            }
+                            .padding(start = 16.dp, end = 4.dp)
+                    ) {
+                        Icon(
+                            Icons.Default.Search,
+                            contentDescription = null,
+                            modifier = Modifier.size(18.dp),
+                            tint = MaterialTheme.colorScheme.onSurfaceVariant
+                        )
+                        Text(
+                            text = suggestion.text,
+                            style = MaterialTheme.typography.bodyLarge,
+                            maxLines = 1,
+                            overflow = TextOverflow.Ellipsis,
+                            modifier = Modifier
+                                .weight(1f)
+                                .padding(horizontal = 14.dp, vertical = 12.dp)
+                        )
+                        if (suggestion.fromHistory) {
+                            IconButton(onClick = { onDeleteSuggestion(suggestion.text) }) {
+                                Icon(
+                                    Icons.Default.Close,
+                                    contentDescription = stringResource(R.string.suggestion_delete),
+                                    modifier = Modifier.size(18.dp)
+                                )
+                            }
+                        }
                     }
                 }
             }

@@ -98,4 +98,25 @@
     <string name="site_info_permissions">権限</string>
     <string name="settings_frame_autohide">スクロール中にフレームを隠す</string>
     <string name="settings_frame_autohide_description">下にスクロールするとフローティング検索フレームが隠れ、上にスクロールすると再表示されます</string>
+    <string name="home_shortcuts_add">ショートカットを追加</string>
+    <string name="shortcut_edit_title">ショートカットを編集</string>
+    <string name="shortcut_name">名前</string>
+    <string name="shortcut_url">アドレス</string>
+    <string name="shortcut_move_earlier">前へ移動</string>
+    <string name="shortcut_move_later">後ろへ移動</string>
+    <string name="home_frequent">よくアクセスするサイト</string>
+    <string name="home_recent">最近のページ</string>
+    <string name="settings_home_sections">ホームページのセクション</string>
+    <string name="settings_show_shortcuts">ショートカットを表示</string>
+    <string name="settings_show_frequent">よくアクセスするサイトを表示</string>
+    <string name="settings_show_recent">最近のページを表示</string>
+    <string name="settings_show_bookmarks">ブックマークを表示</string>
+    <string name="settings_restore_home">ホームページを初期状態に戻す</string>
+    <string name="settings_suggestions">検索候補</string>
+    <string name="suggestion_provider_none">オフ</string>
+    <string name="settings_clear_searches">検索履歴を消去</string>
+    <string name="action_share">共有</string>
+    <string name="action_find">ページ内検索</string>
+    <string name="action_desktop_view">デスクトップ版サイト</string>
+    <string name="suggestion_delete">候補を削除</string>
 </resources>

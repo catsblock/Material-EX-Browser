@@ -28,3 +28,23 @@ data class SitePermission(
     val state: String,
     val denialCount: Int
 )
+
+@Entity(tableName = "search_history", indices = [Index("searchedAt")])
+data class SearchEntry(
+    @PrimaryKey val text: String,
+    val searchedAt: Long
+)
+
+@Entity(tableName = "shortcuts")
+data class Shortcut(
+    @PrimaryKey(autoGenerate = true) val id: Long = 0,
+    val title: String,
+    val url: String,
+    val position: Int
+)
+
+data class FrequentSite(
+    val url: String,
+    val title: String,
+    val visits: Int
+)

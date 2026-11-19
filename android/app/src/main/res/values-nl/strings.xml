@@ -98,4 +98,25 @@
     <string name="site_info_permissions">Machtigingen</string>
     <string name="settings_frame_autohide">Kader verbergen tijdens scrollen</string>
     <string name="settings_frame_autohide_description">Het zwevende zoekkader verdwijnt bij omlaag scrollen en keert terug bij omhoog scrollen</string>
+    <string name="home_shortcuts_add">Snelkoppeling toevoegen</string>
+    <string name="shortcut_edit_title">Snelkoppeling bewerken</string>
+    <string name="shortcut_name">Naam</string>
+    <string name="shortcut_url">Adres</string>
+    <string name="shortcut_move_earlier">Eerder plaatsen</string>
+    <string name="shortcut_move_later">Later plaatsen</string>
+    <string name="home_frequent">Vaak bezocht</string>
+    <string name="home_recent">Recente pagina\'s</string>
+    <string name="settings_home_sections">Startpaginasecties</string>
+    <string name="settings_show_shortcuts">Snelkoppelingen tonen</string>
+    <string name="settings_show_frequent">Vaak bezocht tonen</string>
+    <string name="settings_show_recent">Recente pagina\'s tonen</string>
+    <string name="settings_show_bookmarks">Bladwijzers tonen</string>
+    <string name="settings_restore_home">Startpagina herstellen</string>
+    <string name="settings_suggestions">Zoeksuggesties</string>
+    <string name="suggestion_provider_none">Uit</string>
+    <string name="settings_clear_searches">Zoekgeschiedenis wissen</string>
+    <string name="action_share">Delen</string>
+    <string name="action_find">Zoeken op pagina</string>
+    <string name="action_desktop_view">Desktopweergave</string>
+    <string name="suggestion_delete">Suggestie verwijderen</string>
 </resources>

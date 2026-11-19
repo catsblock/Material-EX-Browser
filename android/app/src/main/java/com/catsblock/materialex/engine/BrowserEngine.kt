@@ -21,6 +21,7 @@ import kotlinx.coroutines.launch
 import org.mozilla.geckoview.GeckoResult
 import org.mozilla.geckoview.GeckoRuntime
 import org.mozilla.geckoview.GeckoSession
+import org.mozilla.geckoview.GeckoSessionSettings
 
 data class PageState(
     val url: String = "",
@@ -29,7 +30,8 @@ data class PageState(
     val isLoading: Boolean = false,
     val isSecure: Boolean = false,
     val canGoBack: Boolean = false,
-    val canGoForward: Boolean = false
+    val canGoForward: Boolean = false,
+    val desktopMode: Boolean = false
 )
 
 class BrowserEngine(context: Context, permissionManager: PermissionManager) {
@@ -107,6 +109,32 @@ class BrowserEngine(context: Context, permissionManager: PermissionManager) {
     fun reload() = active.value?.reload()
 
     fun stop() = active.value?.stop()
+
+    fun setDesktopMode(enabled: Boolean) {
+        val id = manager.state.value.activeId ?: return
+        val session = sessions[id] ?: return
+        session.settings.userAgentMode =
+            if (enabled) GeckoSessionSettings.USER_AGENT_MODE_DESKTOP else GeckoSessionSettings.USER_AGENT_MODE_MOBILE
+        session.settings.viewportMode =
+            if (enabled) GeckoSessionSettings.VIEWPORT_MODE_DESKTOP else GeckoSessionSettings.VIEWPORT_MODE_MOBILE
+        change(id) { it.copy(desktopMode = enabled) }
+        session.reload()
+    }
+
+    fun find(query: String, forward: Boolean, onResult: (Int) -> Unit) {
+        val session = active.value ?: return
+        if (query.isEmpty()) {
+            session.finder.clear()
+            onResult(0)
+            return
+        }
+        val flags = if (forward) 0 else GeckoSession.FINDER_FIND_BACKWARDS
+        session.finder.find(query, flags).accept { result -> onResult(result?.total ?: 0) }
+    }
+
+    fun clearFind() {
+        active.value?.finder?.clear()
+    }
 
     private fun syncActive() {
         active.value = manager.state.value.activeId?.let { sessions[it] }

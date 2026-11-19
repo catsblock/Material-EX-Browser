@@ -25,6 +25,60 @@ interface HistoryDao {
 
     @Query("DELETE FROM history WHERE visitedAt < :before")
     suspend fun deleteOlderThan(before: Long)
+
+    @Query("SELECT * FROM history ORDER BY visitedAt DESC LIMIT :limit")
+    fun recent(limit: Int): Flow<List<HistoryEntry>>
+
+    @Query(
+        "SELECT url, MAX(title) AS title, COUNT(*) AS visits FROM history " +
+            "GROUP BY url ORDER BY visits DESC, MAX(visitedAt) DESC LIMIT :limit"
+    )
+    fun frequent(limit: Int): Flow<List<FrequentSite>>
+}
+
+@Dao
+interface SearchHistoryDao {
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun upsert(entry: SearchEntry)
+
+    @Query("SELECT text FROM search_history WHERE text LIKE :prefix || '%' ESCAPE '\\' ORDER BY searchedAt DESC LIMIT 5")
+    suspend fun match(prefix: String): List<String>
+
+    @Query("DELETE FROM search_history WHERE text NOT IN (SELECT text FROM search_history ORDER BY searchedAt DESC LIMIT :keep)")
+    suspend fun trim(keep: Int)
+
+    @Query("DELETE FROM search_history WHERE text = :text")
+    suspend fun delete(text: String)
+
+    @Query("DELETE FROM search_history")
+    suspend fun clear()
+
+    @Query("DELETE FROM search_history WHERE searchedAt < :before")
+    suspend fun deleteOlderThan(before: Long)
+}
+
+@Dao
+interface ShortcutDao {
+    @Query("SELECT * FROM shortcuts ORDER BY position ASC, id ASC")
+    fun observe(): Flow<List<Shortcut>>
+
+    @Query("SELECT * FROM shortcuts ORDER BY position ASC, id ASC")
+    suspend fun all(): List<Shortcut>
+
+    @Insert
+    suspend fun insert(shortcut: Shortcut): Long
+
+    @Query("UPDATE shortcuts SET title = :title, url = :url WHERE id = :id")
+    suspend fun update(id: Long, title: String, url: String)
+
+    @Query("UPDATE shortcuts SET position = :position WHERE id = :id")
+    suspend fun setPosition(id: Long, position: Int)
+
+    @Query("DELETE FROM shortcuts WHERE id = :id")
+    suspend fun delete(id: Long)
+
+    @Query("DELETE FROM shortcuts")
+    suspend fun clear()
 }
 
 @Dao

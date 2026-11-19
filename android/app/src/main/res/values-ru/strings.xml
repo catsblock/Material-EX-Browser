@@ -98,4 +98,25 @@
     <string name="site_info_permissions">Разрешения</string>
     <string name="settings_frame_autohide">Скрывать рамку при прокрутке</string>
     <string name="settings_frame_autohide_description">Плавающая строка поиска скрывается при прокрутке вниз и возвращается при прокрутке вверх</string>
+    <string name="home_shortcuts_add">Добавить ярлык</string>
+    <string name="shortcut_edit_title">Изменить ярлык</string>
+    <string name="shortcut_name">Название</string>
+    <string name="shortcut_url">Адрес</string>
+    <string name="shortcut_move_earlier">Переместить раньше</string>
+    <string name="shortcut_move_later">Переместить позже</string>
+    <string name="home_frequent">Часто посещаемые</string>
+    <string name="home_recent">Недавние страницы</string>
+    <string name="settings_home_sections">Разделы главной страницы</string>
+    <string name="settings_show_shortcuts">Показывать ярлыки</string>
+    <string name="settings_show_frequent">Показывать часто посещаемые</string>
+    <string name="settings_show_recent">Показывать недавние страницы</string>
+    <string name="settings_show_bookmarks">Показывать закладки</string>
+    <string name="settings_restore_home">Восстановить главную страницу</string>
+    <string name="settings_suggestions">Поисковые подсказки</string>
+    <string name="suggestion_provider_none">Выкл.</string>
+    <string name="settings_clear_searches">Очистить историю поиска</string>
+    <string name="action_share">Поделиться</string>
+    <string name="action_find">Найти на странице</string>
+    <string name="action_desktop_view">Версия для ПК</string>
+    <string name="suggestion_delete">Удалить подсказку</string>
 </resources>

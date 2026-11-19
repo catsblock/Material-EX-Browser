@@ -6,6 +6,8 @@ import com.catsblock.materialex.core.permission.PermissionManager
 import com.catsblock.materialex.data.LibraryRepository
 import com.catsblock.materialex.data.RoomPermissionStore
 import com.catsblock.materialex.data.SettingsRepository
+import com.catsblock.materialex.data.SuggestionClient
+import com.catsblock.materialex.data.SuggestionEngine
 import com.catsblock.materialex.data.db.AppDatabase
 import com.catsblock.materialex.engine.BrowserEngine
 import kotlinx.coroutines.CoroutineScope
@@ -20,11 +22,13 @@ class MaterialExApp : Application() {
 
     private val database: AppDatabase by lazy {
         Room.databaseBuilder(this, AppDatabase::class.java, "materialex.db")
-            .addMigrations(AppDatabase.MIGRATION_1_2)
+            .addMigrations(AppDatabase.MIGRATION_1_2, AppDatabase.MIGRATION_2_3)
             .build()
     }
 
     val library: LibraryRepository by lazy { LibraryRepository(database) }
+
+    val suggestions: SuggestionEngine by lazy { SuggestionEngine(library, SuggestionClient()) }
 
     val permissionManager: PermissionManager by lazy { PermissionManager(RoomPermissionStore(database.permissions())) }
 
@@ -36,6 +40,13 @@ class MaterialExApp : Application() {
 
     override fun onCreate() {
         super.onCreate()
-        ioScope.launch { library.purgeHistory(LibraryRepository.DEFAULT_RETENTION_DAYS) }
+        ioScope.launch {
+            library.purgeHistory(LibraryRepository.DEFAULT_RETENTION_DAYS)
+            library.purgeSearches(LibraryRepository.DEFAULT_RETENTION_DAYS)
+            if (!settings.shortcutsSeeded()) {
+                library.restoreDefaultShortcuts()
+                settings.markShortcutsSeeded()
+            }
+        }
     }
 }

@@ -98,4 +98,25 @@
     <string name="site_info_permissions">अनुमतियाँ</string>
     <string name="settings_frame_autohide">स्क्रॉल करते समय फ्रेम छिपाएँ</string>
     <string name="settings_frame_autohide_description">नीचे स्क्रॉल करने पर फ़्लोटिंग सर्च फ़्रेम छिप जाता है और ऊपर स्क्रॉल करने पर लौट आता है</string>
+    <string name="home_shortcuts_add">शॉर्टकट जोड़ें</string>
+    <string name="shortcut_edit_title">शॉर्टकट संपादित करें</string>
+    <string name="shortcut_name">नाम</string>
+    <string name="shortcut_url">पता</string>
+    <string name="shortcut_move_earlier">पहले ले जाएँ</string>
+    <string name="shortcut_move_later">बाद में ले जाएँ</string>
+    <string name="home_frequent">अक्सर देखी गई</string>
+    <string name="home_recent">हाल के पृष्ठ</string>
+    <string name="settings_home_sections">होमपेज अनुभाग</string>
+    <string name="settings_show_shortcuts">शॉर्टकट दिखाएँ</string>
+    <string name="settings_show_frequent">अक्सर देखी गई साइटें दिखाएँ</string>
+    <string name="settings_show_recent">हाल के पृष्ठ दिखाएँ</string>
+    <string name="settings_show_bookmarks">बुकमार्क दिखाएँ</string>
+    <string name="settings_restore_home">होमपेज डिफ़ॉल्ट बहाल करें</string>
+    <string name="settings_suggestions">खोज सुझाव</string>
+    <string name="suggestion_provider_none">बंद</string>
+    <string name="settings_clear_searches">खोज इतिहास साफ़ करें</string>
+    <string name="action_share">साझा करें</string>
+    <string name="action_find">पृष्ठ में खोजें</string>
+    <string name="action_desktop_view">डेस्कटॉप दृश्य</string>
+    <string name="suggestion_delete">सुझाव हटाएँ</string>
 </resources>

@@ -98,4 +98,25 @@
     <string name="site_info_permissions">Дозволи</string>
     <string name="settings_frame_autohide">Приховувати рамку під час прокручування</string>
     <string name="settings_frame_autohide_description">Плаваюча рамка пошуку ховається під час прокручування вниз і повертається під час прокручування вгору</string>
+    <string name="home_shortcuts_add">Додати ярлик</string>
+    <string name="shortcut_edit_title">Змінити ярлик</string>
+    <string name="shortcut_name">Назва</string>
+    <string name="shortcut_url">Адреса</string>
+    <string name="shortcut_move_earlier">Перемістити раніше</string>
+    <string name="shortcut_move_later">Перемістити пізніше</string>
+    <string name="home_frequent">Часто відвідувані</string>
+    <string name="home_recent">Нещодавні сторінки</string>
+    <string name="settings_home_sections">Розділи головної сторінки</string>
+    <string name="settings_show_shortcuts">Показувати ярлики</string>
+    <string name="settings_show_frequent">Показувати часто відвідувані</string>
+    <string name="settings_show_recent">Показувати нещодавні сторінки</string>
+    <string name="settings_show_bookmarks">Показувати закладки</string>
+    <string name="settings_restore_home">Відновити головну сторінку</string>
+    <string name="settings_suggestions">Пошукові підказки</string>
+    <string name="suggestion_provider_none">Вимк.</string>
+    <string name="settings_clear_searches">Очистити історію пошуку</string>
+    <string name="action_share">Поділитися</string>
+    <string name="action_find">Знайти на сторінці</string>
+    <string name="action_desktop_view">Версія для комп’ютера</string>
+    <string name="suggestion_delete">Видалити підказку</string>
 </resources>

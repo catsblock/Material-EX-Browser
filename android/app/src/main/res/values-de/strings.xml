@@ -98,4 +98,25 @@
     <string name="site_info_permissions">Berechtigungen</string>
     <string name="settings_frame_autohide">Rahmen beim Scrollen ausblenden</string>
     <string name="settings_frame_autohide_description">Der schwebende Suchrahmen verschwindet beim Abwärtsscrollen und kehrt beim Aufwärtsscrollen zurück</string>
+    <string name="home_shortcuts_add">Verknüpfung hinzufügen</string>
+    <string name="shortcut_edit_title">Verknüpfung bearbeiten</string>
+    <string name="shortcut_name">Name</string>
+    <string name="shortcut_url">Adresse</string>
+    <string name="shortcut_move_earlier">Nach vorne</string>
+    <string name="shortcut_move_later">Nach hinten</string>
+    <string name="home_frequent">Häufig besucht</string>
+    <string name="home_recent">Zuletzt besucht</string>
+    <string name="settings_home_sections">Startseitenbereiche</string>
+    <string name="settings_show_shortcuts">Verknüpfungen anzeigen</string>
+    <string name="settings_show_frequent">Häufig besuchte Seiten anzeigen</string>
+    <string name="settings_show_recent">Zuletzt besuchte Seiten anzeigen</string>
+    <string name="settings_show_bookmarks">Lesezeichen anzeigen</string>
+    <string name="settings_restore_home">Startseite zurücksetzen</string>
+    <string name="settings_suggestions">Suchvorschläge</string>
+    <string name="suggestion_provider_none">Aus</string>
+    <string name="settings_clear_searches">Suchverlauf löschen</string>
+    <string name="action_share">Teilen</string>
+    <string name="action_find">Auf Seite suchen</string>
+    <string name="action_desktop_view">Desktop-Ansicht</string>
+    <string name="suggestion_delete">Vorschlag entfernen</string>
 </resources>

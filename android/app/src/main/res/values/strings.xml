@@ -100,4 +100,25 @@
     <string name="site_info_permissions">Permissions</string>
     <string name="settings_frame_autohide">Hide frame while scrolling</string>
     <string name="settings_frame_autohide_description">The floating search frame hides when you scroll down and returns when you scroll up</string>
+    <string name="home_shortcuts_add">Add shortcut</string>
+    <string name="shortcut_edit_title">Edit shortcut</string>
+    <string name="shortcut_name">Name</string>
+    <string name="shortcut_url">Address</string>
+    <string name="shortcut_move_earlier">Move earlier</string>
+    <string name="shortcut_move_later">Move later</string>
+    <string name="home_frequent">Frequently visited</string>
+    <string name="home_recent">Recent pages</string>
+    <string name="settings_home_sections">Homepage sections</string>
+    <string name="settings_show_shortcuts">Show shortcuts</string>
+    <string name="settings_show_frequent">Show frequently visited</string>
+    <string name="settings_show_recent">Show recent pages</string>
+    <string name="settings_show_bookmarks">Show bookmarks</string>
+    <string name="settings_restore_home">Restore homepage defaults</string>
+    <string name="settings_suggestions">Search suggestions</string>
+    <string name="suggestion_provider_none">Off</string>
+    <string name="settings_clear_searches">Clear search history</string>
+    <string name="action_share">Share</string>
+    <string name="action_find">Find in page</string>
+    <string name="action_desktop_view">Desktop view</string>
+    <string name="suggestion_delete">Remove suggestion</string>
 </resources>

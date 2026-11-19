@@ -98,4 +98,25 @@
     <string name="site_info_permissions">Quyền</string>
     <string name="settings_frame_autohide">Ẩn khung khi cuộn</string>
     <string name="settings_frame_autohide_description">Khung tìm kiếm nổi sẽ ẩn khi cuộn xuống và hiện lại khi cuộn lên</string>
+    <string name="home_shortcuts_add">Thêm lối tắt</string>
+    <string name="shortcut_edit_title">Sửa lối tắt</string>
+    <string name="shortcut_name">Tên</string>
+    <string name="shortcut_url">Địa chỉ</string>
+    <string name="shortcut_move_earlier">Di chuyển lên trước</string>
+    <string name="shortcut_move_later">Di chuyển ra sau</string>
+    <string name="home_frequent">Thường truy cập</string>
+    <string name="home_recent">Trang gần đây</string>
+    <string name="settings_home_sections">Các mục trang chủ</string>
+    <string name="settings_show_shortcuts">Hiện lối tắt</string>
+    <string name="settings_show_frequent">Hiện trang thường truy cập</string>
+    <string name="settings_show_recent">Hiện trang gần đây</string>
+    <string name="settings_show_bookmarks">Hiện dấu trang</string>
+    <string name="settings_restore_home">Khôi phục trang chủ mặc định</string>
+    <string name="settings_suggestions">Gợi ý tìm kiếm</string>
+    <string name="suggestion_provider_none">Tắt</string>
+    <string name="settings_clear_searches">Xóa lịch sử tìm kiếm</string>
+    <string name="action_share">Chia sẻ</string>
+    <string name="action_find">Tìm trong trang</string>
+    <string name="action_desktop_view">Chế độ máy tính</string>
+    <string name="suggestion_delete">Xóa gợi ý</string>
 </resources>

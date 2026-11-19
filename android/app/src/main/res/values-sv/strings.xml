@@ -98,4 +98,25 @@
     <string name="site_info_permissions">Behörigheter</string>
     <string name="settings_frame_autohide">Dölj ramen vid skrollning</string>
     <string name="settings_frame_autohide_description">Den flytande sökramen döljs när du skrollar nedåt och visas igen när du skrollar uppåt</string>
+    <string name="home_shortcuts_add">Lägg till genväg</string>
+    <string name="shortcut_edit_title">Redigera genväg</string>
+    <string name="shortcut_name">Namn</string>
+    <string name="shortcut_url">Adress</string>
+    <string name="shortcut_move_earlier">Flytta tidigare</string>
+    <string name="shortcut_move_later">Flytta senare</string>
+    <string name="home_frequent">Ofta besökta</string>
+    <string name="home_recent">Senaste sidor</string>
+    <string name="settings_home_sections">Startsidans sektioner</string>
+    <string name="settings_show_shortcuts">Visa genvägar</string>
+    <string name="settings_show_frequent">Visa ofta besökta</string>
+    <string name="settings_show_recent">Visa senaste sidor</string>
+    <string name="settings_show_bookmarks">Visa bokmärken</string>
+    <string name="settings_restore_home">Återställ startsidan</string>
+    <string name="settings_suggestions">Sökförslag</string>
+    <string name="suggestion_provider_none">Av</string>
+    <string name="settings_clear_searches">Rensa sökhistorik</string>
+    <string name="action_share">Dela</string>
+    <string name="action_find">Sök på sidan</string>
+    <string name="action_desktop_view">Datorversion</string>
+    <string name="suggestion_delete">Ta bort förslag</string>
 </resources>

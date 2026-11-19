@@ -100,4 +100,25 @@
     <string name="site_info_permissions">الأذونات</string>
     <string name="settings_frame_autohide">إخفاء الإطار أثناء التمرير</string>
     <string name="settings_frame_autohide_description">يختفي إطار البحث العائم عند تمرير الصفحة للأسفل ويعود عند التمرير للأعلى</string>
+    <string name="home_shortcuts_add">إضافة اختصار</string>
+    <string name="shortcut_edit_title">تعديل الاختصار</string>
+    <string name="shortcut_name">الاسم</string>
+    <string name="shortcut_url">العنوان</string>
+    <string name="shortcut_move_earlier">نقل للأمام</string>
+    <string name="shortcut_move_later">نقل للخلف</string>
+    <string name="home_frequent">المواقع الأكثر زيارة</string>
+    <string name="home_recent">الصفحات الأخيرة</string>
+    <string name="settings_home_sections">أقسام الصفحة الرئيسية</string>
+    <string name="settings_show_shortcuts">إظهار الاختصارات</string>
+    <string name="settings_show_frequent">إظهار المواقع الأكثر زيارة</string>
+    <string name="settings_show_recent">إظهار الصفحات الأخيرة</string>
+    <string name="settings_show_bookmarks">إظهار الإشارات المرجعية</string>
+    <string name="settings_restore_home">استعادة إعدادات الصفحة الرئيسية</string>
+    <string name="settings_suggestions">اقتراحات البحث</string>
+    <string name="suggestion_provider_none">إيقاف</string>
+    <string name="settings_clear_searches">مسح سجل البحث</string>
+    <string name="action_share">مشاركة</string>
+    <string name="action_find">بحث في الصفحة</string>
+    <string name="action_desktop_view">عرض سطح المكتب</string>
+    <string name="suggestion_delete">إزالة الاقتراح</string>
 </resources>

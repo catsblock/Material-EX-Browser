@@ -98,4 +98,25 @@
     <string name="site_info_permissions">Uprawnienia</string>
     <string name="settings_frame_autohide">Ukrywaj ramkę podczas przewijania</string>
     <string name="settings_frame_autohide_description">Pływająca ramka wyszukiwania znika podczas przewijania w dół i wraca po przewinięciu w górę</string>
+    <string name="home_shortcuts_add">Dodaj skrót</string>
+    <string name="shortcut_edit_title">Edytuj skrót</string>
+    <string name="shortcut_name">Nazwa</string>
+    <string name="shortcut_url">Adres</string>
+    <string name="shortcut_move_earlier">Przesuń wcześniej</string>
+    <string name="shortcut_move_later">Przesuń później</string>
+    <string name="home_frequent">Często odwiedzane</string>
+    <string name="home_recent">Ostatnie strony</string>
+    <string name="settings_home_sections">Sekcje strony głównej</string>
+    <string name="settings_show_shortcuts">Pokaż skróty</string>
+    <string name="settings_show_frequent">Pokaż często odwiedzane</string>
+    <string name="settings_show_recent">Pokaż ostatnie strony</string>
+    <string name="settings_show_bookmarks">Pokaż zakładki</string>
+    <string name="settings_restore_home">Przywróć ustawienia strony głównej</string>
+    <string name="settings_suggestions">Podpowiedzi wyszukiwania</string>
+    <string name="suggestion_provider_none">Wyłączone</string>
+    <string name="settings_clear_searches">Wyczyść historię wyszukiwania</string>
+    <string name="action_share">Udostępnij</string>
+    <string name="action_find">Znajdź na stronie</string>
+    <string name="action_desktop_view">Widok komputerowy</string>
+    <string name="suggestion_delete">Usuń podpowiedź</string>
 </resources>

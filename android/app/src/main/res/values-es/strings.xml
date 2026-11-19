@@ -98,4 +98,25 @@
     <string name="site_info_permissions">Permisos</string>
     <string name="settings_frame_autohide">Ocultar el marco al desplazarse</string>
     <string name="settings_frame_autohide_description">El marco de búsqueda flotante se oculta al bajar y reaparece al subir</string>
+    <string name="home_shortcuts_add">Añadir acceso directo</string>
+    <string name="shortcut_edit_title">Editar acceso directo</string>
+    <string name="shortcut_name">Nombre</string>
+    <string name="shortcut_url">Dirección</string>
+    <string name="shortcut_move_earlier">Mover antes</string>
+    <string name="shortcut_move_later">Mover después</string>
+    <string name="home_frequent">Visitados con frecuencia</string>
+    <string name="home_recent">Páginas recientes</string>
+    <string name="settings_home_sections">Secciones de la página de inicio</string>
+    <string name="settings_show_shortcuts">Mostrar accesos directos</string>
+    <string name="settings_show_frequent">Mostrar más visitados</string>
+    <string name="settings_show_recent">Mostrar páginas recientes</string>
+    <string name="settings_show_bookmarks">Mostrar marcadores</string>
+    <string name="settings_restore_home">Restaurar página de inicio</string>
+    <string name="settings_suggestions">Sugerencias de búsqueda</string>
+    <string name="suggestion_provider_none">Desactivadas</string>
+    <string name="settings_clear_searches">Borrar historial de búsqueda</string>
+    <string name="action_share">Compartir</string>
+    <string name="action_find">Buscar en la página</string>
+    <string name="action_desktop_view">Vista de escritorio</string>
+    <string name="suggestion_delete">Quitar sugerencia</string>
 </resources>

@@ -98,4 +98,25 @@
     <string name="site_info_permissions">สิทธิ์</string>
     <string name="settings_frame_autohide">ซ่อนกรอบขณะเลื่อน</string>
     <string name="settings_frame_autohide_description">กรอบค้นหาแบบลอยจะซ่อนเมื่อเลื่อนลงและกลับมาเมื่อเลื่อนขึ้น</string>
+    <string name="home_shortcuts_add">เพิ่มทางลัด</string>
+    <string name="shortcut_edit_title">แก้ไขทางลัด</string>
+    <string name="shortcut_name">ชื่อ</string>
+    <string name="shortcut_url">ที่อยู่</string>
+    <string name="shortcut_move_earlier">ย้ายไปก่อนหน้า</string>
+    <string name="shortcut_move_later">ย้ายไปถัดไป</string>
+    <string name="home_frequent">เว็บไซต์ที่เข้าบ่อย</string>
+    <string name="home_recent">หน้าล่าสุด</string>
+    <string name="settings_home_sections">ส่วนของหน้าแรก</string>
+    <string name="settings_show_shortcuts">แสดงทางลัด</string>
+    <string name="settings_show_frequent">แสดงเว็บไซต์ที่เข้าบ่อย</string>
+    <string name="settings_show_recent">แสดงหน้าล่าสุด</string>
+    <string name="settings_show_bookmarks">แสดงที่คั่นหน้า</string>
+    <string name="settings_restore_home">คืนค่าเริ่มต้นหน้าแรก</string>
+    <string name="settings_suggestions">คำแนะนำการค้นหา</string>
+    <string name="suggestion_provider_none">ปิด</string>
+    <string name="settings_clear_searches">ล้างประวัติการค้นหา</string>
+    <string name="action_share">แชร์</string>
+    <string name="action_find">ค้นหาในหน้า</string>
+    <string name="action_desktop_view">มุมมองเดสก์ท็อป</string>
+    <string name="suggestion_delete">ลบคำแนะนำ</string>
 </resources>

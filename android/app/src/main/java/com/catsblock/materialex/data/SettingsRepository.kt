@@ -11,11 +11,20 @@ import androidx.datastore.preferences.preferencesDataStore
 import com.catsblock.materialex.core.Resolution
 import com.catsblock.materialex.core.SearchEngine
 import com.catsblock.materialex.core.SearchTemplates
+import com.catsblock.materialex.core.SuggestionProvider
 import com.catsblock.materialex.core.UrlResolver
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
 
 private val Context.settingsStore by preferencesDataStore(name = "settings")
+
+enum class HomeSection {
+    SHORTCUTS,
+    FREQUENT,
+    RECENT,
+    BOOKMARKS
+}
 
 enum class ToolbarPosition {
     TOP,
@@ -36,7 +45,12 @@ data class BrowserSettings(
     val legalVersion: Int = 0,
     val legalAcceptedAt: Long = 0L,
     val googleEmail: String = "",
-    val autoHideFrame: Boolean = true
+    val autoHideFrame: Boolean = true,
+    val suggestionProvider: SuggestionProvider = SuggestionProvider.DUCKDUCKGO,
+    val showShortcuts: Boolean = true,
+    val showFrequent: Boolean = true,
+    val showRecent: Boolean = true,
+    val showBookmarks: Boolean = true
 ) {
     companion object {
         const val DEFAULT_HOMEPAGE = "https://www.google.com/"
@@ -54,6 +68,12 @@ class SettingsRepository(private val context: Context) {
     private val legalVersionKey = intPreferencesKey("legal_version")
     private val googleEmailKey = stringPreferencesKey("google_email")
     private val autoHideKey = booleanPreferencesKey("auto_hide_frame")
+    private val providerKey = stringPreferencesKey("suggestion_provider")
+    private val showShortcutsKey = booleanPreferencesKey("home_show_shortcuts")
+    private val showFrequentKey = booleanPreferencesKey("home_show_frequent")
+    private val showRecentKey = booleanPreferencesKey("home_show_recent")
+    private val showBookmarksKey = booleanPreferencesKey("home_show_bookmarks")
+    private val shortcutsSeededKey = booleanPreferencesKey("shortcuts_seeded")
     private val legalAcceptedAtKey = longPreferencesKey("legal_accepted_at")
 
     val settings: Flow<BrowserSettings> = context.settingsStore.data.map(::read)
@@ -64,6 +84,34 @@ class SettingsRepository(private val context: Context) {
 
     suspend fun setAutoHideFrame(enabled: Boolean) {
         context.settingsStore.edit { it[autoHideKey] = enabled }
+    }
+
+    suspend fun setSuggestionProvider(provider: SuggestionProvider) {
+        context.settingsStore.edit { it[providerKey] = provider.id }
+    }
+
+    suspend fun setHomeSection(section: HomeSection, visible: Boolean) {
+        context.settingsStore.edit { it[sectionKey(section)] = visible }
+    }
+
+    suspend fun resetHomeSettings() {
+        context.settingsStore.edit {
+            HomeSection.entries.forEach { section -> it.remove(sectionKey(section)) }
+            it.remove(homepageKey)
+        }
+    }
+
+    suspend fun shortcutsSeeded(): Boolean = context.settingsStore.data.first()[shortcutsSeededKey] ?: false
+
+    suspend fun markShortcutsSeeded() {
+        context.settingsStore.edit { it[shortcutsSeededKey] = true }
+    }
+
+    private fun sectionKey(section: HomeSection) = when (section) {
+        HomeSection.SHORTCUTS -> showShortcutsKey
+        HomeSection.FREQUENT -> showFrequentKey
+        HomeSection.RECENT -> showRecentKey
+        HomeSection.BOOKMARKS -> showBookmarksKey
     }
 
     suspend fun setHomepage(input: String): Boolean {
@@ -111,6 +159,11 @@ class SettingsRepository(private val context: Context) {
         legalVersion = preferences[legalVersionKey] ?: 0,
         legalAcceptedAt = preferences[legalAcceptedAtKey] ?: 0L,
         googleEmail = preferences[googleEmailKey].orEmpty(),
-        autoHideFrame = preferences[autoHideKey] ?: true
+        autoHideFrame = preferences[autoHideKey] ?: true,
+        suggestionProvider = SuggestionProvider.fromId(preferences[providerKey]),
+        showShortcuts = preferences[showShortcutsKey] ?: true,
+        showFrequent = preferences[showFrequentKey] ?: true,
+        showRecent = preferences[showRecentKey] ?: true,
+        showBookmarks = preferences[showBookmarksKey] ?: true
     )
 }

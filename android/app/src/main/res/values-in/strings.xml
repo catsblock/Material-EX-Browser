@@ -98,4 +98,25 @@
     <string name="site_info_permissions">Izin</string>
     <string name="settings_frame_autohide">Sembunyikan bingkai saat menggulir</string>
     <string name="settings_frame_autohide_description">Bingkai pencarian mengambang tersembunyi saat menggulir ke bawah dan muncul lagi saat menggulir ke atas</string>
+    <string name="home_shortcuts_add">Tambah pintasan</string>
+    <string name="shortcut_edit_title">Ubah pintasan</string>
+    <string name="shortcut_name">Nama</string>
+    <string name="shortcut_url">Alamat</string>
+    <string name="shortcut_move_earlier">Pindah ke depan</string>
+    <string name="shortcut_move_later">Pindah ke belakang</string>
+    <string name="home_frequent">Sering dikunjungi</string>
+    <string name="home_recent">Halaman terbaru</string>
+    <string name="settings_home_sections">Bagian beranda</string>
+    <string name="settings_show_shortcuts">Tampilkan pintasan</string>
+    <string name="settings_show_frequent">Tampilkan yang sering dikunjungi</string>
+    <string name="settings_show_recent">Tampilkan halaman terbaru</string>
+    <string name="settings_show_bookmarks">Tampilkan markah</string>
+    <string name="settings_restore_home">Pulihkan setelan beranda</string>
+    <string name="settings_suggestions">Saran penelusuran</string>
+    <string name="suggestion_provider_none">Mati</string>
+    <string name="settings_clear_searches">Hapus riwayat penelusuran</string>
+    <string name="action_share">Bagikan</string>
+    <string name="action_find">Cari di halaman</string>
+    <string name="action_desktop_view">Tampilan desktop</string>
+    <string name="suggestion_delete">Hapus saran</string>
 </resources>

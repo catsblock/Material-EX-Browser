@@ -98,4 +98,25 @@
     <string name="site_info_permissions">Käyttöoikeudet</string>
     <string name="settings_frame_autohide">Piilota kehys vieritettäessä</string>
     <string name="settings_frame_autohide_description">Kelluva hakukehys piiloutuu alas vieritettäessä ja palaa ylös vieritettäessä</string>
+    <string name="home_shortcuts_add">Lisää pikakuvake</string>
+    <string name="shortcut_edit_title">Muokkaa pikakuvaketta</string>
+    <string name="shortcut_name">Nimi</string>
+    <string name="shortcut_url">Osoite</string>
+    <string name="shortcut_move_earlier">Siirrä aiemmaksi</string>
+    <string name="shortcut_move_later">Siirrä myöhemmäksi</string>
+    <string name="home_frequent">Usein vierailtu</string>
+    <string name="home_recent">Viimeisimmät sivut</string>
+    <string name="settings_home_sections">Aloitussivun osiot</string>
+    <string name="settings_show_shortcuts">Näytä pikakuvakkeet</string>
+    <string name="settings_show_frequent">Näytä usein vierailtu</string>
+    <string name="settings_show_recent">Näytä viimeisimmät sivut</string>
+    <string name="settings_show_bookmarks">Näytä kirjanmerkit</string>
+    <string name="settings_restore_home">Palauta aloitussivun oletukset</string>
+    <string name="settings_suggestions">Hakuehdotukset</string>
+    <string name="suggestion_provider_none">Pois</string>
+    <string name="settings_clear_searches">Tyhjennä hakuhistoria</string>
+    <string name="action_share">Jaa</string>
+    <string name="action_find">Etsi sivulta</string>
+    <string name="action_desktop_view">Työpöytänäkymä</string>
+    <string name="suggestion_delete">Poista ehdotus</string>
 </resources>

@@ -98,4 +98,25 @@
     <string name="site_info_permissions">Autorizzazioni</string>
     <string name="settings_frame_autohide">Nascondi il riquadro durante lo scorrimento</string>
     <string name="settings_frame_autohide_description">Il riquadro di ricerca flottante si nasconde scorrendo verso il basso e riappare scorrendo verso l\'alto</string>
+    <string name="home_shortcuts_add">Aggiungi scorciatoia</string>
+    <string name="shortcut_edit_title">Modifica scorciatoia</string>
+    <string name="shortcut_name">Nome</string>
+    <string name="shortcut_url">Indirizzo</string>
+    <string name="shortcut_move_earlier">Sposta prima</string>
+    <string name="shortcut_move_later">Sposta dopo</string>
+    <string name="home_frequent">Visitati di frequente</string>
+    <string name="home_recent">Pagine recenti</string>
+    <string name="settings_home_sections">Sezioni della home page</string>
+    <string name="settings_show_shortcuts">Mostra scorciatoie</string>
+    <string name="settings_show_frequent">Mostra i più visitati</string>
+    <string name="settings_show_recent">Mostra pagine recenti</string>
+    <string name="settings_show_bookmarks">Mostra segnalibri</string>
+    <string name="settings_restore_home">Ripristina la home page</string>
+    <string name="settings_suggestions">Suggerimenti di ricerca</string>
+    <string name="suggestion_provider_none">Disattivati</string>
+    <string name="settings_clear_searches">Cancella cronologia ricerche</string>
+    <string name="action_share">Condividi</string>
+    <string name="action_find">Trova nella pagina</string>
+    <string name="action_desktop_view">Versione desktop</string>
+    <string name="suggestion_delete">Rimuovi suggerimento</string>
 </resources>

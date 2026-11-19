@@ -100,4 +100,25 @@
     <string name="site_info_permissions">Permissões</string>
     <string name="settings_frame_autohide">Ocultar o quadro ao rolar</string>
     <string name="settings_frame_autohide_description">O quadro de busca flutuante se oculta ao rolar para baixo e reaparece ao rolar para cima</string>
+    <string name="home_shortcuts_add">Adicionar atalho</string>
+    <string name="shortcut_edit_title">Editar atalho</string>
+    <string name="shortcut_name">Nome</string>
+    <string name="shortcut_url">Endereço</string>
+    <string name="shortcut_move_earlier">Mover para antes</string>
+    <string name="shortcut_move_later">Mover para depois</string>
+    <string name="home_frequent">Mais visitados</string>
+    <string name="home_recent">Páginas recentes</string>
+    <string name="settings_home_sections">Seções da página inicial</string>
+    <string name="settings_show_shortcuts">Mostrar atalhos</string>
+    <string name="settings_show_frequent">Mostrar mais visitados</string>
+    <string name="settings_show_recent">Mostrar páginas recentes</string>
+    <string name="settings_show_bookmarks">Mostrar favoritos</string>
+    <string name="settings_restore_home">Restaurar página inicial</string>
+    <string name="settings_suggestions">Sugestões de busca</string>
+    <string name="suggestion_provider_none">Desativadas</string>
+    <string name="settings_clear_searches">Limpar histórico de busca</string>
+    <string name="action_share">Compartilhar</string>
+    <string name="action_find">Localizar na página</string>
+    <string name="action_desktop_view">Versão para computador</string>
+    <string name="suggestion_delete">Remover sugestão</string>
 </resources>

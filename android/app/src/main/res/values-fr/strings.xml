@@ -98,4 +98,25 @@
     <string name="site_info_permissions">Autorisations</string>
     <string name="settings_frame_autohide">Masquer le cadre au défilement</string>
     <string name="settings_frame_autohide_description">Le cadre de recherche flottant se masque en faisant défiler vers le bas et réapparaît vers le haut</string>
+    <string name="home_shortcuts_add">Ajouter un raccourci</string>
+    <string name="shortcut_edit_title">Modifier le raccourci</string>
+    <string name="shortcut_name">Nom</string>
+    <string name="shortcut_url">Adresse</string>
+    <string name="shortcut_move_earlier">Déplacer avant</string>
+    <string name="shortcut_move_later">Déplacer après</string>
+    <string name="home_frequent">Les plus visités</string>
+    <string name="home_recent">Pages récentes</string>
+    <string name="settings_home_sections">Sections de la page d\'accueil</string>
+    <string name="settings_show_shortcuts">Afficher les raccourcis</string>
+    <string name="settings_show_frequent">Afficher les sites les plus visités</string>
+    <string name="settings_show_recent">Afficher les pages récentes</string>
+    <string name="settings_show_bookmarks">Afficher les favoris</string>
+    <string name="settings_restore_home">Restaurer la page d\'accueil</string>
+    <string name="settings_suggestions">Suggestions de recherche</string>
+    <string name="suggestion_provider_none">Désactivées</string>
+    <string name="settings_clear_searches">Effacer l\'historique de recherche</string>
+    <string name="action_share">Partager</string>
+    <string name="action_find">Rechercher dans la page</string>
+    <string name="action_desktop_view">Version pour ordinateur</string>
+    <string name="suggestion_delete">Supprimer la suggestion</string>
 </resources>

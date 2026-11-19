@@ -23,6 +23,7 @@ import androidx.compose.material3.RadioButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -37,7 +38,10 @@ import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.unit.dp
 import com.catsblock.materialex.R
 import com.catsblock.materialex.core.SearchEngine
+import com.catsblock.materialex.core.SuggestionProvider
 import com.catsblock.materialex.data.BrowserSettings
+import com.catsblock.materialex.data.HomeSection
+import com.catsblock.materialex.data.LibraryRepository
 import com.catsblock.materialex.data.SettingsRepository
 import com.catsblock.materialex.data.ToolbarPosition
 import kotlinx.coroutines.launch
@@ -47,6 +51,7 @@ import kotlinx.coroutines.launch
 fun SettingsScreen(
     settings: BrowserSettings,
     repository: SettingsRepository,
+    library: LibraryRepository,
     onClose: () -> Unit
 ) {
     val scope = rememberCoroutineScope()
@@ -173,6 +178,42 @@ fun SettingsScreen(
                     }
                 }
             }
+            Column {
+                Text(stringResource(R.string.settings_suggestions), style = MaterialTheme.typography.titleMedium)
+                SuggestionProvider.entries.forEach { provider ->
+                    ChoiceRow(
+                        label = providerLabel(provider),
+                        selected = settings.suggestionProvider == provider,
+                        onSelect = { scope.launch { repository.setSuggestionProvider(provider) } }
+                    )
+                }
+                TextButton(onClick = { scope.launch { library.clearSearches() } }) {
+                    Text(stringResource(R.string.settings_clear_searches))
+                }
+            }
+            Column {
+                Text(stringResource(R.string.settings_home_sections), style = MaterialTheme.typography.titleMedium)
+                SectionSwitch(R.string.settings_show_shortcuts, settings.showShortcuts) {
+                    scope.launch { repository.setHomeSection(HomeSection.SHORTCUTS, it) }
+                }
+                SectionSwitch(R.string.settings_show_frequent, settings.showFrequent) {
+                    scope.launch { repository.setHomeSection(HomeSection.FREQUENT, it) }
+                }
+                SectionSwitch(R.string.settings_show_bookmarks, settings.showBookmarks) {
+                    scope.launch { repository.setHomeSection(HomeSection.BOOKMARKS, it) }
+                }
+                SectionSwitch(R.string.settings_show_recent, settings.showRecent) {
+                    scope.launch { repository.setHomeSection(HomeSection.RECENT, it) }
+                }
+                TextButton(onClick = {
+                    scope.launch {
+                        repository.resetHomeSettings()
+                        library.restoreDefaultShortcuts()
+                    }
+                }) {
+                    Text(stringResource(R.string.settings_restore_home))
+                }
+            }
         }
     }
 }
@@ -202,5 +243,29 @@ private fun ChoiceRow(label: String, selected: Boolean, onSelect: () -> Unit) {
         RadioButton(selected = selected, onClick = null)
         Spacer(Modifier.width(12.dp))
         Text(label, style = MaterialTheme.typography.bodyLarge)
+    }
+}
+
+@Composable
+private fun providerLabel(provider: SuggestionProvider): String = when (provider) {
+    SuggestionProvider.NONE -> stringResource(R.string.suggestion_provider_none)
+    SuggestionProvider.DUCKDUCKGO -> "DuckDuckGo"
+    SuggestionProvider.GOOGLE -> "Google"
+    SuggestionProvider.BRAVE -> "Brave Search"
+    SuggestionProvider.ECOSIA -> "Ecosia"
+    SuggestionProvider.KAGI -> "Kagi"
+}
+
+@Composable
+private fun SectionSwitch(label: Int, checked: Boolean, onChange: (Boolean) -> Unit) {
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .toggleable(value = checked, role = Role.Switch, onValueChange = onChange)
+            .padding(vertical = 8.dp),
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        Text(stringResource(label), style = MaterialTheme.typography.bodyLarge, modifier = Modifier.weight(1f))
+        Switch(checked = checked, onCheckedChange = null)
     }
 }
