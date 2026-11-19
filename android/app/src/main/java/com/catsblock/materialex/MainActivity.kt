@@ -1,6 +1,16 @@
 package com.catsblock.materialex
 
 import android.content.Intent
+import android.net.Uri
+import android.provider.Settings
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.compose.material3.AlertDialog
+import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
+import androidx.compose.ui.res.stringResource
+import com.catsblock.materialex.core.permission.Origin
+import com.catsblock.materialex.ui.PermissionPromptSheet
+import com.catsblock.materialex.ui.SiteInfoSheet
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.BackHandler
@@ -37,8 +47,21 @@ private enum class Screen { BROWSER, TABS, SETTINGS, HISTORY, BOOKMARKS }
 class MainActivity : ComponentActivity() {
     private val app get() = application as MaterialExApp
 
+    private var osCallback: ((Boolean) -> Unit)? = null
+
+    private val osPermissionLauncher =
+        registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) { results ->
+            val callback = osCallback
+            osCallback = null
+            callback?.invoke(results.isNotEmpty() && results.values.all { it })
+        }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        app.engine.androidPermissionRequester = { permissions, callback ->
+            osCallback = callback
+            osPermissionLauncher.launch(permissions)
+        }
         enableEdgeToEdge()
         if (savedInstanceState == null) {
             lifecycleScope.launch { openFromIntent(intent) }
@@ -76,6 +99,9 @@ class MainActivity : ComponentActivity() {
         val isBookmarked by remember(pageState.url) { app.library.isBookmarked(pageState.url) }
             .collectAsStateWithLifecycle(false)
         var screen by rememberSaveable { mutableStateOf(Screen.BROWSER) }
+        var siteInfoOpen by rememberSaveable { mutableStateOf(false) }
+        val prompt by app.engine.permissions.prompt.collectAsStateWithLifecycle()
+        val osBlocked by app.engine.osBlocked.collectAsStateWithLifecycle()
 
         BackHandler(enabled = screen != Screen.BROWSER || pageState.canGoBack) {
             if (screen != Screen.BROWSER) screen = Screen.BROWSER else app.engine.goBack()
@@ -126,7 +152,41 @@ class MainActivity : ComponentActivity() {
                 },
                 onOpenHistory = { screen = Screen.HISTORY },
                 onOpenBookmarks = { screen = Screen.BOOKMARKS },
-                onOpenSettings = { screen = Screen.SETTINGS }
+                onOpenSettings = { screen = Screen.SETTINGS },
+                onOpenSiteInfo = { siteInfoOpen = true }
+            )
+        }
+
+        prompt?.let { current ->
+            PermissionPromptSheet(prompt = current, onChoice = app.engine.permissions::answer)
+        }
+
+        val siteOrigin = Origin.normalize(pageState.url)
+        if (siteInfoOpen && siteOrigin != null) {
+            SiteInfoSheet(
+                origin = siteOrigin,
+                secure = pageState.url.startsWith("https://") && pageState.isSecure,
+                manager = app.permissionManager,
+                profileId = "default",
+                onDismiss = { siteInfoOpen = false }
+            )
+        }
+
+        if (osBlocked) {
+            AlertDialog(
+                onDismissRequest = app.engine::clearOsBlocked,
+                text = { Text(stringResource(R.string.perm_os_blocked)) },
+                confirmButton = {
+                    TextButton(onClick = {
+                        app.engine.clearOsBlocked()
+                        startActivity(
+                            Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS, Uri.fromParts("package", packageName, null))
+                        )
+                    }) { Text(stringResource(R.string.perm_open_os_settings)) }
+                },
+                dismissButton = {
+                    TextButton(onClick = app.engine::clearOsBlocked) { Text(stringResource(R.string.onboarding_close)) }
+                }
             )
         }
     }

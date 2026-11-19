@@ -50,3 +50,18 @@ interface BookmarkDao {
     @Query("UPDATE bookmarks SET title = :title WHERE id = :id")
     suspend fun rename(id: Long, title: String)
 }
+
+@androidx.room.Dao
+interface SitePermissionDao {
+    @androidx.room.Query("SELECT * FROM site_permissions WHERE profileId = :profileId AND origin = :origin AND type = :type")
+    suspend fun find(profileId: String, origin: String, type: String): SitePermission?
+
+    @androidx.room.Query("SELECT * FROM site_permissions WHERE profileId = :profileId AND origin = :origin")
+    suspend fun forOrigin(profileId: String, origin: String): List<SitePermission>
+
+    @androidx.room.Insert(onConflict = androidx.room.OnConflictStrategy.REPLACE)
+    suspend fun upsert(permission: SitePermission)
+
+    @androidx.room.Query("DELETE FROM site_permissions WHERE profileId = :profileId")
+    suspend fun clearProfile(profileId: String)
+}

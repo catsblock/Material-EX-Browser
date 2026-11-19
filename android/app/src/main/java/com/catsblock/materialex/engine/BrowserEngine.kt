@@ -1,6 +1,9 @@
 package com.catsblock.materialex.engine
 
 import android.content.Context
+import com.catsblock.materialex.core.permission.PermissionBroker
+import com.catsblock.materialex.core.permission.PermissionManager
+import com.catsblock.materialex.core.permission.PermissionType
 import com.catsblock.materialex.core.tabs.TabManager
 import com.catsblock.materialex.core.tabs.TabsState
 import kotlinx.coroutines.CoroutineScope
@@ -13,6 +16,8 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.launch
+import org.mozilla.geckoview.GeckoResult
 import org.mozilla.geckoview.GeckoRuntime
 import org.mozilla.geckoview.GeckoSession
 
@@ -26,7 +31,7 @@ data class PageState(
     val canGoForward: Boolean = false
 )
 
-class BrowserEngine(context: Context) {
+class BrowserEngine(context: Context, permissionManager: PermissionManager) {
     private val runtime: GeckoRuntime = GeckoRuntime.create(context.applicationContext)
     private val scope = CoroutineScope(SupervisorJob() + Dispatchers.Main.immediate)
     private val manager = TabManager()
@@ -36,6 +41,11 @@ class BrowserEngine(context: Context) {
     private val active = MutableStateFlow<GeckoSession?>(null)
     private val lastVisit = HashMap<String, String>()
 
+    private val osBlockedFlow = MutableStateFlow(false)
+
+    val permissions = PermissionBroker(permissionManager, DEFAULT_PROFILE)
+    val osBlocked: StateFlow<Boolean> = osBlockedFlow.asStateFlow()
+    var androidPermissionRequester: ((Array<String>, (Boolean) -> Unit) -> Unit)? = null
     var onPageVisited: ((url: String, title: String) -> Unit)? = null
 
     val tabs: StateFlow<TabsState> = manager.state
@@ -68,6 +78,10 @@ class BrowserEngine(context: Context) {
         pages.update { it - id }
         lastVisit.remove(id)
         syncActive()
+    }
+
+    fun clearOsBlocked() {
+        osBlockedFlow.value = false
     }
 
     fun flushClosed() {
@@ -139,6 +153,75 @@ class BrowserEngine(context: Context) {
                 securityInfo: GeckoSession.ProgressDelegate.SecurityInformation
             ) {
                 change(id) { it.copy(isSecure = securityInfo.isSecure) }
+            }
+        }
+        session.permissionDelegate = object : GeckoSession.PermissionDelegate {
+            override fun onAndroidPermissionsRequest(
+                session: GeckoSession,
+                permissions: Array<out String>?,
+                callback: GeckoSession.PermissionDelegate.Callback
+            ) {
+                val needed = permissions?.toList().orEmpty()
+                val requester = androidPermissionRequester
+                if (needed.isEmpty() || requester == null) {
+                    callback.reject()
+                    return
+                }
+                requester(needed.toTypedArray()) { granted ->
+                    if (granted) {
+                        callback.grant()
+                    } else {
+                        osBlockedFlow.value = true
+                        callback.reject()
+                    }
+                }
+            }
+
+            override fun onContentPermissionRequest(
+                session: GeckoSession,
+                perm: GeckoSession.PermissionDelegate.ContentPermission
+            ): GeckoResult<Int>? {
+                val type = when (perm.permission) {
+                    GeckoSession.PermissionDelegate.PERMISSION_GEOLOCATION -> PermissionType.LOCATION
+                    GeckoSession.PermissionDelegate.PERMISSION_DESKTOP_NOTIFICATION -> PermissionType.NOTIFICATIONS
+                    GeckoSession.PermissionDelegate.PERMISSION_PERSISTENT_STORAGE -> PermissionType.PERSISTENT_STORAGE
+                    else -> null
+                } ?: return GeckoResult.fromValue(GeckoSession.PermissionDelegate.ContentPermission.VALUE_DENY)
+                val result = GeckoResult<Int>()
+                scope.launch {
+                    val allowed = permissions.resolve(perm.uri, type)
+                    result.complete(
+                        if (allowed) {
+                            GeckoSession.PermissionDelegate.ContentPermission.VALUE_ALLOW
+                        } else {
+                            GeckoSession.PermissionDelegate.ContentPermission.VALUE_DENY
+                        }
+                    )
+                }
+                return result
+            }
+
+            override fun onMediaPermissionRequest(
+                session: GeckoSession,
+                uri: String,
+                video: Array<out GeckoSession.PermissionDelegate.MediaSource>?,
+                audio: Array<out GeckoSession.PermissionDelegate.MediaSource>?,
+                callback: GeckoSession.PermissionDelegate.MediaCallback
+            ) {
+                scope.launch {
+                    val videoSource = video?.firstOrNull()
+                    val audioSource = audio?.firstOrNull()
+                    val videoAllowed = videoSource != null && permissions.resolve(uri, PermissionType.CAMERA)
+                    val audioAllowed = audioSource != null && permissions.resolve(uri, PermissionType.MICROPHONE)
+                    if (videoAllowed || audioAllowed) {
+                        callback.grant(
+                            if (videoAllowed) videoSource else null,
+                            if (audioAllowed) audioSource else null
+                        )
+                    } else {
+                        callback.reject()
+                    }
+                }
             }
         }
         session.contentDelegate = object : GeckoSession.ContentDelegate {

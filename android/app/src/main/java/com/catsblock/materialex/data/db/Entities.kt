@@ -19,3 +19,12 @@ data class Bookmark(
     val url: String,
     val createdAt: Long
 )
+
+@androidx.room.Entity(tableName = "site_permissions", primaryKeys = ["profileId", "origin", "type"])
+data class SitePermission(
+    val profileId: String,
+    val origin: String,
+    val type: String,
+    val state: String,
+    val denialCount: Int
+)

@@ -80,6 +80,7 @@ fun FloatingSearchFrame(
     onOpenHistory: () -> Unit,
     onOpenBookmarks: () -> Unit,
     onOpenSettings: () -> Unit,
+    onOpenSiteInfo: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     val focusManager = LocalFocusManager.current
@@ -114,14 +115,18 @@ fun FloatingSearchFrame(
                     secure -> stringResource(R.string.security_secure)
                     else -> stringResource(R.string.security_insecure)
                 }
-                Icon(
-                    imageVector = icon,
-                    contentDescription = description,
-                    modifier = Modifier
-                        .padding(start = 16.dp)
-                        .size(20.dp),
-                    tint = if (icon == Icons.Default.Warning) MaterialTheme.colorScheme.error else MaterialTheme.colorScheme.onSurfaceVariant
-                )
+                IconButton(
+                    onClick = onOpenSiteInfo,
+                    enabled = state.url.isNotEmpty(),
+                    modifier = Modifier.padding(start = 4.dp).size(44.dp)
+                ) {
+                    Icon(
+                        imageVector = icon,
+                        contentDescription = description,
+                        modifier = Modifier.size(20.dp),
+                        tint = if (icon == Icons.Default.Warning) MaterialTheme.colorScheme.error else MaterialTheme.colorScheme.onSurfaceVariant
+                    )
+                }
                 BasicTextField(
                     value = shown,
                     onValueChange = {

@@ -34,7 +34,8 @@ fun BrowserScreen(
     onToggleBookmark: () -> Unit,
     onOpenHistory: () -> Unit,
     onOpenBookmarks: () -> Unit,
-    onOpenSettings: () -> Unit
+    onOpenSettings: () -> Unit,
+    onOpenSiteInfo: () -> Unit
 ) {
     val state by engine.state.collectAsStateWithLifecycle()
     val tabs by engine.tabs.collectAsStateWithLifecycle()
@@ -83,6 +84,7 @@ fun BrowserScreen(
             onOpenHistory = onOpenHistory,
             onOpenBookmarks = onOpenBookmarks,
             onOpenSettings = onOpenSettings,
+            onOpenSiteInfo = onOpenSiteInfo,
             modifier = Modifier
                 .align(if (atTop) Alignment.TopCenter else Alignment.BottomCenter)
                 .onSizeChanged { size -> frameHeight = with(density) { size.height.toDp() } }
