@@ -107,6 +107,7 @@ class MainActivity : ComponentActivity() {
         val frequent by remember { app.library.frequentSites(6) }.collectAsStateWithLifecycle(emptyList())
         val recent by remember { app.library.recentPages(6) }.collectAsStateWithLifecycle(emptyList())
         val homeBookmarks by remember { app.library.bookmarks("") }.collectAsStateWithLifecycle(emptyList())
+        LaunchedEffect(settings.popupBlocking) { app.engine.popupBlocking = settings.popupBlocking }
         var query by remember { mutableStateOf("") }
         var suggestions by remember { mutableStateOf(emptyList<Suggestion>()) }
         LaunchedEffect(query, settings.suggestionProvider) {

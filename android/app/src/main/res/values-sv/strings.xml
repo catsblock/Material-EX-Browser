@@ -137,4 +137,8 @@
     <string name="download_completed">Klar</string>
     <string name="download_missing">Filen saknas</string>
     <string name="downloads_clear_finished">Rensa avslutade</string>
+    <string name="popup_close">Stäng popup-fönster</string>
+    <string name="popup_minimize">Minimera popup-fönster</string>
+    <string name="popup_restore">Återställ popup-fönster</string>
+    <string name="settings_popup_block">Blockera oönskade popup-fönster</string>
 </resources>

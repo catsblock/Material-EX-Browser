@@ -5,11 +5,14 @@ import com.catsblock.materialex.core.ScrollChromeTracker
 import com.catsblock.materialex.core.permission.PermissionBroker
 import com.catsblock.materialex.core.permission.PermissionManager
 import com.catsblock.materialex.core.permission.PermissionType
+import com.catsblock.materialex.core.popup.PopupPolicy
+import com.catsblock.materialex.core.popup.PopupWindow
 import com.catsblock.materialex.core.tabs.TabManager
 import com.catsblock.materialex.core.tabs.TabsState
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
@@ -52,11 +55,16 @@ class BrowserEngine(context: Context, permissionManager: PermissionManager) {
     private val chromeFlow = MutableStateFlow(true)
     private val atTopFlow = MutableStateFlow(true)
     private val scrollTops = HashMap<String, Int>()
+    private val popupFlow = MutableStateFlow<List<PopupWindow>>(emptyList())
+    private val popupSessions = HashMap<String, GeckoSession>()
+    private var lastGestureAt = 0L
 
     val permissions = PermissionBroker(permissionManager, DEFAULT_PROFILE)
     val osBlocked: StateFlow<Boolean> = osBlockedFlow.asStateFlow()
     val chromeVisible: StateFlow<Boolean> = chromeFlow.asStateFlow()
     val atTop: StateFlow<Boolean> = atTopFlow.asStateFlow()
+    val popups: StateFlow<List<PopupWindow>> = popupFlow.asStateFlow()
+    var popupBlocking: Boolean = true
     var androidPermissionRequester: ((Array<String>, (Boolean) -> Unit) -> Unit)? = null
     var onDownload: ((WebResponse) -> Unit)? = null
     var onPageVisited: ((url: String, title: String) -> Unit)? = null
@@ -113,6 +121,7 @@ class BrowserEngine(context: Context, permissionManager: PermissionManager) {
     fun moveTab(id: String, toIndex: Int) = manager.move(id, toIndex)
 
     private fun dropSession(id: String) {
+        closePopupsFor(id)
         sessions.remove(id)?.let(pendingClose::add)
         pages.update { it - id }
         lastVisit.remove(id)
@@ -129,6 +138,68 @@ class BrowserEngine(context: Context, permissionManager: PermissionManager) {
         manager.close(id)
         dropSession(id)
         syncActive()
+    }
+
+    fun noteUserGesture() {
+        lastGestureAt = System.currentTimeMillis()
+    }
+
+    fun popupSession(id: String): GeckoSession? = popupSessions[id]
+
+    fun popupGoBack(id: String) {
+        popupSessions[id]?.goBack()
+    }
+
+    fun minimizePopup(id: String) = setPopupMinimized(id, true)
+
+    fun restorePopup(id: String) {
+        val opener = popupFlow.value.firstOrNull { it.id == id }?.openerId ?: return
+        popupFlow.update { list ->
+            list.map {
+                when {
+                    it.id == id -> it.copy(minimized = false)
+                    it.openerId == opener -> it.copy(minimized = true)
+                    else -> it
+                }
+            }
+        }
+    }
+
+    private fun setPopupMinimized(id: String, minimized: Boolean) {
+        popupFlow.update { list -> list.map { if (it.id == id) it.copy(minimized = minimized) else it } }
+    }
+
+    fun closePopup(id: String) {
+        val session = popupSessions.remove(id) ?: return
+        popupFlow.update { list -> list.filterNot { it.id == id } }
+        pages.update { it - id }
+        trackers.remove(id)
+        scrollTops.remove(id)
+        lastVisit.remove(id)
+        pendingClose.add(session)
+        scope.launch {
+            delay(POPUP_RELEASE_DELAY_MS)
+            flushClosed()
+        }
+    }
+
+    private fun closePopupsFor(openerId: String) {
+        popupFlow.value.filter { it.openerId == openerId }.forEach { closePopup(it.id) }
+    }
+
+    private fun createPopup(openerId: String): GeckoSession? {
+        val open = popupFlow.value.count { it.openerId == openerId }
+        if (!PopupPolicy.allow(popupBlocking, open, lastGestureAt, System.currentTimeMillis())) return null
+        val id = "popup-" + java.util.UUID.randomUUID()
+        val session = GeckoSession()
+        popupSessions[id] = session
+        trackers[id] = ScrollChromeTracker()
+        pages.update { it + (id to PageState()) }
+        attach(id, session)
+        popupFlow.update { list ->
+            list.map { if (it.openerId == openerId) it.copy(minimized = true) else it } + PopupWindow(id, openerId)
+        }
+        return session
     }
 
     fun clearOsBlocked() {
@@ -199,6 +270,11 @@ class BrowserEngine(context: Context, permissionManager: PermissionManager) {
             ) {
                 change(id) { it.copy(url = url.orEmpty()) }
                 manager.update(id, url = url.orEmpty())
+            }
+
+            override fun onNewSession(session: GeckoSession, uri: String): GeckoResult<GeckoSession>? {
+                val opener = popupFlow.value.firstOrNull { it.id == id }?.openerId ?: id
+                return GeckoResult.fromValue(createPopup(opener))
             }
 
             override fun onCanGoBack(session: GeckoSession, canGoBack: Boolean) {
@@ -338,6 +414,10 @@ class BrowserEngine(context: Context, permissionManager: PermissionManager) {
                 onDownload?.invoke(response)
             }
 
+            override fun onCloseRequest(session: GeckoSession) {
+                if (popupSessions.containsKey(id)) closePopup(id)
+            }
+
             override fun onTitleChange(session: GeckoSession, title: String?) {
                 change(id) { it.copy(title = title.orEmpty()) }
                 manager.update(id, title = title.orEmpty())
@@ -347,5 +427,6 @@ class BrowserEngine(context: Context, permissionManager: PermissionManager) {
 
     private companion object {
         const val DEFAULT_PROFILE = "default"
+        const val POPUP_RELEASE_DELAY_MS = 450L
     }
 }

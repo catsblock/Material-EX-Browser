@@ -137,4 +137,8 @@
     <string name="download_completed">完了</string>
     <string name="download_missing">ファイルが見つかりません</string>
     <string name="downloads_clear_finished">完了分を消去</string>
+    <string name="popup_close">ポップアップを閉じる</string>
+    <string name="popup_minimize">ポップアップを最小化</string>
+    <string name="popup_restore">ポップアップを元に戻す</string>
+    <string name="settings_popup_block">不要なポップアップをブロック</string>
 </resources>

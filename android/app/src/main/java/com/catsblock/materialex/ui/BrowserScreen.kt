@@ -117,6 +117,12 @@ fun BrowserScreen(
         modifier = Modifier
             .fillMaxSize()
             .background(MaterialTheme.colorScheme.surface)
+            .pointerInput(Unit) {
+                awaitEachGesture {
+                    awaitFirstDown(requireUnconsumed = false, pass = PointerEventPass.Initial)
+                    engine.noteUserGesture()
+                }
+            }
             .pointerInput(thresholdPx) {
                 val slop = viewConfiguration.touchSlop
                 awaitEachGesture {
@@ -194,6 +200,11 @@ fun BrowserScreen(
                 modifier = Modifier.align(if (atTop) Alignment.BottomCenter else Alignment.TopCenter)
             )
         }
+        PopupHost(
+            engine = engine,
+            openerId = tabs.activeId,
+            dockAtBottom = atTop
+        )
         FloatingSearchFrame(
             state = state,
             tabCount = tabs.tabs.size,

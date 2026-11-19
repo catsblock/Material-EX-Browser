@@ -61,7 +61,8 @@ data class BrowserSettings(
     val showFrequent: Boolean = true,
     val showRecent: Boolean = true,
     val showBookmarks: Boolean = true,
-    val tabLayout: TabLayout = TabLayout.GRID
+    val tabLayout: TabLayout = TabLayout.GRID,
+    val popupBlocking: Boolean = true
 ) {
     companion object {
         const val DEFAULT_HOMEPAGE = "https://www.google.com/"
@@ -85,6 +86,7 @@ class SettingsRepository(private val context: Context) {
     private val showRecentKey = booleanPreferencesKey("home_show_recent")
     private val showBookmarksKey = booleanPreferencesKey("home_show_bookmarks")
     private val tabLayoutKey = stringPreferencesKey("tab_layout")
+    private val popupBlockingKey = booleanPreferencesKey("popup_blocking")
     private val shortcutsSeededKey = booleanPreferencesKey("shortcuts_seeded")
     private val legalAcceptedAtKey = longPreferencesKey("legal_accepted_at")
 
@@ -96,6 +98,10 @@ class SettingsRepository(private val context: Context) {
 
     suspend fun setAutoHideFrame(enabled: Boolean) {
         context.settingsStore.edit { it[autoHideKey] = enabled }
+    }
+
+    suspend fun setPopupBlocking(enabled: Boolean) {
+        context.settingsStore.edit { it[popupBlockingKey] = enabled }
     }
 
     suspend fun setTabLayout(layout: TabLayout) {
@@ -181,6 +187,7 @@ class SettingsRepository(private val context: Context) {
         showFrequent = preferences[showFrequentKey] ?: true,
         showRecent = preferences[showRecentKey] ?: true,
         showBookmarks = preferences[showBookmarksKey] ?: true,
-        tabLayout = TabLayout.fromId(preferences[tabLayoutKey])
+        tabLayout = TabLayout.fromId(preferences[tabLayoutKey]),
+        popupBlocking = preferences[popupBlockingKey] ?: true
     )
 }

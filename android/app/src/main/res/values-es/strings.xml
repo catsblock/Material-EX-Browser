@@ -137,4 +137,8 @@
     <string name="download_completed">Completada</string>
     <string name="download_missing">Falta el archivo</string>
     <string name="downloads_clear_finished">Borrar finalizadas</string>
+    <string name="popup_close">Cerrar ventana emergente</string>
+    <string name="popup_minimize">Minimizar ventana emergente</string>
+    <string name="popup_restore">Restaurar ventana emergente</string>
+    <string name="settings_popup_block">Bloquear ventanas emergentes no deseadas</string>
 </resources>

@@ -137,4 +137,8 @@
     <string name="download_completed">Завершено</string>
     <string name="download_missing">Файл відсутній</string>
     <string name="downloads_clear_finished">Очистити завершені</string>
+    <string name="popup_close">Закрити спливаюче вікно</string>
+    <string name="popup_minimize">Згорнути спливаюче вікно</string>
+    <string name="popup_restore">Відновити спливаюче вікно</string>
+    <string name="settings_popup_block">Блокувати небажані спливаючі вікна</string>
 </resources>

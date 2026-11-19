@@ -137,4 +137,8 @@
     <string name="download_completed">Abgeschlossen</string>
     <string name="download_missing">Datei fehlt</string>
     <string name="downloads_clear_finished">Beendete löschen</string>
+    <string name="popup_close">Popup schließen</string>
+    <string name="popup_minimize">Popup minimieren</string>
+    <string name="popup_restore">Popup wiederherstellen</string>
+    <string name="settings_popup_block">Unerwünschte Popups blockieren</string>
 </resources>

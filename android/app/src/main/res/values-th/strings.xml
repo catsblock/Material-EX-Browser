@@ -137,4 +137,8 @@
     <string name="download_completed">เสร็จสมบูรณ์</string>
     <string name="download_missing">ไม่พบไฟล์</string>
     <string name="downloads_clear_finished">ล้างที่เสร็จแล้ว</string>
+    <string name="popup_close">ปิดหน้าต่างป๊อปอัป</string>
+    <string name="popup_minimize">ย่อหน้าต่างป๊อปอัป</string>
+    <string name="popup_restore">คืนค่าหน้าต่างป๊อปอัป</string>
+    <string name="settings_popup_block">บล็อกป๊อปอัปที่ไม่ต้องการ</string>
 </resources>

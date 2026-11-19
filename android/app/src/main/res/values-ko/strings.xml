@@ -137,4 +137,8 @@
     <string name="download_completed">완료됨</string>
     <string name="download_missing">파일 없음</string>
     <string name="downloads_clear_finished">완료 항목 삭제</string>
+    <string name="popup_close">팝업 닫기</string>
+    <string name="popup_minimize">팝업 최소화</string>
+    <string name="popup_restore">팝업 복원</string>
+    <string name="settings_popup_block">원치 않는 팝업 차단</string>
 </resources>

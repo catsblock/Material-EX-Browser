@@ -137,4 +137,8 @@
     <string name="download_completed">पूर्ण</string>
     <string name="download_missing">फ़ाइल गुम है</string>
     <string name="downloads_clear_finished">पूर्ण साफ़ करें</string>
+    <string name="popup_close">पॉपअप बंद करें</string>
+    <string name="popup_minimize">पॉपअप छोटा करें</string>
+    <string name="popup_restore">पॉपअप पुनर्स्थापित करें</string>
+    <string name="settings_popup_block">अवांछित पॉपअप ब्लॉक करें</string>
 </resources>

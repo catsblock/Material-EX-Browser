@@ -137,4 +137,8 @@
     <string name="download_completed">Hoàn tất</string>
     <string name="download_missing">Thiếu tệp</string>
     <string name="downloads_clear_finished">Xóa mục đã xong</string>
+    <string name="popup_close">Đóng cửa sổ bật lên</string>
+    <string name="popup_minimize">Thu nhỏ cửa sổ bật lên</string>
+    <string name="popup_restore">Khôi phục cửa sổ bật lên</string>
+    <string name="settings_popup_block">Chặn cửa sổ bật lên không mong muốn</string>
 </resources>

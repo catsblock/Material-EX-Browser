@@ -137,4 +137,8 @@
     <string name="download_completed">Concluída</string>
     <string name="download_missing">Ficheiro em falta</string>
     <string name="downloads_clear_finished">Limpar concluídas</string>
+    <string name="popup_close">Fechar janela pop-up</string>
+    <string name="popup_minimize">Minimizar janela pop-up</string>
+    <string name="popup_restore">Restaurar janela pop-up</string>
+    <string name="settings_popup_block">Bloquear pop-ups indesejados</string>
 </resources>

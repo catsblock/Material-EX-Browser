@@ -137,4 +137,8 @@
     <string name="download_completed">Selesai</string>
     <string name="download_missing">File tidak ditemukan</string>
     <string name="downloads_clear_finished">Hapus yang selesai</string>
+    <string name="popup_close">Tutup jendela pop-up</string>
+    <string name="popup_minimize">Kecilkan jendela pop-up</string>
+    <string name="popup_restore">Pulihkan jendela pop-up</string>
+    <string name="settings_popup_block">Blokir pop-up yang tidak diinginkan</string>
 </resources>

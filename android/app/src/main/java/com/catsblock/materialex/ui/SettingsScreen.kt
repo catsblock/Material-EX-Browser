@@ -120,6 +120,9 @@ fun SettingsScreen(
                 Spacer(Modifier.width(16.dp))
                 Switch(checked = settings.autoHideFrame, onCheckedChange = null)
             }
+            SectionSwitch(R.string.settings_popup_block, settings.popupBlocking) {
+                scope.launch { repository.setPopupBlocking(it) }
+            }
             Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
                 Text(stringResource(R.string.settings_homepage), style = MaterialTheme.typography.titleMedium)
                 OutlinedTextField(

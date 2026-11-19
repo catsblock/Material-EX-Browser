@@ -137,4 +137,8 @@
     <string name="download_completed">Zakończono</string>
     <string name="download_missing">Brak pliku</string>
     <string name="downloads_clear_finished">Wyczyść zakończone</string>
+    <string name="popup_close">Zamknij okno podręczne</string>
+    <string name="popup_minimize">Zminimalizuj okno podręczne</string>
+    <string name="popup_restore">Przywróć okno podręczne</string>
+    <string name="settings_popup_block">Blokuj niechciane wyskakujące okna</string>
 </resources>

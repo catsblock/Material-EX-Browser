@@ -139,4 +139,8 @@
     <string name="download_completed">اكتمل</string>
     <string name="download_missing">الملف مفقود</string>
     <string name="downloads_clear_finished">مسح المنتهية</string>
+    <string name="popup_close">إغلاق النافذة المنبثقة</string>
+    <string name="popup_minimize">تصغير النافذة المنبثقة</string>
+    <string name="popup_restore">استعادة النافذة المنبثقة</string>
+    <string name="settings_popup_block">حظر النوافذ المنبثقة غير المرغوبة</string>
 </resources>

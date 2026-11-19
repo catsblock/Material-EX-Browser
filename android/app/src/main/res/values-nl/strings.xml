@@ -137,4 +137,8 @@
     <string name="download_completed">Voltooid</string>
     <string name="download_missing">Bestand ontbreekt</string>
     <string name="downloads_clear_finished">Voltooide wissen</string>
+    <string name="popup_close">Pop-up sluiten</string>
+    <string name="popup_minimize">Pop-up minimaliseren</string>
+    <string name="popup_restore">Pop-up herstellen</string>
+    <string name="settings_popup_block">Ongewenste pop-ups blokkeren</string>
 </resources>

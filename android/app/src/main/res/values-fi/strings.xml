@@ -137,4 +137,8 @@
     <string name="download_completed">Valmis</string>
     <string name="download_missing">Tiedosto puuttuu</string>
     <string name="downloads_clear_finished">Tyhjennä valmiit</string>
+    <string name="popup_close">Sulje ponnahdusikkuna</string>
+    <string name="popup_minimize">Pienennä ponnahdusikkuna</string>
+    <string name="popup_restore">Palauta ponnahdusikkuna</string>
+    <string name="settings_popup_block">Estä ei-toivotut ponnahdusikkunat</string>
 </resources>

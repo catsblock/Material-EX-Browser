@@ -1,4 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="doc_license">GPL 3.0 licence information</string>
+    <string name="popup_close">Close popup</string>
+    <string name="popup_minimize">Minimise popup</string>
+    <string name="popup_restore">Restore popup</string>
+    <string name="settings_popup_block">Block unwanted pop-ups</string>
 </resources>

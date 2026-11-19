@@ -139,4 +139,8 @@
     <string name="download_completed">Completed</string>
     <string name="download_missing">File is missing</string>
     <string name="downloads_clear_finished">Clear finished</string>
+    <string name="popup_close">Close popup</string>
+    <string name="popup_minimize">Minimize popup</string>
+    <string name="popup_restore">Restore popup</string>
+    <string name="settings_popup_block">Block unwanted popups</string>
 </resources>

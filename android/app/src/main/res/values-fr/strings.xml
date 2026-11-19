@@ -137,4 +137,8 @@
     <string name="download_completed">Terminé</string>
     <string name="download_missing">Fichier introuvable</string>
     <string name="downloads_clear_finished">Effacer les terminés</string>
+    <string name="popup_close">Fermer la fenêtre contextuelle</string>
+    <string name="popup_minimize">Réduire la fenêtre contextuelle</string>
+    <string name="popup_restore">Restaurer la fenêtre contextuelle</string>
+    <string name="settings_popup_block">Bloquer les fenêtres contextuelles indésirables</string>
 </resources>
