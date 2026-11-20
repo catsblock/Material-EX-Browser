@@ -127,6 +127,10 @@ class MainActivity : ComponentActivity() {
                 info.totalMem / (1024L * 1024L)
             )
         }
+        val profiles by app.settings.profiles.collectAsStateWithLifecycle(emptyList())
+        val activeProfile by app.engine.activeProfile.collectAsStateWithLifecycle()
+        val privateActive by remember { app.engine.tabs.map { it.active?.isPrivate == true } }
+            .collectAsStateWithLifecycle(false)
         var query by remember { mutableStateOf("") }
         var suggestions by remember { mutableStateOf(emptyList<Suggestion>()) }
         LaunchedEffect(query, settings.suggestionProvider, privateActive) {
@@ -139,10 +143,6 @@ class MainActivity : ComponentActivity() {
         }
         var screen by rememberSaveable { mutableStateOf(Screen.BROWSER) }
         var siteInfoOpen by rememberSaveable { mutableStateOf(false) }
-        val profiles by app.settings.profiles.collectAsStateWithLifecycle(emptyList())
-        val activeProfile by app.engine.activeProfile.collectAsStateWithLifecycle()
-        val privateActive by remember { app.engine.tabs.map { it.active?.isPrivate == true } }
-            .collectAsStateWithLifecycle(false)
         val prompt by app.engine.permissions.prompt.collectAsStateWithLifecycle()
         val osBlocked by app.engine.osBlocked.collectAsStateWithLifecycle()
 
