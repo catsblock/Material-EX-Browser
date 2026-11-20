@@ -232,4 +232,7 @@
     <string name="download_detail_speed">Скорость</string>
     <string name="download_detail_remaining">Осталось времени</string>
     <string name="download_detail_started">Начало</string>
+    <string name="perm_allow_once">Разрешить в этот раз</string>
+    <string name="perm_temp_granted">Разрешено только в этот раз</string>
+    <string name="perm_temp_revoke">Отозвать</string>
 </resources>

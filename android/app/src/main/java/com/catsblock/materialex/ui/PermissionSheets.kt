@@ -91,6 +91,14 @@ fun PermissionPromptSheet(prompt: PermissionPrompt, onChoice: (PromptChoice) -> 
             FilledTonalButton(onClick = { onChoice(PromptChoice.DENY) }, modifier = Modifier.fillMaxWidth()) {
                 Text(stringResource(R.string.perm_deny))
             }
+            if (prompt.type.supportsAllowOnce) {
+                androidx.compose.material3.OutlinedButton(
+                    onClick = { onChoice(PromptChoice.ALLOW_ONCE) },
+                    modifier = Modifier.fillMaxWidth()
+                ) {
+                    Text(stringResource(R.string.perm_allow_once))
+                }
+            }
             Button(onClick = { onChoice(PromptChoice.ALLOW) }, modifier = Modifier.fillMaxWidth()) {
                 Text(stringResource(R.string.perm_allow))
             }
@@ -104,6 +112,8 @@ fun SiteInfoSheet(
     origin: String,
     secure: Boolean,
     manager: PermissionManager,
+    broker: com.catsblock.materialex.core.permission.PermissionBroker,
+    scopeId: String,
     profileId: String,
     onDismiss: () -> Unit
 ) {
@@ -149,9 +159,27 @@ fun SiteInfoSheet(
                         ).forEach { (state, label) ->
                             FilterChip(
                                 selected = record.state == state,
-                                onClick = { change { manager.setState(profileId, origin, type, state) } },
+                                onClick = {
+                                    change {
+                                        broker.revokeTemporaryForOrigin(origin)
+                                        manager.setState(profileId, origin, type, state)
+                                    }
+                                },
                                 label = { Text(stringResource(label)) }
                             )
+                        }
+                    }
+                    if (broker.isTemporarilyAllowed(origin, type, scopeId)) {
+                        Row(verticalAlignment = androidx.compose.ui.Alignment.CenterVertically) {
+                            Text(
+                                text = stringResource(R.string.perm_temp_granted),
+                                style = MaterialTheme.typography.bodySmall,
+                                color = MaterialTheme.colorScheme.primary,
+                                modifier = Modifier.weight(1f)
+                            )
+                            TextButton(onClick = { change { broker.revokeTemporary(origin, type, scopeId) } }) {
+                                Text(stringResource(R.string.perm_temp_revoke))
+                            }
                         }
                     }
                     if (record.state == PermissionState.AUTO_BLOCKED) {

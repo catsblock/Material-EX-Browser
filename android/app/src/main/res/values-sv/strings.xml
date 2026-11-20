@@ -232,4 +232,7 @@
     <string name="download_detail_speed">Hastighet</string>
     <string name="download_detail_remaining">Återstående tid</string>
     <string name="download_detail_started">Startad</string>
+    <string name="perm_allow_once">Tillåt den här gången</string>
+    <string name="perm_temp_granted">Tillåtet endast den här gången</string>
+    <string name="perm_temp_revoke">Återkalla</string>
 </resources>

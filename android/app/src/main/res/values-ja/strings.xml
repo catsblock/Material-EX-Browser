@@ -232,4 +232,7 @@
     <string name="download_detail_speed">速度</string>
     <string name="download_detail_remaining">残り時間</string>
     <string name="download_detail_started">開始日時</string>
+    <string name="perm_allow_once">今回のみ許可</string>
+    <string name="perm_temp_granted">今回のみ許可されています</string>
+    <string name="perm_temp_revoke">取り消す</string>
 </resources>

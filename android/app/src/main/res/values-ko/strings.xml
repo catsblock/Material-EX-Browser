@@ -232,4 +232,7 @@
     <string name="download_detail_speed">속도</string>
     <string name="download_detail_remaining">남은 시간</string>
     <string name="download_detail_started">시작 시간</string>
+    <string name="perm_allow_once">이번만 허용</string>
+    <string name="perm_temp_granted">이번에만 허용됨</string>
+    <string name="perm_temp_revoke">취소</string>
 </resources>

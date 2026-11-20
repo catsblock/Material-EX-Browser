@@ -234,4 +234,7 @@
     <string name="download_detail_speed">السرعة</string>
     <string name="download_detail_remaining">الوقت المتبقي</string>
     <string name="download_detail_started">بدأ في</string>
+    <string name="perm_allow_once">السماح هذه المرة</string>
+    <string name="perm_temp_granted">مسموح هذه المرة فقط</string>
+    <string name="perm_temp_revoke">إلغاء</string>
 </resources>

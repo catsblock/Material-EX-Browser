@@ -234,4 +234,7 @@
     <string name="download_detail_speed">Velocidade</string>
     <string name="download_detail_remaining">Tempo restante</string>
     <string name="download_detail_started">Iniciado</string>
+    <string name="perm_allow_once">Permitir desta vez</string>
+    <string name="perm_temp_granted">Permitido apenas desta vez</string>
+    <string name="perm_temp_revoke">Revogar</string>
 </resources>

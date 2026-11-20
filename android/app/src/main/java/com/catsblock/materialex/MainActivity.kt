@@ -231,6 +231,8 @@ class MainActivity : ComponentActivity() {
         val extensionPrompt by app.engine.extensionPrompt.collectAsStateWithLifecycle()
         extensionPrompt?.let { ExtensionPromptDialog(it) { allow -> app.engine.answerExtensionPrompt(allow) } }
         val prompt by app.engine.permissions.prompt.collectAsStateWithLifecycle()
+        val tabsForScope by app.engine.tabs.collectAsStateWithLifecycle()
+        val activeTabId = tabsForScope.activeId
         val osBlocked by app.engine.osBlocked.collectAsStateWithLifecycle()
 
         BackHandler(enabled = screen != Screen.BROWSER || pageState.canGoBack) {
@@ -354,6 +356,8 @@ class MainActivity : ComponentActivity() {
                 origin = siteOrigin,
                 secure = pageState.url.startsWith("https://") && pageState.isSecure,
                 manager = app.permissionManager,
+                broker = app.engine.permissions,
+                scopeId = activeTabId.orEmpty(),
                 profileId = "default",
                 onDismiss = { siteInfoOpen = false }
             )

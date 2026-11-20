@@ -232,4 +232,7 @@
     <string name="download_detail_speed">Nopeus</string>
     <string name="download_detail_remaining">Aikaa jäljellä</string>
     <string name="download_detail_started">Aloitettu</string>
+    <string name="perm_allow_once">Salli tämän kerran</string>
+    <string name="perm_temp_granted">Sallittu vain tämän kerran</string>
+    <string name="perm_temp_revoke">Peruuta lupa</string>
 </resources>

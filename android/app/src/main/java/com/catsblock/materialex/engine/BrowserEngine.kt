@@ -351,6 +351,7 @@ class BrowserEngine(context: Context, permissionManager: PermissionManager) {
 
     private fun dropSession(id: String) {
         clearFullscreenFor(id)
+        permissions.tabClosed(id)
         threatFlow.update { it - id }
         endBypassFor(id)
         closePopupsFor(id)
@@ -405,6 +406,7 @@ class BrowserEngine(context: Context, permissionManager: PermissionManager) {
 
     fun closePopup(id: String) {
         clearFullscreenFor(id)
+        permissions.tabClosed(id)
         val session = popupSessions.remove(id) ?: return
         popupFlow.update { list -> list.filterNot { it.id == id } }
         pages.update { it - id }
@@ -545,6 +547,7 @@ class BrowserEngine(context: Context, permissionManager: PermissionManager) {
                 if (threat != null && !url.orEmpty().startsWith("data:")) threatFlow.update { it - id }
                 change(id) { it.copy(url = shown) }
                 manager.update(id, url = shown)
+                permissions.navigated(id, shown)
             }
 
             override fun onLoadError(
@@ -678,7 +681,7 @@ class BrowserEngine(context: Context, permissionManager: PermissionManager) {
                 } ?: return GeckoResult.fromValue(GeckoSession.PermissionDelegate.ContentPermission.VALUE_DENY)
                 val result = GeckoResult<Int>()
                 scope.launch {
-                    val allowed = permissions.resolve(perm.uri, type)
+                    val allowed = permissions.resolve(perm.uri, type, id)
                     result.complete(
                         if (allowed) {
                             GeckoSession.PermissionDelegate.ContentPermission.VALUE_ALLOW
@@ -700,8 +703,8 @@ class BrowserEngine(context: Context, permissionManager: PermissionManager) {
                 scope.launch {
                     val videoSource = video?.firstOrNull()
                     val audioSource = audio?.firstOrNull()
-                    val videoAllowed = videoSource != null && permissions.resolve(uri, PermissionType.CAMERA)
-                    val audioAllowed = audioSource != null && permissions.resolve(uri, PermissionType.MICROPHONE)
+                    val videoAllowed = videoSource != null && permissions.resolve(uri, PermissionType.CAMERA, id)
+                    val audioAllowed = audioSource != null && permissions.resolve(uri, PermissionType.MICROPHONE, id)
                     if (videoAllowed || audioAllowed) {
                         callback.grant(
                             if (videoAllowed) videoSource else null,

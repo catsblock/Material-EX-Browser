@@ -232,4 +232,7 @@
     <string name="download_detail_speed">Kecepatan</string>
     <string name="download_detail_remaining">Sisa waktu</string>
     <string name="download_detail_started">Dimulai</string>
+    <string name="perm_allow_once">Izinkan kali ini</string>
+    <string name="perm_temp_granted">Diizinkan hanya kali ini</string>
+    <string name="perm_temp_revoke">Cabut</string>
 </resources>

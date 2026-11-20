@@ -232,4 +232,7 @@
     <string name="download_detail_speed">Tốc độ</string>
     <string name="download_detail_remaining">Thời gian còn lại</string>
     <string name="download_detail_started">Bắt đầu</string>
+    <string name="perm_allow_once">Cho phép lần này</string>
+    <string name="perm_temp_granted">Chỉ được phép lần này</string>
+    <string name="perm_temp_revoke">Thu hồi</string>
 </resources>

@@ -232,4 +232,7 @@
     <string name="download_detail_speed">Snelheid</string>
     <string name="download_detail_remaining">Resterende tijd</string>
     <string name="download_detail_started">Gestart</string>
+    <string name="perm_allow_once">Deze keer toestaan</string>
+    <string name="perm_temp_granted">Alleen deze keer toegestaan</string>
+    <string name="perm_temp_revoke">Intrekken</string>
 </resources>

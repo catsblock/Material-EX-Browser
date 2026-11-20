@@ -2,9 +2,9 @@ package com.catsblock.materialex.core.permission
 
 import java.net.URI
 
-enum class PermissionType(val id: String, val requiresSecureOrigin: Boolean) {
-    CAMERA("camera", true),
-    MICROPHONE("microphone", true),
+enum class PermissionType(val id: String, val requiresSecureOrigin: Boolean, val supportsAllowOnce: Boolean = false) {
+    CAMERA("camera", true, true),
+    MICROPHONE("microphone", true, true),
     LOCATION("location", true),
     NOTIFICATIONS("notifications", true),
     PERSISTENT_STORAGE("persistent_storage", false);
@@ -16,7 +16,7 @@ enum class PermissionType(val id: String, val requiresSecureOrigin: Boolean) {
 
 enum class PermissionState { ASK, ALLOW, DENY, AUTO_BLOCKED }
 
-enum class PromptChoice { ALWAYS_ASK, DENY, ALLOW }
+enum class PromptChoice { ALWAYS_ASK, DENY, ALLOW, ALLOW_ONCE }
 
 enum class Decision { GRANT, REJECT, PROMPT }
 
@@ -34,7 +34,7 @@ object PermissionPolicy {
     fun applyChoice(record: PermissionRecord, choice: PromptChoice): PermissionRecord {
         if (record.state != PermissionState.ASK) return record
         return when (choice) {
-            PromptChoice.ALWAYS_ASK -> record
+            PromptChoice.ALWAYS_ASK, PromptChoice.ALLOW_ONCE -> record
             PromptChoice.ALLOW -> record.copy(state = PermissionState.ALLOW)
             PromptChoice.DENY -> {
                 val count = record.denialCount + 1

@@ -232,4 +232,7 @@
     <string name="download_detail_speed">गति</string>
     <string name="download_detail_remaining">बचा हुआ समय</string>
     <string name="download_detail_started">शुरू हुआ</string>
+    <string name="perm_allow_once">इस बार अनुमति दें</string>
+    <string name="perm_temp_granted">केवल इस बार अनुमत</string>
+    <string name="perm_temp_revoke">अनुमति रद्द करें</string>
 </resources>

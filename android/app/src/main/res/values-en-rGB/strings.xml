@@ -34,4 +34,7 @@
     <string name="download_detail_speed">Speed</string>
     <string name="download_detail_remaining">Time remaining</string>
     <string name="download_detail_started">Started</string>
+    <string name="perm_allow_once">Allow this time</string>
+    <string name="perm_temp_granted">Allowed this time only</string>
+    <string name="perm_temp_revoke">Revoke</string>
 </resources>
