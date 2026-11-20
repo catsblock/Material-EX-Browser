@@ -2,6 +2,7 @@ package com.catsblock.materialex.ui
 
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.foundation.layout.WindowInsetsSides
+import androidx.compose.foundation.layout.only
 import androidx.compose.animation.core.Spring
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.spring
