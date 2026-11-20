@@ -49,7 +49,7 @@ jobs:
           exit $LASTEXITCODE
 
       - name: Report build errors
-        if: failure() && hashFiles(format('{0}/build.log', runner.temp)) != ''
+        if: failure()
         shell: pwsh
         run: |
           $log = "$env:RUNNER_TEMP/build.log"
