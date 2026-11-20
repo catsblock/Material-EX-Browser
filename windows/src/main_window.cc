@@ -9,6 +9,7 @@
 #include "core/text_store.h"
 #include "core/url_utils.h"
 #include "downloads.h"
+#include "include/cef_app.h"
 #include "include/cef_browser.h"
 #include "include/cef_version.h"
 #include "include/wrapper/cef_helpers.h"
@@ -217,7 +218,7 @@ void MainWindow::UpdateTabSizes() {
   RECT rc;
   GetClientRect(tabs_, &rc);
   int count = static_cast<int>(tabs_list_.size());
-  int width = std::min(Scale(220, dpi_), std::max(Scale(90, dpi_), (rc.right - Scale(8, dpi_)) / count));
+  int width = std::min(Scale(220, dpi_), std::max(Scale(90, dpi_), (static_cast<int>(rc.right) - Scale(8, dpi_)) / count));
   SendMessageW(tabs_, TCM_SETITEMSIZE, 0, MAKELPARAM(width, Scale(28, dpi_)));
 }
 

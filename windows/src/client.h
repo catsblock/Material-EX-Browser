@@ -35,7 +35,8 @@ class Client : public CefClient,
                public CefPermissionHandler,
                public CefContextMenuHandler,
                public CefKeyboardHandler,
-               public CefRequestHandler {
+               public CefRequestHandler,
+               public CefResourceRequestHandler {
  public:
   explicit Client(ClientDelegate* delegate) : delegate_(delegate) {}
   void ClosePopups();
@@ -89,6 +90,14 @@ class Client : public CefClient,
 
   bool OnPreKeyEvent(CefRefPtr<CefBrowser> browser, const CefKeyEvent& event, CefEventHandle os_event,
                      bool* is_keyboard_shortcut) override;
+
+  CefRefPtr<CefResourceRequestHandler> GetResourceRequestHandler(CefRefPtr<CefBrowser> browser,
+                                                                 CefRefPtr<CefFrame> frame,
+                                                                 CefRefPtr<CefRequest> request, bool is_navigation,
+                                                                 bool is_download, const CefString& request_initiator,
+                                                                 bool& disable_default_handling) override {
+    return this;
+  }
 
   void OnProtocolExecution(CefRefPtr<CefBrowser> browser, CefRefPtr<CefFrame> frame, CefRefPtr<CefRequest> request,
                            bool& allow_os_execution) override;
