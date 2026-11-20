@@ -26,7 +26,21 @@ jobs:
           key: cef-${{ runner.os }}-${{ hashFiles('windows/cmake/DownloadCEF.cmake') }}
 
       - name: Configure
-        run: cmake -S . -B build -G "Visual Studio 17 2022" -A x64
+        shell: pwsh
+        run: |
+          cmake -S . -B build -G "Visual Studio 17 2022" -A x64 2>&1 | Tee-Object -FilePath "$env:RUNNER_TEMP/configure.log"
+          exit $LASTEXITCODE
+
+      - name: Report configure errors
+        if: failure()
+        shell: pwsh
+        run: |
+          $log = "$env:RUNNER_TEMP/configure.log"
+          if (Test-Path $log) {
+            $text = (Get-Content $log -Raw) -replace "`r?`n", " | "
+            $m = [regex]::Match($text, "CMake Error.{0,600}")
+            if ($m.Success) { Write-Host "::error::$($m.Value)" }
+          }
 
       - name: Build
         shell: pwsh
@@ -35,7 +49,7 @@ jobs:
           exit $LASTEXITCODE
 
       - name: Report build errors
-        if: failure()
+        if: failure() && hashFiles(format('{0}/build.log', runner.temp)) != ''
         shell: pwsh
         run: |
           $log = "$env:RUNNER_TEMP/build.log"
