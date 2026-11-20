@@ -203,4 +203,6 @@
     <string name="ext_perm_all_sites">Lukea ja muuttaa tietojasi kaikilla verkkosivustoilla</string>
     <string name="ext_perm_site">Pääsy: %1$s</string>
     <string name="ext_allow">Lisää</string>
+    <string name="onboarding_google_error_config">Tätä versiota ei ole rekisteröity Google-kirjautumista varten (virhe %1$s). Luo Google Cloud Consolessa Android-OAuth-asiakas alla näkyvällä paketin nimellä ja SHA-1-tunnisteella ja yritä uudelleen.</string>
+    <string name="onboarding_google_error_network">Google-kirjautuminen tarvitsee internetyhteyden. Tarkista yhteytesi ja yritä uudelleen.</string>
 </resources>

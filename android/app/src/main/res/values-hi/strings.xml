@@ -203,4 +203,6 @@
     <string name="ext_perm_all_sites">सभी वेबसाइटों पर आपका डेटा पढ़ना और बदलना</string>
     <string name="ext_perm_site">इसकी पहुँच: %1$s</string>
     <string name="ext_allow">जोड़ें</string>
+    <string name="onboarding_google_error_config">यह बिल्ड Google साइन-इन के लिए पंजीकृत नहीं है (त्रुटि %1$s)। Google Cloud Console में नीचे दिखाए गए पैकेज नाम और SHA-1 के साथ एक Android OAuth क्लाइंट बनाएँ, फिर दोबारा कोशिश करें।</string>
+    <string name="onboarding_google_error_network">Google साइन-इन के लिए इंटरनेट कनेक्शन ज़रूरी है। अपना कनेक्शन जाँचें और दोबारा कोशिश करें।</string>
 </resources>

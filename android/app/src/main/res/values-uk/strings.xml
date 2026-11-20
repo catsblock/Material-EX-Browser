@@ -203,4 +203,6 @@
     <string name="ext_perm_all_sites">Читання й зміну ваших даних на всіх сайтах</string>
     <string name="ext_perm_site">Доступ до: %1$s</string>
     <string name="ext_allow">Додати</string>
+    <string name="onboarding_google_error_config">Ця збірка не зареєстрована для входу через Google (помилка %1$s). У Google Cloud Console створіть клієнт OAuth для Android із зазначеними нижче назвою пакета та SHA-1 і спробуйте ще раз.</string>
+    <string name="onboarding_google_error_network">Для входу через Google потрібне підключення до інтернету. Перевірте з\'єднання та спробуйте ще раз.</string>
 </resources>

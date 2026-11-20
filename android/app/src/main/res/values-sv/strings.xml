@@ -203,4 +203,6 @@
     <string name="ext_perm_all_sites">Läsa och ändra dina data på alla webbplatser</string>
     <string name="ext_perm_site">Åtkomst till: %1$s</string>
     <string name="ext_allow">Lägg till</string>
+    <string name="onboarding_google_error_config">Den här versionen är inte registrerad för Google-inloggning (fel %1$s). Skapa en Android-OAuth-klient i Google Cloud Console med paketnamnet och SHA-1 som visas nedan och försök igen.</string>
+    <string name="onboarding_google_error_network">Google-inloggning kräver en internetanslutning. Kontrollera anslutningen och försök igen.</string>
 </resources>

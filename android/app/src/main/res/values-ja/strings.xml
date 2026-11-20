@@ -203,4 +203,6 @@
     <string name="ext_perm_all_sites">すべてのウェブサイトのデータの読み取りと変更</string>
     <string name="ext_perm_site">アクセス先: %1$s</string>
     <string name="ext_allow">追加</string>
+    <string name="onboarding_google_error_config">このビルドは Google ログイン用に登録されていません（エラー %1$s）。Google Cloud Console で、下に表示されているパッケージ名と SHA-1 を使って Android 用 OAuth クライアントを作成し、もう一度お試しください。</string>
+    <string name="onboarding_google_error_network">Google ログインにはインターネット接続が必要です。接続を確認して、もう一度お試しください。</string>
 </resources>

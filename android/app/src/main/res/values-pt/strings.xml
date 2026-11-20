@@ -203,4 +203,6 @@
     <string name="ext_perm_all_sites">Ler e alterar os seus dados em todos os sites</string>
     <string name="ext_perm_site">Acesso a: %1$s</string>
     <string name="ext_allow">Adicionar</string>
+    <string name="onboarding_google_error_config">Esta versão não está registada para o início de sessão com Google (erro %1$s). Na Google Cloud Console, crie um cliente OAuth Android com o nome do pacote e o SHA-1 apresentados abaixo e tente novamente.</string>
+    <string name="onboarding_google_error_network">O início de sessão com Google precisa de ligação à internet. Verifique a sua ligação e tente novamente.</string>
 </resources>

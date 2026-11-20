@@ -1,5 +1,12 @@
 package com.catsblock.materialex
 
+import com.catsblock.materialex.engine.PageState
+import com.catsblock.materialex.core.Shortcuts
+import com.catsblock.materialex.core.ShortcutAction
+import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.DisposableEffect
+import androidx.compose.runtime.SideEffect
+import android.view.KeyEvent
 import android.app.ActivityManager
 import android.content.Intent
 import android.net.Uri
@@ -57,6 +64,49 @@ class MainActivity : ComponentActivity() {
     private val app get() = application as MaterialExApp
 
     private var osCallback: ((Boolean) -> Unit)? = null
+    private var shortcutHandler: ((ShortcutAction) -> Boolean)? = null
+    private var addressFocusTick by mutableIntStateOf(0)
+    private var findTick by mutableIntStateOf(0)
+
+    override fun dispatchKeyEvent(event: KeyEvent): Boolean {
+        if (event.action == KeyEvent.ACTION_DOWN && event.repeatCount == 0) {
+            val action = Shortcuts.resolve(event.keyCode, event.isCtrlPressed, event.isShiftPressed, event.isAltPressed)
+            if (action != null && shortcutHandler?.invoke(action) == true) return true
+        }
+        return super.dispatchKeyEvent(event)
+    }
+
+    private fun handleShortcut(action: ShortcutAction, homepage: String, bookmarked: Boolean, page: PageState): Boolean {
+        val engine = app.engine
+        val state = engine.tabs.value
+        when (action) {
+            ShortcutAction.NEW_TAB -> engine.openTab("")
+            ShortcutAction.CLOSE_TAB -> state.activeId?.let { closeTab(it, homepage) }
+            ShortcutAction.RESTORE_TAB -> engine.restoreClosedTab()
+            ShortcutAction.FOCUS_ADDRESS -> addressFocusTick += 1
+            ShortcutAction.RELOAD -> engine.reload()
+            ShortcutAction.BOOKMARK -> if (page.url.startsWith("http")) {
+                lifecycleScope.launch { app.library.toggleBookmark(page.url, page.title, bookmarked) }
+            }
+            ShortcutAction.FIND -> findTick += 1
+            ShortcutAction.NEXT_TAB -> cycleTab(1)
+            ShortcutAction.PREVIOUS_TAB -> cycleTab(-1)
+            ShortcutAction.MOVE_TAB_LEFT -> state.activeId?.let { engine.moveTabBy(it, -1) }
+            ShortcutAction.MOVE_TAB_RIGHT -> state.activeId?.let { engine.moveTabBy(it, 1) }
+            ShortcutAction.BACK -> engine.goBack()
+            ShortcutAction.FORWARD -> engine.goForward()
+            ShortcutAction.HISTORY, ShortcutAction.DOWNLOADS -> return false
+        }
+        return true
+    }
+
+    private fun cycleTab(delta: Int) {
+        val state = app.engine.tabs.value
+        if (state.tabs.size < 2) return
+        val index = state.tabs.indexOfFirst { it.id == state.activeId }.coerceAtLeast(0)
+        val target = state.tabs[(index + delta + state.tabs.size) % state.tabs.size]
+        app.engine.selectTab(target.id)
+    }
 
     override fun onTrimMemory(level: Int) {
         super.onTrimMemory(level)
@@ -147,6 +197,23 @@ class MainActivity : ComponentActivity() {
             }
         }
         var screen by rememberSaveable { mutableStateOf(Screen.BROWSER) }
+        SideEffect {
+            shortcutHandler = { action ->
+                when {
+                    screen != Screen.BROWSER -> false
+                    action == ShortcutAction.HISTORY -> {
+                        screen = Screen.HISTORY
+                        true
+                    }
+                    action == ShortcutAction.DOWNLOADS -> {
+                        screen = Screen.DOWNLOADS
+                        true
+                    }
+                    else -> handleShortcut(action, settings.homepage, isBookmarked, pageState)
+                }
+            }
+        }
+        DisposableEffect(Unit) { onDispose { shortcutHandler = null } }
         var siteInfoOpen by rememberSaveable { mutableStateOf(false) }
         val extensions by app.engine.extensions.collectAsStateWithLifecycle()
         val extensionError by app.engine.extensionError.collectAsStateWithLifecycle()
@@ -223,6 +290,9 @@ class MainActivity : ComponentActivity() {
                 },
                 onShare = { share(pageState.url) },
                 onOpenDownloads = { screen = Screen.DOWNLOADS },
+                onCloseTab = { id -> closeTab(id, settings.homepage) },
+                focusTick = addressFocusTick,
+                findTick = findTick,
                 newTabContent = {
                     NewTabPage(
                         settings = settings,

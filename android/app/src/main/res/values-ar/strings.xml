@@ -205,4 +205,6 @@
     <string name="ext_perm_all_sites">قراءة بياناتك وتغييرها على جميع المواقع</string>
     <string name="ext_perm_site">الوصول إلى: %1$s</string>
     <string name="ext_allow">إضافة</string>
+    <string name="onboarding_google_error_config">هذا الإصدار غير مسجّل لتسجيل الدخول بحساب Google (الخطأ %1$s). أنشئ في Google Cloud Console عميل OAuth لنظام Android باستخدام اسم الحزمة وبصمة SHA-1 الظاهرين أدناه، ثم حاول مرة أخرى.</string>
+    <string name="onboarding_google_error_network">يتطلب تسجيل الدخول بحساب Google اتصالاً بالإنترنت. تحقق من اتصالك وحاول مرة أخرى.</string>
 </resources>

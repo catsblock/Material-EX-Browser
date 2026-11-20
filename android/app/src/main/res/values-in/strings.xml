@@ -203,4 +203,6 @@
     <string name="ext_perm_all_sites">Membaca dan mengubah data Anda di semua situs web</string>
     <string name="ext_perm_site">Akses ke: %1$s</string>
     <string name="ext_allow">Tambahkan</string>
+    <string name="onboarding_google_error_config">Build ini belum terdaftar untuk login Google (kesalahan %1$s). Di Google Cloud Console, buat klien OAuth Android dengan nama paket dan SHA-1 yang ditampilkan di bawah, lalu coba lagi.</string>
+    <string name="onboarding_google_error_network">Login Google memerlukan koneksi internet. Periksa koneksi Anda dan coba lagi.</string>
 </resources>

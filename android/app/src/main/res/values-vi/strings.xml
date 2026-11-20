@@ -203,4 +203,6 @@
     <string name="ext_perm_all_sites">Đọc và thay đổi dữ liệu của bạn trên mọi trang web</string>
     <string name="ext_perm_site">Truy cập: %1$s</string>
     <string name="ext_allow">Thêm</string>
+    <string name="onboarding_google_error_config">Bản dựng này chưa được đăng ký để đăng nhập bằng Google (lỗi %1$s). Trong Google Cloud Console, hãy tạo ứng dụng khách OAuth cho Android với tên gói và SHA-1 hiển thị bên dưới, rồi thử lại.</string>
+    <string name="onboarding_google_error_network">Đăng nhập Google cần có kết nối internet. Hãy kiểm tra kết nối rồi thử lại.</string>
 </resources>

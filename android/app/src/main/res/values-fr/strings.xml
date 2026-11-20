@@ -203,4 +203,6 @@
     <string name="ext_perm_all_sites">Lire et modifier vos données sur tous les sites web</string>
     <string name="ext_perm_site">Accès à : %1$s</string>
     <string name="ext_allow">Ajouter</string>
+    <string name="onboarding_google_error_config">Cette version n\'est pas enregistrée pour la connexion Google (erreur %1$s). Dans Google Cloud Console, créez un client OAuth Android avec le nom de package et le SHA-1 affichés ci-dessous, puis réessayez.</string>
+    <string name="onboarding_google_error_network">La connexion Google nécessite une connexion internet. Vérifiez votre connexion et réessayez.</string>
 </resources>

@@ -324,6 +324,14 @@ class BrowserEngine(context: Context, permissionManager: PermissionManager) {
 
     fun moveTab(id: String, toIndex: Int) = manager.move(id, toIndex)
 
+    fun moveTabBy(id: String, delta: Int) {
+        val all = manager.state.value.tabs
+        val tab = all.firstOrNull { it.id == id } ?: return
+        val peers = all.filter { it.profileId == tab.profileId }
+        val neighbor = peers.getOrNull(peers.indexOfFirst { it.id == id } + delta) ?: return
+        manager.move(id, all.indexOfFirst { it.id == neighbor.id })
+    }
+
     private fun dropSession(id: String) {
         threatFlow.update { it - id }
         endBypassFor(id)
@@ -574,7 +582,10 @@ class BrowserEngine(context: Context, permissionManager: PermissionManager) {
             }
 
             override fun onProgressChange(session: GeckoSession, progress: Int) {
-                change(id) { it.copy(progress = progress) }
+                val previous = pages.value[id]?.progress ?: 0
+                if (progress >= 100 || progress < previous || progress - previous >= PROGRESS_STEP) {
+                    change(id) { it.copy(progress = progress) }
+                }
             }
 
             override fun onSecurityChange(
@@ -698,5 +709,6 @@ class BrowserEngine(context: Context, permissionManager: PermissionManager) {
     private companion object {
         const val DEFAULT_PROFILE = "default"
         const val POPUP_RELEASE_DELAY_MS = 450L
+        const val PROGRESS_STEP = 5
     }
 }

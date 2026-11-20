@@ -1,5 +1,7 @@
 package com.catsblock.materialex.ui
 
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.activity.compose.BackHandler
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.platform.LocalContext
@@ -85,28 +87,42 @@ fun SettingsScreen(
     var templateInvalid by remember { mutableStateOf(false) }
     var category by rememberSaveable { mutableStateOf<SettingsCategory?>(null) }
     var query by rememberSaveable { mutableStateOf("") }
-    BackHandler(enabled = category != null) { category = null }
+    val desktop = rememberDesktopLayout()
+    val shown = category ?: if (desktop) SettingsCategory.GENERAL else null
+    BackHandler(enabled = category != null && !desktop) { category = null }
 
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text(stringResource(category?.title ?: R.string.settings_title)) },
+                title = { Text(stringResource(shown?.title ?: R.string.settings_title)) },
                 navigationIcon = {
-                    IconButton(onClick = { if (category != null) category = null else onClose() }) {
+                    IconButton(onClick = { if (category != null && !desktop) category = null else onClose() }) {
                         Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = stringResource(R.string.action_back))
                     }
                 }
             )
         }
     ) { padding ->
+        Row(modifier = Modifier.padding(padding)) {
+        if (desktop) {
+            CategoryPane(
+                selected = shown,
+                query = query,
+                onQueryChange = { query = it },
+                onSelect = {
+                    query = ""
+                    category = it
+                }
+            )
+        }
         Column(
             modifier = Modifier
-                .padding(padding)
+                .weight(1f)
                 .verticalScroll(rememberScrollState())
                 .padding(horizontal = 16.dp, vertical = 8.dp),
             verticalArrangement = Arrangement.spacedBy(28.dp)
         ) {
-            if (category == null) {
+            if (shown == null) {
                 OutlinedTextField(
                     value = query,
                     onValueChange = { query = it },
@@ -145,7 +161,7 @@ fun SettingsScreen(
                     }
                 }
             }
-            if (category == SettingsCategory.GENERAL) {
+            if (shown == SettingsCategory.GENERAL) {
                 Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
                     Text(stringResource(R.string.settings_homepage), style = MaterialTheme.typography.titleMedium)
                     OutlinedTextField(
@@ -193,7 +209,7 @@ fun SettingsScreen(
                     }
                 }
             }
-            if (category == SettingsCategory.SEARCH) {
+            if (shown == SettingsCategory.SEARCH) {
                 Column {
                     Text(stringResource(R.string.settings_search_engine), style = MaterialTheme.typography.titleMedium)
                     SearchEngine.entries.forEach { engine ->
@@ -244,7 +260,7 @@ fun SettingsScreen(
                     }
                 }
             }
-            if (category == SettingsCategory.APPEARANCE) {
+            if (shown == SettingsCategory.APPEARANCE) {
                 Column {
                     Text(stringResource(R.string.settings_toolbar_position), style = MaterialTheme.typography.titleMedium)
                     Text(
@@ -286,7 +302,7 @@ fun SettingsScreen(
                     Switch(checked = settings.autoHideFrame, onCheckedChange = null)
                 }
             }
-            if (category == SettingsCategory.PRIVACY) {
+            if (shown == SettingsCategory.PRIVACY) {
                 SectionSwitch(R.string.settings_popup_block, settings.popupBlocking) {
                     scope.launch { repository.setPopupBlocking(it) }
                 }
@@ -297,7 +313,7 @@ fun SettingsScreen(
                     scope.launch { repository.setCookieBanner(it) }
                 }
             }
-            if (category == SettingsCategory.PERFORMANCE) {
+            if (shown == SettingsCategory.PERFORMANCE) {
                 Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
                     Text(stringResource(R.string.settings_memory_title), style = MaterialTheme.typography.titleMedium)
                     Text(
@@ -330,7 +346,7 @@ fun SettingsScreen(
                     }
                 }
             }
-            if (category == SettingsCategory.TABS) {
+            if (shown == SettingsCategory.TABS) {
                 Column {
                     Text(stringResource(R.string.settings_tab_layout), style = MaterialTheme.typography.titleMedium)
                     TabLayout.entries.forEach { layout ->
@@ -348,7 +364,7 @@ fun SettingsScreen(
                     }
                 }
             }
-            if (category == SettingsCategory.PROFILES) {
+            if (shown == SettingsCategory.PROFILES) {
                 ProfilesSection(
                     profiles = profiles,
                     activeProfileId = activeProfileId,
@@ -358,7 +374,7 @@ fun SettingsScreen(
                     onExitGuest = onExitGuest
                 )
             }
-            if (category == SettingsCategory.EXTENSIONS) {
+            if (shown == SettingsCategory.EXTENSIONS) {
                 ExtensionsSection(
                     extensions = extensions,
                     installFailed = extensionInstallFailed,
@@ -367,13 +383,14 @@ fun SettingsScreen(
                     onRemove = onRemoveExtension
                 )
             }
-            if (category == SettingsCategory.ABOUT) {
+            if (shown == SettingsCategory.ABOUT) {
                 val context = LocalContext.current
                 val version = remember {
                     runCatching { context.packageManager.getPackageInfo(context.packageName, 0).versionName }.getOrNull().orEmpty()
                 }
                 Text(stringResource(R.string.settings_about_version, version), style = MaterialTheme.typography.bodyLarge)
             }
+        }
         }
     }
 }
@@ -471,16 +488,65 @@ private enum class SettingsCategory(val title: Int) {
 }
 
 @Composable
+private fun CategoryPane(
+    selected: SettingsCategory?,
+    query: String,
+    onQueryChange: (String) -> Unit,
+    onSelect: (SettingsCategory) -> Unit
+) {
+    Column(
+        modifier = Modifier
+            .width(320.dp)
+            .fillMaxHeight()
+            .verticalScroll(rememberScrollState())
+            .padding(horizontal = 16.dp, vertical = 8.dp),
+        verticalArrangement = Arrangement.spacedBy(2.dp)
+    ) {
+        OutlinedTextField(
+            value = query,
+            onValueChange = onQueryChange,
+            singleLine = true,
+            label = { Text(stringResource(R.string.settings_search_hint)) },
+            modifier = Modifier.fillMaxWidth()
+        )
+        Spacer(Modifier.height(10.dp))
+        val needle = query.trim()
+        if (needle.isEmpty()) {
+            SettingsCategory.entries.forEachIndexed { position, entry ->
+                CategoryRow(
+                    title = stringResource(entry.title),
+                    shape = groupedShape(position, SettingsCategory.entries.size),
+                    selected = entry == selected
+                ) { onSelect(entry) }
+            }
+        } else {
+            val matches = SettingsCategory.index.filter { stringResource(it.first).contains(needle, ignoreCase = true) }
+            if (matches.isEmpty()) {
+                Text(stringResource(R.string.settings_no_results), style = MaterialTheme.typography.bodyLarge)
+            }
+            matches.forEachIndexed { position, (label, target) ->
+                CategoryRow(
+                    title = stringResource(label),
+                    subtitle = stringResource(target.title),
+                    shape = groupedShape(position, matches.size)
+                ) { onSelect(target) }
+            }
+        }
+    }
+}
+
+@Composable
 private fun CategoryRow(
     title: String,
     shape: androidx.compose.ui.graphics.Shape,
     subtitle: String? = null,
+    selected: Boolean = false,
     onClick: () -> Unit
 ) {
     Surface(
         onClick = onClick,
         shape = shape,
-        color = MaterialTheme.colorScheme.surfaceContainerHigh,
+        color = if (selected) MaterialTheme.colorScheme.secondaryContainer else MaterialTheme.colorScheme.surfaceContainerHigh,
         modifier = Modifier.fillMaxWidth()
     ) {
         Column(Modifier.padding(horizontal = 20.dp, vertical = 16.dp)) {

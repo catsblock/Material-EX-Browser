@@ -203,4 +203,6 @@
     <string name="ext_perm_all_sites">Je gegevens op alle websites te lezen en te wijzigen</string>
     <string name="ext_perm_site">Toegang tot: %1$s</string>
     <string name="ext_allow">Toevoegen</string>
+    <string name="onboarding_google_error_config">Deze build is niet geregistreerd voor inloggen met Google (fout %1$s). Maak in Google Cloud Console een Android-OAuth-client aan met de pakketnaam en SHA-1 hieronder en probeer het opnieuw.</string>
+    <string name="onboarding_google_error_network">Inloggen met Google heeft een internetverbinding nodig. Controleer je verbinding en probeer het opnieuw.</string>
 </resources>

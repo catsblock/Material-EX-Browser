@@ -203,4 +203,6 @@
     <string name="ext_perm_all_sites">Odczytu i zmiany Twoich danych na wszystkich witrynach</string>
     <string name="ext_perm_site">Dostęp do: %1$s</string>
     <string name="ext_allow">Dodaj</string>
+    <string name="onboarding_google_error_config">Ta wersja nie jest zarejestrowana do logowania przez Google (błąd %1$s). W Google Cloud Console utwórz klienta OAuth dla Androida z nazwą pakietu i SHA-1 pokazanymi poniżej, a następnie spróbuj ponownie.</string>
+    <string name="onboarding_google_error_network">Logowanie przez Google wymaga połączenia z internetem. Sprawdź połączenie i spróbuj ponownie.</string>
 </resources>

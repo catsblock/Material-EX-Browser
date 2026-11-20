@@ -203,4 +203,6 @@
     <string name="ext_perm_all_sites">อ่านและเปลี่ยนแปลงข้อมูลของคุณบนเว็บไซต์ทั้งหมด</string>
     <string name="ext_perm_site">เข้าถึง: %1$s</string>
     <string name="ext_allow">เพิ่ม</string>
+    <string name="onboarding_google_error_config">บิลด์นี้ยังไม่ได้ลงทะเบียนสำหรับการลงชื่อเข้าใช้ด้วย Google (ข้อผิดพลาด %1$s) ให้สร้างไคลเอ็นต์ OAuth สำหรับ Android ใน Google Cloud Console โดยใช้ชื่อแพ็กเกจและ SHA-1 ที่แสดงด้านล่าง แล้วลองอีกครั้ง</string>
+    <string name="onboarding_google_error_network">การลงชื่อเข้าใช้ด้วย Google ต้องใช้การเชื่อมต่ออินเทอร์เน็ต ตรวจสอบการเชื่อมต่อแล้วลองอีกครั้ง</string>
 </resources>

@@ -203,4 +203,6 @@
     <string name="ext_perm_all_sites">Ihre Daten auf allen Websites zu lesen und zu ändern</string>
     <string name="ext_perm_site">Zugriff auf: %1$s</string>
     <string name="ext_allow">Hinzufügen</string>
+    <string name="onboarding_google_error_config">Dieser Build ist nicht für die Google-Anmeldung registriert (Fehler %1$s). Erstelle in der Google Cloud Console einen Android-OAuth-Client mit dem Paketnamen und dem SHA-1 unten und versuche es erneut.</string>
+    <string name="onboarding_google_error_network">Die Google-Anmeldung benötigt eine Internetverbindung. Prüfe deine Verbindung und versuche es erneut.</string>
 </resources>

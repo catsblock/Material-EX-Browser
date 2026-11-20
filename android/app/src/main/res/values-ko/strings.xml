@@ -203,4 +203,6 @@
     <string name="ext_perm_all_sites">모든 웹사이트의 데이터 읽기 및 변경</string>
     <string name="ext_perm_site">접근: %1$s</string>
     <string name="ext_allow">추가</string>
+    <string name="onboarding_google_error_config">이 빌드는 Google 로그인에 등록되어 있지 않습니다(오류 %1$s). Google Cloud Console에서 아래에 표시된 패키지 이름과 SHA-1로 Android OAuth 클라이언트를 만든 다음 다시 시도하세요.</string>
+    <string name="onboarding_google_error_network">Google 로그인에는 인터넷 연결이 필요합니다. 연결 상태를 확인한 후 다시 시도하세요.</string>
 </resources>

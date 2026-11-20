@@ -1,5 +1,9 @@
 package com.catsblock.materialex.ui
 
+import com.catsblock.materialex.core.SigningFingerprint
+import com.catsblock.materialex.core.GoogleFailure
+import com.catsblock.materialex.core.GoogleErrors
+import androidx.compose.foundation.text.selection.SelectionContainer
 import android.app.role.RoleManager
 import android.content.Intent
 import android.provider.Settings
@@ -433,6 +437,30 @@ private fun GoogleStep(email: String, onConnected: (String) -> Unit, onDisconnec
                         style = MaterialTheme.typography.labelMedium,
                         color = MaterialTheme.colorScheme.onSurfaceVariant
                     )
+                    when (GoogleErrors.classify(errorCode)) {
+                        GoogleFailure.NOT_REGISTERED -> {
+                            Spacer(Modifier.height(8.dp))
+                            Text(
+                                text = stringResource(R.string.onboarding_google_error_config, errorCode),
+                                style = MaterialTheme.typography.bodyMedium
+                            )
+                            val fingerprint = remember { SigningFingerprint.sha1(context).orEmpty() }
+                            SelectionContainer {
+                                Text(
+                                    text = "${context.packageName}\nSHA-1 $fingerprint",
+                                    style = MaterialTheme.typography.labelMedium
+                                )
+                            }
+                        }
+                        GoogleFailure.NETWORK -> {
+                            Spacer(Modifier.height(8.dp))
+                            Text(
+                                text = stringResource(R.string.onboarding_google_error_network),
+                                style = MaterialTheme.typography.bodyMedium
+                            )
+                        }
+                        GoogleFailure.OTHER -> Unit
+                    }
                 }
             }
         }

@@ -1,5 +1,8 @@
 package com.catsblock.materialex.ui
 
+import androidx.compose.ui.focus.focusRequester
+import androidx.compose.ui.focus.FocusRequester
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.spring
 import androidx.compose.animation.fadeIn
@@ -109,6 +112,8 @@ fun FloatingSearchFrame(
     onOpenBookmarks: () -> Unit,
     onOpenSettings: () -> Unit,
     onOpenSiteInfo: () -> Unit,
+    desktop: Boolean = false,
+    focusTick: Int = 0,
     modifier: Modifier = Modifier
 ) {
     val focusManager = LocalFocusManager.current
@@ -116,6 +121,10 @@ fun FloatingSearchFrame(
     var focused by remember { mutableStateOf(false) }
     var field by remember { mutableStateOf(TextFieldValue("")) }
     var rejected by remember { mutableStateOf(false) }
+    val focusRequester = remember { FocusRequester() }
+    LaunchedEffect(focusTick) {
+        if (focusTick > 0) focusRequester.requestFocus()
+    }
 
     val edge = if (position == ToolbarPosition.TOP) WindowInsetsSides.Top else WindowInsetsSides.Bottom
     val insets = WindowInsets.safeDrawing.only(WindowInsetsSides.Horizontal + edge)
@@ -136,7 +145,7 @@ fun FloatingSearchFrame(
         modifier = Modifier
             .windowInsetsPadding(insets)
             .padding(horizontal = 12.dp, vertical = 8.dp)
-            .widthIn(max = 560.dp)
+            .widthIn(max = if (desktop) 760.dp else 560.dp)
             .fillMaxWidth(),
         shape = MaterialTheme.shapes.large,
         color = MaterialTheme.colorScheme.surfaceContainerHigh,
@@ -146,6 +155,14 @@ fun FloatingSearchFrame(
     ) {
         Column {
             Row(verticalAlignment = Alignment.CenterVertically) {
+                if (desktop) {
+                    IconButton(onClick = onBack, enabled = state.canGoBack, modifier = Modifier.padding(start = 4.dp)) {
+                        Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = stringResource(R.string.action_back))
+                    }
+                    IconButton(onClick = onForward, enabled = state.canGoForward) {
+                        Icon(Icons.AutoMirrored.Filled.ArrowForward, contentDescription = stringResource(R.string.action_forward))
+                    }
+                }
                 val secure = state.url.startsWith("https://") && state.isSecure
                 val icon = when {
                     state.url.isEmpty() -> Icons.Default.Search
@@ -191,6 +208,7 @@ fun FloatingSearchFrame(
                     modifier = Modifier
                         .weight(1f)
                         .padding(horizontal = 12.dp, vertical = 16.dp)
+                        .focusRequester(focusRequester)
                         .onFocusChanged {
                             if (it.isFocused && !focused) {
                                 field = TextFieldValue(state.url, TextRange(0, state.url.length))
@@ -219,6 +237,19 @@ fun FloatingSearchFrame(
                 } else if (state.url.isNotEmpty()) {
                     IconButton(onClick = onReload) {
                         Icon(Icons.Default.Refresh, contentDescription = stringResource(R.string.action_reload))
+                    }
+                }
+                if (desktop) {
+                    IconButton(onClick = onToggleBookmark, enabled = state.url.startsWith("http")) {
+                        Icon(
+                            if (isBookmarked) Icons.Default.Favorite else Icons.Default.FavoriteBorder,
+                            contentDescription = stringResource(
+                                if (isBookmarked) R.string.action_remove_bookmark else R.string.action_add_bookmark
+                            )
+                        )
+                    }
+                    IconButton(onClick = onOpenDownloads) {
+                        Icon(Icons.Default.KeyboardArrowDown, contentDescription = stringResource(R.string.action_downloads))
                     }
                 }
                 val tabsDescription = stringResource(R.string.tabs_title)

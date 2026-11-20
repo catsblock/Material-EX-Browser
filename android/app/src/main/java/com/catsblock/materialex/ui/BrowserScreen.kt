@@ -1,5 +1,7 @@
 package com.catsblock.materialex.ui
 
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.foundation.layout.WindowInsetsSides
 import androidx.compose.animation.core.Spring
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.spring
@@ -86,6 +88,9 @@ fun BrowserScreen(
     onOpenSiteInfo: () -> Unit,
     onShare: () -> Unit,
     onOpenDownloads: () -> Unit,
+    onCloseTab: (String) -> Unit = {},
+    focusTick: Int = 0,
+    findTick: Int = 0,
     newTabContent: @Composable () -> Unit
 ) {
     val state by engine.state.collectAsStateWithLifecycle()
@@ -96,6 +101,10 @@ fun BrowserScreen(
     val threat = tabs.activeId?.let { threats[it] }
     val atTop = settings.toolbarPosition == ToolbarPosition.TOP
     var findOpen by remember { mutableStateOf(false) }
+    val desktop = rememberDesktopLayout()
+    LaunchedEffect(findTick) {
+        if (findTick > 0) findOpen = true
+    }
     val atPageTop by engine.atTop.collectAsStateWithLifecycle()
     val currentAtTop by rememberUpdatedState(atPageTop)
     val density = LocalDensity.current
@@ -169,9 +178,22 @@ fun BrowserScreen(
                 engine.flushClosed()
             },
             onRelease = { view -> view.releaseSession() },
-            modifier = Modifier.fillMaxSize().windowInsetsPadding(WindowInsets.safeDrawing)
+            modifier = Modifier
+                .fillMaxSize()
+                .windowInsetsPadding(WindowInsets.safeDrawing)
+                .padding(top = if (desktop) DesktopStripHeight else 0.dp)
         )
-        if (state.url.isEmpty() && !state.isLoading) newTabContent()
+        if (state.url.isEmpty() && !state.isLoading) {
+            Box(
+                modifier = if (desktop) {
+                    Modifier
+                        .windowInsetsPadding(WindowInsets.safeDrawing.only(WindowInsetsSides.Top))
+                        .padding(top = DesktopStripHeight)
+                } else {
+                    Modifier
+                }
+            ) { newTabContent() }
+        }
         if (shownPull > 1f) {
             val progress = (shownPull / thresholdPx).coerceIn(0f, 1f)
             Surface(
@@ -214,6 +236,16 @@ fun BrowserScreen(
                 onContinue = { engine.continueDespiteThreat(it.tabId) }
             )
         }
+        if (desktop) {
+            DesktopTabStripHost(
+                engine = engine,
+                onNewTab = onNewTab,
+                onCloseTab = onCloseTab,
+                modifier = Modifier
+                    .align(Alignment.TopCenter)
+                    .windowInsetsPadding(WindowInsets.safeDrawing.only(WindowInsetsSides.Horizontal + WindowInsetsSides.Top))
+            )
+        }
         FloatingSearchFrame(
             state = state,
             tabCount = tabs.tabs.size,
@@ -242,7 +274,19 @@ fun BrowserScreen(
             onOpenBookmarks = onOpenBookmarks,
             onOpenSettings = onOpenSettings,
             onOpenSiteInfo = onOpenSiteInfo,
-            modifier = Modifier.align(if (atTop) Alignment.TopCenter else Alignment.BottomCenter)
+            desktop = desktop,
+            focusTick = focusTick,
+            modifier = Modifier
+                .align(if (atTop) Alignment.TopCenter else Alignment.BottomCenter)
+                .then(
+                    if (desktop && atTop) {
+                        Modifier
+                            .windowInsetsPadding(WindowInsets.safeDrawing.only(WindowInsetsSides.Top))
+                            .padding(top = DesktopStripHeight)
+                    } else {
+                        Modifier
+                    }
+                )
         )
     }
 }
