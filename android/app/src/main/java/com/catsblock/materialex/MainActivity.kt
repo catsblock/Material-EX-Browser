@@ -100,6 +100,27 @@ class MainActivity : ComponentActivity() {
         return true
     }
 
+    private fun applyFullscreenBars(enabled: Boolean) {
+        val controller = androidx.core.view.WindowCompat.getInsetsController(window, window.decorView)
+        if (enabled) {
+            controller.systemBarsBehavior =
+                androidx.core.view.WindowInsetsControllerCompat.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE
+            controller.hide(androidx.core.view.WindowInsetsCompat.Type.systemBars())
+        } else {
+            controller.show(androidx.core.view.WindowInsetsCompat.Type.systemBars())
+        }
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.P) {
+            val params = window.attributes
+            params.layoutInDisplayCutoutMode = when {
+                !enabled -> android.view.WindowManager.LayoutParams.LAYOUT_IN_DISPLAY_CUTOUT_MODE_DEFAULT
+                android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.R ->
+                    android.view.WindowManager.LayoutParams.LAYOUT_IN_DISPLAY_CUTOUT_MODE_ALWAYS
+                else -> android.view.WindowManager.LayoutParams.LAYOUT_IN_DISPLAY_CUTOUT_MODE_SHORT_EDGES
+            }
+            window.attributes = params
+        }
+    }
+
     private fun cycleTab(delta: Int) {
         val state = app.engine.tabs.value
         if (state.tabs.size < 2) return
@@ -224,6 +245,15 @@ class MainActivity : ComponentActivity() {
 
         BackHandler(enabled = screen != Screen.BROWSER || pageState.canGoBack) {
             if (screen != Screen.BROWSER) screen = Screen.BROWSER else app.engine.goBack()
+        }
+        val fullscreen by app.engine.fullscreen.collectAsStateWithLifecycle()
+        BackHandler(enabled = fullscreen) { app.engine.exitFullscreen() }
+        LaunchedEffect(screen) {
+            if (screen != Screen.BROWSER) app.engine.exitFullscreen()
+        }
+        DisposableEffect(fullscreen) {
+            applyFullscreenBars(fullscreen)
+            onDispose { applyFullscreenBars(false) }
         }
 
         when (screen) {

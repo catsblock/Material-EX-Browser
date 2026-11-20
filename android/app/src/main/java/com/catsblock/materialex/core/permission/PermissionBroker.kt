@@ -9,7 +9,11 @@ import kotlinx.coroutines.sync.withLock
 
 data class PermissionPrompt(val id: Long, val origin: String, val type: PermissionType)
 
-class PermissionBroker(private val manager: PermissionManager, private val profileId: String) {
+class PermissionBroker(
+    private val manager: PermissionManager,
+    private val profileId: String,
+    val temporary: TemporaryGrants = TemporaryGrants()
+) {
     private val queue = Mutex()
     private val current = MutableStateFlow<PermissionPrompt?>(null)
     private var pending: CompletableDeferred<PromptChoice>? = null
@@ -17,25 +21,35 @@ class PermissionBroker(private val manager: PermissionManager, private val profi
 
     val prompt: StateFlow<PermissionPrompt?> = current.asStateFlow()
 
-    suspend fun resolve(requestOrigin: String?, type: PermissionType): Boolean {
+    suspend fun resolve(requestOrigin: String?, type: PermissionType, scopeId: String = ""): Boolean {
         val origin = Origin.normalize(requestOrigin) ?: return false
         if (type.requiresSecureOrigin && !Origin.isSecure(origin)) return false
         return queue.withLock {
             when (manager.decide(profileId, origin, type)) {
                 Decision.GRANT -> true
-                Decision.REJECT -> false
+                Decision.REJECT -> {
+                    temporary.revoke(profileId, origin, type)
+                    false
+                }
                 Decision.PROMPT -> {
-                    val answer = CompletableDeferred<PromptChoice>()
-                    pending = answer
-                    current.value = PermissionPrompt(++counter, origin, type)
-                    val choice = try {
-                        answer.await()
-                    } finally {
-                        current.value = null
-                        pending = null
+                    if (scopeId.isNotEmpty() && temporary.isActive(profileId, origin, type, scopeId)) {
+                        true
+                    } else {
+                        val answer = CompletableDeferred<PromptChoice>()
+                        pending = answer
+                        current.value = PermissionPrompt(++counter, origin, type)
+                        val choice = try {
+                            answer.await()
+                        } finally {
+                            current.value = null
+                            pending = null
+                        }
+                        manager.choose(profileId, origin, type, choice)
+                        if (choice == PromptChoice.ALLOW_ONCE && scopeId.isNotEmpty()) {
+                            temporary.grant(profileId, origin, type, scopeId)
+                        }
+                        choice == PromptChoice.ALLOW || (choice == PromptChoice.ALLOW_ONCE && scopeId.isNotEmpty())
                     }
-                    manager.choose(profileId, origin, type, choice)
-                    choice == PromptChoice.ALLOW
                 }
             }
         }

@@ -207,4 +207,5 @@
     <string name="ext_allow">Adicionar</string>
     <string name="onboarding_google_error_config">Esta versão não está registrada para o login com Google (erro %1$s). No Google Cloud Console, crie um cliente OAuth Android com o nome do pacote e o SHA-1 exibidos abaixo e tente novamente.</string>
     <string name="onboarding_google_error_network">O login com Google precisa de conexão com a internet. Verifique sua conexão e tente novamente.</string>
+    <string name="perm_allow_once">Permitir uma vez</string>
 </resources>

@@ -98,6 +98,7 @@ fun BrowserScreen(
     val tabs by engine.tabs.collectAsStateWithLifecycle()
     val session by engine.activeSession.collectAsStateWithLifecycle()
     val chromeVisible by engine.chromeVisible.collectAsStateWithLifecycle()
+    val fullscreen by engine.fullscreen.collectAsStateWithLifecycle()
     val threats by engine.threats.collectAsStateWithLifecycle()
     val threat = tabs.activeId?.let { threats[it] }
     val atTop = settings.toolbarPosition == ToolbarPosition.TOP
@@ -179,10 +180,14 @@ fun BrowserScreen(
                 engine.flushClosed()
             },
             onRelease = { view -> view.releaseSession() },
-            modifier = Modifier
-                .fillMaxSize()
-                .windowInsetsPadding(WindowInsets.safeDrawing)
-                .padding(top = if (desktop) DesktopStripHeight else 0.dp)
+            modifier = if (fullscreen) {
+                Modifier.fillMaxSize()
+            } else {
+                Modifier
+                    .fillMaxSize()
+                    .windowInsetsPadding(WindowInsets.safeDrawing)
+                    .padding(top = if (desktop) DesktopStripHeight else 0.dp)
+            }
         )
         if (state.url.isEmpty() && !state.isLoading) {
             Box(
@@ -195,7 +200,7 @@ fun BrowserScreen(
                 }
             ) { newTabContent() }
         }
-        if (shownPull > 1f) {
+        if (shownPull > 1f && !fullscreen) {
             val progress = (shownPull / thresholdPx).coerceIn(0f, 1f)
             Surface(
                 shape = CircleShape,
@@ -215,7 +220,7 @@ fun BrowserScreen(
                 LoadingIndicator(progress = { progress }, modifier = Modifier.padding(8.dp))
             }
         }
-        if (findOpen) {
+        if (findOpen && !fullscreen) {
             FindBar(
                 engine = engine,
                 onClose = {
@@ -237,7 +242,7 @@ fun BrowserScreen(
                 onContinue = { engine.continueDespiteThreat(it.tabId) }
             )
         }
-        if (desktop) {
+        if (desktop && !fullscreen) {
             DesktopTabStripHost(
                 engine = engine,
                 onNewTab = onNewTab,
@@ -247,48 +252,50 @@ fun BrowserScreen(
                     .windowInsetsPadding(WindowInsets.safeDrawing.only(WindowInsetsSides.Horizontal + WindowInsetsSides.Top))
             )
         }
-        FloatingSearchFrame(
-            state = state,
-            tabCount = tabs.tabs.size,
-            isBookmarked = isBookmarked,
-            position = settings.toolbarPosition,
-            hidden = settings.autoHideFrame && !chromeVisible && state.url.isNotEmpty(),
-            desktopMode = state.desktopMode,
-            suggestions = suggestions,
-            onQueryChange = onQueryChange,
-            onPickSuggestion = onPickSuggestion,
-            onDeleteSuggestion = onDeleteSuggestion,
-            onShare = onShare,
-            onOpenDownloads = onOpenDownloads,
-            onFind = { findOpen = true },
-            onToggleDesktop = { engine.setDesktopMode(!state.desktopMode) },
-            onSubmit = onSubmit,
-            onBack = engine::goBack,
-            onForward = engine::goForward,
-            onReload = engine::reload,
-            onStop = engine::stop,
-            onOpenTabs = onOpenTabs,
-            onNewTab = onNewTab,
-            onNewPrivateTab = onNewPrivateTab,
-            onToggleBookmark = onToggleBookmark,
-            onOpenHistory = onOpenHistory,
-            onOpenBookmarks = onOpenBookmarks,
-            onOpenSettings = onOpenSettings,
-            onOpenSiteInfo = onOpenSiteInfo,
-            desktop = desktop,
-            focusTick = focusTick,
-            modifier = Modifier
-                .align(if (atTop) Alignment.TopCenter else Alignment.BottomCenter)
-                .then(
-                    if (desktop && atTop) {
-                        Modifier
-                            .windowInsetsPadding(WindowInsets.safeDrawing.only(WindowInsetsSides.Top))
-                            .padding(top = DesktopStripHeight)
-                    } else {
-                        Modifier
-                    }
-                )
-        )
+        if (!fullscreen) {
+            FloatingSearchFrame(
+                state = state,
+                tabCount = tabs.tabs.size,
+                isBookmarked = isBookmarked,
+                position = settings.toolbarPosition,
+                hidden = settings.autoHideFrame && !chromeVisible && state.url.isNotEmpty(),
+                desktopMode = state.desktopMode,
+                suggestions = suggestions,
+                onQueryChange = onQueryChange,
+                onPickSuggestion = onPickSuggestion,
+                onDeleteSuggestion = onDeleteSuggestion,
+                onShare = onShare,
+                onOpenDownloads = onOpenDownloads,
+                onFind = { findOpen = true },
+                onToggleDesktop = { engine.setDesktopMode(!state.desktopMode) },
+                onSubmit = onSubmit,
+                onBack = engine::goBack,
+                onForward = engine::goForward,
+                onReload = engine::reload,
+                onStop = engine::stop,
+                onOpenTabs = onOpenTabs,
+                onNewTab = onNewTab,
+                onNewPrivateTab = onNewPrivateTab,
+                onToggleBookmark = onToggleBookmark,
+                onOpenHistory = onOpenHistory,
+                onOpenBookmarks = onOpenBookmarks,
+                onOpenSettings = onOpenSettings,
+                onOpenSiteInfo = onOpenSiteInfo,
+                desktop = desktop,
+                focusTick = focusTick,
+                modifier = Modifier
+                    .align(if (atTop) Alignment.TopCenter else Alignment.BottomCenter)
+                    .then(
+                        if (desktop && atTop) {
+                            Modifier
+                                .windowInsetsPadding(WindowInsets.safeDrawing.only(WindowInsetsSides.Top))
+                                .padding(top = DesktopStripHeight)
+                        } else {
+                            Modifier
+                        }
+                    )
+            )
+        }
     }
 }
 

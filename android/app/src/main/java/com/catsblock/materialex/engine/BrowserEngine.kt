@@ -5,6 +5,7 @@ import com.catsblock.materialex.core.ScrollChromeTracker
 import com.catsblock.materialex.core.memory.MemoryBudget
 import com.catsblock.materialex.core.extension.ExtensionInfo
 import com.catsblock.materialex.core.extension.ExtensionPrompt
+import com.catsblock.materialex.core.permission.Origin
 import com.catsblock.materialex.core.permission.PermissionBroker
 import com.catsblock.materialex.core.profile.ProfileRules
 import com.catsblock.materialex.core.security.BypassGate
@@ -80,9 +81,13 @@ class BrowserEngine(context: Context, permissionManager: PermissionManager) {
     private var lastRealProfile = ProfileRules.DEFAULT_ID
     private val threatFlow = MutableStateFlow<Map<String, ThreatInfo>>(emptyMap())
     private var lastGestureAt = 0L
+    private val originOf = HashMap<String, String?>()
+    private val fullscreenFlow = MutableStateFlow(false)
+    private var fullscreenOwner: String? = null
 
     val permissions = PermissionBroker(permissionManager, DEFAULT_PROFILE)
     val osBlocked: StateFlow<Boolean> = osBlockedFlow.asStateFlow()
+    val fullscreen: StateFlow<Boolean> = fullscreenFlow.asStateFlow()
     val chromeVisible: StateFlow<Boolean> = chromeFlow.asStateFlow()
     val atTop: StateFlow<Boolean> = atTopFlow.asStateFlow()
     val popups: StateFlow<List<PopupWindow>> = popupFlow.asStateFlow()
@@ -333,6 +338,9 @@ class BrowserEngine(context: Context, permissionManager: PermissionManager) {
     }
 
     private fun dropSession(id: String) {
+        if (fullscreenOwner == id) exitFullscreen()
+        permissions.temporary.revokeScope(id)
+        originOf.remove(id)
         threatFlow.update { it - id }
         endBypassFor(id)
         closePopupsFor(id)
@@ -418,6 +426,13 @@ class BrowserEngine(context: Context, permissionManager: PermissionManager) {
         return session
     }
 
+    fun exitFullscreen() {
+        val owner = fullscreenOwner
+        fullscreenOwner = null
+        fullscreenFlow.value = false
+        if (owner != null) (sessions[owner] ?: popupSessions[owner])?.exitFullScreen()
+    }
+
     fun clearOsBlocked() {
         osBlockedFlow.value = false
     }
@@ -498,6 +513,7 @@ class BrowserEngine(context: Context, permissionManager: PermissionManager) {
     }
 
     private fun syncActive() {
+        if (fullscreenOwner != null && fullscreenOwner != manager.state.value.activeId) exitFullscreen()
         reviveActive()
         enforceLoadLimit()
         active.value = manager.state.value.activeId?.let { sessions[it] }
@@ -520,6 +536,9 @@ class BrowserEngine(context: Context, permissionManager: PermissionManager) {
                 val threat = threatFlow.value[id]
                 val shown = if (threat != null && url.orEmpty().startsWith("data:")) threat.url else url.orEmpty()
                 if (threat != null && !url.orEmpty().startsWith("data:")) threatFlow.update { it - id }
+                val origin = Origin.normalize(shown)
+                if (originOf.containsKey(id) && originOf[id] != origin) permissions.temporary.revokeScope(id)
+                originOf[id] = origin
                 change(id) { it.copy(url = shown) }
                 manager.update(id, url = shown)
             }
@@ -655,7 +674,7 @@ class BrowserEngine(context: Context, permissionManager: PermissionManager) {
                 } ?: return GeckoResult.fromValue(GeckoSession.PermissionDelegate.ContentPermission.VALUE_DENY)
                 val result = GeckoResult<Int>()
                 scope.launch {
-                    val allowed = permissions.resolve(perm.uri, type)
+                    val allowed = permissions.resolve(perm.uri, type, id)
                     result.complete(
                         if (allowed) {
                             GeckoSession.PermissionDelegate.ContentPermission.VALUE_ALLOW
@@ -677,8 +696,8 @@ class BrowserEngine(context: Context, permissionManager: PermissionManager) {
                 scope.launch {
                     val videoSource = video?.firstOrNull()
                     val audioSource = audio?.firstOrNull()
-                    val videoAllowed = videoSource != null && permissions.resolve(uri, PermissionType.CAMERA)
-                    val audioAllowed = audioSource != null && permissions.resolve(uri, PermissionType.MICROPHONE)
+                    val videoAllowed = videoSource != null && permissions.resolve(uri, PermissionType.CAMERA, id)
+                    val audioAllowed = audioSource != null && permissions.resolve(uri, PermissionType.MICROPHONE, id)
                     if (videoAllowed || audioAllowed) {
                         callback.grant(
                             if (videoAllowed) videoSource else null,
@@ -697,6 +716,16 @@ class BrowserEngine(context: Context, permissionManager: PermissionManager) {
 
             override fun onCloseRequest(session: GeckoSession) {
                 if (popupSessions.containsKey(id)) closePopup(id)
+            }
+
+            override fun onFullScreen(session: GeckoSession, fullScreen: Boolean) {
+                if (fullScreen) {
+                    fullscreenOwner = id
+                    fullscreenFlow.value = true
+                } else if (fullscreenOwner == id) {
+                    fullscreenOwner = null
+                    fullscreenFlow.value = false
+                }
             }
 
             override fun onTitleChange(session: GeckoSession, title: String?) {

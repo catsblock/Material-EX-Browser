@@ -207,4 +207,5 @@
     <string name="ext_allow">Add</string>
     <string name="onboarding_google_error_config">This build isn\'t registered for Google sign-in (error %1$s). In Google Cloud Console, create an Android OAuth client with the package name and SHA-1 shown below, then try again.</string>
     <string name="onboarding_google_error_network">Google sign-in needs an internet connection. Check your connection and try again.</string>
+    <string name="perm_allow_once">Allow once</string>
 </resources>

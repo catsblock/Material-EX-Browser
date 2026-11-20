@@ -91,6 +91,9 @@ fun PermissionPromptSheet(prompt: PermissionPrompt, onChoice: (PromptChoice) -> 
             FilledTonalButton(onClick = { onChoice(PromptChoice.DENY) }, modifier = Modifier.fillMaxWidth()) {
                 Text(stringResource(R.string.perm_deny))
             }
+            FilledTonalButton(onClick = { onChoice(PromptChoice.ALLOW_ONCE) }, modifier = Modifier.fillMaxWidth()) {
+                Text(stringResource(R.string.perm_allow_once))
+            }
             Button(onClick = { onChoice(PromptChoice.ALLOW) }, modifier = Modifier.fillMaxWidth()) {
                 Text(stringResource(R.string.perm_allow))
             }
