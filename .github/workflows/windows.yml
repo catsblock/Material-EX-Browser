@@ -1,0 +1,64 @@
+name: Windows build
+
+on:
+  push:
+    branches: [main]
+    paths: ["windows/**", ".github/workflows/windows.yml"]
+  pull_request:
+    paths: ["windows/**", ".github/workflows/windows.yml"]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    runs-on: windows-2022
+    defaults:
+      run:
+        working-directory: windows
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/cache@v4
+        with:
+          path: windows/build/cef
+          key: cef-${{ runner.os }}-${{ hashFiles('windows/cmake/DownloadCEF.cmake') }}
+
+      - name: Configure
+        run: cmake -S . -B build -G "Visual Studio 17 2022" -A x64
+
+      - name: Build
+        run: cmake --build build --config Release --parallel
+
+      - name: Core tests
+        run: ctest --test-dir build -C Release --output-on-failure
+
+      - name: Validate output
+        shell: pwsh
+        run: |
+          $dir = "build/Release"
+          foreach ($f in "materialex.exe", "libcef.dll", "chrome_elf.dll", "icudtl.dat", "resources.pak", "v8_context_snapshot.bin") {
+            if (-not (Test-Path (Join-Path $dir $f))) { throw "Missing $f" }
+          }
+          $size = (Get-ChildItem $dir -Recurse | Measure-Object Length -Sum).Sum
+          Write-Host "Output size: $([math]::Round($size / 1MB, 1)) MB"
+
+      - name: Launch smoke test
+        shell: pwsh
+        run: |
+          $p = Start-Process -FilePath "build/Release/materialex.exe" -ArgumentList "about:blank" -PassThru
+          Start-Sleep -Seconds 12
+          if ($p.HasExited) { throw "materialex.exe exited early with code $($p.ExitCode)" }
+          $null = $p.CloseMainWindow()
+          if (-not $p.WaitForExit(15000)) { Stop-Process -Id $p.Id -Force; throw "materialex.exe did not exit after close" }
+          Write-Host "Clean exit code: $($p.ExitCode)"
+
+      - name: Package
+        shell: pwsh
+        run: Compress-Archive -Path build/Release/* -DestinationPath materialex-windows-x64.zip
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: materialex-windows-x64
+          path: windows/materialex-windows-x64.zip
