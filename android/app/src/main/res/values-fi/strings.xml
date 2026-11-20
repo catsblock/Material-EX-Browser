@@ -262,4 +262,7 @@
     <string name="settings_clear_confirm_title">Tyhjennetäänkö valitut tiedot?</string>
     <string name="settings_clear_confirm_body">Tätä ei voi perua. Avoimet välilehdet pysyvät auki, mutta sinut voidaan kirjata ulos sivustoilta.</string>
     <string name="settings_clear_done">Tiedot tyhjennetty</string>
+    <string name="doc_security">Tietoturvakäytäntö</string>
+    <string name="doc_retention">Tietojen säilytyskäytäntö</string>
+    <string name="settings_legal_title">Oikeudelliset asiakirjat</string>
 </resources>

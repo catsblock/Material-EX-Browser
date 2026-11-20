@@ -262,4 +262,7 @@
     <string name="settings_clear_confirm_title">Hapus data yang dipilih?</string>
     <string name="settings_clear_confirm_body">Tindakan ini tidak dapat dibatalkan. Tab yang terbuka tetap terbuka, tetapi Anda mungkin keluar dari beberapa situs.</string>
     <string name="settings_clear_done">Data dihapus</string>
+    <string name="doc_security">Kebijakan Keamanan</string>
+    <string name="doc_retention">Kebijakan Retensi Data</string>
+    <string name="settings_legal_title">Dokumen hukum</string>
 </resources>

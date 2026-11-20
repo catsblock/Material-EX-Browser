@@ -1,6 +1,6 @@
 MATERIAL EX BROWSER - PRIVACY POLICY
 
-Last updated: 2026-11-19
+Last updated: 2026-11-20
 
 1. Summary
 Material EX does not operate servers that collect your personal data, does not require an account and contains no analytics, advertising or tracking code of its own.
@@ -11,6 +11,8 @@ The following data is stored locally in the application's private storage on you
 - Browsing history (page titles, addresses and visit times).
 - Bookmarks.
 - Open tabs and their navigation state.
+- The list of your downloads (file name, source address, size and status) and the downloaded files in your Downloads folder.
+- Your decisions about website permissions (camera, microphone, location, notifications and similar) per website.
 - Website data kept by the browser engine (cookies, cache, site storage), as with any browser.
 - Records of the legal agreements you accepted (version and time of acceptance).
 - If you choose to connect a Google account during onboarding, the email address of that account. Authentication is handled by Google Play services on your device. Material EX does not receive your password, does not store access tokens and uses no server of its own. Disconnecting removes the stored email address from the app.
@@ -25,7 +27,7 @@ This data is not sent to the developers. Uninstalling the application removes it
 If you choose to make Material EX your default browser, the operating system opens links from other apps in Material EX. This is controlled by Android; Material EX does not change the setting silently.
 
 5. Your choices and rights
-You can delete history, bookmarks and website data in the application and remove everything by clearing the application's storage or uninstalling it. Because the developers do not hold your personal data, requests to access, correct or delete it can be fulfilled directly on your device. Where laws such as the Brazilian General Data Protection Law (LGPD) apply, you keep the rights they grant you regarding data processed by third parties such as websites and search engines; contact those parties directly.
+You can delete history, search history, the download list, website permissions, cookies, site data and cache under Settings > Privacy > Clear browsing data, delete bookmarks individually and remove everything by clearing the application's storage or uninstalling it. Because the developers do not hold your personal data, requests to access, correct or delete it can be fulfilled directly on your device. Where laws such as the Brazilian General Data Protection Law (LGPD) apply, you keep the rights they grant you regarding data processed by third parties such as websites and search engines; contact those parties directly.
 
 6. Children
 Material EX is a general-purpose browser and is not directed at children.

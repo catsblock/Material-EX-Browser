@@ -262,4 +262,7 @@
     <string name="settings_clear_confirm_title">Очистить выбранные данные?</string>
     <string name="settings_clear_confirm_body">Это действие нельзя отменить. Открытые вкладки останутся, но вы можете выйти из аккаунтов на сайтах.</string>
     <string name="settings_clear_done">Данные очищены</string>
+    <string name="doc_security">Политика безопасности</string>
+    <string name="doc_retention">Политика хранения данных</string>
+    <string name="settings_legal_title">Юридические документы</string>
 </resources>

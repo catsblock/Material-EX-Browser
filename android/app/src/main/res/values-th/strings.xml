@@ -262,4 +262,7 @@
     <string name="settings_clear_confirm_title">ล้างข้อมูลที่เลือกหรือไม่</string>
     <string name="settings_clear_confirm_body">ไม่สามารถย้อนกลับได้ แท็บที่เปิดอยู่จะยังเปิดอยู่ แต่คุณอาจถูกออกจากระบบของบางเว็บไซต์</string>
     <string name="settings_clear_done">ล้างข้อมูลแล้ว</string>
+    <string name="doc_security">นโยบายความปลอดภัย</string>
+    <string name="doc_retention">นโยบายการเก็บรักษาข้อมูล</string>
+    <string name="settings_legal_title">เอกสารทางกฎหมาย</string>
 </resources>

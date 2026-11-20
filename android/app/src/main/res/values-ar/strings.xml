@@ -264,4 +264,7 @@
     <string name="settings_clear_confirm_title">مسح البيانات المحددة؟</string>
     <string name="settings_clear_confirm_body">لا يمكن التراجع عن هذا. تبقى علامات التبويب المفتوحة، لكن قد يتم تسجيل خروجك من المواقع.</string>
     <string name="settings_clear_done">تم مسح البيانات</string>
+    <string name="doc_security">سياسة الأمان</string>
+    <string name="doc_retention">سياسة الاحتفاظ بالبيانات</string>
+    <string name="settings_legal_title">المستندات القانونية</string>
 </resources>

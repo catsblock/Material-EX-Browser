@@ -459,8 +459,7 @@ class BrowserEngine(context: Context, permissionManager: PermissionManager) {
                 org.mozilla.geckoview.StorageController.ClearFlags.AUTH_SESSIONS
         }
         if (cache) {
-            flags = flags or org.mozilla.geckoview.StorageController.ClearFlags.NETWORK or
-                org.mozilla.geckoview.StorageController.ClearFlags.IMAGE_CACHE
+            flags = flags or org.mozilla.geckoview.StorageController.ClearFlags.ALL_CACHES
         }
         if (flags != 0L) runtime.storageController.clearData(flags)
     }

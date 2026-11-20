@@ -262,4 +262,7 @@
     <string name="settings_clear_confirm_title">選択したデータを消去しますか？</string>
     <string name="settings_clear_confirm_body">この操作は元に戻せません。開いているタブはそのままですが、一部のサイトからログアウトされることがあります。</string>
     <string name="settings_clear_done">データを消去しました</string>
+    <string name="doc_security">セキュリティポリシー</string>
+    <string name="doc_retention">データ保持ポリシー</string>
+    <string name="settings_legal_title">法的文書</string>
 </resources>

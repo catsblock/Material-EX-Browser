@@ -262,4 +262,7 @@
     <string name="settings_clear_confirm_title">Очистити вибрані дані?</string>
     <string name="settings_clear_confirm_body">Цю дію не можна скасувати. Відкриті вкладки залишаться, але вас може бути вилучено з облікових записів на сайтах.</string>
     <string name="settings_clear_done">Дані очищено</string>
+    <string name="doc_security">Політика безпеки</string>
+    <string name="doc_retention">Політика зберігання даних</string>
+    <string name="settings_legal_title">Юридичні документи</string>
 </resources>

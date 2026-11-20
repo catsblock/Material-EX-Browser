@@ -262,4 +262,7 @@
     <string name="settings_clear_confirm_title">Limpar os dados selecionados?</string>
     <string name="settings_clear_confirm_body">Não é possível anular. Os separadores abertos continuam abertos, mas pode terminar sessão em alguns sites.</string>
     <string name="settings_clear_done">Dados limpos</string>
+    <string name="doc_security">Política de segurança</string>
+    <string name="doc_retention">Política de retenção de dados</string>
+    <string name="settings_legal_title">Documentos legais</string>
 </resources>

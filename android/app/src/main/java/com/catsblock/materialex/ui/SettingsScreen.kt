@@ -111,6 +111,13 @@ fun SettingsScreen(
     val shown = category ?: if (desktop) SettingsCategory.GENERAL else null
     BackHandler(enabled = category != null && !desktop) { category = null }
 
+    var legalDoc by rememberSaveable { mutableStateOf<String?>(null) }
+    legalDoc?.let { name ->
+        BackHandler { legalDoc = null }
+        LegalDocumentViewer(doc = LegalDoc.valueOf(name), onClose = { legalDoc = null })
+        return
+    }
+
     Scaffold(
         topBar = {
             TopAppBar(
@@ -412,6 +419,13 @@ fun SettingsScreen(
                 }
                 SettingsSection(null) {
                     Text(stringResource(R.string.settings_about_version, version), style = MaterialTheme.typography.bodyLarge)
+                }
+                SettingsSection(R.string.settings_legal_title) {
+                    LegalDoc.entries.forEach { doc ->
+                        TextButton(onClick = { legalDoc = doc.name }, modifier = Modifier.fillMaxWidth()) {
+                            Text(stringResource(doc.title), modifier = Modifier.fillMaxWidth())
+                        }
+                    }
                 }
             }
         }

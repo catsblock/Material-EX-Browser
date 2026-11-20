@@ -264,4 +264,7 @@
     <string name="settings_clear_confirm_title">Clear selected data?</string>
     <string name="settings_clear_confirm_body">This cannot be undone. Open tabs stay open, but you may be signed out of sites.</string>
     <string name="settings_clear_done">Data cleared</string>
+    <string name="doc_security">Security Policy</string>
+    <string name="doc_retention">Data Retention Policy</string>
+    <string name="settings_legal_title">Legal documents</string>
 </resources>

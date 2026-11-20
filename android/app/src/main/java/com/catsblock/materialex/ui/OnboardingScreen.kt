@@ -87,10 +87,12 @@ import androidx.activity.result.IntentSenderRequest
 
 private enum class Step { WELCOME, LEGAL, GOOGLE, DEFAULT, DONE }
 
-private enum class LegalDoc(val asset: String, val title: Int) {
+internal enum class LegalDoc(val asset: String, val title: Int) {
     TERMS("TERMS_OF_SERVICE.md", R.string.doc_terms),
     PRIVACY("PRIVACY_POLICY.md", R.string.doc_privacy),
-    LICENSE("GPL_LICENSE_INFO.md", R.string.doc_license)
+    LICENSE("GPL_LICENSE_INFO.md", R.string.doc_license),
+    SECURITY("SECURITY_POLICY.md", R.string.doc_security),
+    RETENTION("DATA_RETENTION_POLICY.md", R.string.doc_retention)
 }
 
 @OptIn(ExperimentalMaterial3ExpressiveApi::class, ExperimentalAnimationApi::class)
@@ -504,7 +506,7 @@ private fun DefaultBrowserStep() {
 }
 
 @Composable
-private fun LegalDocumentViewer(doc: LegalDoc, onClose: () -> Unit) {
+internal fun LegalDocumentViewer(doc: LegalDoc, onClose: () -> Unit) {
     val context = LocalContext.current
     val text = remember(doc) {
         runCatching { context.assets.open(doc.asset).bufferedReader().use { it.readText() } }.getOrDefault("")

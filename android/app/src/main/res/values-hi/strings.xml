@@ -262,4 +262,7 @@
     <string name="settings_clear_confirm_title">चुना हुआ डेटा साफ़ करें?</string>
     <string name="settings_clear_confirm_body">इसे पूर्ववत नहीं किया जा सकता। खुले टैब खुले रहेंगे, पर आप कुछ साइटों से साइन आउट हो सकते हैं।</string>
     <string name="settings_clear_done">डेटा साफ़ हो गया</string>
+    <string name="doc_security">सुरक्षा नीति</string>
+    <string name="doc_retention">डेटा प्रतिधारण नीति</string>
+    <string name="settings_legal_title">कानूनी दस्तावेज़</string>
 </resources>

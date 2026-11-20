@@ -262,4 +262,7 @@
     <string name="settings_clear_confirm_title">Xóa dữ liệu đã chọn?</string>
     <string name="settings_clear_confirm_body">Không thể hoàn tác. Các thẻ đang mở vẫn được giữ, nhưng bạn có thể bị đăng xuất khỏi một số trang web.</string>
     <string name="settings_clear_done">Đã xóa dữ liệu</string>
+    <string name="doc_security">Chính sách bảo mật</string>
+    <string name="doc_retention">Chính sách lưu giữ dữ liệu</string>
+    <string name="settings_legal_title">Tài liệu pháp lý</string>
 </resources>

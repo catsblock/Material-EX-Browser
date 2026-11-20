@@ -262,4 +262,7 @@
     <string name="settings_clear_confirm_title">¿Borrar los datos seleccionados?</string>
     <string name="settings_clear_confirm_body">No se puede deshacer. Las pestañas abiertas siguen abiertas, pero es posible que se cierre tu sesión en algunos sitios.</string>
     <string name="settings_clear_done">Datos borrados</string>
+    <string name="doc_security">Política de seguridad</string>
+    <string name="doc_retention">Política de conservación de datos</string>
+    <string name="settings_legal_title">Documentos legales</string>
 </resources>

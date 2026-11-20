@@ -262,4 +262,7 @@
     <string name="settings_clear_confirm_title">선택한 데이터를 삭제할까요?</string>
     <string name="settings_clear_confirm_body">되돌릴 수 없습니다. 열린 탭은 유지되지만 일부 사이트에서 로그아웃될 수 있습니다.</string>
     <string name="settings_clear_done">데이터를 삭제했습니다</string>
+    <string name="doc_security">보안 정책</string>
+    <string name="doc_retention">데이터 보존 정책</string>
+    <string name="settings_legal_title">법적 문서</string>
 </resources>

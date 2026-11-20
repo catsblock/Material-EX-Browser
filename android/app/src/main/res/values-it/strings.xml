@@ -262,4 +262,7 @@
     <string name="settings_clear_confirm_title">Cancellare i dati selezionati?</string>
     <string name="settings_clear_confirm_body">Non può essere annullato. Le schede aperte restano aperte, ma potresti essere disconnesso da alcuni siti.</string>
     <string name="settings_clear_done">Dati cancellati</string>
+    <string name="doc_security">Politica di sicurezza</string>
+    <string name="doc_retention">Politica di conservazione dei dati</string>
+    <string name="settings_legal_title">Documenti legali</string>
 </resources>
