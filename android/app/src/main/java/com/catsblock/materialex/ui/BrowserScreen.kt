@@ -98,6 +98,7 @@ fun BrowserScreen(
     val tabs by engine.tabs.collectAsStateWithLifecycle()
     val session by engine.activeSession.collectAsStateWithLifecycle()
     val chromeVisible by engine.chromeVisible.collectAsStateWithLifecycle()
+    val fullscreen by engine.fullscreen.collectAsStateWithLifecycle()
     val threats by engine.threats.collectAsStateWithLifecycle()
     val threat = tabs.activeId?.let { threats[it] }
     val atTop = settings.toolbarPosition == ToolbarPosition.TOP
@@ -139,7 +140,7 @@ fun BrowserScreen(
                 val slop = viewConfiguration.touchSlop
                 awaitEachGesture {
                     val down = awaitFirstDown(requireUnconsumed = false, pass = PointerEventPass.Initial)
-                    if (!currentAtTop) return@awaitEachGesture
+                    if (!currentAtTop || engine.fullscreen.value) return@awaitEachGesture
                     var tracking = false
                     var aborted = false
                     while (true) {
@@ -179,11 +180,16 @@ fun BrowserScreen(
                 engine.flushClosed()
             },
             onRelease = { view -> view.releaseSession() },
-            modifier = Modifier
-                .fillMaxSize()
-                .windowInsetsPadding(WindowInsets.safeDrawing)
-                .padding(top = if (desktop) DesktopStripHeight else 0.dp)
+            modifier = if (fullscreen) {
+                Modifier.fillMaxSize()
+            } else {
+                Modifier
+                    .fillMaxSize()
+                    .windowInsetsPadding(WindowInsets.safeDrawing)
+                    .padding(top = if (desktop) DesktopStripHeight else 0.dp)
+            }
         )
+        if (fullscreen) return@Box
         if (state.url.isEmpty() && !state.isLoading) {
             Box(
                 modifier = if (desktop) {

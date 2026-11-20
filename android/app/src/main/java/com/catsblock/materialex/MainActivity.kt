@@ -161,6 +161,17 @@ class MainActivity : ComponentActivity() {
         }
     }
 
+    private fun setImmersive(on: Boolean) {
+        val controller = androidx.core.view.WindowCompat.getInsetsController(window, window.decorView)
+        controller.systemBarsBehavior =
+            androidx.core.view.WindowInsetsControllerCompat.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE
+        if (on) {
+            controller.hide(androidx.core.view.WindowInsetsCompat.Type.systemBars())
+        } else {
+            controller.show(androidx.core.view.WindowInsetsCompat.Type.systemBars())
+        }
+    }
+
     @Composable
     private fun BrowserHost(settings: BrowserSettings) {
         val pageState by app.engine.state.collectAsStateWithLifecycle()
@@ -225,6 +236,13 @@ class MainActivity : ComponentActivity() {
         BackHandler(enabled = screen != Screen.BROWSER || pageState.canGoBack) {
             if (screen != Screen.BROWSER) screen = Screen.BROWSER else app.engine.goBack()
         }
+        val fullscreen by app.engine.fullscreen.collectAsStateWithLifecycle()
+        LaunchedEffect(screen, fullscreen) {
+            if (fullscreen && screen != Screen.BROWSER) app.engine.exitFullscreen()
+            setImmersive(fullscreen && screen == Screen.BROWSER)
+        }
+        DisposableEffect(Unit) { onDispose { setImmersive(false) } }
+        BackHandler(enabled = fullscreen) { app.engine.exitFullscreen() }
 
         when (screen) {
             Screen.SETTINGS -> SettingsScreen(

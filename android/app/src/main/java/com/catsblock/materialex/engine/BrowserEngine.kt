@@ -80,12 +80,15 @@ class BrowserEngine(context: Context, permissionManager: PermissionManager) {
     private var lastRealProfile = ProfileRules.DEFAULT_ID
     private val threatFlow = MutableStateFlow<Map<String, ThreatInfo>>(emptyMap())
     private var lastGestureAt = 0L
+    private val fullscreenFlow = MutableStateFlow(false)
+    private var fullscreenId: String? = null
 
     val permissions = PermissionBroker(permissionManager, DEFAULT_PROFILE)
     val osBlocked: StateFlow<Boolean> = osBlockedFlow.asStateFlow()
     val chromeVisible: StateFlow<Boolean> = chromeFlow.asStateFlow()
     val atTop: StateFlow<Boolean> = atTopFlow.asStateFlow()
     val popups: StateFlow<List<PopupWindow>> = popupFlow.asStateFlow()
+    val fullscreen: StateFlow<Boolean> = fullscreenFlow.asStateFlow()
     var popupBlocking: Boolean = true
     var loadedLimit: Int = TabLifecycle.DEFAULT_LOADED
         set(value) {
@@ -332,7 +335,22 @@ class BrowserEngine(context: Context, permissionManager: PermissionManager) {
         manager.move(id, all.indexOfFirst { it.id == neighbor.id })
     }
 
+    fun exitFullscreen() {
+        val id = fullscreenId ?: return
+        fullscreenId = null
+        fullscreenFlow.value = false
+        (sessions[id] ?: popupSessions[id])?.exitFullScreen()
+    }
+
+    private fun clearFullscreenFor(id: String) {
+        if (fullscreenId == id) {
+            fullscreenId = null
+            fullscreenFlow.value = false
+        }
+    }
+
     private fun dropSession(id: String) {
+        clearFullscreenFor(id)
         threatFlow.update { it - id }
         endBypassFor(id)
         closePopupsFor(id)
@@ -345,6 +363,7 @@ class BrowserEngine(context: Context, permissionManager: PermissionManager) {
     }
 
     fun selectTab(id: String) {
+        if (fullscreenId != null && fullscreenId != id) exitFullscreen()
         manager.select(id)
         syncActive()
     }
@@ -385,6 +404,7 @@ class BrowserEngine(context: Context, permissionManager: PermissionManager) {
     }
 
     fun closePopup(id: String) {
+        clearFullscreenFor(id)
         val session = popupSessions.remove(id) ?: return
         popupFlow.update { list -> list.filterNot { it.id == id } }
         pages.update { it - id }
@@ -697,6 +717,20 @@ class BrowserEngine(context: Context, permissionManager: PermissionManager) {
 
             override fun onCloseRequest(session: GeckoSession) {
                 if (popupSessions.containsKey(id)) closePopup(id)
+            }
+
+            override fun onFullScreen(session: GeckoSession, fullScreen: Boolean) {
+                if (fullScreen) {
+                    val foreground = !popupSessions.containsKey(id) && manager.state.value.activeId == id
+                    if (!foreground) {
+                        session.exitFullScreen()
+                        return
+                    }
+                    fullscreenId = id
+                    fullscreenFlow.value = true
+                } else {
+                    clearFullscreenFor(id)
+                }
             }
 
             override fun onTitleChange(session: GeckoSession, title: String?) {
