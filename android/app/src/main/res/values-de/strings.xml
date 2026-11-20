@@ -190,4 +190,17 @@
     <string name="profile_isolation_note">Jedes Profil hat eigene Cookies, Anmeldungen und Websitespeicher. Verlauf, Lesezeichen und Websiteberechtigungen werden noch zwischen Profilen geteilt.</string>
     <string name="menu_new_private_tab">Neuer privater Tab</string>
     <string name="tab_private">Privat</string>
+    <string name="settings_cat_extensions">Erweiterungen</string>
+    <string name="ext_empty">Keine Erweiterungen installiert.</string>
+    <string name="ext_remove">Erweiterung entfernen</string>
+    <string name="ext_url_label">Adresse der Erweiterung (.xpi)</string>
+    <string name="ext_url_invalid">Geben Sie eine sichere https-Adresse ein, die auf .xpi endet</string>
+    <string name="ext_install">Installieren</string>
+    <string name="ext_failed">Installation fehlgeschlagen.</string>
+    <string name="ext_note">Es funktionieren nur Firefox-kompatible WebExtensions. Symbolleistenschaltflächen und Popups von Erweiterungen sind noch nicht verfügbar.</string>
+    <string name="ext_prompt_title">%1$s hinzufügen?</string>
+    <string name="ext_prompt_message">Diese Erweiterung fordert die Berechtigung an, um:</string>
+    <string name="ext_perm_all_sites">Ihre Daten auf allen Websites zu lesen und zu ändern</string>
+    <string name="ext_perm_site">Zugriff auf: %1$s</string>
+    <string name="ext_allow">Hinzufügen</string>
 </resources>

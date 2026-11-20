@@ -43,6 +43,7 @@ import com.catsblock.materialex.ui.BrowserScreen
 import com.catsblock.materialex.ui.DownloadsScreen
 import com.catsblock.materialex.ui.HistoryScreen
 import com.catsblock.materialex.ui.OnboardingScreen
+import com.catsblock.materialex.ui.ExtensionPromptDialog
 import com.catsblock.materialex.ui.SettingsScreen
 import com.catsblock.materialex.ui.TabSwitcherScreen
 import com.catsblock.materialex.ui.theme.MaterialExTheme
@@ -143,6 +144,10 @@ class MainActivity : ComponentActivity() {
         }
         var screen by rememberSaveable { mutableStateOf(Screen.BROWSER) }
         var siteInfoOpen by rememberSaveable { mutableStateOf(false) }
+        val extensions by app.engine.extensions.collectAsStateWithLifecycle()
+        val extensionError by app.engine.extensionError.collectAsStateWithLifecycle()
+        val extensionPrompt by app.engine.extensionPrompt.collectAsStateWithLifecycle()
+        extensionPrompt?.let { ExtensionPromptDialog(it) { allow -> app.engine.answerExtensionPrompt(allow) } }
         val prompt by app.engine.permissions.prompt.collectAsStateWithLifecycle()
         val osBlocked by app.engine.osBlocked.collectAsStateWithLifecycle()
 
@@ -160,6 +165,11 @@ class MainActivity : ComponentActivity() {
                 onSwitchProfile = { app.engine.switchProfile(it) },
                 onDeleteProfile = { app.engine.deleteProfile(it) },
                 onExitGuest = { app.engine.exitGuest() },
+                extensions = extensions,
+                extensionInstallFailed = extensionError,
+                onInstallExtension = { app.engine.installExtension(it) },
+                onToggleExtension = { id, enabled -> app.engine.setExtensionEnabled(id, enabled) },
+                onRemoveExtension = { app.engine.removeExtension(it) },
                 onClose = { screen = Screen.BROWSER }
             )
             Screen.HISTORY -> HistoryScreen(

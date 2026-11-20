@@ -190,4 +190,17 @@
     <string name="profile_isolation_note">Każdy profil ma własne pliki cookie, logowania i dane witryn. Historia, zakładki i uprawnienia witryn są nadal współdzielone między profilami.</string>
     <string name="menu_new_private_tab">Nowa karta prywatna</string>
     <string name="tab_private">Prywatna</string>
+    <string name="settings_cat_extensions">Rozszerzenia</string>
+    <string name="ext_empty">Brak zainstalowanych rozszerzeń.</string>
+    <string name="ext_remove">Usuń rozszerzenie</string>
+    <string name="ext_url_label">Adres rozszerzenia (.xpi)</string>
+    <string name="ext_url_invalid">Wpisz bezpieczny adres https kończący się na .xpi</string>
+    <string name="ext_install">Zainstaluj</string>
+    <string name="ext_failed">Instalacja nie powiodła się.</string>
+    <string name="ext_note">Działają tylko rozszerzenia WebExtensions zgodne z Firefoksem. Przyciski na pasku narzędzi i okna podręczne rozszerzeń nie są jeszcze dostępne.</string>
+    <string name="ext_prompt_title">Dodać %1$s?</string>
+    <string name="ext_prompt_message">To rozszerzenie prosi o uprawnienie do:</string>
+    <string name="ext_perm_all_sites">Odczytu i zmiany Twoich danych na wszystkich witrynach</string>
+    <string name="ext_perm_site">Dostęp do: %1$s</string>
+    <string name="ext_allow">Dodaj</string>
 </resources>

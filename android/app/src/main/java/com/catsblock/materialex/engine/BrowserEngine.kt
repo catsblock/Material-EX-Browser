@@ -3,6 +3,8 @@ package com.catsblock.materialex.engine
 import android.content.Context
 import com.catsblock.materialex.core.ScrollChromeTracker
 import com.catsblock.materialex.core.memory.MemoryBudget
+import com.catsblock.materialex.core.extension.ExtensionInfo
+import com.catsblock.materialex.core.extension.ExtensionPrompt
 import com.catsblock.materialex.core.permission.PermissionBroker
 import com.catsblock.materialex.core.profile.ProfileRules
 import com.catsblock.materialex.core.security.BypassGate
@@ -33,6 +35,8 @@ import org.mozilla.geckoview.GeckoRuntime
 import org.mozilla.geckoview.GeckoSession
 import org.mozilla.geckoview.GeckoSessionSettings
 import org.mozilla.geckoview.MediaSession
+import org.mozilla.geckoview.WebExtension
+import org.mozilla.geckoview.WebExtensionController
 import org.mozilla.geckoview.WebRequestError
 import org.mozilla.geckoview.WebResponse
 
@@ -67,6 +71,10 @@ class BrowserEngine(context: Context, permissionManager: PermissionManager) {
     private val popupSessions = HashMap<String, GeckoSession>()
     private val savedStates = HashMap<String, GeckoSession.SessionState>()
     private var trimLevel = 0
+    private val extensionFlow = MutableStateFlow<List<ExtensionInfo>>(emptyList())
+    private val extensionPromptFlow = MutableStateFlow<ExtensionPrompt?>(null)
+    private val extensionErrorFlow = MutableStateFlow(false)
+    private var extensionDecision: GeckoResult<WebExtension.PermissionPromptResponse>? = null
     private val bypass = BypassGate()
     private val profileFlow = MutableStateFlow(ProfileRules.DEFAULT_ID)
     private var lastRealProfile = ProfileRules.DEFAULT_ID
@@ -86,6 +94,71 @@ class BrowserEngine(context: Context, permissionManager: PermissionManager) {
         }
 
     val threats: StateFlow<Map<String, ThreatInfo>> = threatFlow.asStateFlow()
+    val extensions: StateFlow<List<ExtensionInfo>> = extensionFlow.asStateFlow()
+    val extensionPrompt: StateFlow<ExtensionPrompt?> = extensionPromptFlow.asStateFlow()
+    val extensionError: StateFlow<Boolean> = extensionErrorFlow.asStateFlow()
+
+    private val extensionPromptDelegate = object : WebExtensionController.PromptDelegate {
+        override fun onInstallPromptRequest(
+            extension: WebExtension,
+            permissions: Array<String>,
+            origins: Array<String>,
+            dataCollectionPermissions: Array<String>
+        ): GeckoResult<WebExtension.PermissionPromptResponse>? {
+            val result = GeckoResult<WebExtension.PermissionPromptResponse>()
+            extensionDecision?.complete(WebExtension.PermissionPromptResponse(false, false, false))
+            extensionDecision = result
+            extensionPromptFlow.value = ExtensionPrompt(
+                extensionName = extension.metaData.name ?: extension.id,
+                permissions = permissions.toList(),
+                origins = origins.toList()
+            )
+            return result
+        }
+    }
+
+    fun setupExtensions() {
+        runtime.webExtensionController.setPromptDelegate(extensionPromptDelegate)
+        refreshExtensions()
+    }
+
+    fun refreshExtensions() {
+        runtime.webExtensionController.list().accept({ list ->
+            extensionFlow.value = (list ?: emptyList()).map {
+                ExtensionInfo(it.id, it.metaData.name ?: it.id, it.metaData.version, it.metaData.enabled)
+            }
+        }, { extensionFlow.value = emptyList() })
+    }
+
+    fun installExtension(url: String) {
+        extensionErrorFlow.value = false
+        runtime.webExtensionController.install(url, WebExtensionController.INSTALLATION_METHOD_MANAGER)
+            .accept({ refreshExtensions() }, { extensionErrorFlow.value = true; refreshExtensions() })
+    }
+
+    fun answerExtensionPrompt(allow: Boolean) {
+        extensionDecision?.complete(WebExtension.PermissionPromptResponse(allow, false, false))
+        extensionDecision = null
+        extensionPromptFlow.value = null
+    }
+
+    fun setExtensionEnabled(id: String, enabled: Boolean) {
+        val controller = runtime.webExtensionController
+        controller.list().accept({ list ->
+            val target = list?.firstOrNull { it.id == id } ?: return@accept
+            val action = if (enabled) controller.enable(target, WebExtensionController.EnableSource.USER)
+            else controller.disable(target, WebExtensionController.EnableSource.USER)
+            action.accept({ refreshExtensions() }, { refreshExtensions() })
+        }, { refreshExtensions() })
+    }
+
+    fun removeExtension(id: String) {
+        val controller = runtime.webExtensionController
+        controller.list().accept({ list ->
+            val target = list?.firstOrNull { it.id == id } ?: return@accept
+            controller.uninstall(target).accept({ refreshExtensions() }, { refreshExtensions() })
+        }, { refreshExtensions() })
+    }
 
     var safeBrowsingEnabled: Boolean = true
         set(value) {

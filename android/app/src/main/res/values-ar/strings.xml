@@ -192,4 +192,17 @@
     <string name="profile_isolation_note">يحتفظ كل ملف شخصي بملفات تعريف الارتباط وتسجيلات الدخول وتخزين المواقع الخاص به. لا يزال السجل والإشارات المرجعية وأذونات المواقع مشتركة بين الملفات الشخصية.</string>
     <string name="menu_new_private_tab">علامة تبويب خاصة جديدة</string>
     <string name="tab_private">خاص</string>
+    <string name="settings_cat_extensions">الإضافات</string>
+    <string name="ext_empty">لا توجد إضافات مثبتة.</string>
+    <string name="ext_remove">إزالة الإضافة</string>
+    <string name="ext_url_label">عنوان الإضافة (.xpi)</string>
+    <string name="ext_url_invalid">أدخل عنوان https آمنًا ينتهي بـ .xpi</string>
+    <string name="ext_install">تثبيت</string>
+    <string name="ext_failed">فشل التثبيت.</string>
+    <string name="ext_note">تعمل فقط إضافات WebExtensions المتوافقة مع Firefox. أزرار شريط الأدوات والنوافذ المنبثقة للإضافات غير متاحة بعد.</string>
+    <string name="ext_prompt_title">هل تريد إضافة %1$s؟</string>
+    <string name="ext_prompt_message">تطلب هذه الإضافة إذنًا من أجل:</string>
+    <string name="ext_perm_all_sites">قراءة بياناتك وتغييرها على جميع المواقع</string>
+    <string name="ext_perm_site">الوصول إلى: %1$s</string>
+    <string name="ext_allow">إضافة</string>
 </resources>

@@ -190,4 +190,17 @@
     <string name="profile_isolation_note">各プロファイルは Cookie、ログイン、サイトストレージを個別に保持します。履歴、ブックマーク、サイトの権限は現時点ではプロファイル間で共有されます。</string>
     <string name="menu_new_private_tab">新しいプライベートタブ</string>
     <string name="tab_private">プライベート</string>
+    <string name="settings_cat_extensions">拡張機能</string>
+    <string name="ext_empty">インストールされている拡張機能はありません。</string>
+    <string name="ext_remove">拡張機能を削除</string>
+    <string name="ext_url_label">拡張機能のアドレス（.xpi）</string>
+    <string name="ext_url_invalid">.xpi で終わる安全な https アドレスを入力してください</string>
+    <string name="ext_install">インストール</string>
+    <string name="ext_failed">インストールに失敗しました。</string>
+    <string name="ext_note">Firefox 互換の WebExtension のみ動作します。拡張機能のツールバーボタンとポップアップはまだ利用できません。</string>
+    <string name="ext_prompt_title">%1$s を追加しますか？</string>
+    <string name="ext_prompt_message">この拡張機能は次の許可を求めています:</string>
+    <string name="ext_perm_all_sites">すべてのウェブサイトのデータの読み取りと変更</string>
+    <string name="ext_perm_site">アクセス先: %1$s</string>
+    <string name="ext_allow">追加</string>
 </resources>

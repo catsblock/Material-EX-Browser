@@ -190,4 +190,17 @@
     <string name="profile_isolation_note">แต่ละโปรไฟล์เก็บคุกกี้ การเข้าสู่ระบบ และพื้นที่เก็บข้อมูลเว็บไซต์แยกกัน ประวัติ บุ๊กมาร์ก และสิทธิ์ของเว็บไซต์ยังใช้ร่วมกันระหว่างโปรไฟล์</string>
     <string name="menu_new_private_tab">แท็บส่วนตัวใหม่</string>
     <string name="tab_private">ส่วนตัว</string>
+    <string name="settings_cat_extensions">ส่วนขยาย</string>
+    <string name="ext_empty">ยังไม่ได้ติดตั้งส่วนขยาย</string>
+    <string name="ext_remove">ลบส่วนขยาย</string>
+    <string name="ext_url_label">ที่อยู่ส่วนขยาย (.xpi)</string>
+    <string name="ext_url_invalid">ป้อนที่อยู่ https ที่ปลอดภัยซึ่งลงท้ายด้วย .xpi</string>
+    <string name="ext_install">ติดตั้ง</string>
+    <string name="ext_failed">การติดตั้งล้มเหลว</string>
+    <string name="ext_note">ใช้ได้เฉพาะ WebExtensions ที่เข้ากันได้กับ Firefox เท่านั้น ปุ่มแถบเครื่องมือและป๊อปอัปของส่วนขยายยังไม่พร้อมใช้งาน</string>
+    <string name="ext_prompt_title">เพิ่ม %1$s หรือไม่</string>
+    <string name="ext_prompt_message">ส่วนขยายนี้ขอสิทธิ์ในการ:</string>
+    <string name="ext_perm_all_sites">อ่านและเปลี่ยนแปลงข้อมูลของคุณบนเว็บไซต์ทั้งหมด</string>
+    <string name="ext_perm_site">เข้าถึง: %1$s</string>
+    <string name="ext_allow">เพิ่ม</string>
 </resources>

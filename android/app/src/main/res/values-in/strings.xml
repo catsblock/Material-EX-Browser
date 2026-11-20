@@ -190,4 +190,17 @@
     <string name="profile_isolation_note">Setiap profil menyimpan kuki, login, dan penyimpanan situsnya sendiri. Riwayat, markah, dan izin situs masih dibagikan antarprofil.</string>
     <string name="menu_new_private_tab">Tab pribadi baru</string>
     <string name="tab_private">Pribadi</string>
+    <string name="settings_cat_extensions">Ekstensi</string>
+    <string name="ext_empty">Belum ada ekstensi terpasang.</string>
+    <string name="ext_remove">Hapus ekstensi</string>
+    <string name="ext_url_label">Alamat ekstensi (.xpi)</string>
+    <string name="ext_url_invalid">Masukkan alamat https aman yang berakhir dengan .xpi</string>
+    <string name="ext_install">Pasang</string>
+    <string name="ext_failed">Pemasangan gagal.</string>
+    <string name="ext_note">Hanya WebExtensions yang kompatibel dengan Firefox yang berfungsi. Tombol bilah alat dan popup ekstensi belum tersedia.</string>
+    <string name="ext_prompt_title">Tambahkan %1$s?</string>
+    <string name="ext_prompt_message">Ekstensi ini meminta izin untuk:</string>
+    <string name="ext_perm_all_sites">Membaca dan mengubah data Anda di semua situs web</string>
+    <string name="ext_perm_site">Akses ke: %1$s</string>
+    <string name="ext_allow">Tambahkan</string>
 </resources>

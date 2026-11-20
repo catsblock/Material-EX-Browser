@@ -190,4 +190,17 @@
     <string name="profile_isolation_note">Ogni profilo mantiene cookie, accessi e archiviazione dei siti separati. Cronologia, segnalibri e autorizzazioni dei siti restano condivisi tra i profili.</string>
     <string name="menu_new_private_tab">Nuova scheda privata</string>
     <string name="tab_private">Privata</string>
+    <string name="settings_cat_extensions">Estensioni</string>
+    <string name="ext_empty">Nessuna estensione installata.</string>
+    <string name="ext_remove">Rimuovi estensione</string>
+    <string name="ext_url_label">Indirizzo dell\'estensione (.xpi)</string>
+    <string name="ext_url_invalid">Inserisci un indirizzo https sicuro che termina con .xpi</string>
+    <string name="ext_install">Installa</string>
+    <string name="ext_failed">Installazione non riuscita.</string>
+    <string name="ext_note">Funzionano solo le WebExtension compatibili con Firefox. I pulsanti della barra degli strumenti e i popup delle estensioni non sono ancora disponibili.</string>
+    <string name="ext_prompt_title">Aggiungere %1$s?</string>
+    <string name="ext_prompt_message">Questa estensione richiede l\'autorizzazione per:</string>
+    <string name="ext_perm_all_sites">Leggere e modificare i tuoi dati su tutti i siti web</string>
+    <string name="ext_perm_site">Accesso a: %1$s</string>
+    <string name="ext_allow">Aggiungi</string>
 </resources>

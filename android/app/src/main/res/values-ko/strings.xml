@@ -190,4 +190,17 @@
     <string name="profile_isolation_note">각 프로필은 쿠키, 로그인, 사이트 저장소를 따로 보관합니다. 방문 기록, 북마크, 사이트 권한은 아직 프로필 간에 공유됩니다.</string>
     <string name="menu_new_private_tab">새 비공개 탭</string>
     <string name="tab_private">비공개</string>
+    <string name="settings_cat_extensions">확장 프로그램</string>
+    <string name="ext_empty">설치된 확장 프로그램이 없습니다.</string>
+    <string name="ext_remove">확장 프로그램 제거</string>
+    <string name="ext_url_label">확장 프로그램 주소(.xpi)</string>
+    <string name="ext_url_invalid">.xpi로 끝나는 보안 https 주소를 입력하세요</string>
+    <string name="ext_install">설치</string>
+    <string name="ext_failed">설치하지 못했습니다.</string>
+    <string name="ext_note">Firefox 호환 WebExtension만 작동합니다. 확장 프로그램의 도구 모음 버튼과 팝업은 아직 지원되지 않습니다.</string>
+    <string name="ext_prompt_title">%1$s을(를) 추가할까요?</string>
+    <string name="ext_prompt_message">이 확장 프로그램이 다음 권한을 요청합니다:</string>
+    <string name="ext_perm_all_sites">모든 웹사이트의 데이터 읽기 및 변경</string>
+    <string name="ext_perm_site">접근: %1$s</string>
+    <string name="ext_allow">추가</string>
 </resources>

@@ -190,4 +190,17 @@
     <string name="profile_isolation_note">Jokaisella profiililla on omat evästeensä, kirjautumisensa ja sivustotallennustilansa. Historia, kirjanmerkit ja sivustojen oikeudet ovat vielä yhteisiä profiilien kesken.</string>
     <string name="menu_new_private_tab">Uusi yksityinen välilehti</string>
     <string name="tab_private">Yksityinen</string>
+    <string name="settings_cat_extensions">Laajennukset</string>
+    <string name="ext_empty">Ei asennettuja laajennuksia.</string>
+    <string name="ext_remove">Poista laajennus</string>
+    <string name="ext_url_label">Laajennuksen osoite (.xpi)</string>
+    <string name="ext_url_invalid">Anna suojattu https-osoite, joka päättyy tunnisteeseen .xpi</string>
+    <string name="ext_install">Asenna</string>
+    <string name="ext_failed">Asennus epäonnistui.</string>
+    <string name="ext_note">Vain Firefox-yhteensopivat WebExtensions-laajennukset toimivat. Laajennusten työkalurivin painikkeet ja ponnahdusikkunat eivät ole vielä käytettävissä.</string>
+    <string name="ext_prompt_title">Lisätäänkö %1$s?</string>
+    <string name="ext_prompt_message">Tämä laajennus pyytää oikeuden:</string>
+    <string name="ext_perm_all_sites">Lukea ja muuttaa tietojasi kaikilla verkkosivustoilla</string>
+    <string name="ext_perm_site">Pääsy: %1$s</string>
+    <string name="ext_allow">Lisää</string>
 </resources>

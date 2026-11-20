@@ -190,4 +190,17 @@
     <string name="profile_isolation_note">Varje profil har egna cookies, inloggningar och webbplatslagring. Historik, bokmärken och webbplatsbehörigheter delas fortfarande mellan profiler.</string>
     <string name="menu_new_private_tab">Ny privat flik</string>
     <string name="tab_private">Privat</string>
+    <string name="settings_cat_extensions">Tillägg</string>
+    <string name="ext_empty">Inga tillägg installerade.</string>
+    <string name="ext_remove">Ta bort tillägg</string>
+    <string name="ext_url_label">Tilläggsadress (.xpi)</string>
+    <string name="ext_url_invalid">Ange en säker https-adress som slutar på .xpi</string>
+    <string name="ext_install">Installera</string>
+    <string name="ext_failed">Installationen misslyckades.</string>
+    <string name="ext_note">Endast Firefox-kompatibla WebExtensions fungerar. Verktygsfältsknappar och popup-fönster för tillägg är inte tillgängliga ännu.</string>
+    <string name="ext_prompt_title">Lägga till %1$s?</string>
+    <string name="ext_prompt_message">Det här tillägget begär behörighet att:</string>
+    <string name="ext_perm_all_sites">Läsa och ändra dina data på alla webbplatser</string>
+    <string name="ext_perm_site">Åtkomst till: %1$s</string>
+    <string name="ext_allow">Lägg till</string>
 </resources>

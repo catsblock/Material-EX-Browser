@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.material3.Slider
 import androidx.compose.runtime.mutableFloatStateOf
 import com.catsblock.materialex.core.memory.MemoryMode
+import com.catsblock.materialex.core.extension.ExtensionInfo
 import com.catsblock.materialex.core.profile.Profile
 import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
 import androidx.compose.material3.Surface
@@ -70,6 +71,11 @@ fun SettingsScreen(
     onSwitchProfile: (String) -> Unit,
     onDeleteProfile: (String) -> Unit,
     onExitGuest: () -> Unit,
+    extensions: List<ExtensionInfo>,
+    extensionInstallFailed: Boolean,
+    onInstallExtension: (String) -> Unit,
+    onToggleExtension: (String, Boolean) -> Unit,
+    onRemoveExtension: (String) -> Unit,
     onClose: () -> Unit
 ) {
     val scope = rememberCoroutineScope()
@@ -352,6 +358,15 @@ fun SettingsScreen(
                     onExitGuest = onExitGuest
                 )
             }
+            if (category == SettingsCategory.EXTENSIONS) {
+                ExtensionsSection(
+                    extensions = extensions,
+                    installFailed = extensionInstallFailed,
+                    onInstall = onInstallExtension,
+                    onToggle = onToggleExtension,
+                    onRemove = onRemoveExtension
+                )
+            }
             if (category == SettingsCategory.ABOUT) {
                 val context = LocalContext.current
                 val version = remember {
@@ -432,6 +447,7 @@ private enum class SettingsCategory(val title: Int) {
     PERFORMANCE(R.string.settings_cat_performance),
     TABS(R.string.settings_cat_tabs),
     PROFILES(R.string.settings_cat_profiles),
+    EXTENSIONS(R.string.settings_cat_extensions),
     ABOUT(R.string.settings_cat_about);
 
     companion object {
@@ -448,7 +464,8 @@ private enum class SettingsCategory(val title: Int) {
             R.string.settings_memory_title to PERFORMANCE,
             R.string.settings_tab_layout to TABS,
             R.string.profile_add to PROFILES,
-            R.string.profile_guest_start to PROFILES
+            R.string.profile_guest_start to PROFILES,
+            R.string.ext_install to EXTENSIONS
         )
     }
 }

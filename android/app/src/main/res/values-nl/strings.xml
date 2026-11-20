@@ -190,4 +190,17 @@
     <string name="profile_isolation_note">Elk profiel bewaart eigen cookies, logins en sitegegevens. Geschiedenis, bladwijzers en sitemachtigingen worden nog tussen profielen gedeeld.</string>
     <string name="menu_new_private_tab">Nieuw privétabblad</string>
     <string name="tab_private">Privé</string>
+    <string name="settings_cat_extensions">Extensies</string>
+    <string name="ext_empty">Geen extensies geïnstalleerd.</string>
+    <string name="ext_remove">Extensie verwijderen</string>
+    <string name="ext_url_label">Extensieadres (.xpi)</string>
+    <string name="ext_url_invalid">Voer een beveiligd https-adres in dat eindigt op .xpi</string>
+    <string name="ext_install">Installeren</string>
+    <string name="ext_failed">Installatie mislukt.</string>
+    <string name="ext_note">Alleen Firefox-compatibele WebExtensions werken. Werkbalkknoppen en pop-ups van extensies zijn nog niet beschikbaar.</string>
+    <string name="ext_prompt_title">%1$s toevoegen?</string>
+    <string name="ext_prompt_message">Deze extensie vraagt toestemming om:</string>
+    <string name="ext_perm_all_sites">Je gegevens op alle websites te lezen en te wijzigen</string>
+    <string name="ext_perm_site">Toegang tot: %1$s</string>
+    <string name="ext_allow">Toevoegen</string>
 </resources>

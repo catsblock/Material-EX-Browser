@@ -190,4 +190,17 @@
     <string name="profile_isolation_note">Mỗi hồ sơ giữ cookie, đăng nhập và bộ nhớ trang riêng. Lịch sử, dấu trang và quyền của trang vẫn được chia sẻ giữa các hồ sơ.</string>
     <string name="menu_new_private_tab">Tab riêng tư mới</string>
     <string name="tab_private">Riêng tư</string>
+    <string name="settings_cat_extensions">Tiện ích mở rộng</string>
+    <string name="ext_empty">Chưa cài tiện ích mở rộng nào.</string>
+    <string name="ext_remove">Gỡ tiện ích mở rộng</string>
+    <string name="ext_url_label">Địa chỉ tiện ích (.xpi)</string>
+    <string name="ext_url_invalid">Nhập địa chỉ https bảo mật kết thúc bằng .xpi</string>
+    <string name="ext_install">Cài đặt</string>
+    <string name="ext_failed">Cài đặt không thành công.</string>
+    <string name="ext_note">Chỉ WebExtension tương thích Firefox mới hoạt động. Nút thanh công cụ và cửa sổ bật lên của tiện ích chưa khả dụng.</string>
+    <string name="ext_prompt_title">Thêm %1$s?</string>
+    <string name="ext_prompt_message">Tiện ích này yêu cầu quyền:</string>
+    <string name="ext_perm_all_sites">Đọc và thay đổi dữ liệu của bạn trên mọi trang web</string>
+    <string name="ext_perm_site">Truy cập: %1$s</string>
+    <string name="ext_allow">Thêm</string>
 </resources>

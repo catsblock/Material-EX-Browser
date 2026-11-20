@@ -190,4 +190,17 @@
     <string name="profile_isolation_note">हर प्रोफ़ाइल अपनी कुकी, लॉगिन और साइट स्टोरेज अलग रखती है। इतिहास, बुकमार्क और साइट अनुमतियाँ अभी भी प्रोफ़ाइलों के बीच साझा हैं।</string>
     <string name="menu_new_private_tab">नया निजी टैब</string>
     <string name="tab_private">निजी</string>
+    <string name="settings_cat_extensions">एक्सटेंशन</string>
+    <string name="ext_empty">कोई एक्सटेंशन इंस्टॉल नहीं है।</string>
+    <string name="ext_remove">एक्सटेंशन हटाएँ</string>
+    <string name="ext_url_label">एक्सटेंशन का पता (.xpi)</string>
+    <string name="ext_url_invalid">.xpi पर समाप्त होने वाला सुरक्षित https पता दर्ज करें</string>
+    <string name="ext_install">इंस्टॉल करें</string>
+    <string name="ext_failed">इंस्टॉलेशन विफल रहा।</string>
+    <string name="ext_note">केवल Firefox-संगत WebExtensions काम करते हैं। एक्सटेंशन के टूलबार बटन और पॉपअप अभी उपलब्ध नहीं हैं।</string>
+    <string name="ext_prompt_title">%1$s जोड़ें?</string>
+    <string name="ext_prompt_message">यह एक्सटेंशन इन कार्यों की अनुमति माँगता है:</string>
+    <string name="ext_perm_all_sites">सभी वेबसाइटों पर आपका डेटा पढ़ना और बदलना</string>
+    <string name="ext_perm_site">इसकी पहुँच: %1$s</string>
+    <string name="ext_allow">जोड़ें</string>
 </resources>

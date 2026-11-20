@@ -190,4 +190,17 @@
     <string name="profile_isolation_note">Кожен профіль має власні cookie, входи й сховище сайтів. Історія, закладки та дозволи сайтів поки що спільні для всіх профілів.</string>
     <string name="menu_new_private_tab">Нова приватна вкладка</string>
     <string name="tab_private">Приватна</string>
+    <string name="settings_cat_extensions">Розширення</string>
+    <string name="ext_empty">Розширень не встановлено.</string>
+    <string name="ext_remove">Видалити розширення</string>
+    <string name="ext_url_label">Адреса розширення (.xpi)</string>
+    <string name="ext_url_invalid">Введіть захищену адресу https, що закінчується на .xpi</string>
+    <string name="ext_install">Установити</string>
+    <string name="ext_failed">Не вдалося встановити.</string>
+    <string name="ext_note">Працюють лише WebExtensions, сумісні з Firefox. Кнопки на панелі інструментів і спливні вікна розширень поки що недоступні.</string>
+    <string name="ext_prompt_title">Додати %1$s?</string>
+    <string name="ext_prompt_message">Це розширення запитує дозвіл на:</string>
+    <string name="ext_perm_all_sites">Читання й зміну ваших даних на всіх сайтах</string>
+    <string name="ext_perm_site">Доступ до: %1$s</string>
+    <string name="ext_allow">Додати</string>
 </resources>
