@@ -4,18 +4,15 @@
 #include "downloads.h"
 #include "include/cef_command_line.h"
 #include "include/cef_sandbox_win.h"
+#include "include/cef_version_info.h"
 #include "main_window.h"
 #include "platform.h"
 #include "profile.h"
 
-int APIENTRY wWinMain(HINSTANCE instance, HINSTANCE, LPWSTR, int) {
-  SetProcessDpiAwarenessContext(DPI_AWARENESS_CONTEXT_PER_MONITOR_AWARE_V2);
+namespace {
 
-  void* sandbox_info = nullptr;
-#if defined(CEF_USE_SANDBOX)
-  CefScopedSandboxInfo scoped_sandbox;
-  sandbox_info = scoped_sandbox.sandbox_info();
-#endif
+int RunMain(HINSTANCE instance, void* sandbox_info) {
+  SetProcessDpiAwarenessContext(DPI_AWARENESS_CONTEXT_PER_MONITOR_AWARE_V2);
 
   CefMainArgs main_args(instance);
   CefRefPtr<mex::BrowserApp> app(new mex::BrowserApp());
@@ -23,17 +20,12 @@ int APIENTRY wWinMain(HINSTANCE instance, HINSTANCE, LPWSTR, int) {
   int exit_code = CefExecuteProcess(main_args, app, sandbox_info);
   if (exit_code >= 0) return exit_code;
 
-  CefRefPtr<CefCommandLine> command_line = CefCommandLine::CreateCommandLine();
-  command_line->InitFromString(::GetCommandLineW());
-
   mex::Profile::Get().Load();
   mex::DownloadManager::Get().Load();
 
   std::wstring data_dir = mex::DataDir();
   CefSettings settings;
-#if !defined(CEF_USE_SANDBOX)
-  settings.no_sandbox = true;
-#endif
+  if (!sandbox_info) settings.no_sandbox = true;
   CefString(&settings.root_cache_path) = data_dir + L"\\Profile";
   CefString(&settings.cache_path) = data_dir + L"\\Profile\\Default";
   CefString(&settings.log_file) = data_dir + L"\\debug.log";
@@ -50,3 +42,19 @@ int APIENTRY wWinMain(HINSTANCE instance, HINSTANCE, LPWSTR, int) {
   CefShutdown();
   return 0;
 }
+
+}  // namespace
+
+#if defined(CEF_USE_BOOTSTRAP)
+
+CEF_BOOTSTRAP_EXPORT int RunWinMain(HINSTANCE instance, LPWSTR, int, void* sandbox_info, cef_version_info_t*) {
+  return RunMain(instance, sandbox_info);
+}
+
+#else
+
+int APIENTRY wWinMain(HINSTANCE instance, HINSTANCE, LPWSTR, int) {
+  return RunMain(instance, nullptr);
+}
+
+#endif

@@ -33,9 +33,8 @@ if(MEX_BUILD_APP AND WIN32)
   find_package(CEF REQUIRED)
   add_subdirectory("${CEF_LIBCEF_DLL_WRAPPER_PATH}" libcef_dll_wrapper)
   ADD_LOGICAL_TARGET("libcef_lib" "${CEF_LIB_DEBUG}" "${CEF_LIB_RELEASE}")
-  if(USE_SANDBOX)
-    ADD_LOGICAL_TARGET("cef_sandbox_lib" "${CEF_SANDBOX_LIB_DEBUG}" "${CEF_SANDBOX_LIB_RELEASE}")
-  endif()
+  set(CEF_TARGET materialex)
+  SET_CEF_TARGET_OUT_DIR()
 
   set(MEX_APP_SOURCES
     src/main.cc
@@ -49,22 +48,30 @@ if(MEX_BUILD_APP AND WIN32)
     src/platform.cc
     src/strings.cc)
 
-  add_executable(materialex WIN32 ${MEX_APP_SOURCES})
-  SET_EXECUTABLE_TARGET_PROPERTIES(materialex)
+  if(USE_SANDBOX)
+    add_library(materialex SHARED ${MEX_APP_SOURCES})
+    SET_LIBRARY_TARGET_PROPERTIES(materialex)
+    COPY_SINGLE_FILE(materialex "${CEF_BINARY_DIR}/bootstrap.exe" "${CEF_TARGET_OUT_DIR}/materialex.exe")
+    if(CMAKE_GENERATOR MATCHES "Visual Studio")
+      set_target_properties(materialex PROPERTIES
+        VS_DEBUGGER_COMMAND "$<TARGET_FILE_DIR:materialex>/materialex.exe")
+    endif()
+  else()
+    add_executable(materialex WIN32 ${MEX_APP_SOURCES})
+    SET_EXECUTABLE_TARGET_PROPERTIES(materialex)
+    ADD_WINDOWS_MANIFEST("${CMAKE_CURRENT_SOURCE_DIR}/res" materialex "exe")
+  endif()
+
   target_include_directories(materialex PRIVATE "${CEF_ROOT}" src)
   add_dependencies(materialex libcef_dll_wrapper)
   target_link_libraries(materialex PRIVATE materialex_core libcef_lib libcef_dll_wrapper ${CEF_STANDARD_LIBS}
                         comctl32 shell32 ole32 user32 shlwapi)
   target_compile_definitions(materialex PRIVATE UNICODE _UNICODE WIN32_LEAN_AND_MEAN NOMINMAX)
 
+  COPY_FILES(materialex "${CEF_BINARY_FILES}" "${CEF_BINARY_DIR}" "${CEF_TARGET_OUT_DIR}")
+  COPY_FILES(materialex "${CEF_RESOURCE_FILES}" "${CEF_RESOURCE_DIR}" "${CEF_TARGET_OUT_DIR}")
+
   if(USE_SANDBOX)
-    target_compile_definitions(materialex PRIVATE CEF_USE_SANDBOX PSAPI_VERSION=1)
-    target_link_libraries(materialex PRIVATE cef_sandbox_lib ${CEF_SANDBOX_STANDARD_LIBS})
+    SET_LPAC_ACLS(materialex)
   endif()
-
-  ADD_WINDOWS_MANIFEST("${CMAKE_CURRENT_SOURCE_DIR}/res" materialex "exe")
-
-  set(MEX_OUT_DIR "$<TARGET_FILE_DIR:materialex>")
-  COPY_FILES(materialex "${CEF_BINARY_FILES}" "${CEF_BINARY_DIR}" "${MEX_OUT_DIR}")
-  COPY_FILES(materialex "${CEF_RESOURCE_FILES}" "${CEF_RESOURCE_DIR}" "${MEX_OUT_DIR}")
 endif()
