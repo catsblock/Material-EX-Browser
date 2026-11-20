@@ -216,8 +216,8 @@ fun FloatingSearchFrame(
                     IconButton(onClick = onStop) {
                         Icon(Icons.Default.Close, contentDescription = stringResource(R.string.action_stop))
                     }
-                } else {
-                    IconButton(onClick = onReload, enabled = state.url.isNotEmpty()) {
+                } else if (state.url.isNotEmpty()) {
+                    IconButton(onClick = onReload) {
                         Icon(Icons.Default.Refresh, contentDescription = stringResource(R.string.action_reload))
                     }
                 }

@@ -77,6 +77,10 @@ class MainActivity : ComponentActivity() {
             osPermissionLauncher.launch(permissions)
         }
         enableEdgeToEdge()
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.Q) {
+            window.isNavigationBarContrastEnforced = false
+            window.isStatusBarContrastEnforced = false
+        }
         if (savedInstanceState == null) {
             lifecycleScope.launch { openFromIntent(intent) }
         }
