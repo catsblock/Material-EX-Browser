@@ -176,4 +176,18 @@
     <string name="threat_detail_code">इंजन त्रुटि कोड</string>
     <string name="threat_detail_host">पता</string>
     <string name="threat_detail_time">पहचान का समय</string>
+    <string name="settings_cat_profiles">प्रोफ़ाइल</string>
+    <string name="profile_default_name">डिफ़ॉल्ट</string>
+    <string name="profile_add">प्रोफ़ाइल जोड़ें</string>
+    <string name="profile_name_label">प्रोफ़ाइल का नाम</string>
+    <string name="profile_name_invalid">अधिकतम 32 वर्णों का अद्वितीय नाम दर्ज करें</string>
+    <string name="profile_delete_title">प्रोफ़ाइल हटाएँ?</string>
+    <string name="profile_delete_message">“%1$s” के टैब, कुकी और साइट डेटा इस डिवाइस से हटा दिए जाएँगे।</string>
+    <string name="profile_active">सक्रिय</string>
+    <string name="profile_guest_start">अतिथि सत्र शुरू करें</string>
+    <string name="profile_guest_exit">अतिथि सत्र से बाहर निकलें</string>
+    <string name="profile_guest_note">अतिथि सत्र निजी टैब का उपयोग करते हैं और बाहर निकलने पर कुछ नहीं छोड़ते।</string>
+    <string name="profile_isolation_note">हर प्रोफ़ाइल अपनी कुकी, लॉगिन और साइट स्टोरेज अलग रखती है। इतिहास, बुकमार्क और साइट अनुमतियाँ अभी भी प्रोफ़ाइलों के बीच साझा हैं।</string>
+    <string name="menu_new_private_tab">नया निजी टैब</string>
+    <string name="tab_private">निजी</string>
 </resources>

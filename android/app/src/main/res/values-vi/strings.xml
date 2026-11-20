@@ -176,4 +176,18 @@
     <string name="threat_detail_code">Mã lỗi của công cụ</string>
     <string name="threat_detail_host">Địa chỉ</string>
     <string name="threat_detail_time">Phát hiện lúc</string>
+    <string name="settings_cat_profiles">Hồ sơ</string>
+    <string name="profile_default_name">Mặc định</string>
+    <string name="profile_add">Thêm hồ sơ</string>
+    <string name="profile_name_label">Tên hồ sơ</string>
+    <string name="profile_name_invalid">Nhập tên duy nhất tối đa 32 ký tự</string>
+    <string name="profile_delete_title">Xóa hồ sơ?</string>
+    <string name="profile_delete_message">Tab, cookie và dữ liệu trang của “%1$s” sẽ bị xóa khỏi thiết bị này.</string>
+    <string name="profile_active">Đang dùng</string>
+    <string name="profile_guest_start">Bắt đầu phiên khách</string>
+    <string name="profile_guest_exit">Thoát phiên khách</string>
+    <string name="profile_guest_note">Phiên khách dùng tab riêng tư và không để lại gì khi bạn thoát.</string>
+    <string name="profile_isolation_note">Mỗi hồ sơ giữ cookie, đăng nhập và bộ nhớ trang riêng. Lịch sử, dấu trang và quyền của trang vẫn được chia sẻ giữa các hồ sơ.</string>
+    <string name="menu_new_private_tab">Tab riêng tư mới</string>
+    <string name="tab_private">Riêng tư</string>
 </resources>

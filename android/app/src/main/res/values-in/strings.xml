@@ -176,4 +176,18 @@
     <string name="threat_detail_code">Kode kesalahan mesin</string>
     <string name="threat_detail_host">Alamat</string>
     <string name="threat_detail_time">Terdeteksi pada</string>
+    <string name="settings_cat_profiles">Profil</string>
+    <string name="profile_default_name">Default</string>
+    <string name="profile_add">Tambah profil</string>
+    <string name="profile_name_label">Nama profil</string>
+    <string name="profile_name_invalid">Masukkan nama unik maksimal 32 karakter</string>
+    <string name="profile_delete_title">Hapus profil?</string>
+    <string name="profile_delete_message">Tab, kuki, dan data situs “%1$s” akan dihapus dari perangkat ini.</string>
+    <string name="profile_active">Aktif</string>
+    <string name="profile_guest_start">Mulai sesi tamu</string>
+    <string name="profile_guest_exit">Keluar dari sesi tamu</string>
+    <string name="profile_guest_note">Sesi tamu menggunakan tab pribadi dan tidak meninggalkan jejak saat Anda keluar.</string>
+    <string name="profile_isolation_note">Setiap profil menyimpan kuki, login, dan penyimpanan situsnya sendiri. Riwayat, markah, dan izin situs masih dibagikan antarprofil.</string>
+    <string name="menu_new_private_tab">Tab pribadi baru</string>
+    <string name="tab_private">Pribadi</string>
 </resources>

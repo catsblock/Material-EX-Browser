@@ -4,6 +4,7 @@ import android.content.Context
 import com.catsblock.materialex.core.ScrollChromeTracker
 import com.catsblock.materialex.core.memory.MemoryBudget
 import com.catsblock.materialex.core.permission.PermissionBroker
+import com.catsblock.materialex.core.profile.ProfileRules
 import com.catsblock.materialex.core.security.BypassGate
 import com.catsblock.materialex.core.security.ThreatInfo
 import com.catsblock.materialex.core.security.ThreatKind
@@ -67,6 +68,8 @@ class BrowserEngine(context: Context, permissionManager: PermissionManager) {
     private val savedStates = HashMap<String, GeckoSession.SessionState>()
     private var trimLevel = 0
     private val bypass = BypassGate()
+    private val profileFlow = MutableStateFlow(ProfileRules.DEFAULT_ID)
+    private var lastRealProfile = ProfileRules.DEFAULT_ID
     private val threatFlow = MutableStateFlow<Map<String, ThreatInfo>>(emptyMap())
     private var lastGestureAt = 0L
 
@@ -149,21 +152,68 @@ class BrowserEngine(context: Context, permissionManager: PermissionManager) {
     var onDownload: ((WebResponse) -> Unit)? = null
     var onPageVisited: ((url: String, title: String) -> Unit)? = null
 
-    val tabs: StateFlow<TabsState> = manager.state
+    val activeProfile: StateFlow<String> = profileFlow.asStateFlow()
+    val tabs: StateFlow<TabsState> = combine(manager.state, profileFlow) { all, profile ->
+        all.copy(
+            tabs = all.tabs.filter { it.profileId == profile },
+            recentlyClosed = all.recentlyClosed.filter { it.profileId == profile }
+        )
+    }.stateIn(scope, SharingStarted.Eagerly, TabsState())
     val pageStates: StateFlow<Map<String, PageState>> = pages.asStateFlow()
     val activeSession: StateFlow<GeckoSession?> = active.asStateFlow()
     val state: StateFlow<PageState> = combine(manager.state, pages) { tabsState, map ->
         tabsState.activeId?.let { map[it] } ?: PageState()
     }.stateIn(scope, SharingStarted.Eagerly, PageState())
 
-    fun openTab(url: String, select: Boolean = true): String {
-        val tab = manager.open(url, DEFAULT_PROFILE, false, select)
+    fun openTab(url: String, select: Boolean = true, private: Boolean = false): String {
+        val profile = profileFlow.value
+        val tab = manager.open(url, profile, private || profile == ProfileRules.GUEST_ID, select)
         launch(tab.id, url)
         return tab.id
     }
 
+    private fun newSession(profileId: String, isPrivate: Boolean): GeckoSession {
+        val builder = GeckoSessionSettings.Builder().usePrivateMode(isPrivate)
+        ProfileRules.contextId(profileId, isPrivate)?.let { builder.contextId(it) }
+        return GeckoSession(builder.build())
+    }
+
+    private fun isPrivateId(id: String): Boolean {
+        val root = popupFlow.value.firstOrNull { it.id == id }?.openerId ?: id
+        return manager.state.value.tabs.firstOrNull { it.id == root }?.isPrivate == true
+    }
+
+    fun switchProfile(id: String) {
+        if (profileFlow.value == id) return
+        if (id != ProfileRules.GUEST_ID && !ProfileRules.isRealProfile(id)) return
+        val leaving = profileFlow.value
+        if (leaving != ProfileRules.GUEST_ID) lastRealProfile = leaving
+        profileFlow.value = id
+        val target = manager.state.value.tabs.filter { it.profileId == id }.maxByOrNull { it.lastUsedAt }
+        if (target != null) selectTab(target.id) else openTab("")
+        if (leaving == ProfileRules.GUEST_ID) discardProfileTabs(ProfileRules.GUEST_ID)
+    }
+
+    fun exitGuest() {
+        if (profileFlow.value == ProfileRules.GUEST_ID) switchProfile(lastRealProfile)
+    }
+
+    fun deleteProfile(id: String) {
+        if (!ProfileRules.canDelete(id)) return
+        if (profileFlow.value == id) switchProfile(ProfileRules.DEFAULT_ID)
+        if (lastRealProfile == id) lastRealProfile = ProfileRules.DEFAULT_ID
+        discardProfileTabs(id)
+        ProfileRules.contextId(id, false)?.let { runtime.storageController.clearDataForSessionContext(it) }
+    }
+
+    private fun discardProfileTabs(profileId: String) {
+        manager.removeProfile(profileId).forEach(::dropSession)
+        syncActive()
+    }
+
     private fun launch(id: String, url: String) {
-        val session = GeckoSession()
+        val tab = manager.state.value.tabs.firstOrNull { it.id == id }
+        val session = newSession(tab?.profileId ?: ProfileRules.DEFAULT_ID, tab?.isPrivate == true)
         attach(id, session)
         session.open(runtime)
         sessions[id] = session
@@ -181,6 +231,7 @@ class BrowserEngine(context: Context, permissionManager: PermissionManager) {
 
     fun restoreClosedTab() {
         val tab = manager.restoreLastClosed() ?: return
+        if (tab.profileId != profileFlow.value) profileFlow.value = tab.profileId
         launch(tab.id, tab.url)
     }
 
@@ -274,7 +325,8 @@ class BrowserEngine(context: Context, permissionManager: PermissionManager) {
         val open = popupFlow.value.count { it.openerId == openerId }
         if (!PopupPolicy.allow(popupBlocking, open, lastGestureAt, System.currentTimeMillis())) return null
         val id = "popup-" + java.util.UUID.randomUUID()
-        val session = GeckoSession()
+        val openerTab = manager.state.value.tabs.firstOrNull { it.id == openerId }
+        val session = newSession(openerTab?.profileId ?: ProfileRules.DEFAULT_ID, openerTab?.isPrivate == true)
         popupSessions[id] = session
         trackers[id] = ScrollChromeTracker()
         pages.update { it + (id to PageState()) }
@@ -338,7 +390,7 @@ class BrowserEngine(context: Context, permissionManager: PermissionManager) {
         if (sessions.containsKey(id)) return
         val tab = manager.state.value.tabs.firstOrNull { it.id == id } ?: return
         val url = pages.value[id]?.url?.ifEmpty { null } ?: tab.url
-        val session = GeckoSession()
+        val session = newSession(tab.profileId, tab.isPrivate)
         attach(id, session)
         session.open(runtime)
         sessions[id] = session
@@ -442,7 +494,7 @@ class BrowserEngine(context: Context, permissionManager: PermissionManager) {
                 endBypassFor(id)
                 change(id) { it.copy(isLoading = false, progress = 100) }
                 val page = pages.value[id]
-                if (success && page != null && page.url.isNotEmpty() && lastVisit[id] != page.url) {
+                if (success && page != null && page.url.isNotEmpty() && lastVisit[id] != page.url && !isPrivateId(id)) {
                     lastVisit[id] = page.url
                     onPageVisited?.invoke(page.url, page.title)
                 }

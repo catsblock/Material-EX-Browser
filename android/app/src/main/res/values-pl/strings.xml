@@ -176,4 +176,18 @@
     <string name="threat_detail_code">Kod błędu silnika</string>
     <string name="threat_detail_host">Adres</string>
     <string name="threat_detail_time">Wykryto</string>
+    <string name="settings_cat_profiles">Profile</string>
+    <string name="profile_default_name">Domyślny</string>
+    <string name="profile_add">Dodaj profil</string>
+    <string name="profile_name_label">Nazwa profilu</string>
+    <string name="profile_name_invalid">Wpisz unikalną nazwę do 32 znaków</string>
+    <string name="profile_delete_title">Usunąć profil?</string>
+    <string name="profile_delete_message">Karty, pliki cookie i dane witryn profilu „%1$s” zostaną usunięte z tego urządzenia.</string>
+    <string name="profile_active">Aktywny</string>
+    <string name="profile_guest_start">Rozpocznij sesję gościa</string>
+    <string name="profile_guest_exit">Zakończ sesję gościa</string>
+    <string name="profile_guest_note">Sesje gościa używają kart prywatnych i nie zostawiają śladów po zakończeniu.</string>
+    <string name="profile_isolation_note">Każdy profil ma własne pliki cookie, logowania i dane witryn. Historia, zakładki i uprawnienia witryn są nadal współdzielone między profilami.</string>
+    <string name="menu_new_private_tab">Nowa karta prywatna</string>
+    <string name="tab_private">Prywatna</string>
 </resources>

@@ -176,4 +176,18 @@
     <string name="threat_detail_code">Код ошибки движка</string>
     <string name="threat_detail_host">Адрес</string>
     <string name="threat_detail_time">Обнаружено</string>
+    <string name="settings_cat_profiles">Профили</string>
+    <string name="profile_default_name">По умолчанию</string>
+    <string name="profile_add">Добавить профиль</string>
+    <string name="profile_name_label">Название профиля</string>
+    <string name="profile_name_invalid">Введите уникальное название до 32 символов</string>
+    <string name="profile_delete_title">Удалить профиль?</string>
+    <string name="profile_delete_message">Вкладки, файлы cookie и данные сайтов профиля «%1$s» будут удалены с этого устройства.</string>
+    <string name="profile_active">Активен</string>
+    <string name="profile_guest_start">Начать гостевой сеанс</string>
+    <string name="profile_guest_exit">Выйти из гостевого сеанса</string>
+    <string name="profile_guest_note">Гостевые сеансы используют приватные вкладки и ничего не оставляют после выхода.</string>
+    <string name="profile_isolation_note">Каждый профиль хранит свои cookie, входы и данные сайтов. История, закладки и разрешения сайтов пока общие для всех профилей.</string>
+    <string name="menu_new_private_tab">Новая приватная вкладка</string>
+    <string name="tab_private">Приватная</string>
 </resources>

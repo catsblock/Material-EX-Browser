@@ -176,4 +176,18 @@
     <string name="threat_detail_code">Код помилки рушія</string>
     <string name="threat_detail_host">Адреса</string>
     <string name="threat_detail_time">Виявлено</string>
+    <string name="settings_cat_profiles">Профілі</string>
+    <string name="profile_default_name">Типовий</string>
+    <string name="profile_add">Додати профіль</string>
+    <string name="profile_name_label">Назва профілю</string>
+    <string name="profile_name_invalid">Введіть унікальну назву до 32 символів</string>
+    <string name="profile_delete_title">Видалити профіль?</string>
+    <string name="profile_delete_message">Вкладки, cookie та дані сайтів профілю «%1$s» буде видалено з цього пристрою.</string>
+    <string name="profile_active">Активний</string>
+    <string name="profile_guest_start">Почати гостьовий сеанс</string>
+    <string name="profile_guest_exit">Вийти з гостьового сеансу</string>
+    <string name="profile_guest_note">Гостьові сеанси використовують приватні вкладки й нічого не залишають після виходу.</string>
+    <string name="profile_isolation_note">Кожен профіль має власні cookie, входи й сховище сайтів. Історія, закладки та дозволи сайтів поки що спільні для всіх профілів.</string>
+    <string name="menu_new_private_tab">Нова приватна вкладка</string>
+    <string name="tab_private">Приватна</string>
 </resources>

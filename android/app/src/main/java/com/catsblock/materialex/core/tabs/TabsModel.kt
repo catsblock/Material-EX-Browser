@@ -69,6 +69,18 @@ class TabManager(
     }
 
     @Synchronized
+    fun removeProfile(profileId: String): List<String> {
+        val current = mutable.value
+        val ids = current.tabs.filter { it.profileId == profileId }.map { it.id }
+        mutable.value = current.copy(
+            tabs = current.tabs.filterNot { it.profileId == profileId },
+            recentlyClosed = current.recentlyClosed.filterNot { it.profileId == profileId },
+            activeId = if (current.activeId in ids) null else current.activeId
+        )
+        return ids
+    }
+
+    @Synchronized
     fun select(id: String) {
         val current = mutable.value
         if (current.tabs.none { it.id == id }) return

@@ -178,4 +178,18 @@
     <string name="threat_detail_code">Engine error code</string>
     <string name="threat_detail_host">Address</string>
     <string name="threat_detail_time">Detected at</string>
+    <string name="settings_cat_profiles">Profiles</string>
+    <string name="profile_default_name">Default</string>
+    <string name="profile_add">Add profile</string>
+    <string name="profile_name_label">Profile name</string>
+    <string name="profile_name_invalid">Enter a unique name of up to 32 characters</string>
+    <string name="profile_delete_title">Delete profile?</string>
+    <string name="profile_delete_message">Tabs, cookies and site data of “%1$s” will be removed from this device.</string>
+    <string name="profile_active">Active</string>
+    <string name="profile_guest_start">Start guest session</string>
+    <string name="profile_guest_exit">Exit guest session</string>
+    <string name="profile_guest_note">Guest sessions use private tabs and leave nothing behind when you exit.</string>
+    <string name="profile_isolation_note">Each profile keeps its own cookies, logins and site storage. History, bookmarks and site permissions are still shared between profiles.</string>
+    <string name="menu_new_private_tab">New private tab</string>
+    <string name="tab_private">Private</string>
 </resources>

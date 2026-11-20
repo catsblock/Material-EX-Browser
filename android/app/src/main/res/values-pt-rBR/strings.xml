@@ -178,4 +178,18 @@
     <string name="threat_detail_code">Código de erro do mecanismo</string>
     <string name="threat_detail_host">Endereço</string>
     <string name="threat_detail_time">Detectado em</string>
+    <string name="settings_cat_profiles">Perfis</string>
+    <string name="profile_default_name">Padrão</string>
+    <string name="profile_add">Adicionar perfil</string>
+    <string name="profile_name_label">Nome do perfil</string>
+    <string name="profile_name_invalid">Digite um nome exclusivo de até 32 caracteres</string>
+    <string name="profile_delete_title">Excluir perfil?</string>
+    <string name="profile_delete_message">Abas, cookies e dados de sites de “%1$s” serão removidos deste dispositivo.</string>
+    <string name="profile_active">Ativo</string>
+    <string name="profile_guest_start">Iniciar sessão de convidado</string>
+    <string name="profile_guest_exit">Sair da sessão de convidado</string>
+    <string name="profile_guest_note">Sessões de convidado usam abas privadas e não deixam nada ao sair.</string>
+    <string name="profile_isolation_note">Cada perfil mantém seus próprios cookies, logins e armazenamento de sites. Histórico, favoritos e permissões de sites ainda são compartilhados entre perfis.</string>
+    <string name="menu_new_private_tab">Nova aba privada</string>
+    <string name="tab_private">Privada</string>
 </resources>

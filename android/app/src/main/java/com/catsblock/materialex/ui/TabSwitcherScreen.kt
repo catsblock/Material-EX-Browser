@@ -232,7 +232,7 @@ private fun TabEntry(
                     overflow = TextOverflow.Ellipsis
                 )
                 Text(
-                    text = address,
+                    text = if (tab.isPrivate) stringResource(R.string.tab_private) + " · " + address else address,
                     style = MaterialTheme.typography.bodySmall,
                     color = MaterialTheme.colorScheme.onSurfaceVariant,
                     maxLines = 1,

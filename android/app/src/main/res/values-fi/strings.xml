@@ -176,4 +176,18 @@
     <string name="threat_detail_code">Moottorin virhekoodi</string>
     <string name="threat_detail_host">Osoite</string>
     <string name="threat_detail_time">Havaittu</string>
+    <string name="settings_cat_profiles">Profiilit</string>
+    <string name="profile_default_name">Oletus</string>
+    <string name="profile_add">Lisää profiili</string>
+    <string name="profile_name_label">Profiilin nimi</string>
+    <string name="profile_name_invalid">Anna yksilöllinen nimi, enintään 32 merkkiä</string>
+    <string name="profile_delete_title">Poistetaanko profiili?</string>
+    <string name="profile_delete_message">Profiilin “%1$s” välilehdet, evästeet ja sivustotiedot poistetaan tästä laitteesta.</string>
+    <string name="profile_active">Aktiivinen</string>
+    <string name="profile_guest_start">Aloita vieraan istunto</string>
+    <string name="profile_guest_exit">Lopeta vieraan istunto</string>
+    <string name="profile_guest_note">Vieraan istunto käyttää yksityisiä välilehtiä eikä jätä jälkiä lopettaessa.</string>
+    <string name="profile_isolation_note">Jokaisella profiililla on omat evästeensä, kirjautumisensa ja sivustotallennustilansa. Historia, kirjanmerkit ja sivustojen oikeudet ovat vielä yhteisiä profiilien kesken.</string>
+    <string name="menu_new_private_tab">Uusi yksityinen välilehti</string>
+    <string name="tab_private">Yksityinen</string>
 </resources>

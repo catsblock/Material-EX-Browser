@@ -176,4 +176,18 @@
     <string name="threat_detail_code">Codice di errore del motore</string>
     <string name="threat_detail_host">Indirizzo</string>
     <string name="threat_detail_time">Rilevato il</string>
+    <string name="settings_cat_profiles">Profili</string>
+    <string name="profile_default_name">Predefinito</string>
+    <string name="profile_add">Aggiungi profilo</string>
+    <string name="profile_name_label">Nome del profilo</string>
+    <string name="profile_name_invalid">Inserisci un nome univoco di massimo 32 caratteri</string>
+    <string name="profile_delete_title">Eliminare il profilo?</string>
+    <string name="profile_delete_message">Schede, cookie e dati dei siti di “%1$s” verranno rimossi da questo dispositivo.</string>
+    <string name="profile_active">Attivo</string>
+    <string name="profile_guest_start">Avvia sessione ospite</string>
+    <string name="profile_guest_exit">Esci dalla sessione ospite</string>
+    <string name="profile_guest_note">Le sessioni ospite usano schede private e non lasciano tracce all\'uscita.</string>
+    <string name="profile_isolation_note">Ogni profilo mantiene cookie, accessi e archiviazione dei siti separati. Cronologia, segnalibri e autorizzazioni dei siti restano condivisi tra i profili.</string>
+    <string name="menu_new_private_tab">Nuova scheda privata</string>
+    <string name="tab_private">Privata</string>
 </resources>

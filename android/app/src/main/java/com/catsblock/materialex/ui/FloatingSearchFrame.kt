@@ -103,6 +103,7 @@ fun FloatingSearchFrame(
     onStop: () -> Unit,
     onOpenTabs: () -> Unit,
     onNewTab: () -> Unit,
+    onNewPrivateTab: () -> Unit,
     onToggleBookmark: () -> Unit,
     onOpenHistory: () -> Unit,
     onOpenBookmarks: () -> Unit,
@@ -243,6 +244,14 @@ fun FloatingSearchFrame(
                             onClick = {
                                 menuOpen = false
                                 onNewTab()
+                            }
+                        )
+                        DropdownMenuItem(
+                            text = { Text(stringResource(R.string.menu_new_private_tab)) },
+                            leadingIcon = { Icon(Icons.Default.Lock, contentDescription = null) },
+                            onClick = {
+                                menuOpen = false
+                                onNewPrivateTab()
                             }
                         )
                         DropdownMenuItem(

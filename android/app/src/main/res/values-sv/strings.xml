@@ -176,4 +176,18 @@
     <string name="threat_detail_code">Motorns felkod</string>
     <string name="threat_detail_host">Adress</string>
     <string name="threat_detail_time">Upptäckt</string>
+    <string name="settings_cat_profiles">Profiler</string>
+    <string name="profile_default_name">Standard</string>
+    <string name="profile_add">Lägg till profil</string>
+    <string name="profile_name_label">Profilnamn</string>
+    <string name="profile_name_invalid">Ange ett unikt namn på högst 32 tecken</string>
+    <string name="profile_delete_title">Ta bort profilen?</string>
+    <string name="profile_delete_message">Flikar, cookies och webbplatsdata för ”%1$s” tas bort från den här enheten.</string>
+    <string name="profile_active">Aktiv</string>
+    <string name="profile_guest_start">Starta gästsession</string>
+    <string name="profile_guest_exit">Avsluta gästsession</string>
+    <string name="profile_guest_note">Gästsessioner använder privata flikar och lämnar inget kvar när du avslutar.</string>
+    <string name="profile_isolation_note">Varje profil har egna cookies, inloggningar och webbplatslagring. Historik, bokmärken och webbplatsbehörigheter delas fortfarande mellan profiler.</string>
+    <string name="menu_new_private_tab">Ny privat flik</string>
+    <string name="tab_private">Privat</string>
 </resources>

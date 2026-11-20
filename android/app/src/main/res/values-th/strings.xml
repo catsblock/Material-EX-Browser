@@ -176,4 +176,18 @@
     <string name="threat_detail_code">รหัสข้อผิดพลาดของเอนจิน</string>
     <string name="threat_detail_host">ที่อยู่</string>
     <string name="threat_detail_time">ตรวจพบเมื่อ</string>
+    <string name="settings_cat_profiles">โปรไฟล์</string>
+    <string name="profile_default_name">ค่าเริ่มต้น</string>
+    <string name="profile_add">เพิ่มโปรไฟล์</string>
+    <string name="profile_name_label">ชื่อโปรไฟล์</string>
+    <string name="profile_name_invalid">ป้อนชื่อที่ไม่ซ้ำไม่เกิน 32 ตัวอักษร</string>
+    <string name="profile_delete_title">ลบโปรไฟล์หรือไม่</string>
+    <string name="profile_delete_message">แท็บ คุกกี้ และข้อมูลเว็บไซต์ของ “%1$s” จะถูกลบออกจากอุปกรณ์นี้</string>
+    <string name="profile_active">ใช้งานอยู่</string>
+    <string name="profile_guest_start">เริ่มเซสชันผู้เยี่ยมชม</string>
+    <string name="profile_guest_exit">ออกจากเซสชันผู้เยี่ยมชม</string>
+    <string name="profile_guest_note">เซสชันผู้เยี่ยมชมใช้แท็บส่วนตัวและไม่ทิ้งร่องรอยเมื่อออก</string>
+    <string name="profile_isolation_note">แต่ละโปรไฟล์เก็บคุกกี้ การเข้าสู่ระบบ และพื้นที่เก็บข้อมูลเว็บไซต์แยกกัน ประวัติ บุ๊กมาร์ก และสิทธิ์ของเว็บไซต์ยังใช้ร่วมกันระหว่างโปรไฟล์</string>
+    <string name="menu_new_private_tab">แท็บส่วนตัวใหม่</string>
+    <string name="tab_private">ส่วนตัว</string>
 </resources>

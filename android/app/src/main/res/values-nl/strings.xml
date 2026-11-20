@@ -176,4 +176,18 @@
     <string name="threat_detail_code">Foutcode van de engine</string>
     <string name="threat_detail_host">Adres</string>
     <string name="threat_detail_time">Gedetecteerd op</string>
+    <string name="settings_cat_profiles">Profielen</string>
+    <string name="profile_default_name">Standaard</string>
+    <string name="profile_add">Profiel toevoegen</string>
+    <string name="profile_name_label">Profielnaam</string>
+    <string name="profile_name_invalid">Voer een unieke naam van maximaal 32 tekens in</string>
+    <string name="profile_delete_title">Profiel verwijderen?</string>
+    <string name="profile_delete_message">Tabbladen, cookies en sitegegevens van “%1$s” worden van dit apparaat verwijderd.</string>
+    <string name="profile_active">Actief</string>
+    <string name="profile_guest_start">Gastsessie starten</string>
+    <string name="profile_guest_exit">Gastsessie afsluiten</string>
+    <string name="profile_guest_note">Gastsessies gebruiken privétabbladen en laten niets achter wanneer je afsluit.</string>
+    <string name="profile_isolation_note">Elk profiel bewaart eigen cookies, logins en sitegegevens. Geschiedenis, bladwijzers en sitemachtigingen worden nog tussen profielen gedeeld.</string>
+    <string name="menu_new_private_tab">Nieuw privétabblad</string>
+    <string name="tab_private">Privé</string>
 </resources>

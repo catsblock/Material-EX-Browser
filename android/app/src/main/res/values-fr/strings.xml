@@ -176,4 +176,18 @@
     <string name="threat_detail_code">Code d\'erreur du moteur</string>
     <string name="threat_detail_host">Adresse</string>
     <string name="threat_detail_time">Détecté le</string>
+    <string name="settings_cat_profiles">Profils</string>
+    <string name="profile_default_name">Par défaut</string>
+    <string name="profile_add">Ajouter un profil</string>
+    <string name="profile_name_label">Nom du profil</string>
+    <string name="profile_name_invalid">Saisissez un nom unique de 32 caractères maximum</string>
+    <string name="profile_delete_title">Supprimer le profil ?</string>
+    <string name="profile_delete_message">Les onglets, cookies et données de site de « %1$s » seront supprimés de cet appareil.</string>
+    <string name="profile_active">Actif</string>
+    <string name="profile_guest_start">Démarrer une session invité</string>
+    <string name="profile_guest_exit">Quitter la session invité</string>
+    <string name="profile_guest_note">Les sessions invité utilisent des onglets privés et ne laissent aucune trace à la sortie.</string>
+    <string name="profile_isolation_note">Chaque profil conserve ses propres cookies, connexions et stockage de sites. L\'historique, les favoris et les autorisations de sites restent partagés entre les profils.</string>
+    <string name="menu_new_private_tab">Nouvel onglet privé</string>
+    <string name="tab_private">Privé</string>
 </resources>

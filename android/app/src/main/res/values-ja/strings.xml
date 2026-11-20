@@ -176,4 +176,18 @@
     <string name="threat_detail_code">エンジンのエラーコード</string>
     <string name="threat_detail_host">アドレス</string>
     <string name="threat_detail_time">検出日時</string>
+    <string name="settings_cat_profiles">プロファイル</string>
+    <string name="profile_default_name">デフォルト</string>
+    <string name="profile_add">プロファイルを追加</string>
+    <string name="profile_name_label">プロファイル名</string>
+    <string name="profile_name_invalid">32 文字以内の重複しない名前を入力してください</string>
+    <string name="profile_delete_title">プロファイルを削除しますか？</string>
+    <string name="profile_delete_message">「%1$s」のタブ、Cookie、サイトデータがこの端末から削除されます。</string>
+    <string name="profile_active">使用中</string>
+    <string name="profile_guest_start">ゲストセッションを開始</string>
+    <string name="profile_guest_exit">ゲストセッションを終了</string>
+    <string name="profile_guest_note">ゲストセッションはプライベートタブを使用し、終了すると何も残りません。</string>
+    <string name="profile_isolation_note">各プロファイルは Cookie、ログイン、サイトストレージを個別に保持します。履歴、ブックマーク、サイトの権限は現時点ではプロファイル間で共有されます。</string>
+    <string name="menu_new_private_tab">新しいプライベートタブ</string>
+    <string name="tab_private">プライベート</string>
 </resources>

@@ -176,4 +176,18 @@
     <string name="threat_detail_code">Código de erro do motor</string>
     <string name="threat_detail_host">Endereço</string>
     <string name="threat_detail_time">Detetado em</string>
+    <string name="settings_cat_profiles">Perfis</string>
+    <string name="profile_default_name">Predefinido</string>
+    <string name="profile_add">Adicionar perfil</string>
+    <string name="profile_name_label">Nome do perfil</string>
+    <string name="profile_name_invalid">Introduza um nome único com até 32 caracteres</string>
+    <string name="profile_delete_title">Eliminar perfil?</string>
+    <string name="profile_delete_message">Os separadores, cookies e dados de sites de “%1$s” serão removidos deste dispositivo.</string>
+    <string name="profile_active">Ativo</string>
+    <string name="profile_guest_start">Iniciar sessão de convidado</string>
+    <string name="profile_guest_exit">Sair da sessão de convidado</string>
+    <string name="profile_guest_note">As sessões de convidado usam separadores privados e não deixam nada ao sair.</string>
+    <string name="profile_isolation_note">Cada perfil mantém os seus próprios cookies, inícios de sessão e armazenamento de sites. O histórico, os marcadores e as permissões de sites continuam partilhados entre perfis.</string>
+    <string name="menu_new_private_tab">Novo separador privado</string>
+    <string name="tab_private">Privado</string>
 </resources>

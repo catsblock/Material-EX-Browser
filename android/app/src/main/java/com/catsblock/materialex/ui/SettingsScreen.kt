@@ -1,15 +1,18 @@
 package com.catsblock.materialex.ui
 
 import androidx.activity.compose.BackHandler
-import androidx.compose.foundation.clickable
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.FlowRow
-import androidx.compose.material3.FilterChip
 import androidx.compose.material3.Slider
 import androidx.compose.runtime.mutableFloatStateOf
 import com.catsblock.materialex.core.memory.MemoryMode
+import com.catsblock.materialex.core.profile.Profile
+import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
+import androidx.compose.material3.Surface
+import androidx.compose.material3.ToggleButton
+import androidx.compose.material3.ToggleButtonDefaults
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -56,12 +59,17 @@ import com.catsblock.materialex.data.TabLayout
 import com.catsblock.materialex.data.ToolbarPosition
 import kotlinx.coroutines.launch
 
-@OptIn(ExperimentalMaterial3Api::class, androidx.compose.foundation.layout.ExperimentalLayoutApi::class)
+@OptIn(ExperimentalMaterial3Api::class, ExperimentalMaterial3ExpressiveApi::class, androidx.compose.foundation.layout.ExperimentalLayoutApi::class)
 @Composable
 fun SettingsScreen(
     settings: BrowserSettings,
     repository: SettingsRepository,
     library: LibraryRepository,
+    profiles: List<Profile>,
+    activeProfileId: String,
+    onSwitchProfile: (String) -> Unit,
+    onDeleteProfile: (String) -> Unit,
+    onExitGuest: () -> Unit,
     onClose: () -> Unit
 ) {
     val scope = rememberCoroutineScope()
@@ -102,8 +110,13 @@ fun SettingsScreen(
                 )
                 val needle = query.trim()
                 if (needle.isEmpty()) {
-                    SettingsCategory.entries.forEach { entry ->
-                        CategoryRow(stringResource(entry.title)) { category = entry }
+                    Column(verticalArrangement = Arrangement.spacedBy(2.dp)) {
+                        SettingsCategory.entries.forEachIndexed { position, entry ->
+                            CategoryRow(
+                                title = stringResource(entry.title),
+                                shape = groupedShape(position, SettingsCategory.entries.size)
+                            ) { category = entry }
+                        }
                     }
                 } else {
                     val matches = SettingsCategory.index.filter {
@@ -112,10 +125,16 @@ fun SettingsScreen(
                     if (matches.isEmpty()) {
                         Text(stringResource(R.string.settings_no_results), style = MaterialTheme.typography.bodyLarge)
                     }
-                    matches.forEach { (label, target) ->
-                        CategoryRow(stringResource(label), stringResource(target.title)) {
-                            query = ""
-                            category = target
+                    Column(verticalArrangement = Arrangement.spacedBy(2.dp)) {
+                        matches.forEachIndexed { position, (label, target) ->
+                            CategoryRow(
+                                title = stringResource(label),
+                                subtitle = stringResource(target.title),
+                                shape = groupedShape(position, matches.size)
+                            ) {
+                                query = ""
+                                category = target
+                            }
                         }
                     }
                 }
@@ -282,11 +301,11 @@ fun SettingsScreen(
                     )
                     FlowRow(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
                         MemoryMode.entries.forEach { mode ->
-                            FilterChip(
-                                selected = settings.memoryMode == mode,
-                                onClick = { scope.launch { repository.setMemoryMode(mode) } },
-                                label = { Text(stringResource(memoryModeLabel(mode))) }
-                            )
+                            ToggleButton(
+                                checked = settings.memoryMode == mode,
+                                onCheckedChange = { scope.launch { repository.setMemoryMode(mode) } },
+                                shapes = ToggleButtonDefaults.shapes()
+                            ) { Text(stringResource(memoryModeLabel(mode))) }
                         }
                     }
                     if (settings.memoryMode == MemoryMode.CUSTOM) {
@@ -322,6 +341,16 @@ fun SettingsScreen(
                         )
                     }
                 }
+            }
+            if (category == SettingsCategory.PROFILES) {
+                ProfilesSection(
+                    profiles = profiles,
+                    activeProfileId = activeProfileId,
+                    repository = repository,
+                    onSwitch = onSwitchProfile,
+                    onDelete = onDeleteProfile,
+                    onExitGuest = onExitGuest
+                )
             }
             if (category == SettingsCategory.ABOUT) {
                 val context = LocalContext.current
@@ -402,6 +431,7 @@ private enum class SettingsCategory(val title: Int) {
     PRIVACY(R.string.settings_cat_privacy),
     PERFORMANCE(R.string.settings_cat_performance),
     TABS(R.string.settings_cat_tabs),
+    PROFILES(R.string.settings_cat_profiles),
     ABOUT(R.string.settings_cat_about);
 
     companion object {
@@ -416,22 +446,31 @@ private enum class SettingsCategory(val title: Int) {
             R.string.settings_safe_browsing to PRIVACY,
             R.string.settings_cookie_banner to PRIVACY,
             R.string.settings_memory_title to PERFORMANCE,
-            R.string.settings_tab_layout to TABS
+            R.string.settings_tab_layout to TABS,
+            R.string.profile_add to PROFILES,
+            R.string.profile_guest_start to PROFILES
         )
     }
 }
 
 @Composable
-private fun CategoryRow(title: String, subtitle: String? = null, onClick: () -> Unit) {
-    Column(
-        modifier = Modifier
-            .fillMaxWidth()
-            .clickable(onClick = onClick)
-            .padding(vertical = 14.dp)
+private fun CategoryRow(
+    title: String,
+    shape: androidx.compose.ui.graphics.Shape,
+    subtitle: String? = null,
+    onClick: () -> Unit
+) {
+    Surface(
+        onClick = onClick,
+        shape = shape,
+        color = MaterialTheme.colorScheme.surfaceContainerHigh,
+        modifier = Modifier.fillMaxWidth()
     ) {
-        Text(title, style = MaterialTheme.typography.titleMedium)
-        if (subtitle != null) {
-            Text(subtitle, style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
+        Column(Modifier.padding(horizontal = 20.dp, vertical = 16.dp)) {
+            Text(title, style = MaterialTheme.typography.titleMedium)
+            if (subtitle != null) {
+                Text(subtitle, style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
+            }
         }
     }
 }

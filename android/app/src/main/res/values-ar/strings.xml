@@ -178,4 +178,18 @@
     <string name="threat_detail_code">رمز خطأ المحرك</string>
     <string name="threat_detail_host">العنوان</string>
     <string name="threat_detail_time">وقت الاكتشاف</string>
+    <string name="settings_cat_profiles">الملفات الشخصية</string>
+    <string name="profile_default_name">افتراضي</string>
+    <string name="profile_add">إضافة ملف شخصي</string>
+    <string name="profile_name_label">اسم الملف الشخصي</string>
+    <string name="profile_name_invalid">أدخل اسمًا فريدًا لا يزيد عن 32 حرفًا</string>
+    <string name="profile_delete_title">حذف الملف الشخصي؟</string>
+    <string name="profile_delete_message">ستتم إزالة علامات التبويب وملفات تعريف الارتباط وبيانات المواقع الخاصة بـ «%1$s» من هذا الجهاز.</string>
+    <string name="profile_active">نشط</string>
+    <string name="profile_guest_start">بدء جلسة ضيف</string>
+    <string name="profile_guest_exit">الخروج من جلسة الضيف</string>
+    <string name="profile_guest_note">تستخدم جلسات الضيف علامات تبويب خاصة ولا تترك أي أثر عند الخروج.</string>
+    <string name="profile_isolation_note">يحتفظ كل ملف شخصي بملفات تعريف الارتباط وتسجيلات الدخول وتخزين المواقع الخاص به. لا يزال السجل والإشارات المرجعية وأذونات المواقع مشتركة بين الملفات الشخصية.</string>
+    <string name="menu_new_private_tab">علامة تبويب خاصة جديدة</string>
+    <string name="tab_private">خاص</string>
 </resources>

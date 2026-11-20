@@ -176,4 +176,18 @@
     <string name="threat_detail_code">Engine-Fehlercode</string>
     <string name="threat_detail_host">Adresse</string>
     <string name="threat_detail_time">Erkannt am</string>
+    <string name="settings_cat_profiles">Profile</string>
+    <string name="profile_default_name">Standard</string>
+    <string name="profile_add">Profil hinzufügen</string>
+    <string name="profile_name_label">Profilname</string>
+    <string name="profile_name_invalid">Geben Sie einen eindeutigen Namen mit höchstens 32 Zeichen ein</string>
+    <string name="profile_delete_title">Profil löschen?</string>
+    <string name="profile_delete_message">Tabs, Cookies und Websitedaten von „%1$s“ werden von diesem Gerät entfernt.</string>
+    <string name="profile_active">Aktiv</string>
+    <string name="profile_guest_start">Gastsitzung starten</string>
+    <string name="profile_guest_exit">Gastsitzung beenden</string>
+    <string name="profile_guest_note">Gastsitzungen nutzen private Tabs und hinterlassen beim Beenden nichts.</string>
+    <string name="profile_isolation_note">Jedes Profil hat eigene Cookies, Anmeldungen und Websitespeicher. Verlauf, Lesezeichen und Websiteberechtigungen werden noch zwischen Profilen geteilt.</string>
+    <string name="menu_new_private_tab">Neuer privater Tab</string>
+    <string name="tab_private">Privat</string>
 </resources>

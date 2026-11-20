@@ -47,6 +47,7 @@ import com.catsblock.materialex.ui.SettingsScreen
 import com.catsblock.materialex.ui.TabSwitcherScreen
 import com.catsblock.materialex.ui.theme.MaterialExTheme
 import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 
 private enum class Screen { BROWSER, TABS, SETTINGS, HISTORY, BOOKMARKS, DOWNLOADS }
@@ -128,8 +129,8 @@ class MainActivity : ComponentActivity() {
         }
         var query by remember { mutableStateOf("") }
         var suggestions by remember { mutableStateOf(emptyList<Suggestion>()) }
-        LaunchedEffect(query, settings.suggestionProvider) {
-            if (query.isBlank()) {
+        LaunchedEffect(query, settings.suggestionProvider, privateActive) {
+            if (query.isBlank() || privateActive) {
                 suggestions = emptyList()
             } else {
                 delay(SUGGESTION_DEBOUNCE_MS)
@@ -138,6 +139,10 @@ class MainActivity : ComponentActivity() {
         }
         var screen by rememberSaveable { mutableStateOf(Screen.BROWSER) }
         var siteInfoOpen by rememberSaveable { mutableStateOf(false) }
+        val profiles by app.settings.profiles.collectAsStateWithLifecycle(emptyList())
+        val activeProfile by app.engine.activeProfile.collectAsStateWithLifecycle()
+        val privateActive by remember { app.engine.tabs.map { it.active?.isPrivate == true } }
+            .collectAsStateWithLifecycle(false)
         val prompt by app.engine.permissions.prompt.collectAsStateWithLifecycle()
         val osBlocked by app.engine.osBlocked.collectAsStateWithLifecycle()
 
@@ -150,6 +155,11 @@ class MainActivity : ComponentActivity() {
                 settings = settings,
                 repository = app.settings,
                 library = app.library,
+                profiles = profiles,
+                activeProfileId = activeProfile,
+                onSwitchProfile = { app.engine.switchProfile(it) },
+                onDeleteProfile = { app.engine.deleteProfile(it) },
+                onExitGuest = { app.engine.exitGuest() },
                 onClose = { screen = Screen.BROWSER }
             )
             Screen.HISTORY -> HistoryScreen(
@@ -218,6 +228,7 @@ class MainActivity : ComponentActivity() {
                 onOpenTabs = { screen = Screen.TABS },
                 isBookmarked = isBookmarked,
                 onNewTab = { app.engine.openTab("") },
+                onNewPrivateTab = { app.engine.openTab("", private = true) },
                 onToggleBookmark = {
                     lifecycleScope.launch {
                         app.library.toggleBookmark(pageState.url, pageState.title, isBookmarked)
@@ -309,7 +320,7 @@ class MainActivity : ComponentActivity() {
                 true
             }
             is Resolution.Search -> {
-                lifecycleScope.launch { app.library.recordSearch(resolution.query) }
+                if (app.engine.tabs.value.active?.isPrivate != true) lifecycleScope.launch { app.library.recordSearch(resolution.query) }
                 val url = SearchTemplates.resolveUrl(settings.searchEngine, settings.customSearchTemplate, resolution.query)
                 if (url != null) app.engine.load(url)
                 url != null

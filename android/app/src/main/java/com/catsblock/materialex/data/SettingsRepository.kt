@@ -10,6 +10,8 @@ import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.datastore.preferences.preferencesDataStore
 import com.catsblock.materialex.core.Resolution
 import com.catsblock.materialex.core.memory.MemoryMode
+import com.catsblock.materialex.core.profile.Profile
+import com.catsblock.materialex.core.profile.ProfileRules
 import com.catsblock.materialex.core.SearchEngine
 import com.catsblock.materialex.core.SearchTemplates
 import com.catsblock.materialex.core.SuggestionProvider
@@ -94,12 +96,46 @@ class SettingsRepository(private val context: Context) {
     private val popupBlockingKey = booleanPreferencesKey("popup_blocking")
     private val safeBrowsingKey = booleanPreferencesKey("safe_browsing")
     private val cookieBannerKey = booleanPreferencesKey("cookie_banner")
+    private val profilesKey = stringPreferencesKey("profiles")
     private val memoryModeKey = stringPreferencesKey("memory_mode")
     private val customLoadedTabsKey = intPreferencesKey("custom_loaded_tabs")
     private val shortcutsSeededKey = booleanPreferencesKey("shortcuts_seeded")
     private val legalAcceptedAtKey = longPreferencesKey("legal_accepted_at")
 
     val settings: Flow<BrowserSettings> = context.settingsStore.data.map(::read)
+    val profiles: Flow<List<Profile>> = context.settingsStore.data.map { ProfileRules.decode(it[profilesKey]) }
+
+    suspend fun addProfile(name: String): Boolean {
+        var added = false
+        context.settingsStore.edit { prefs ->
+            val list = ProfileRules.decode(prefs[profilesKey])
+            val clean = ProfileRules.normalizeName(name)
+            if (clean != null && list.size < ProfileRules.MAX_PROFILES && !ProfileRules.nameTaken(list, clean)) {
+                prefs[profilesKey] = ProfileRules.encode(list + Profile(ProfileRules.newId(), clean))
+                added = true
+            }
+        }
+        return added
+    }
+
+    suspend fun renameProfile(id: String, name: String): Boolean {
+        var renamed = false
+        context.settingsStore.edit { prefs ->
+            val list = ProfileRules.decode(prefs[profilesKey])
+            val clean = ProfileRules.normalizeName(name)
+            if (clean != null && list.any { it.id == id } && !ProfileRules.nameTaken(list, clean, id)) {
+                prefs[profilesKey] = ProfileRules.encode(list.map { if (it.id == id) it.copy(name = clean) else it })
+                renamed = true
+            }
+        }
+        return renamed
+    }
+
+    suspend fun removeProfile(id: String) {
+        context.settingsStore.edit { prefs ->
+            prefs[profilesKey] = ProfileRules.encode(ProfileRules.decode(prefs[profilesKey]).filterNot { it.id == id })
+        }
+    }
 
     suspend fun setToolbarPosition(position: ToolbarPosition) {
         context.settingsStore.edit { it[toolbarKey] = position.name }
