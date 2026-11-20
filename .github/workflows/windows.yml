@@ -29,7 +29,22 @@ jobs:
         run: cmake -S . -B build -G "Visual Studio 17 2022" -A x64
 
       - name: Build
-        run: cmake --build build --config Release --parallel
+        shell: pwsh
+        run: |
+          cmake --build build --config Release --parallel 2>&1 | Tee-Object -FilePath "$env:RUNNER_TEMP/build.log"
+          exit $LASTEXITCODE
+
+      - name: Report build errors
+        if: failure()
+        shell: pwsh
+        run: |
+          $log = "$env:RUNNER_TEMP/build.log"
+          if (Test-Path $log) {
+            Select-String -Path $log -Pattern "error [A-Z]+[0-9]+|fatal error|: error |CMake Error|LNK[0-9]+" |
+              ForEach-Object { $_.Line.Trim() -replace [regex]::Escape($env:GITHUB_WORKSPACE), "" } |
+              Select-Object -Unique -First 15 |
+              ForEach-Object { Write-Host "::error::$($_.Substring(0, [Math]::Min(380, $_.Length)))" }
+          }
 
       - name: Core tests
         run: ctest --test-dir build -C Release --output-on-failure
