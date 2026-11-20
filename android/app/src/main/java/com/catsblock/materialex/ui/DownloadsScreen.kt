@@ -15,6 +15,8 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.Delete
+import androidx.compose.material.icons.filled.Info
+import androidx.compose.material.icons.filled.PlayArrow
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
 import androidx.compose.material3.Icon
@@ -27,8 +29,10 @@ import androidx.compose.material3.TextButton
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
@@ -37,7 +41,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.catsblock.materialex.R
-import com.catsblock.materialex.core.ByteFormat
+import com.catsblock.materialex.core.DownloadSafety
 import com.catsblock.materialex.core.DownloadStatus
 import com.catsblock.materialex.data.DownloadController
 import com.catsblock.materialex.data.LiveDownload
@@ -51,6 +55,18 @@ fun DownloadsScreen(controller: DownloadController, onClose: () -> Unit) {
     val live by controller.live.collectAsStateWithLifecycle()
     val scope = rememberCoroutineScope()
     val context = LocalContext.current
+    var detailId by remember { mutableStateOf<Long?>(null) }
+    var confirmOpen by remember { mutableStateOf<DownloadRecord?>(null) }
+
+    fun open(record: DownloadRecord) {
+        scope.launch {
+            val intent = controller.openIntent(record) ?: return@launch
+            try {
+                context.startActivity(intent)
+            } catch (_: ActivityNotFoundException) {
+            }
+        }
+    }
 
     Scaffold(
         topBar = {
@@ -89,20 +105,31 @@ fun DownloadsScreen(controller: DownloadController, onClose: () -> Unit) {
                         record = record,
                         live = live[record.id],
                         onOpen = {
-                            scope.launch {
-                                val intent = controller.openIntent(record) ?: return@launch
-                                try {
-                                    context.startActivity(intent)
-                                } catch (_: ActivityNotFoundException) {
-                                }
-                            }
+                            val risks = DownloadSafety.assess(record.fileName, record.mimeType, record.sourceUrl)
+                            if (DownloadSafety.needsOpenConfirmation(risks)) confirmOpen = record else open(record)
                         },
+                        onPauseResume = { paused -> if (paused) controller.resume(record.id) else controller.pause(record.id) },
                         onCancel = { controller.cancel(record.id) },
+                        onDetails = { detailId = record.id },
                         onDelete = { scope.launch { controller.delete(record) } }
                     )
                 }
             }
         }
+    }
+
+    detailId?.let { id ->
+        records.firstOrNull { it.id == id }?.let { DownloadDetailsSheet(it, live[it.id]) { detailId = null } }
+    }
+    confirmOpen?.let { record ->
+        RiskyOpenDialog(
+            record = record,
+            onConfirm = {
+                confirmOpen = null
+                open(record)
+            },
+            onDismiss = { confirmOpen = null }
+        )
     }
 }
 
@@ -112,13 +139,18 @@ private fun DownloadRow(
     record: DownloadRecord,
     live: LiveDownload?,
     onOpen: () -> Unit,
+    onPauseResume: (Boolean) -> Unit,
     onCancel: () -> Unit,
+    onDetails: () -> Unit,
     onDelete: () -> Unit
 ) {
     val active = record.status == DownloadStatus.ACTIVE.name
+    val paused = live?.paused == true
     val downloaded = live?.downloaded ?: record.downloadedBytes
     val total = live?.total ?: record.totalBytes
     val host = Uri.parse(record.sourceUrl).host ?: record.sourceUrl
+    val bad = record.status == DownloadStatus.FAILED.name || record.status == DownloadStatus.MISSING.name ||
+        record.status == DownloadStatus.BLOCKED.name
 
     Row(
         modifier = Modifier
@@ -145,29 +177,29 @@ private fun DownloadRow(
                 } else {
                     LinearWavyProgressIndicator(modifier = Modifier.fillMaxWidth())
                 }
-                val percent = if (total > 0) " \u00b7 ${(downloaded * 100 / total).toInt()}%" else ""
-                val size = if (total > 0) "${ByteFormat.size(downloaded)} / ${ByteFormat.size(total)}" else ByteFormat.size(downloaded)
-                val speed = live?.let { " \u00b7 ${ByteFormat.speed(it.bytesPerSecond)}" }.orEmpty()
-                Text(size + percent + speed, style = MaterialTheme.typography.labelMedium)
-            } else {
-                val label = when (record.status) {
-                    DownloadStatus.COMPLETED.name -> stringResource(R.string.download_completed) + " \u00b7 " + ByteFormat.size(record.downloadedBytes)
-                    DownloadStatus.CANCELLED.name -> stringResource(R.string.download_cancelled)
-                    DownloadStatus.MISSING.name -> stringResource(R.string.download_missing)
-                    else -> stringResource(R.string.download_failed)
-                }
-                Text(
-                    label,
-                    style = MaterialTheme.typography.labelMedium,
-                    color = if (record.status == DownloadStatus.COMPLETED.name) MaterialTheme.colorScheme.onSurfaceVariant else MaterialTheme.colorScheme.error
-                )
             }
+            Text(
+                downloadSummary(record, live),
+                style = MaterialTheme.typography.labelMedium,
+                color = if (bad || record.status == DownloadStatus.CANCELLED.name) MaterialTheme.colorScheme.error else MaterialTheme.colorScheme.onSurfaceVariant
+            )
         }
         if (active) {
+            IconButton(onClick = { onPauseResume(paused) }) {
+                if (paused) {
+                    Icon(Icons.Default.PlayArrow, contentDescription = stringResource(R.string.download_resume))
+                } else {
+                    Icon(DownloadIcons.Pause, contentDescription = stringResource(R.string.download_pause))
+                }
+            }
             IconButton(onClick = onCancel) {
                 Icon(Icons.Default.Close, contentDescription = stringResource(R.string.action_cancel))
             }
-        } else {
+        }
+        IconButton(onClick = onDetails) {
+            Icon(Icons.Default.Info, contentDescription = stringResource(R.string.download_details))
+        }
+        if (!active) {
             IconButton(onClick = onDelete) {
                 Icon(Icons.Default.Delete, contentDescription = stringResource(R.string.action_delete))
             }

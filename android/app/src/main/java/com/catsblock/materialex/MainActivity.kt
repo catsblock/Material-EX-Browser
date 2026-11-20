@@ -293,6 +293,7 @@ class MainActivity : ComponentActivity() {
             )
             Screen.BROWSER -> BrowserScreen(
                 engine = app.engine,
+                downloads = app.downloads,
                 settings = settings,
                 suggestions = suggestions,
                 onQueryChange = { query = it },

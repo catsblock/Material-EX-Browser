@@ -72,6 +72,7 @@ import org.mozilla.geckoview.GeckoView
 @Composable
 fun BrowserScreen(
     engine: BrowserEngine,
+    downloads: com.catsblock.materialex.data.DownloadController,
     settings: BrowserSettings,
     suggestions: List<Suggestion>,
     onQueryChange: (String) -> Unit,
@@ -253,6 +254,21 @@ fun BrowserScreen(
                     .windowInsetsPadding(WindowInsets.safeDrawing.only(WindowInsetsSides.Horizontal + WindowInsetsSides.Top))
             )
         }
+        DownloadPanel(
+            controller = downloads,
+            onOpenAll = onOpenDownloads,
+            modifier = Modifier
+                .align(if (atTop) Alignment.TopCenter else Alignment.BottomCenter)
+                .windowInsetsPadding(
+                    WindowInsets.safeDrawing.only(if (atTop) WindowInsetsSides.Top else WindowInsetsSides.Bottom)
+                )
+                .padding(
+                    start = 12.dp,
+                    end = 12.dp,
+                    top = if (atTop) 84.dp + (if (desktop) DesktopStripHeight else 0.dp) else 0.dp,
+                    bottom = if (atTop) 0.dp else 84.dp
+                )
+        )
         FloatingSearchFrame(
             state = state,
             tabCount = tabs.tabs.size,

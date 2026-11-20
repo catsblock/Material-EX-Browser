@@ -38,7 +38,16 @@ class MaterialExApp : Application() {
     val engine: BrowserEngine by lazy {
         BrowserEngine(this, permissionManager).also { engine ->
             engine.setupExtensions()
-            engine.onDownload = { response -> downloads.start(response) }
+            engine.onDownload = { response ->
+                downloads.start(
+                    response,
+                    com.catsblock.materialex.core.DownloadPolicy.evaluate(
+                        engine.lastUserGestureAt(),
+                        System.currentTimeMillis(),
+                        downloads.activeCount()
+                    )
+                )
+            }
             engine.onPageVisited = { url, title -> ioScope.launch { library.recordVisit(url, title) } }
         }
     }

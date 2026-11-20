@@ -2,7 +2,7 @@ package com.catsblock.materialex.core
 
 import java.util.Locale
 
-enum class DownloadStatus { ACTIVE, COMPLETED, FAILED, CANCELLED, MISSING }
+enum class DownloadStatus { ACTIVE, COMPLETED, FAILED, CANCELLED, MISSING, BLOCKED }
 
 object DownloadNames {
     private const val MAX_LENGTH = 120

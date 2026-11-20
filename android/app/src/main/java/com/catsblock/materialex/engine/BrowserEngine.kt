@@ -447,7 +447,10 @@ class BrowserEngine(context: Context, permissionManager: PermissionManager) {
         pendingClose.clear()
     }
 
+    fun lastUserGestureAt(): Long = lastGestureAt
+
     fun load(url: String) {
+        noteUserGesture()
         val session = active.value
         if (session == null) openTab(url) else session.loadUri(url)
     }

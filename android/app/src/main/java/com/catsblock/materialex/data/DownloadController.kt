@@ -7,6 +7,7 @@ import android.net.Uri
 import android.os.Environment
 import android.provider.MediaStore
 import com.catsblock.materialex.core.DownloadNames
+import com.catsblock.materialex.core.DownloadPolicy
 import com.catsblock.materialex.core.DownloadStatus
 import com.catsblock.materialex.core.SpeedMeter
 import com.catsblock.materialex.data.db.DownloadDao
@@ -27,7 +28,7 @@ import java.io.IOException
 import java.io.InputStream
 import java.util.concurrent.ConcurrentHashMap
 
-data class LiveDownload(val downloaded: Long, val total: Long, val bytesPerSecond: Long)
+data class LiveDownload(val downloaded: Long, val total: Long, val bytesPerSecond: Long, val paused: Boolean = false)
 
 class DownloadController(
     private val context: Context,
@@ -37,6 +38,7 @@ class DownloadController(
     private val jobs = ConcurrentHashMap<Long, Job>()
     private val streams = ConcurrentHashMap<Long, InputStream>()
     private val cancelRequested = ConcurrentHashMap.newKeySet<Long>()
+    private val pausedIds = ConcurrentHashMap.newKeySet<Long>()
     private val liveFlow = MutableStateFlow<Map<Long, LiveDownload>>(emptyMap())
 
     val live: StateFlow<Map<Long, LiveDownload>> = liveFlow.asStateFlow()
@@ -45,10 +47,33 @@ class DownloadController(
 
     suspend fun recoverInterrupted() = dao.failInterrupted()
 
-    fun start(response: WebResponse) {
+    fun activeCount(): Int = jobs.size
+
+    fun pause(id: Long) {
+        if (jobs.containsKey(id)) pausedIds.add(id)
+    }
+
+    fun resume(id: Long) {
+        pausedIds.remove(id)
+    }
+
+    fun start(response: WebResponse, verdict: DownloadPolicy.Verdict = DownloadPolicy.Verdict.ALLOW) {
         val uri = response.uri
         if (!uri.startsWith("https://") && !uri.startsWith("http://")) return
         val body = response.body ?: return
+        if (verdict != DownloadPolicy.Verdict.ALLOW) {
+            val blockedName = DownloadNames.resolve(response.headers.entries.firstOrNull { it.key.equals("content-disposition", true) }?.value, uri)
+            runCatching { body.close() }
+            scope.launch {
+                dao.insert(
+                    DownloadRecord(
+                        fileName = blockedName, sourceUrl = uri, mimeType = "application/octet-stream", fileUri = "",
+                        totalBytes = -1, downloadedBytes = 0, status = DownloadStatus.BLOCKED.name, createdAt = System.currentTimeMillis()
+                    )
+                )
+            }
+            return
+        }
         val headers = response.headers.entries.associate { it.key.lowercase() to it.value }
         val mime = headers["content-type"]?.substringBefore(';')?.trim()?.ifEmpty { null } ?: "application/octet-stream"
         val total = headers["content-length"]?.toLongOrNull() ?: -1L
@@ -59,6 +84,7 @@ class DownloadController(
     fun cancel(id: Long) {
         if (!jobs.containsKey(id)) return
         cancelRequested.add(id)
+        pausedIds.remove(id)
         jobs[id]?.cancel()
         runCatching { streams[id]?.close() }
     }
@@ -117,7 +143,7 @@ class DownloadController(
         var copied = 0L
         var status = DownloadStatus.COMPLETED
         try {
-            val meter = SpeedMeter()
+            var meter = SpeedMeter()
             var lastPublish = 0L
             var lastPersist = 0L
             val buffer = ByteArray(BUFFER_SIZE)
@@ -126,6 +152,15 @@ class DownloadController(
                 body.use { source ->
                     while (true) {
                         self.ensureActive()
+                        if (pausedIds.contains(id)) {
+                            liveFlow.update { it + (id to LiveDownload(copied, total, 0L, true)) }
+                            while (pausedIds.contains(id)) {
+                                self.ensureActive()
+                                kotlinx.coroutines.delay(PAUSE_POLL_MS)
+                            }
+                            meter = SpeedMeter()
+                            lastPublish = 0L
+                        }
                         val read = source.read(buffer)
                         if (read < 0) break
                         sink.write(buffer, 0, read)
@@ -153,6 +188,7 @@ class DownloadController(
             jobs.remove(id)
             streams.remove(id)
             cancelRequested.remove(id)
+            pausedIds.remove(id)
             liveFlow.update { it - id }
             if (status == DownloadStatus.COMPLETED) {
                 resolver.update(target, ContentValues().apply { put(MediaStore.Downloads.IS_PENDING, 0) }, null, null)
@@ -178,5 +214,6 @@ class DownloadController(
         const val BUFFER_SIZE = 32 * 1024
         const val PUBLISH_MS = 250L
         const val PERSIST_MS = 1000L
+        const val PAUSE_POLL_MS = 150L
     }
 }
