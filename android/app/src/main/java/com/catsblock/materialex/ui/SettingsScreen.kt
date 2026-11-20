@@ -1,5 +1,24 @@
 package com.catsblock.materialex.ui
 
+import androidx.compose.foundation.background
+import androidx.compose.material.icons.automirrored.filled.KeyboardArrowRight
+import androidx.compose.material.icons.automirrored.filled.List
+import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.Edit
+import androidx.compose.material.icons.filled.Home
+import androidx.compose.material.icons.filled.Info
+import androidx.compose.material.icons.filled.Lock
+import androidx.compose.material.icons.filled.Person
+import androidx.compose.material.icons.filled.Search
+import androidx.compose.material.icons.filled.Settings
+import androidx.compose.material3.TextField
+import androidx.compose.material3.TextFieldDefaults
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.activity.compose.BackHandler
@@ -78,6 +97,7 @@ fun SettingsScreen(
     onInstallExtension: (String) -> Unit,
     onToggleExtension: (String, Boolean) -> Unit,
     onRemoveExtension: (String) -> Unit,
+    onClearData: suspend (com.catsblock.materialex.core.ClearSelection) -> Unit,
     onClose: () -> Unit
 ) {
     val scope = rememberCoroutineScope()
@@ -123,21 +143,25 @@ fun SettingsScreen(
             verticalArrangement = Arrangement.spacedBy(28.dp)
         ) {
             if (shown == null) {
-                OutlinedTextField(
-                    value = query,
-                    onValueChange = { query = it },
-                    singleLine = true,
-                    label = { Text(stringResource(R.string.settings_search_hint)) },
-                    modifier = Modifier.fillMaxWidth()
-                )
+                SettingsSearchField(query) { query = it }
                 val needle = query.trim()
                 if (needle.isEmpty()) {
-                    Column(verticalArrangement = Arrangement.spacedBy(2.dp)) {
-                        SettingsCategory.entries.forEachIndexed { position, entry ->
-                            CategoryRow(
-                                title = stringResource(entry.title),
-                                shape = groupedShape(position, SettingsCategory.entries.size)
-                            ) { category = entry }
+                    SettingsCategory.groups.forEach { (header, entries) ->
+                        Column(verticalArrangement = Arrangement.spacedBy(2.dp)) {
+                            Text(
+                                stringResource(header),
+                                style = MaterialTheme.typography.titleSmall,
+                                color = MaterialTheme.colorScheme.primary,
+                                modifier = Modifier.padding(start = 16.dp, bottom = 6.dp)
+                            )
+                            entries.forEachIndexed { position, entry ->
+                                CategoryRow(
+                                    title = stringResource(entry.title),
+                                    subtitle = stringResource(entry.summary),
+                                    icon = entry.icon,
+                                    shape = groupedShape(position, entries.size)
+                                ) { category = entry }
+                            }
                         }
                     }
                 } else {
@@ -152,6 +176,7 @@ fun SettingsScreen(
                             CategoryRow(
                                 title = stringResource(label),
                                 subtitle = stringResource(target.title),
+                                icon = target.icon,
                                 shape = groupedShape(position, matches.size)
                             ) {
                                 query = ""
@@ -162,8 +187,7 @@ fun SettingsScreen(
                 }
             }
             if (shown == SettingsCategory.GENERAL) {
-                Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
-                    Text(stringResource(R.string.settings_homepage), style = MaterialTheme.typography.titleMedium)
+                SettingsSection(R.string.settings_homepage) {
                     OutlinedTextField(
                         value = homepage,
                         onValueChange = {
@@ -185,8 +209,7 @@ fun SettingsScreen(
                         Text(stringResource(R.string.action_save))
                     }
                 }
-                Column {
-                    Text(stringResource(R.string.settings_home_sections), style = MaterialTheme.typography.titleMedium)
+                SettingsSection(R.string.settings_home_sections) {
                     SectionSwitch(R.string.settings_show_shortcuts, settings.showShortcuts) {
                         scope.launch { repository.setHomeSection(HomeSection.SHORTCUTS, it) }
                     }
@@ -210,8 +233,7 @@ fun SettingsScreen(
                 }
             }
             if (shown == SettingsCategory.SEARCH) {
-                Column {
-                    Text(stringResource(R.string.settings_search_engine), style = MaterialTheme.typography.titleMedium)
+                SettingsSection(R.string.settings_search_engine) {
                     SearchEngine.entries.forEach { engine ->
                         ChoiceRow(
                             label = engineLabel(engine),
@@ -221,8 +243,7 @@ fun SettingsScreen(
                     }
                 }
                 if (settings.searchEngine == SearchEngine.CUSTOM) {
-                    Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
-                        Text(stringResource(R.string.settings_custom_template), style = MaterialTheme.typography.titleMedium)
+                    SettingsSection(R.string.settings_custom_template) {
                         OutlinedTextField(
                             value = template,
                             onValueChange = {
@@ -246,8 +267,7 @@ fun SettingsScreen(
                         }
                     }
                 }
-                Column {
-                    Text(stringResource(R.string.settings_suggestions), style = MaterialTheme.typography.titleMedium)
+                SettingsSection(R.string.settings_suggestions) {
                     SuggestionProvider.entries.forEach { provider ->
                         ChoiceRow(
                             label = providerLabel(provider),
@@ -261,8 +281,7 @@ fun SettingsScreen(
                 }
             }
             if (shown == SettingsCategory.APPEARANCE) {
-                Column {
-                    Text(stringResource(R.string.settings_toolbar_position), style = MaterialTheme.typography.titleMedium)
+                SettingsSection(R.string.settings_toolbar_position) {
                     Text(
                         stringResource(R.string.settings_toolbar_position_description),
                         style = MaterialTheme.typography.bodyMedium,
@@ -280,42 +299,46 @@ fun SettingsScreen(
                         )
                     }
                 }
-                Row(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .toggleable(
-                            value = settings.autoHideFrame,
-                            role = Role.Switch,
-                            onValueChange = { scope.launch { repository.setAutoHideFrame(it) } }
-                        ),
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    Column(modifier = Modifier.weight(1f)) {
-                        Text(stringResource(R.string.settings_frame_autohide), style = MaterialTheme.typography.titleMedium)
-                        Text(
-                            stringResource(R.string.settings_frame_autohide_description),
-                            style = MaterialTheme.typography.bodyMedium,
-                            color = MaterialTheme.colorScheme.onSurfaceVariant
-                        )
+                SettingsSection(null) {
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .toggleable(
+                                value = settings.autoHideFrame,
+                                role = Role.Switch,
+                                onValueChange = { scope.launch { repository.setAutoHideFrame(it) } }
+                            ),
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        Column(modifier = Modifier.weight(1f)) {
+                            Text(stringResource(R.string.settings_frame_autohide), style = MaterialTheme.typography.titleMedium)
+                            Text(
+                                stringResource(R.string.settings_frame_autohide_description),
+                                style = MaterialTheme.typography.bodyMedium,
+                                color = MaterialTheme.colorScheme.onSurfaceVariant
+                            )
+                        }
+                        Spacer(Modifier.width(16.dp))
+                        Switch(checked = settings.autoHideFrame, onCheckedChange = null)
                     }
-                    Spacer(Modifier.width(16.dp))
-                    Switch(checked = settings.autoHideFrame, onCheckedChange = null)
                 }
             }
             if (shown == SettingsCategory.PRIVACY) {
-                SectionSwitch(R.string.settings_popup_block, settings.popupBlocking) {
-                    scope.launch { repository.setPopupBlocking(it) }
+                SettingsSection(null) {
+                    SectionSwitch(R.string.settings_popup_block, settings.popupBlocking, R.string.settings_popup_block_desc) {
+                        scope.launch { repository.setPopupBlocking(it) }
+                    }
+                    SectionSwitch(R.string.settings_safe_browsing, settings.safeBrowsing, R.string.settings_safe_browsing_desc) {
+                        scope.launch { repository.setSafeBrowsing(it) }
+                    }
+                    SectionSwitch(R.string.settings_cookie_banner, settings.cookieBanner, R.string.settings_cookie_banner_desc) {
+                        scope.launch { repository.setCookieBanner(it) }
+                    }
                 }
-                SectionSwitch(R.string.settings_safe_browsing, settings.safeBrowsing) {
-                    scope.launch { repository.setSafeBrowsing(it) }
-                }
-                SectionSwitch(R.string.settings_cookie_banner, settings.cookieBanner) {
-                    scope.launch { repository.setCookieBanner(it) }
-                }
+                ClearDataSection(onClear = onClearData)
             }
             if (shown == SettingsCategory.PERFORMANCE) {
-                Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
-                    Text(stringResource(R.string.settings_memory_title), style = MaterialTheme.typography.titleMedium)
+                SettingsSection(R.string.settings_memory_title) {
                     Text(
                         stringResource(R.string.settings_memory_description),
                         style = MaterialTheme.typography.bodyMedium,
@@ -347,8 +370,7 @@ fun SettingsScreen(
                 }
             }
             if (shown == SettingsCategory.TABS) {
-                Column {
-                    Text(stringResource(R.string.settings_tab_layout), style = MaterialTheme.typography.titleMedium)
+                SettingsSection(R.string.settings_tab_layout) {
                     TabLayout.entries.forEach { layout ->
                         ChoiceRow(
                             label = stringResource(
@@ -388,7 +410,9 @@ fun SettingsScreen(
                 val version = remember {
                     runCatching { context.packageManager.getPackageInfo(context.packageName, 0).versionName }.getOrNull().orEmpty()
                 }
-                Text(stringResource(R.string.settings_about_version, version), style = MaterialTheme.typography.bodyLarge)
+                SettingsSection(null) {
+                    Text(stringResource(R.string.settings_about_version, version), style = MaterialTheme.typography.bodyLarge)
+                }
             }
         }
         }
@@ -442,7 +466,7 @@ private fun memoryModeLabel(mode: MemoryMode): Int = when (mode) {
 }
 
 @Composable
-private fun SectionSwitch(label: Int, checked: Boolean, onChange: (Boolean) -> Unit) {
+private fun SectionSwitch(label: Int, checked: Boolean, description: Int? = null, onChange: (Boolean) -> Unit) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -450,29 +474,42 @@ private fun SectionSwitch(label: Int, checked: Boolean, onChange: (Boolean) -> U
             .padding(vertical = 8.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
-        Text(stringResource(label), style = MaterialTheme.typography.bodyLarge, modifier = Modifier.weight(1f))
+        Column(modifier = Modifier.weight(1f)) {
+            Text(stringResource(label), style = MaterialTheme.typography.titleMedium)
+            if (description != null) {
+                Text(
+                    stringResource(description),
+                    style = MaterialTheme.typography.bodyMedium,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant
+                )
+            }
+        }
+        Spacer(Modifier.width(16.dp))
         Switch(checked = checked, onCheckedChange = null)
     }
 }
 
 
-private enum class SettingsCategory(val title: Int) {
-    GENERAL(R.string.settings_cat_general),
-    SEARCH(R.string.settings_cat_search),
-    APPEARANCE(R.string.settings_cat_appearance),
-    PRIVACY(R.string.settings_cat_privacy),
-    PERFORMANCE(R.string.settings_cat_performance),
-    TABS(R.string.settings_cat_tabs),
-    PROFILES(R.string.settings_cat_profiles),
-    EXTENSIONS(R.string.settings_cat_extensions),
-    ABOUT(R.string.settings_cat_about);
+private enum class SettingsCategory(val title: Int, val summary: Int, val icon: ImageVector) {
+    GENERAL(R.string.settings_cat_general, R.string.settings_sum_general, Icons.Default.Home),
+    SEARCH(R.string.settings_cat_search, R.string.settings_sum_search, Icons.Default.Search),
+    APPEARANCE(R.string.settings_cat_appearance, R.string.settings_sum_appearance, Icons.Default.Edit),
+    PRIVACY(R.string.settings_cat_privacy, R.string.settings_sum_privacy, Icons.Default.Lock),
+    PERFORMANCE(R.string.settings_cat_performance, R.string.settings_sum_performance, Icons.Default.Settings),
+    TABS(R.string.settings_cat_tabs, R.string.settings_sum_tabs, Icons.AutoMirrored.Filled.List),
+    PROFILES(R.string.settings_cat_profiles, R.string.settings_sum_profiles, Icons.Default.Person),
+    EXTENSIONS(R.string.settings_cat_extensions, R.string.settings_sum_extensions, Icons.Default.Add),
+    ABOUT(R.string.settings_cat_about, R.string.settings_sum_about, Icons.Default.Info);
 
     companion object {
         val index: List<Pair<Int, SettingsCategory>> = listOf(
             R.string.settings_homepage to GENERAL,
             R.string.settings_home_sections to GENERAL,
+            R.string.settings_restore_home to GENERAL,
             R.string.settings_search_engine to SEARCH,
+            R.string.settings_custom_template to SEARCH,
             R.string.settings_suggestions to SEARCH,
+            R.string.settings_clear_searches to SEARCH,
             R.string.settings_toolbar_position to APPEARANCE,
             R.string.settings_frame_autohide to APPEARANCE,
             R.string.settings_popup_block to PRIVACY,
@@ -483,6 +520,13 @@ private enum class SettingsCategory(val title: Int) {
             R.string.profile_add to PROFILES,
             R.string.profile_guest_start to PROFILES,
             R.string.ext_install to EXTENSIONS
+        )
+
+        val groups: List<Pair<Int, List<SettingsCategory>>> = listOf(
+            R.string.settings_group_navigation to listOf(GENERAL, SEARCH),
+            R.string.settings_group_browser to listOf(APPEARANCE, TABS, PERFORMANCE),
+            R.string.settings_group_protection to listOf(PRIVACY, PROFILES),
+            R.string.settings_group_more to listOf(EXTENSIONS, ABOUT)
         )
     }
 }
@@ -502,19 +546,14 @@ private fun CategoryPane(
             .padding(horizontal = 16.dp, vertical = 8.dp),
         verticalArrangement = Arrangement.spacedBy(2.dp)
     ) {
-        OutlinedTextField(
-            value = query,
-            onValueChange = onQueryChange,
-            singleLine = true,
-            label = { Text(stringResource(R.string.settings_search_hint)) },
-            modifier = Modifier.fillMaxWidth()
-        )
+        SettingsSearchField(query, onQueryChange)
         Spacer(Modifier.height(10.dp))
         val needle = query.trim()
         if (needle.isEmpty()) {
             SettingsCategory.entries.forEachIndexed { position, entry ->
                 CategoryRow(
                     title = stringResource(entry.title),
+                    icon = entry.icon,
                     shape = groupedShape(position, SettingsCategory.entries.size),
                     selected = entry == selected
                 ) { onSelect(entry) }
@@ -528,6 +567,7 @@ private fun CategoryPane(
                 CategoryRow(
                     title = stringResource(label),
                     subtitle = stringResource(target.title),
+                    icon = target.icon,
                     shape = groupedShape(position, matches.size)
                 ) { onSelect(target) }
             }
@@ -540,6 +580,7 @@ private fun CategoryRow(
     title: String,
     shape: androidx.compose.ui.graphics.Shape,
     subtitle: String? = null,
+    icon: ImageVector? = null,
     selected: Boolean = false,
     onClick: () -> Unit
 ) {
@@ -549,11 +590,79 @@ private fun CategoryRow(
         color = if (selected) MaterialTheme.colorScheme.secondaryContainer else MaterialTheme.colorScheme.surfaceContainerHigh,
         modifier = Modifier.fillMaxWidth()
     ) {
-        Column(Modifier.padding(horizontal = 20.dp, vertical = 16.dp)) {
-            Text(title, style = MaterialTheme.typography.titleMedium)
-            if (subtitle != null) {
-                Text(subtitle, style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
+        Row(
+            modifier = Modifier.padding(horizontal = 16.dp, vertical = 14.dp),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            if (icon != null) {
+                Box(
+                    modifier = Modifier
+                        .size(48.dp)
+                        .background(MaterialTheme.colorScheme.secondaryContainer, RoundedCornerShape(16.dp)),
+                    contentAlignment = Alignment.Center
+                ) {
+                    Icon(icon, contentDescription = null, tint = MaterialTheme.colorScheme.onSecondaryContainer)
+                }
+                Spacer(Modifier.width(16.dp))
             }
+            Column(modifier = Modifier.weight(1f)) {
+                Text(title, style = MaterialTheme.typography.titleMedium)
+                if (subtitle != null) {
+                    Text(subtitle, style = MaterialTheme.typography.bodyMedium, color = MaterialTheme.colorScheme.onSurfaceVariant)
+                }
+            }
+            Spacer(Modifier.width(8.dp))
+            Icon(
+                Icons.AutoMirrored.Filled.KeyboardArrowRight,
+                contentDescription = null,
+                tint = MaterialTheme.colorScheme.primary
+            )
+        }
+    }
+}
+
+@Composable
+private fun SettingsSearchField(query: String, onQueryChange: (String) -> Unit) {
+    TextField(
+        value = query,
+        onValueChange = onQueryChange,
+        singleLine = true,
+        placeholder = { Text(stringResource(R.string.settings_search_hint)) },
+        leadingIcon = { Icon(Icons.Default.Search, contentDescription = null) },
+        shape = RoundedCornerShape(28.dp),
+        colors = TextFieldDefaults.colors(
+            focusedIndicatorColor = Color.Transparent,
+            unfocusedIndicatorColor = Color.Transparent,
+            disabledIndicatorColor = Color.Transparent,
+            errorIndicatorColor = Color.Transparent,
+            focusedContainerColor = MaterialTheme.colorScheme.surfaceContainerHigh,
+            unfocusedContainerColor = MaterialTheme.colorScheme.surfaceContainerHigh
+        ),
+        modifier = Modifier.fillMaxWidth()
+    )
+}
+
+@Composable
+internal fun SettingsSection(title: Int?, content: @Composable ColumnScope.() -> Unit) {
+    Column {
+        if (title != null) {
+            Text(
+                stringResource(title),
+                style = MaterialTheme.typography.titleSmall,
+                color = MaterialTheme.colorScheme.primary,
+                modifier = Modifier.padding(start = 16.dp, bottom = 8.dp)
+            )
+        }
+        Surface(
+            shape = RoundedCornerShape(28.dp),
+            color = MaterialTheme.colorScheme.surfaceContainerHigh,
+            modifier = Modifier.fillMaxWidth()
+        ) {
+            Column(
+                modifier = Modifier.padding(horizontal = 20.dp, vertical = 12.dp),
+                verticalArrangement = Arrangement.spacedBy(8.dp),
+                content = content
+            )
         }
     }
 }

@@ -95,6 +95,8 @@ class DownloadController(
         dao.delete(record.id)
     }
 
+    suspend fun clearRecords() = dao.clearFinished()
+
     suspend fun clearFinished() {
         dao.finished().forEach { removeFile(it.fileUri) }
         dao.clearFinished()

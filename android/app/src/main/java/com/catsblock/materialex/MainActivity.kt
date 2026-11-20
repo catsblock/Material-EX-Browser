@@ -261,6 +261,16 @@ class MainActivity : ComponentActivity() {
                 onInstallExtension = { app.engine.installExtension(it) },
                 onToggleExtension = { id, enabled -> app.engine.setExtensionEnabled(id, enabled) },
                 onRemoveExtension = { app.engine.removeExtension(it) },
+                onClearData = { selection ->
+                    if (selection.history) app.library.clearHistory()
+                    if (selection.searches) app.library.clearSearches()
+                    if (selection.downloads) app.downloads.clearRecords()
+                    if (selection.permissions) {
+                        app.permissionManager.clearProfile("default")
+                        app.engine.permissions.temporary.revokeAll()
+                    }
+                    app.engine.clearBrowsingData(selection.cookies, selection.cache)
+                },
                 onClose = { screen = Screen.BROWSER }
             )
             Screen.HISTORY -> HistoryScreen(

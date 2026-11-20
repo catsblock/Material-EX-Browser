@@ -451,6 +451,20 @@ class BrowserEngine(context: Context, permissionManager: PermissionManager) {
 
     fun lastUserGestureAt(): Long = lastGestureAt
 
+    fun clearBrowsingData(cookiesAndSiteData: Boolean, cache: Boolean) {
+        var flags = 0L
+        if (cookiesAndSiteData) {
+            flags = flags or org.mozilla.geckoview.StorageController.ClearFlags.COOKIES or
+                org.mozilla.geckoview.StorageController.ClearFlags.DOM_STORAGES or
+                org.mozilla.geckoview.StorageController.ClearFlags.AUTH_SESSIONS
+        }
+        if (cache) {
+            flags = flags or org.mozilla.geckoview.StorageController.ClearFlags.NETWORK or
+                org.mozilla.geckoview.StorageController.ClearFlags.IMAGE_CACHE
+        }
+        if (flags != 0L) runtime.storageController.clearData(flags)
+    }
+
     fun load(url: String) {
         noteUserGesture()
         val session = active.value
