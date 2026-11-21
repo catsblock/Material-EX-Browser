@@ -29,6 +29,8 @@ If you choose to make Material EX your default browser, the operating system ope
 5. Your choices and rights
 You can delete history, search history, the download list, website permissions, cookies, site data and cache under Settings > Privacy > Clear browsing data, delete bookmarks individually and remove everything by clearing the application's storage or uninstalling it. Because the developers do not hold your personal data, requests to access, correct or delete it can be fulfilled directly on your device. Where laws such as the Brazilian General Data Protection Law (LGPD) apply, you keep the rights they grant you regarding data processed by third parties such as websites and search engines; contact those parties directly.
 
+Windows version: the Windows application also keeps its data only on your computer (see the Data Retention Policy). It has no private browsing mode, no separate profiles and no Clear browsing data screen; you can clear the history list from the History window, reset website permissions in Settings and delete the MaterialEX folder in %LOCALAPPDATA% to remove everything else. Websites you visit, and the search engine you configure, receive the information any browser sends, such as your IP address and, depending on your settings, your user agent.
+
 6. Children
 Material EX is a general-purpose browser and is not directed at children.
 

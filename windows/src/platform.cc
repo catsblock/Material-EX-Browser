@@ -103,6 +103,10 @@ std::wstring FormatBytes(int64_t bytes) {
 
 void LogLine(const std::string& line) {
   std::wstring path = DataDir() + L"\\lifecycle.log";
+  WIN32_FILE_ATTRIBUTE_DATA info{};
+  if (GetFileAttributesExW(path.c_str(), GetFileExInfoStandard, &info) && info.nFileSizeLow > 64 * 1024) {
+    DeleteFileW(path.c_str());
+  }
   HANDLE h = CreateFileW(path.c_str(), FILE_APPEND_DATA, FILE_SHARE_READ | FILE_SHARE_WRITE, nullptr, OPEN_ALWAYS,
                          FILE_ATTRIBUTE_NORMAL, nullptr);
   if (h == INVALID_HANDLE_VALUE) return;
