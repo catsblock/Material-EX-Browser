@@ -314,6 +314,8 @@ void MainWindow::FinishCloseIfReady() {
 }
 
 void MainWindow::OnBrowserClosed(CefRefPtr<CefBrowser> browser) {
+  LogLine("browser closed id=" + std::to_string(browser->GetIdentifier()) + " remaining=" +
+          std::to_string(owned_ids_.size() - 1) + " popups=" + std::to_string(client_->PopupCount()));
   owned_ids_.erase(browser->GetIdentifier());
   FinishCloseIfReady();
 }
@@ -857,6 +859,7 @@ LRESULT MainWindow::HandleMessage(UINT msg, WPARAM wp, LPARAM lp) {
     }
     case WM_CLOSE: {
       if (closing_) return 0;
+      LogLine("WM_CLOSE");
       closing_ = true;
       SavePlacement();
       Profile::Get().SaveHistory();
@@ -869,6 +872,7 @@ LRESULT MainWindow::HandleMessage(UINT msg, WPARAM wp, LPARAM lp) {
       return 0;
     }
     case WM_DESTROY: {
+      LogLine("WM_DESTROY");
       auto& w = Windows();
       w.erase(std::remove(w.begin(), w.end(), this), w.end());
       if (font_) {

@@ -39,7 +39,9 @@ int RunMain(HINSTANCE instance, void* sandbox_info) {
   }
 
   CefRunMessageLoop();
+  mex::LogLine("message loop ended");
   CefShutdown();
+  mex::LogLine("shutdown done");
   return 0;
 }
 

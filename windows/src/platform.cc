@@ -101,4 +101,15 @@ std::wstring FormatBytes(int64_t bytes) {
   return buf;
 }
 
+void LogLine(const std::string& line) {
+  std::wstring path = DataDir() + L"\\lifecycle.log";
+  HANDLE h = CreateFileW(path.c_str(), FILE_APPEND_DATA, FILE_SHARE_READ | FILE_SHARE_WRITE, nullptr, OPEN_ALWAYS,
+                         FILE_ATTRIBUTE_NORMAL, nullptr);
+  if (h == INVALID_HANDLE_VALUE) return;
+  std::string text = std::to_string(GetTickCount64()) + " " + line + "\n";
+  DWORD written = 0;
+  WriteFile(h, text.data(), static_cast<DWORD>(text.size()), &written, nullptr);
+  CloseHandle(h);
+}
+
 }  // namespace mex

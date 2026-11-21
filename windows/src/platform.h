@@ -18,5 +18,6 @@ bool IsRtlUi();
 int64_t NowSeconds();
 HFONT CreateUiFont(UINT dpi);
 std::wstring FormatBytes(int64_t bytes);
+void LogLine(const std::string& line);
 
 }  // namespace mex
