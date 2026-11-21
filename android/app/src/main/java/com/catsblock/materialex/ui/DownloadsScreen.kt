@@ -17,6 +17,7 @@ import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Info
 import androidx.compose.material.icons.filled.PlayArrow
+import androidx.compose.material.icons.filled.Refresh
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
 import androidx.compose.material3.Icon
@@ -50,7 +51,7 @@ import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalMaterial3ExpressiveApi::class)
 @Composable
-fun DownloadsScreen(controller: DownloadController, onClose: () -> Unit) {
+fun DownloadsScreen(controller: DownloadController, onRetry: (String) -> Unit, onClose: () -> Unit) {
     val records by remember { controller.records() }.collectAsStateWithLifecycle(emptyList())
     val live by controller.live.collectAsStateWithLifecycle()
     val scope = rememberCoroutineScope()
@@ -110,6 +111,7 @@ fun DownloadsScreen(controller: DownloadController, onClose: () -> Unit) {
                         },
                         onPauseResume = { paused -> if (paused) controller.resume(record.id) else controller.pause(record.id) },
                         onCancel = { controller.cancel(record.id) },
+                        onRetry = { onRetry(record.sourceUrl) },
                         onDetails = { detailId = record.id },
                         onDelete = { scope.launch { controller.delete(record) } }
                     )
@@ -141,6 +143,7 @@ private fun DownloadRow(
     onOpen: () -> Unit,
     onPauseResume: (Boolean) -> Unit,
     onCancel: () -> Unit,
+    onRetry: () -> Unit,
     onDetails: () -> Unit,
     onDelete: () -> Unit
 ) {
@@ -194,6 +197,11 @@ private fun DownloadRow(
             }
             IconButton(onClick = onCancel) {
                 Icon(Icons.Default.Close, contentDescription = stringResource(R.string.action_cancel))
+            }
+        }
+        if (record.status == DownloadStatus.FAILED.name || record.status == DownloadStatus.CANCELLED.name) {
+            IconButton(onClick = onRetry) {
+                Icon(Icons.Default.Refresh, contentDescription = stringResource(R.string.download_retry))
             }
         }
         IconButton(onClick = onDetails) {

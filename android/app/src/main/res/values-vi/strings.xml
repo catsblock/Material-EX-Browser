@@ -281,4 +281,5 @@
     <string name="user_agent_custom">Tùy chỉnh</string>
     <string name="user_agent_custom_label">User agent tùy chỉnh</string>
     <string name="user_agent_error">Nhập user agent không có xuống dòng (tối đa 256 ký tự).</string>
+    <string name="download_retry">Thử lại</string>
 </resources>

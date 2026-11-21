@@ -281,4 +281,5 @@
     <string name="user_agent_custom">กำหนดเอง</string>
     <string name="user_agent_custom_label">User agent แบบกำหนดเอง</string>
     <string name="user_agent_error">ป้อน user agent ที่ไม่มีการขึ้นบรรทัดใหม่ (สูงสุด 256 อักขระ)</string>
+    <string name="download_retry">ลองอีกครั้ง</string>
 </resources>

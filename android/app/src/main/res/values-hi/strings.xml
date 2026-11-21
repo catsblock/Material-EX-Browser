@@ -281,4 +281,5 @@
     <string name="user_agent_custom">कस्टम</string>
     <string name="user_agent_custom_label">कस्टम यूज़र एजेंट</string>
     <string name="user_agent_error">बिना लाइन ब्रेक का यूज़र एजेंट दर्ज करें (अधिकतम 256 अक्षर)।</string>
+    <string name="download_retry">फिर कोशिश करें</string>
 </resources>

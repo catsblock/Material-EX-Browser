@@ -281,4 +281,5 @@
     <string name="user_agent_custom">Personnalisé</string>
     <string name="user_agent_custom_label">Agent utilisateur personnalisé</string>
     <string name="user_agent_error">Saisissez un agent utilisateur sans saut de ligne (256 caractères max.).</string>
+    <string name="download_retry">Réessayer</string>
 </resources>

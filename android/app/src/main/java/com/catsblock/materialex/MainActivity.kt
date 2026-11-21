@@ -291,6 +291,12 @@ class MainActivity : ComponentActivity() {
             )
             Screen.DOWNLOADS -> DownloadsScreen(
                 controller = app.downloads,
+                onRetry = { url ->
+                    if (url.startsWith("https://") || url.startsWith("http://")) {
+                        app.engine.openTab(url)
+                        screen = Screen.BROWSER
+                    }
+                },
                 onClose = { screen = Screen.BROWSER }
             )
             Screen.TABS -> TabSwitcherScreen(
