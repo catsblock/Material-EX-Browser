@@ -20,6 +20,7 @@ int RunMain(HINSTANCE instance, void* sandbox_info) {
   int exit_code = CefExecuteProcess(main_args, app, sandbox_info);
   if (exit_code >= 0) return exit_code;
 
+  mex::MainWindow::RegisterWindowClass(instance);
   mex::Profile::Get().Load();
   mex::DownloadManager::Get().Load();
 
@@ -37,7 +38,6 @@ int RunMain(HINSTANCE instance, void* sandbox_info) {
     return CefGetExitCode();
   }
 
-  mex::MainWindow::RegisterWindowClass(instance);
   CefRunMessageLoop();
   CefShutdown();
   return 0;
