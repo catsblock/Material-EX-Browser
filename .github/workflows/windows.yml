@@ -76,12 +76,28 @@ jobs:
       - name: Launch smoke test
         shell: pwsh
         run: |
+          $ErrorActionPreference = "Stop"
+          $failed = $null
           $p = Start-Process -FilePath "build/Release/materialex.exe" -ArgumentList "about:blank" -PassThru
           Start-Sleep -Seconds 12
-          if ($p.HasExited) { throw "materialex.exe exited early with code $($p.ExitCode)" }
-          $null = $p.CloseMainWindow()
-          if (-not $p.WaitForExit(15000)) { Stop-Process -Id $p.Id -Force; throw "materialex.exe did not exit after close" }
-          Write-Host "Clean exit code: $($p.ExitCode)"
+          if ($p.HasExited) {
+            $failed = "exited early with code $($p.ExitCode)"
+          } else {
+            $null = $p.CloseMainWindow()
+            if (-not $p.WaitForExit(20000)) {
+              Stop-Process -Id $p.Id -Force
+              $failed = "did not exit after close (main window title: '$($p.MainWindowTitle)')"
+            } elseif ($p.ExitCode -ne 0) {
+              $failed = "exit code $($p.ExitCode)"
+            }
+          }
+          $logPath = Join-Path $env:LOCALAPPDATA "MaterialEX\debug.log"
+          $logText = if (Test-Path $logPath) { (Get-Content $logPath -Tail 8) -join " | " } else { "no debug.log" }
+          if ($failed) {
+            Write-Host "::error::Smoke test: $failed. Log: $logText"
+            exit 1
+          }
+          Write-Host "Clean exit. Log: $logText"
 
       - name: Package
         shell: pwsh
