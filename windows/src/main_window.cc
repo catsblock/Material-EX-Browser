@@ -866,7 +866,12 @@ LRESULT MainWindow::HandleMessage(UINT msg, WPARAM wp, LPARAM lp) {
       std::vector<Tab> tabs;
       tabs.swap(tabs_list_);
       active_ = -1;
-      for (Tab& t : tabs) t.browser->GetHost()->CloseBrowser(true);
+      LogLine("closing tabs=" + std::to_string(tabs.size()) + " owned=" + std::to_string(owned_ids_.size()) +
+              " popups=" + std::to_string(client_->PopupCount()));
+      for (Tab& t : tabs) {
+        t.browser->GetHost()->CloseBrowser(true);
+        LogLine("CloseBrowser returned");
+      }
       client_->ClosePopups();
       FinishCloseIfReady();
       return 0;

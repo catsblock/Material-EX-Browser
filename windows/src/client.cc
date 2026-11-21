@@ -66,8 +66,15 @@ bool Client::OnBeforePopup(CefRefPtr<CefBrowser> browser, CefRefPtr<CefFrame>, i
   return false;
 }
 
+bool Client::DoClose(CefRefPtr<CefBrowser> browser) {
+  LogLine("DoClose id=" + std::to_string(browser->GetIdentifier()));
+  return false;
+}
+
 void Client::OnAfterCreated(CefRefPtr<CefBrowser> browser) {
   CEF_REQUIRE_UI_THREAD();
+  LogLine("AfterCreated id=" + std::to_string(browser->GetIdentifier()) + " popup=" +
+          std::to_string(browser->IsPopup()));
   if (browser->IsPopup() && !Owned(browser)) popups_.push_back(browser);
 }
 
@@ -78,6 +85,7 @@ void Client::ClosePopups() {
 
 void Client::OnBeforeClose(CefRefPtr<CefBrowser> browser) {
   CEF_REQUIRE_UI_THREAD();
+  LogLine("BeforeClose id=" + std::to_string(browser->GetIdentifier()));
   Profile::Get().permissions.ClearScope(static_cast<uint64_t>(browser->GetIdentifier()));
   popups_.erase(std::remove_if(popups_.begin(), popups_.end(),
                                [&](const CefRefPtr<CefBrowser>& b) { return b->IsSame(browser); }),

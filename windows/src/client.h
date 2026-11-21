@@ -58,6 +58,7 @@ class Client : public CefClient,
                      CefRefPtr<CefClient>& client, CefBrowserSettings& settings,
                      CefRefPtr<CefDictionaryValue>& extra_info, bool* no_javascript_access) override;
   void OnAfterCreated(CefRefPtr<CefBrowser> browser) override;
+  bool DoClose(CefRefPtr<CefBrowser> browser) override;
   void OnBeforeClose(CefRefPtr<CefBrowser> browser) override;
 
   void OnTitleChange(CefRefPtr<CefBrowser> browser, const CefString& title) override;
