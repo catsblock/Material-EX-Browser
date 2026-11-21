@@ -94,6 +94,23 @@ void MainWindow::RegisterWindowClass(HINSTANCE instance) {
 
 size_t MainWindow::Count() { return Windows().size(); }
 
+int g_live_windows = 0;
+
+MainWindow::MainWindow() { ++g_live_windows; }
+
+MainWindow::~MainWindow() {
+  if (--g_live_windows == 0) {
+    DownloadManager::Get().MarkAllInterrupted();
+    DownloadManager::Get().Save();
+    LogLine("all windows released, quitting loop");
+    CefQuitMessageLoop();
+  }
+}
+
+void MainWindow::MaybeDelete() {
+  if (destroyed_ && owned_ids_.empty() && client_->PopupCount() == 0) delete this;
+}
+
 MainWindow* MainWindow::Last() { return Windows().empty() ? nullptr : Windows().back(); }
 
 MainWindow* MainWindow::Create(const std::string& url) {
@@ -310,7 +327,7 @@ void MainWindow::CloseTabAt(int index) {
 void MainWindow::CloseWindowRequest() { PostMessageW(hwnd_, WM_CLOSE, 0, 0); }
 
 void MainWindow::FinishCloseIfReady() {
-  if (closing_ && owned_ids_.empty() && client_->PopupCount() == 0) DestroyWindow(hwnd_);
+  if (closing_ && hwnd_ && owned_ids_.empty() && client_->PopupCount() == 0) DestroyWindow(hwnd_);
 }
 
 void MainWindow::OnBrowserClosed(CefRefPtr<CefBrowser> browser) {
@@ -318,6 +335,7 @@ void MainWindow::OnBrowserClosed(CefRefPtr<CefBrowser> browser) {
           std::to_string(owned_ids_.size() - 1) + " popups=" + std::to_string(client_->PopupCount()));
   owned_ids_.erase(browser->GetIdentifier());
   FinishCloseIfReady();
+  MaybeDelete();
 }
 
 void MainWindow::UpdateTabLabel(int index) {
@@ -858,7 +876,11 @@ LRESULT MainWindow::HandleMessage(UINT msg, WPARAM wp, LPARAM lp) {
       return 0;
     }
     case WM_CLOSE: {
-      if (closing_) return 0;
+      if (closing_) {
+        LogLine("WM_CLOSE while closing, destroying");
+        DestroyWindow(hwnd_);
+        return 0;
+      }
       LogLine("WM_CLOSE");
       closing_ = true;
       SavePlacement();
@@ -884,16 +906,13 @@ LRESULT MainWindow::HandleMessage(UINT msg, WPARAM wp, LPARAM lp) {
         DeleteObject(font_);
         font_ = nullptr;
       }
-      if (w.empty()) {
-        DownloadManager::Get().MarkAllInterrupted();
-        DownloadManager::Get().Save();
-        CefQuitMessageLoop();
-      }
       return 0;
     }
     case WM_NCDESTROY:
       SetWindowLongPtrW(hwnd_, GWLP_USERDATA, 0);
-      delete this;
+      hwnd_ = nullptr;
+      destroyed_ = true;
+      MaybeDelete();
       return 0;
   }
   return DefWindowProcW(hwnd_, msg, wp, lp);

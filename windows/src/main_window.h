@@ -44,7 +44,9 @@ class MainWindow : public ClientDelegate {
     bool can_forward = false;
   };
 
-  MainWindow() = default;
+  MainWindow();
+  ~MainWindow();
+  void MaybeDelete();
   static LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wp, LPARAM lp);
   static LRESULT CALLBACK AddressProc(HWND hwnd, UINT msg, WPARAM wp, LPARAM lp, UINT_PTR id, DWORD_PTR ref);
   static LRESULT CALLBACK TabsProc(HWND hwnd, UINT msg, WPARAM wp, LPARAM lp, UINT_PTR id, DWORD_PTR ref);
@@ -89,6 +91,7 @@ class MainWindow : public ClientDelegate {
   bool rtl_ = false;
   bool fullscreen_ = false;
   bool closing_ = false;
+  bool destroyed_ = false;
   WINDOWPLACEMENT saved_placement_{};
   LONG_PTR saved_style_ = 0;
   std::vector<Tab> tabs_list_;
