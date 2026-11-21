@@ -265,4 +265,20 @@
     <string name="doc_security">Säkerhetspolicy</string>
     <string name="doc_retention">Policy för datalagring</string>
     <string name="settings_legal_title">Juridiska dokument</string>
+    <string name="action_site_editor">Webbplatsredigerare</string>
+    <string name="site_editor_hint">Egen CSS för %1$s. Förhandsgranskning visar den på den öppna sidan. Spara gäller bara den här webbplatsen.</string>
+    <string name="site_editor_preview">Förhandsgranska</string>
+    <string name="site_editor_reset">Återställ</string>
+    <string name="site_editor_error_size">CSS:en är för stor (gräns 64 kB).</string>
+    <string name="site_editor_error_braces">Kontrollera klamrarna: varje { behöver en matchande }.</string>
+    <string name="site_editor_error_import">Importregeln är inte tillåten.</string>
+    <string name="site_editor_private_note">Webbplatsstilar tillämpas inte i privata flikar.</string>
+    <string name="action_user_agent">User agent</string>
+    <string name="user_agent_title">User agent för %1$s</string>
+    <string name="user_agent_default">Standard</string>
+    <string name="user_agent_desktop">Dator</string>
+    <string name="user_agent_mobile">Mobil</string>
+    <string name="user_agent_custom">Anpassad</string>
+    <string name="user_agent_custom_label">Anpassad user agent</string>
+    <string name="user_agent_error">Ange en user agent utan radbrytningar (högst 256 tecken).</string>
 </resources>

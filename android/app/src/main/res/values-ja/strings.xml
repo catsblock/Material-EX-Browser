@@ -265,4 +265,20 @@
     <string name="doc_security">セキュリティポリシー</string>
     <string name="doc_retention">データ保持ポリシー</string>
     <string name="settings_legal_title">法的文書</string>
+    <string name="action_site_editor">サイトエディタ</string>
+    <string name="site_editor_hint">%1$s 用のカスタム CSS。プレビューは開いているページに反映されます。保存するとこのサイトにのみ適用されます。</string>
+    <string name="site_editor_preview">プレビュー</string>
+    <string name="site_editor_reset">リセット</string>
+    <string name="site_editor_error_size">CSS が大きすぎます（上限 64 KB）。</string>
+    <string name="site_editor_error_braces">波括弧を確認してください。各 { に対応する } が必要です。</string>
+    <string name="site_editor_error_import">インポート規則は使用できません。</string>
+    <string name="site_editor_private_note">プライベートタブではサイトのスタイルは適用されません。</string>
+    <string name="action_user_agent">ユーザーエージェント</string>
+    <string name="user_agent_title">%1$s のユーザーエージェント</string>
+    <string name="user_agent_default">デフォルト</string>
+    <string name="user_agent_desktop">デスクトップ</string>
+    <string name="user_agent_mobile">モバイル</string>
+    <string name="user_agent_custom">カスタム</string>
+    <string name="user_agent_custom_label">カスタムユーザーエージェント</string>
+    <string name="user_agent_error">改行を含まないユーザーエージェントを入力してください（256 文字まで）。</string>
 </resources>

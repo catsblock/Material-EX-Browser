@@ -265,4 +265,20 @@
     <string name="doc_security">보안 정책</string>
     <string name="doc_retention">데이터 보존 정책</string>
     <string name="settings_legal_title">법적 문서</string>
+    <string name="action_site_editor">사이트 편집기</string>
+    <string name="site_editor_hint">%1$s용 사용자 지정 CSS입니다. 미리보기는 열려 있는 페이지에 적용됩니다. 저장하면 이 사이트에만 유지됩니다.</string>
+    <string name="site_editor_preview">미리보기</string>
+    <string name="site_editor_reset">초기화</string>
+    <string name="site_editor_error_size">CSS가 너무 큽니다(제한 64KB).</string>
+    <string name="site_editor_error_braces">중괄호를 확인하세요. 모든 {에는 짝이 되는 }가 필요합니다.</string>
+    <string name="site_editor_error_import">import 규칙은 허용되지 않습니다.</string>
+    <string name="site_editor_private_note">사이트 스타일은 비공개 탭에서 적용되지 않습니다.</string>
+    <string name="action_user_agent">사용자 에이전트</string>
+    <string name="user_agent_title">%1$s의 사용자 에이전트</string>
+    <string name="user_agent_default">기본값</string>
+    <string name="user_agent_desktop">데스크톱</string>
+    <string name="user_agent_mobile">모바일</string>
+    <string name="user_agent_custom">사용자 지정</string>
+    <string name="user_agent_custom_label">사용자 지정 사용자 에이전트</string>
+    <string name="user_agent_error">줄 바꿈 없는 사용자 에이전트를 입력하세요(최대 256자).</string>
 </resources>

@@ -65,6 +65,7 @@ import com.catsblock.materialex.R
 import com.catsblock.materialex.data.BrowserSettings
 import com.catsblock.materialex.data.Suggestion
 import com.catsblock.materialex.data.ToolbarPosition
+import com.catsblock.materialex.core.siteedit.SiteStyleRules
 import com.catsblock.materialex.engine.BrowserEngine
 import org.mozilla.geckoview.GeckoView
 
@@ -104,6 +105,10 @@ fun BrowserScreen(
     val threat = tabs.activeId?.let { threats[it] }
     val atTop = settings.toolbarPosition == ToolbarPosition.TOP
     var findOpen by remember { mutableStateOf(false) }
+    var siteEditorOpen by remember { mutableStateOf(false) }
+    var userAgentOpen by remember { mutableStateOf(false) }
+    val siteHost = SiteStyleRules.hostOf(state.url)
+    val siteToolsEnabled = siteHost != null
     val desktop = rememberDesktopLayout()
     LaunchedEffect(findTick) {
         if (findTick > 0) findOpen = true
@@ -125,6 +130,26 @@ fun BrowserScreen(
         onDispose {
             if (findOpen) engine.clearFind()
         }
+    }
+
+    if (siteEditorOpen && siteHost != null) {
+        SiteEditorDialog(
+            host = siteHost,
+            bridge = engine.siteRules,
+            isPrivate = tabs.active?.isPrivate == true,
+            onDismiss = { siteEditorOpen = false }
+        )
+    }
+    if (userAgentOpen && siteHost != null) {
+        UserAgentDialog(
+            host = siteHost,
+            current = engine.userAgentFor(siteHost),
+            onApply = { choice ->
+                engine.applySiteUserAgent(siteHost, choice)
+                userAgentOpen = false
+            },
+            onDismiss = { userAgentOpen = false }
+        )
     }
 
     Box(
@@ -284,6 +309,9 @@ fun BrowserScreen(
             onOpenDownloads = onOpenDownloads,
             onFind = { findOpen = true },
             onToggleDesktop = { engine.setDesktopMode(!state.desktopMode) },
+            siteToolsEnabled = siteToolsEnabled,
+            onOpenSiteEditor = { siteEditorOpen = true },
+            onOpenUserAgent = { userAgentOpen = true },
             onSubmit = onSubmit,
             onBack = engine::goBack,
             onForward = engine::goForward,

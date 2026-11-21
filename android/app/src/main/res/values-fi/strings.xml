@@ -265,4 +265,20 @@
     <string name="doc_security">Tietoturvakäytäntö</string>
     <string name="doc_retention">Tietojen säilytyskäytäntö</string>
     <string name="settings_legal_title">Oikeudelliset asiakirjat</string>
+    <string name="action_site_editor">Sivuston muokkaus</string>
+    <string name="site_editor_hint">Oma CSS sivustolle %1$s. Esikatselu näyttää sen avoimella sivulla. Tallennus koskee vain tätä sivustoa.</string>
+    <string name="site_editor_preview">Esikatselu</string>
+    <string name="site_editor_reset">Nollaa</string>
+    <string name="site_editor_error_size">CSS on liian suuri (raja 64 kt).</string>
+    <string name="site_editor_error_braces">Tarkista aaltosulkeet: jokaiselle { tarvitaan }.</string>
+    <string name="site_editor_error_import">Tuontisääntö ei ole sallittu.</string>
+    <string name="site_editor_private_note">Sivustotyylejä ei käytetä yksityisissä välilehdissä.</string>
+    <string name="action_user_agent">User agent</string>
+    <string name="user_agent_title">User agent sivustolle %1$s</string>
+    <string name="user_agent_default">Oletus</string>
+    <string name="user_agent_desktop">Työpöytä</string>
+    <string name="user_agent_mobile">Mobiili</string>
+    <string name="user_agent_custom">Oma</string>
+    <string name="user_agent_custom_label">Oma user agent</string>
+    <string name="user_agent_error">Anna user agent ilman rivinvaihtoja (enintään 256 merkkiä).</string>
 </resources>

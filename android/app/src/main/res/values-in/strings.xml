@@ -265,4 +265,20 @@
     <string name="doc_security">Kebijakan Keamanan</string>
     <string name="doc_retention">Kebijakan Retensi Data</string>
     <string name="settings_legal_title">Dokumen hukum</string>
+    <string name="action_site_editor">Editor situs</string>
+    <string name="site_editor_hint">CSS kustom untuk %1$s. Pratinjau menampilkannya di halaman yang terbuka. Simpan hanya berlaku untuk situs ini.</string>
+    <string name="site_editor_preview">Pratinjau</string>
+    <string name="site_editor_reset">Atur ulang</string>
+    <string name="site_editor_error_size">CSS terlalu besar (batas 64 KB).</string>
+    <string name="site_editor_error_braces">Periksa kurung kurawal: setiap { perlu } yang cocok.</string>
+    <string name="site_editor_error_import">Aturan impor tidak diizinkan.</string>
+    <string name="site_editor_private_note">Gaya situs tidak diterapkan di tab pribadi.</string>
+    <string name="action_user_agent">User agent</string>
+    <string name="user_agent_title">User agent untuk %1$s</string>
+    <string name="user_agent_default">Default</string>
+    <string name="user_agent_desktop">Desktop</string>
+    <string name="user_agent_mobile">Seluler</string>
+    <string name="user_agent_custom">Kustom</string>
+    <string name="user_agent_custom_label">User agent kustom</string>
+    <string name="user_agent_error">Masukkan user agent tanpa baris baru (maks. 256 karakter).</string>
 </resources>

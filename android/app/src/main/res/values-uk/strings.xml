@@ -265,4 +265,20 @@
     <string name="doc_security">Політика безпеки</string>
     <string name="doc_retention">Політика зберігання даних</string>
     <string name="settings_legal_title">Юридичні документи</string>
+    <string name="action_site_editor">Редактор сайту</string>
+    <string name="site_editor_hint">Власний CSS для %1$s. Попередній перегляд застосовує його на відкритій сторінці. Збереження діє лише для цього сайту.</string>
+    <string name="site_editor_preview">Попередній перегляд</string>
+    <string name="site_editor_reset">Скинути</string>
+    <string name="site_editor_error_size">CSS завеликий (ліміт 64 КБ).</string>
+    <string name="site_editor_error_braces">Перевірте дужки: кожна { потребує пари }.</string>
+    <string name="site_editor_error_import">Правило імпорту заборонено.</string>
+    <string name="site_editor_private_note">Стилі сайтів не застосовуються у приватних вкладках.</string>
+    <string name="action_user_agent">User agent</string>
+    <string name="user_agent_title">User agent для %1$s</string>
+    <string name="user_agent_default">Типовий</string>
+    <string name="user_agent_desktop">Комп’ютер</string>
+    <string name="user_agent_mobile">Мобільний</string>
+    <string name="user_agent_custom">Власний</string>
+    <string name="user_agent_custom_label">Власний user agent</string>
+    <string name="user_agent_error">Введіть user agent без розривів рядків (до 256 символів).</string>
 </resources>

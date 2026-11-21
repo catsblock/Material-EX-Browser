@@ -67,4 +67,20 @@
     <string name="doc_security">Security Policy</string>
     <string name="doc_retention">Data Retention Policy</string>
     <string name="settings_legal_title">Legal documents</string>
+    <string name="action_site_editor">Site editor</string>
+    <string name="site_editor_hint">Custom CSS for %1$s. Preview shows it on the open page. Save keeps it for this site only.</string>
+    <string name="site_editor_preview">Preview</string>
+    <string name="site_editor_reset">Reset</string>
+    <string name="site_editor_error_size">The CSS is too large (limit 64 KB).</string>
+    <string name="site_editor_error_braces">Check the braces: every { needs a matching }.</string>
+    <string name="site_editor_error_import">The import rule is not allowed.</string>
+    <string name="site_editor_private_note">Site styles are not applied in private tabs.</string>
+    <string name="action_user_agent">User agent</string>
+    <string name="user_agent_title">User agent for %1$s</string>
+    <string name="user_agent_default">Default</string>
+    <string name="user_agent_desktop">Desktop</string>
+    <string name="user_agent_mobile">Mobile</string>
+    <string name="user_agent_custom">Custom</string>
+    <string name="user_agent_custom_label">Custom user agent</string>
+    <string name="user_agent_error">Enter a user agent without line breaks (up to 256 characters).</string>
 </resources>

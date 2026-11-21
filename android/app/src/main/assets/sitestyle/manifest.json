@@ -1,0 +1,19 @@
+{
+  "manifest_version": 2,
+  "name": "Material EX Site Styles",
+  "version": "1.0",
+  "description": "Applies the CSS you saved for a site.",
+  "browser_specific_settings": {
+    "gecko": { "id": "site-styles@materialex.catsblock.com" }
+  },
+  "permissions": ["nativeMessaging"],
+  "background": { "scripts": ["background.js"] },
+  "content_scripts": [
+    {
+      "matches": ["http://*/*", "https://*/*"],
+      "js": ["content.js"],
+      "run_at": "document_start",
+      "all_frames": false
+    }
+  ]
+}

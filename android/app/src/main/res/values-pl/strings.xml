@@ -265,4 +265,20 @@
     <string name="doc_security">Polityka bezpieczeństwa</string>
     <string name="doc_retention">Polityka przechowywania danych</string>
     <string name="settings_legal_title">Dokumenty prawne</string>
+    <string name="action_site_editor">Edytor witryny</string>
+    <string name="site_editor_hint">Własny CSS dla %1$s. Podgląd pokazuje go na otwartej stronie. Zapis dotyczy tylko tej witryny.</string>
+    <string name="site_editor_preview">Podgląd</string>
+    <string name="site_editor_reset">Resetuj</string>
+    <string name="site_editor_error_size">CSS jest za duży (limit 64 KB).</string>
+    <string name="site_editor_error_braces">Sprawdź nawiasy klamrowe: każdy { wymaga pasującego }.</string>
+    <string name="site_editor_error_import">Reguła importu jest niedozwolona.</string>
+    <string name="site_editor_private_note">Style witryn nie są stosowane w kartach prywatnych.</string>
+    <string name="action_user_agent">User agent</string>
+    <string name="user_agent_title">User agent dla %1$s</string>
+    <string name="user_agent_default">Domyślny</string>
+    <string name="user_agent_desktop">Komputer</string>
+    <string name="user_agent_mobile">Mobilny</string>
+    <string name="user_agent_custom">Własny</string>
+    <string name="user_agent_custom_label">Własny user agent</string>
+    <string name="user_agent_error">Wpisz user agent bez podziałów wiersza (do 256 znaków).</string>
 </resources>

@@ -265,4 +265,20 @@
     <string name="doc_security">सुरक्षा नीति</string>
     <string name="doc_retention">डेटा प्रतिधारण नीति</string>
     <string name="settings_legal_title">कानूनी दस्तावेज़</string>
+    <string name="action_site_editor">साइट एडिटर</string>
+    <string name="site_editor_hint">%1$s के लिए कस्टम CSS। पूर्वावलोकन इसे खुले पेज पर दिखाता है। सहेजने पर यह केवल इस साइट के लिए रहता है।</string>
+    <string name="site_editor_preview">पूर्वावलोकन</string>
+    <string name="site_editor_reset">रीसेट करें</string>
+    <string name="site_editor_error_size">CSS बहुत बड़ा है (सीमा 64 KB)।</string>
+    <string name="site_editor_error_braces">ब्रैकेट जाँचें: हर { के लिए मेल खाता } चाहिए।</string>
+    <string name="site_editor_error_import">इम्पोर्ट नियम की अनुमति नहीं है।</string>
+    <string name="site_editor_private_note">निजी टैब में साइट शैलियाँ लागू नहीं होतीं।</string>
+    <string name="action_user_agent">यूज़र एजेंट</string>
+    <string name="user_agent_title">%1$s के लिए यूज़र एजेंट</string>
+    <string name="user_agent_default">डिफ़ॉल्ट</string>
+    <string name="user_agent_desktop">डेस्कटॉप</string>
+    <string name="user_agent_mobile">मोबाइल</string>
+    <string name="user_agent_custom">कस्टम</string>
+    <string name="user_agent_custom_label">कस्टम यूज़र एजेंट</string>
+    <string name="user_agent_error">बिना लाइन ब्रेक का यूज़र एजेंट दर्ज करें (अधिकतम 256 अक्षर)।</string>
 </resources>

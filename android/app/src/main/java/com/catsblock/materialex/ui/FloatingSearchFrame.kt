@@ -99,6 +99,9 @@ fun FloatingSearchFrame(
     onOpenDownloads: () -> Unit,
     onFind: () -> Unit,
     onToggleDesktop: () -> Unit,
+    siteToolsEnabled: Boolean,
+    onOpenSiteEditor: () -> Unit,
+    onOpenUserAgent: () -> Unit,
     onSubmit: (String) -> Boolean,
     onBack: () -> Unit,
     onForward: () -> Unit,
@@ -314,6 +317,22 @@ fun FloatingSearchFrame(
                             onClick = {
                                 menuOpen = false
                                 onToggleDesktop()
+                            }
+                        )
+                        DropdownMenuItem(
+                            text = { Text(stringResource(R.string.action_site_editor)) },
+                            enabled = siteToolsEnabled,
+                            onClick = {
+                                menuOpen = false
+                                onOpenSiteEditor()
+                            }
+                        )
+                        DropdownMenuItem(
+                            text = { Text(stringResource(R.string.action_user_agent)) },
+                            enabled = siteToolsEnabled,
+                            onClick = {
+                                menuOpen = false
+                                onOpenUserAgent()
                             }
                         )
                         DropdownMenuItem(

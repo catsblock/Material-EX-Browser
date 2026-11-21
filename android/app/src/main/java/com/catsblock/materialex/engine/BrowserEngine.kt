@@ -7,6 +7,9 @@ import com.catsblock.materialex.core.extension.ExtensionInfo
 import com.catsblock.materialex.core.extension.ExtensionPrompt
 import com.catsblock.materialex.core.permission.PermissionBroker
 import com.catsblock.materialex.core.profile.ProfileRules
+import com.catsblock.materialex.core.siteedit.SiteStyleRules
+import com.catsblock.materialex.core.siteedit.UaChoice
+import com.catsblock.materialex.core.siteedit.UaMode
 import com.catsblock.materialex.core.security.BypassGate
 import com.catsblock.materialex.core.security.ThreatInfo
 import com.catsblock.materialex.core.security.ThreatKind
@@ -33,6 +36,7 @@ import org.mozilla.geckoview.GeckoResult
 import org.mozilla.geckoview.ContentBlocking
 import org.mozilla.geckoview.GeckoRuntime
 import org.mozilla.geckoview.GeckoSession
+import org.mozilla.geckoview.AllowOrDeny
 import org.mozilla.geckoview.GeckoSessionSettings
 import org.mozilla.geckoview.MediaSession
 import org.mozilla.geckoview.WebExtension
@@ -56,6 +60,8 @@ class BrowserEngine(context: Context, permissionManager: PermissionManager) {
     private val runtime: GeckoRuntime = GeckoRuntime.create(context.applicationContext)
     private val scope = CoroutineScope(SupervisorJob() + Dispatchers.Main.immediate)
     private val manager = TabManager()
+    val siteRules = SiteStyleBridge(context, scope)
+    private val siteUaApplied = HashSet<String>()
     private val sessions = HashMap<String, GeckoSession>()
     private val pendingClose = ArrayList<GeckoSession>()
     private val pages = MutableStateFlow<Map<String, PageState>>(emptyMap())
@@ -122,12 +128,13 @@ class BrowserEngine(context: Context, permissionManager: PermissionManager) {
 
     fun setupExtensions() {
         runtime.webExtensionController.setPromptDelegate(extensionPromptDelegate)
+        siteRules.install(runtime)
         refreshExtensions()
     }
 
     fun refreshExtensions() {
         runtime.webExtensionController.list().accept({ list ->
-            extensionFlow.value = (list ?: emptyList()).map {
+            extensionFlow.value = (list ?: emptyList()).filter { it.id != SiteStyleBridge.EXTENSION_ID }.map {
                 ExtensionInfo(it.id, it.metaData.name ?: it.id, it.metaData.version, it.metaData.enabled)
             }
         }, { extensionFlow.value = emptyList() })
@@ -361,6 +368,7 @@ class BrowserEngine(context: Context, permissionManager: PermissionManager) {
         lastVisit.remove(id)
         trackers.remove(id)
         scrollTops.remove(id)
+        siteUaApplied.remove(id)
     }
 
     fun selectTab(id: String) {
@@ -489,6 +497,41 @@ class BrowserEngine(context: Context, permissionManager: PermissionManager) {
         session.reload()
     }
 
+    fun activeSiteHost(): String? {
+        val id = manager.state.value.activeId ?: return null
+        return SiteStyleRules.hostOf(pages.value[id]?.url.orEmpty())
+    }
+
+    fun userAgentFor(host: String): UaChoice = siteRules.userAgents.value[host] ?: UaChoice(UaMode.DEFAULT)
+
+    fun applySiteUserAgent(host: String, choice: UaChoice) {
+        val id = manager.state.value.activeId ?: return
+        val session = sessions[id] ?: return
+        scope.launch {
+            siteRules.setUserAgent(host, choice.takeIf { it.mode != UaMode.DEFAULT })
+            applyChoice(id, session, choice.takeIf { it.mode != UaMode.DEFAULT })
+            session.reload()
+        }
+    }
+
+    private fun syncSiteUserAgent(id: String, session: GeckoSession, uri: String) {
+        val host = SiteStyleRules.hostOf(uri) ?: return
+        val choice = siteRules.userAgents.value[host]
+        if (choice != null) applyChoice(id, session, choice)
+        else if (siteUaApplied.remove(id)) applyChoice(id, session, null)
+    }
+
+    private fun applyChoice(id: String, session: GeckoSession, choice: UaChoice?) {
+        val desktopView = choice?.mode == UaMode.DESKTOP
+        session.settings.userAgentOverride = if (choice?.mode == UaMode.CUSTOM) choice.custom else null
+        session.settings.userAgentMode =
+            if (desktopView) GeckoSessionSettings.USER_AGENT_MODE_DESKTOP else GeckoSessionSettings.USER_AGENT_MODE_MOBILE
+        session.settings.viewportMode =
+            if (desktopView) GeckoSessionSettings.VIEWPORT_MODE_DESKTOP else GeckoSessionSettings.VIEWPORT_MODE_MOBILE
+        if (choice != null) siteUaApplied.add(id) else siteUaApplied.remove(id)
+        change(id) { it.copy(desktopMode = desktopView) }
+    }
+
     fun find(query: String, forward: Boolean, onResult: (Int) -> Unit) {
         val session = active.value ?: return
         if (query.isEmpty()) {
@@ -561,6 +604,16 @@ class BrowserEngine(context: Context, permissionManager: PermissionManager) {
                 change(id) { it.copy(url = shown) }
                 manager.update(id, url = shown)
                 permissions.navigated(id, shown)
+            }
+
+            override fun onLoadRequest(
+                session: GeckoSession,
+                request: GeckoSession.NavigationDelegate.LoadRequest
+            ): GeckoResult<AllowOrDeny>? {
+                if (request.target == GeckoSession.NavigationDelegate.TARGET_WINDOW_CURRENT) {
+                    syncSiteUserAgent(id, session, request.uri)
+                }
+                return null
             }
 
             override fun onLoadError(

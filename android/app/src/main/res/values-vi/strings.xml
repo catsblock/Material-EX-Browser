@@ -265,4 +265,20 @@
     <string name="doc_security">Chính sách bảo mật</string>
     <string name="doc_retention">Chính sách lưu giữ dữ liệu</string>
     <string name="settings_legal_title">Tài liệu pháp lý</string>
+    <string name="action_site_editor">Trình chỉnh sửa trang</string>
+    <string name="site_editor_hint">CSS tùy chỉnh cho %1$s. Xem trước hiển thị trên trang đang mở. Lưu chỉ áp dụng cho trang này.</string>
+    <string name="site_editor_preview">Xem trước</string>
+    <string name="site_editor_reset">Đặt lại</string>
+    <string name="site_editor_error_size">CSS quá lớn (giới hạn 64 KB).</string>
+    <string name="site_editor_error_braces">Kiểm tra dấu ngoặc nhọn: mỗi { cần một } tương ứng.</string>
+    <string name="site_editor_error_import">Không cho phép quy tắc import.</string>
+    <string name="site_editor_private_note">Kiểu của trang không được áp dụng trong thẻ riêng tư.</string>
+    <string name="action_user_agent">User agent</string>
+    <string name="user_agent_title">User agent cho %1$s</string>
+    <string name="user_agent_default">Mặc định</string>
+    <string name="user_agent_desktop">Máy tính</string>
+    <string name="user_agent_mobile">Di động</string>
+    <string name="user_agent_custom">Tùy chỉnh</string>
+    <string name="user_agent_custom_label">User agent tùy chỉnh</string>
+    <string name="user_agent_error">Nhập user agent không có xuống dòng (tối đa 256 ký tự).</string>
 </resources>

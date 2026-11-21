@@ -265,4 +265,20 @@
     <string name="doc_security">Политика безопасности</string>
     <string name="doc_retention">Политика хранения данных</string>
     <string name="settings_legal_title">Юридические документы</string>
+    <string name="action_site_editor">Редактор сайта</string>
+    <string name="site_editor_hint">Свой CSS для %1$s. Предпросмотр применяет его на открытой странице. Сохранение действует только для этого сайта.</string>
+    <string name="site_editor_preview">Предпросмотр</string>
+    <string name="site_editor_reset">Сбросить</string>
+    <string name="site_editor_error_size">CSS слишком большой (лимит 64 КБ).</string>
+    <string name="site_editor_error_braces">Проверьте скобки: у каждой { должна быть пара }.</string>
+    <string name="site_editor_error_import">Правило импорта запрещено.</string>
+    <string name="site_editor_private_note">Стили сайтов не применяются во вкладках инкогнито.</string>
+    <string name="action_user_agent">User agent</string>
+    <string name="user_agent_title">User agent для %1$s</string>
+    <string name="user_agent_default">По умолчанию</string>
+    <string name="user_agent_desktop">Компьютер</string>
+    <string name="user_agent_mobile">Мобильный</string>
+    <string name="user_agent_custom">Свой</string>
+    <string name="user_agent_custom_label">Свой user agent</string>
+    <string name="user_agent_error">Введите user agent без переносов строк (до 256 символов).</string>
 </resources>

@@ -267,4 +267,20 @@
     <string name="doc_security">سياسة الأمان</string>
     <string name="doc_retention">سياسة الاحتفاظ بالبيانات</string>
     <string name="settings_legal_title">المستندات القانونية</string>
+    <string name="action_site_editor">محرر الموقع</string>
+    <string name="site_editor_hint">CSS مخصص لـ %1$s. تعرض المعاينة النتيجة على الصفحة المفتوحة. يحفظ الحفظ التنسيق لهذا الموقع فقط.</string>
+    <string name="site_editor_preview">معاينة</string>
+    <string name="site_editor_reset">إعادة تعيين</string>
+    <string name="site_editor_error_size">ملف CSS كبير جدًا (الحد 64 كيلوبايت).</string>
+    <string name="site_editor_error_braces">تحقق من الأقواس: كل { تحتاج إلى } مطابق.</string>
+    <string name="site_editor_error_import">قاعدة الاستيراد غير مسموح بها.</string>
+    <string name="site_editor_private_note">لا تُطبَّق أنماط المواقع في علامات التبويب الخاصة.</string>
+    <string name="action_user_agent">وكيل المستخدم</string>
+    <string name="user_agent_title">وكيل المستخدم لـ %1$s</string>
+    <string name="user_agent_default">افتراضي</string>
+    <string name="user_agent_desktop">سطح المكتب</string>
+    <string name="user_agent_mobile">الجوال</string>
+    <string name="user_agent_custom">مخصص</string>
+    <string name="user_agent_custom_label">وكيل مستخدم مخصص</string>
+    <string name="user_agent_error">أدخل وكيل مستخدم بدون فواصل أسطر (حتى 256 حرفًا).</string>
 </resources>

@@ -267,4 +267,20 @@
     <string name="doc_security">Política de segurança</string>
     <string name="doc_retention">Política de retenção de dados</string>
     <string name="settings_legal_title">Documentos legais</string>
+    <string name="action_site_editor">Editor do site</string>
+    <string name="site_editor_hint">CSS personalizado para %1$s. A visualização mostra na página aberta. Salvar mantém apenas para este site.</string>
+    <string name="site_editor_preview">Visualizar</string>
+    <string name="site_editor_reset">Redefinir</string>
+    <string name="site_editor_error_size">O CSS é grande demais (limite de 64 KB).</string>
+    <string name="site_editor_error_braces">Verifique as chaves: cada { precisa de um } correspondente.</string>
+    <string name="site_editor_error_import">A regra de importação não é permitida.</string>
+    <string name="site_editor_private_note">Os estilos do site não são aplicados em abas privadas.</string>
+    <string name="action_user_agent">User agent</string>
+    <string name="user_agent_title">User agent para %1$s</string>
+    <string name="user_agent_default">Padrão</string>
+    <string name="user_agent_desktop">Computador</string>
+    <string name="user_agent_mobile">Celular</string>
+    <string name="user_agent_custom">Personalizado</string>
+    <string name="user_agent_custom_label">User agent personalizado</string>
+    <string name="user_agent_error">Digite um user agent sem quebras de linha (até 256 caracteres).</string>
 </resources>

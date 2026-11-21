@@ -265,4 +265,20 @@
     <string name="doc_security">นโยบายความปลอดภัย</string>
     <string name="doc_retention">นโยบายการเก็บรักษาข้อมูล</string>
     <string name="settings_legal_title">เอกสารทางกฎหมาย</string>
+    <string name="action_site_editor">ตัวแก้ไขไซต์</string>
+    <string name="site_editor_hint">CSS แบบกำหนดเองสำหรับ %1$s การแสดงตัวอย่างจะใช้กับหน้าที่เปิดอยู่ การบันทึกจะใช้เฉพาะไซต์นี้</string>
+    <string name="site_editor_preview">ดูตัวอย่าง</string>
+    <string name="site_editor_reset">รีเซ็ต</string>
+    <string name="site_editor_error_size">CSS ใหญ่เกินไป (จำกัด 64 KB)</string>
+    <string name="site_editor_error_braces">ตรวจสอบวงเล็บปีกกา: ทุก { ต้องมี } คู่กัน</string>
+    <string name="site_editor_error_import">ไม่อนุญาตกฎ import</string>
+    <string name="site_editor_private_note">ไม่ใช้สไตล์ไซต์ในแท็บส่วนตัว</string>
+    <string name="action_user_agent">User agent</string>
+    <string name="user_agent_title">User agent สำหรับ %1$s</string>
+    <string name="user_agent_default">ค่าเริ่มต้น</string>
+    <string name="user_agent_desktop">เดสก์ท็อป</string>
+    <string name="user_agent_mobile">มือถือ</string>
+    <string name="user_agent_custom">กำหนดเอง</string>
+    <string name="user_agent_custom_label">User agent แบบกำหนดเอง</string>
+    <string name="user_agent_error">ป้อน user agent ที่ไม่มีการขึ้นบรรทัดใหม่ (สูงสุด 256 อักขระ)</string>
 </resources>
