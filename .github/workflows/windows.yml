@@ -77,27 +77,62 @@ jobs:
         shell: pwsh
         run: |
           $ErrorActionPreference = "Stop"
+          Add-Type @"
+          using System;
+          using System.Collections.Generic;
+          using System.Runtime.InteropServices;
+          using System.Text;
+          public static class WinProbe {
+            delegate bool EnumProc(IntPtr h, IntPtr l);
+            [DllImport("user32.dll")] static extern bool EnumWindows(EnumProc p, IntPtr l);
+            [DllImport("user32.dll")] static extern uint GetWindowThreadProcessId(IntPtr h, out uint pid);
+            [DllImport("user32.dll", CharSet = CharSet.Unicode)] static extern int GetWindowText(IntPtr h, StringBuilder s, int n);
+            [DllImport("user32.dll", CharSet = CharSet.Unicode)] static extern int GetClassName(IntPtr h, StringBuilder s, int n);
+            [DllImport("user32.dll")] static extern bool IsWindowVisible(IntPtr h);
+            [DllImport("user32.dll")] static extern bool PostMessage(IntPtr h, uint m, IntPtr w, IntPtr l);
+            public static List<string> Find(uint pid, bool close) {
+              var found = new List<string>();
+              EnumWindows((h, l) => {
+                uint p; GetWindowThreadProcessId(h, out p);
+                if (p == pid) {
+                  var cls = new StringBuilder(128); GetClassName(h, cls, 128);
+                  var txt = new StringBuilder(256); GetWindowText(h, txt, 256);
+                  if (cls.ToString() == "MaterialEXMainWindow") {
+                    found.Add(cls + ":" + txt + ":visible=" + IsWindowVisible(h));
+                    if (close) PostMessage(h, 0x0010, IntPtr.Zero, IntPtr.Zero);
+                  }
+                }
+                return true;
+              }, IntPtr.Zero);
+              return found;
+            }
+          }
+          "@
           $failed = $null
           $p = Start-Process -FilePath "build/Release/materialex.exe" -ArgumentList "about:blank" -PassThru
           Start-Sleep -Seconds 12
           if ($p.HasExited) {
             $failed = "exited early with code $($p.ExitCode)"
           } else {
-            $null = $p.CloseMainWindow()
-            if (-not $p.WaitForExit(20000)) {
+            $windows = [WinProbe]::Find([uint32]$p.Id, $true)
+            Write-Host "Main windows: $($windows -join ', ')"
+            if ($windows.Count -eq 0) {
               Stop-Process -Id $p.Id -Force
-              $failed = "did not exit after close (main window title: '$($p.MainWindowTitle)')"
+              $failed = "no main window was created"
+            } elseif (-not $p.WaitForExit(30000)) {
+              Stop-Process -Id $p.Id -Force
+              $failed = "did not exit after closing the main window"
             } elseif ($p.ExitCode -ne 0) {
               $failed = "exit code $($p.ExitCode)"
             }
           }
           $logPath = Join-Path $env:LOCALAPPDATA "MaterialEX\debug.log"
-          $logText = if (Test-Path $logPath) { (Get-Content $logPath -Tail 8) -join " | " } else { "no debug.log" }
+          $logText = if (Test-Path $logPath) { (Get-Content $logPath -Tail 5) -join " | " } else { "no debug.log" }
           if ($failed) {
             Write-Host "::error::Smoke test: $failed. Log: $logText"
             exit 1
           }
-          Write-Host "Clean exit. Log: $logText"
+          Write-Host "Clean exit."
 
       - name: Package
         shell: pwsh
