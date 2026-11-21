@@ -25,8 +25,8 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
-import androidx.compose.material.icons.filled.KeyboardArrowLeft
-import androidx.compose.material.icons.filled.KeyboardArrowRight
+import androidx.compose.material.icons.automirrored.filled.KeyboardArrowLeft
+import androidx.compose.material.icons.automirrored.filled.KeyboardArrowRight
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -275,10 +275,10 @@ private fun ShortcutDialog(
                 if (draft.id != null) {
                     Row(verticalAlignment = Alignment.CenterVertically) {
                         IconButton(onClick = { onMove(-1) }, enabled = canMoveEarlier) {
-                            Icon(Icons.Default.KeyboardArrowLeft, contentDescription = stringResource(R.string.shortcut_move_earlier))
+                            Icon(Icons.AutoMirrored.Filled.KeyboardArrowLeft, contentDescription = stringResource(R.string.shortcut_move_earlier))
                         }
                         IconButton(onClick = { onMove(1) }, enabled = canMoveLater) {
-                            Icon(Icons.Default.KeyboardArrowRight, contentDescription = stringResource(R.string.shortcut_move_later))
+                            Icon(Icons.AutoMirrored.Filled.KeyboardArrowRight, contentDescription = stringResource(R.string.shortcut_move_later))
                         }
                         TextButton(onClick = onDelete) { Text(stringResource(R.string.action_delete)) }
                     }
