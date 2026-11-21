@@ -41,7 +41,8 @@ class PermissionBroker(
                         current.value = null
                         pending = null
                     }
-                    manager.choose(profileId, origin, type, choice)
+                    val recorded = if (choice == PromptChoice.ALLOW_ONCE && !type.supportsAllowOnce) PromptChoice.ALWAYS_ASK else choice
+                    manager.choose(profileId, origin, type, recorded)
                     if (choice == PromptChoice.ALLOW_ONCE && type.supportsAllowOnce) {
                         temporary.grant(profileId, scopeId, origin, type, clock())
                         true

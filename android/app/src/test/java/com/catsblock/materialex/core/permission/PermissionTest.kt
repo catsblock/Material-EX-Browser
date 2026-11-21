@@ -116,4 +116,24 @@ class PermissionTest {
         assertTrue(Origin.isSecure("http://localhost:3000"))
         assertFalse(Origin.isSecure("http://example.com"))
     }
+
+    @Test
+    fun grantedAnswerBetweenDenialsBreaksTheStreak() = runBlocking {
+        val m = manager()
+        m.choose(profile, origin, PermissionType.CAMERA, PromptChoice.DENY)
+        m.choose(profile, origin, PermissionType.CAMERA, PromptChoice.DENY)
+        val once = m.choose(profile, origin, PermissionType.CAMERA, PromptChoice.ALLOW_ONCE)
+        assertEquals(PermissionRecord(PermissionState.ASK, 0), once)
+        m.choose(profile, origin, PermissionType.CAMERA, PromptChoice.DENY)
+        m.choose(profile, origin, PermissionType.CAMERA, PromptChoice.DENY)
+        assertEquals(Decision.PROMPT, m.decide(profile, origin, PermissionType.CAMERA))
+    }
+
+    @Test
+    fun alwaysAllowClearsEarlierDenials() = runBlocking {
+        val m = manager()
+        m.choose(profile, origin, PermissionType.MICROPHONE, PromptChoice.DENY)
+        val allowed = m.choose(profile, origin, PermissionType.MICROPHONE, PromptChoice.ALLOW)
+        assertEquals(PermissionRecord(PermissionState.ALLOW, 0), allowed)
+    }
 }

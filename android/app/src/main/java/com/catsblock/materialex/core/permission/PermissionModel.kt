@@ -34,8 +34,9 @@ object PermissionPolicy {
     fun applyChoice(record: PermissionRecord, choice: PromptChoice): PermissionRecord {
         if (record.state != PermissionState.ASK) return record
         return when (choice) {
-            PromptChoice.ALWAYS_ASK, PromptChoice.ALLOW_ONCE -> record
-            PromptChoice.ALLOW -> record.copy(state = PermissionState.ALLOW)
+            PromptChoice.ALWAYS_ASK -> record
+            PromptChoice.ALLOW_ONCE -> record.copy(denialCount = 0)
+            PromptChoice.ALLOW -> PermissionRecord(PermissionState.ALLOW, 0)
             PromptChoice.DENY -> {
                 val count = record.denialCount + 1
                 val state = if (count >= AUTO_BLOCK_THRESHOLD) PermissionState.AUTO_BLOCKED else PermissionState.ASK
