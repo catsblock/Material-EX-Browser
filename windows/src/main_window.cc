@@ -327,7 +327,7 @@ void MainWindow::CloseTabAt(int index) {
 void MainWindow::CloseWindowRequest() { PostMessageW(hwnd_, WM_CLOSE, 0, 0); }
 
 void MainWindow::FinishCloseIfReady() {
-  if (closing_ && hwnd_ && owned_ids_.empty() && client_->PopupCount() == 0) DestroyWindow(hwnd_);
+  if (closing_ && hwnd_ && !destroying_ && owned_ids_.empty() && client_->PopupCount() == 0) DestroyWindow(hwnd_);
 }
 
 void MainWindow::OnBrowserClosed(CefRefPtr<CefBrowser> browser) {
@@ -878,7 +878,7 @@ LRESULT MainWindow::HandleMessage(UINT msg, WPARAM wp, LPARAM lp) {
     case WM_CLOSE: {
       if (closing_) {
         LogLine("WM_CLOSE while closing, destroying");
-        DestroyWindow(hwnd_);
+        if (!destroying_) DestroyWindow(hwnd_);
         return 0;
       }
       LogLine("WM_CLOSE");
@@ -900,6 +900,7 @@ LRESULT MainWindow::HandleMessage(UINT msg, WPARAM wp, LPARAM lp) {
     }
     case WM_DESTROY: {
       LogLine("WM_DESTROY");
+      destroying_ = true;
       auto& w = Windows();
       w.erase(std::remove(w.begin(), w.end(), this), w.end());
       if (font_) {

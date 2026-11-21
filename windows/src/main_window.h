@@ -92,6 +92,7 @@ class MainWindow : public ClientDelegate {
   bool fullscreen_ = false;
   bool closing_ = false;
   bool destroyed_ = false;
+  bool destroying_ = false;
   WINDOWPLACEMENT saved_placement_{};
   LONG_PTR saved_style_ = 0;
   std::vector<Tab> tabs_list_;
