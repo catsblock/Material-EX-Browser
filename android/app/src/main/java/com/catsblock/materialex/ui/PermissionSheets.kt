@@ -161,7 +161,7 @@ fun SiteInfoSheet(
                                 selected = record.state == state,
                                 onClick = {
                                     change {
-                                        broker.revokeTemporaryForOrigin(origin)
+                                        broker.revokeTemporaryForOrigin(origin, scopeId)
                                         manager.setState(profileId, origin, type, state)
                                     }
                                 },

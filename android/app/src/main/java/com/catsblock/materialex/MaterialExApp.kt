@@ -5,6 +5,8 @@ import androidx.room.Room
 import com.catsblock.materialex.core.permission.PermissionManager
 import com.catsblock.materialex.data.DownloadController
 import com.catsblock.materialex.data.LibraryRepository
+import com.catsblock.materialex.core.permission.InMemoryPermissionStore
+import com.catsblock.materialex.core.permission.RoutingPermissionStore
 import com.catsblock.materialex.data.RoomPermissionStore
 import com.catsblock.materialex.data.SettingsRepository
 import com.catsblock.materialex.data.SuggestionClient
@@ -33,7 +35,9 @@ class MaterialExApp : Application() {
 
     val suggestions: SuggestionEngine by lazy { SuggestionEngine(library, SuggestionClient()) }
 
-    val permissionManager: PermissionManager by lazy { PermissionManager(RoomPermissionStore(database.permissions())) }
+    val permissionManager: PermissionManager by lazy { PermissionManager(
+            RoutingPermissionStore(RoomPermissionStore(database.permissions()), InMemoryPermissionStore())
+        ) }
 
     val engine: BrowserEngine by lazy {
         BrowserEngine(this, permissionManager).also { engine ->

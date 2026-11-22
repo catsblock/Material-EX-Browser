@@ -10,6 +10,26 @@ interface PermissionStore {
     suspend fun clearProfile(profileId: String)
 }
 
+const val EPHEMERAL_PERMISSION_PROFILE = "private"
+
+class RoutingPermissionStore(
+    private val persistent: PermissionStore,
+    private val ephemeral: PermissionStore
+) : PermissionStore {
+    private fun pick(profileId: String) = if (profileId == EPHEMERAL_PERMISSION_PROFILE) ephemeral else persistent
+
+    override suspend fun get(profileId: String, origin: String, type: PermissionType) =
+        pick(profileId).get(profileId, origin, type)
+
+    override suspend fun put(profileId: String, origin: String, type: PermissionType, record: PermissionRecord) =
+        pick(profileId).put(profileId, origin, type, record)
+
+    override suspend fun listForOrigin(profileId: String, origin: String) =
+        pick(profileId).listForOrigin(profileId, origin)
+
+    override suspend fun clearProfile(profileId: String) = pick(profileId).clearProfile(profileId)
+}
+
 class InMemoryPermissionStore : PermissionStore {
     private val mutex = Mutex()
     private val data = HashMap<Triple<String, String, PermissionType>, PermissionRecord>()

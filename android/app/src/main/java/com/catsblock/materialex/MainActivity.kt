@@ -266,7 +266,7 @@ class MainActivity : ComponentActivity() {
                     if (selection.searches) app.library.clearSearches()
                     if (selection.downloads) app.downloads.clearRecords()
                     if (selection.permissions) {
-                        app.permissionManager.clearProfile("default")
+                        app.permissionManager.clearProfile(app.engine.activePermissionProfile())
                         app.engine.permissions.temporary.revokeAll()
                     }
                     app.engine.clearBrowsingData(selection.cookies, selection.cache)
@@ -374,7 +374,7 @@ class MainActivity : ComponentActivity() {
                 manager = app.permissionManager,
                 broker = app.engine.permissions,
                 scopeId = activeTabId.orEmpty(),
-                profileId = "default",
+                profileId = app.engine.permissionProfileOf(activeTabId.orEmpty()),
                 onDismiss = { siteInfoOpen = false }
             )
         }

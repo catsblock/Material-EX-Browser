@@ -42,6 +42,11 @@ class TemporaryGrants(private val ttlMs: Long = DEFAULT_TTL_MS) {
     }
 
     @Synchronized
+    fun revokeProfile(profileId: String) {
+        grants.keys.removeAll { it.profileId == profileId }
+    }
+
+    @Synchronized
     fun revokeAll() {
         grants.clear()
     }

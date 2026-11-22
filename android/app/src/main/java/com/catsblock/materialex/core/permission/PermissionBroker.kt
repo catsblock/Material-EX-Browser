@@ -12,6 +12,7 @@ data class PermissionPrompt(val id: Long, val origin: String, val type: Permissi
 class PermissionBroker(
     private val manager: PermissionManager,
     private val profileId: String,
+    private val profileOf: (String) -> String = { profileId },
     private val clock: () -> Long = System::currentTimeMillis
 ) {
     val temporary = TemporaryGrants()
@@ -25,11 +26,12 @@ class PermissionBroker(
     suspend fun resolve(requestOrigin: String?, type: PermissionType, scopeId: String = ""): Boolean {
         val origin = Origin.normalize(requestOrigin) ?: return false
         if (type.requiresSecureOrigin && !Origin.isSecure(origin)) return false
+        val profile = profileOf(scopeId)
         return queue.withLock {
-            when (manager.decide(profileId, origin, type)) {
+            when (manager.decide(profile, origin, type)) {
                 Decision.GRANT -> true
                 Decision.REJECT -> false
-                Decision.PROMPT -> if (temporary.isGranted(profileId, scopeId, origin, type, clock())) {
+                Decision.PROMPT -> if (temporary.isGranted(profile, scopeId, origin, type, clock())) {
                     true
                 } else {
                     val answer = CompletableDeferred<PromptChoice>()
@@ -42,9 +44,9 @@ class PermissionBroker(
                         pending = null
                     }
                     val recorded = if (choice == PromptChoice.ALLOW_ONCE && !type.supportsAllowOnce) PromptChoice.ALWAYS_ASK else choice
-                    manager.choose(profileId, origin, type, recorded)
+                    manager.choose(profile, origin, type, recorded)
                     if (choice == PromptChoice.ALLOW_ONCE && type.supportsAllowOnce) {
-                        temporary.grant(profileId, scopeId, origin, type, clock())
+                        temporary.grant(profile, scopeId, origin, type, clock())
                         true
                     } else {
                         choice == PromptChoice.ALLOW
@@ -55,12 +57,12 @@ class PermissionBroker(
     }
 
     fun isTemporarilyAllowed(origin: String, type: PermissionType, scopeId: String): Boolean =
-        temporary.isGranted(profileId, scopeId, origin, type, clock())
+        temporary.isGranted(profileOf(scopeId), scopeId, origin, type, clock())
 
     fun revokeTemporary(origin: String, type: PermissionType, scopeId: String) =
-        temporary.revoke(profileId, scopeId, origin, type)
+        temporary.revoke(profileOf(scopeId), scopeId, origin, type)
 
-    fun revokeTemporaryForOrigin(origin: String) = temporary.revokeOrigin(profileId, origin)
+    fun revokeTemporaryForOrigin(origin: String, scopeId: String) = temporary.revokeOrigin(profileOf(scopeId), origin)
 
     fun tabClosed(scopeId: String) = temporary.revokeScope(scopeId)
 

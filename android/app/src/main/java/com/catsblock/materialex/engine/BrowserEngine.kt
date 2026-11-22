@@ -6,6 +6,7 @@ import com.catsblock.materialex.core.memory.MemoryBudget
 import com.catsblock.materialex.core.extension.ExtensionInfo
 import com.catsblock.materialex.core.extension.ExtensionPrompt
 import com.catsblock.materialex.core.permission.PermissionBroker
+import com.catsblock.materialex.core.permission.EPHEMERAL_PERMISSION_PROFILE
 import com.catsblock.materialex.core.profile.ProfileRules
 import com.catsblock.materialex.core.siteedit.SiteStyleRules
 import com.catsblock.materialex.core.siteedit.UaChoice
@@ -56,7 +57,7 @@ data class PageState(
     val audible: Boolean = false
 )
 
-class BrowserEngine(context: Context, permissionManager: PermissionManager) {
+class BrowserEngine(context: Context, private val permissionManager: PermissionManager) {
     private val runtime: GeckoRuntime = GeckoRuntime.create(context.applicationContext)
     private val scope = CoroutineScope(SupervisorJob() + Dispatchers.Main.immediate)
     private val manager = TabManager()
@@ -89,7 +90,7 @@ class BrowserEngine(context: Context, permissionManager: PermissionManager) {
     private val fullscreenFlow = MutableStateFlow(false)
     private var fullscreenId: String? = null
 
-    val permissions = PermissionBroker(permissionManager, DEFAULT_PROFILE)
+    val permissions = PermissionBroker(permissionManager, DEFAULT_PROFILE, ::permissionProfileOf)
     val osBlocked: StateFlow<Boolean> = osBlockedFlow.asStateFlow()
     val chromeVisible: StateFlow<Boolean> = chromeFlow.asStateFlow()
     val atTop: StateFlow<Boolean> = atTopFlow.asStateFlow()
@@ -261,6 +262,26 @@ class BrowserEngine(context: Context, permissionManager: PermissionManager) {
         return GeckoSession(builder.build())
     }
 
+    fun permissionProfileOf(tabId: String): String {
+        val root = popupFlow.value.firstOrNull { it.id == tabId }?.openerId ?: tabId
+        val tab = manager.state.value.tabs.firstOrNull { it.id == root } ?: return profileFlow.value.takeIf { ProfileRules.isRealProfile(it) } ?: lastRealProfile
+        return if (tab.isPrivate || !ProfileRules.isRealProfile(tab.profileId)) EPHEMERAL_PERMISSION_PROFILE else tab.profileId
+    }
+
+    fun activePermissionProfile(): String {
+        val id = manager.state.value.activeId.orEmpty()
+        return permissionProfileOf(id)
+    }
+
+    private fun clearEphemeralPermissionsIfIdle() {
+        scope.launch {
+            if (manager.state.value.tabs.none { it.isPrivate || !ProfileRules.isRealProfile(it.profileId) }) {
+                permissionManager.clearProfile(EPHEMERAL_PERMISSION_PROFILE)
+                permissions.temporary.revokeProfile(EPHEMERAL_PERMISSION_PROFILE)
+            }
+        }
+    }
+
     private fun isPrivateId(id: String): Boolean {
         val root = popupFlow.value.firstOrNull { it.id == id }?.openerId ?: id
         return manager.state.value.tabs.firstOrNull { it.id == root }?.isPrivate == true
@@ -369,6 +390,7 @@ class BrowserEngine(context: Context, permissionManager: PermissionManager) {
         trackers.remove(id)
         scrollTops.remove(id)
         siteUaApplied.remove(id)
+        clearEphemeralPermissionsIfIdle()
     }
 
     fun selectTab(id: String) {
