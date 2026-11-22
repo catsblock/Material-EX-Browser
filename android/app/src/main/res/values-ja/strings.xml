@@ -282,4 +282,6 @@
     <string name="user_agent_custom_label">カスタムユーザーエージェント</string>
     <string name="user_agent_error">改行を含まないユーザーエージェントを入力してください（256 文字まで）。</string>
     <string name="download_retry">再試行</string>
+    <string name="find_previous">前の検索結果</string>
+    <string name="find_next">次の検索結果</string>
 </resources>

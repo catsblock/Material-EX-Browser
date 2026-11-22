@@ -284,4 +284,6 @@
     <string name="user_agent_custom_label">Custom user agent</string>
     <string name="user_agent_error">Enter a user agent without line breaks (up to 256 characters).</string>
     <string name="download_retry">Retry</string>
+    <string name="find_previous">Previous match</string>
+    <string name="find_next">Next match</string>
 </resources>

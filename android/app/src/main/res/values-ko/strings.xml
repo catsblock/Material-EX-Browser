@@ -282,4 +282,6 @@
     <string name="user_agent_custom_label">사용자 지정 사용자 에이전트</string>
     <string name="user_agent_error">줄 바꿈 없는 사용자 에이전트를 입력하세요(최대 256자).</string>
     <string name="download_retry">다시 시도</string>
+    <string name="find_previous">이전 결과</string>
+    <string name="find_next">다음 결과</string>
 </resources>

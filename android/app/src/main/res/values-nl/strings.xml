@@ -282,4 +282,6 @@
     <string name="user_agent_custom_label">Aangepaste user-agent</string>
     <string name="user_agent_error">Voer een user-agent in zonder regeleinden (max. 256 tekens).</string>
     <string name="download_retry">Opnieuw proberen</string>
+    <string name="find_previous">Vorige overeenkomst</string>
+    <string name="find_next">Volgende overeenkomst</string>
 </resources>

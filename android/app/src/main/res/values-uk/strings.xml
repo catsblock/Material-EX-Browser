@@ -282,4 +282,6 @@
     <string name="user_agent_custom_label">Власний user agent</string>
     <string name="user_agent_error">Введіть user agent без розривів рядків (до 256 символів).</string>
     <string name="download_retry">Повторити</string>
+    <string name="find_previous">Попередній збіг</string>
+    <string name="find_next">Наступний збіг</string>
 </resources>

@@ -282,4 +282,6 @@
     <string name="user_agent_custom_label">Własny user agent</string>
     <string name="user_agent_error">Wpisz user agent bez podziałów wiersza (do 256 znaków).</string>
     <string name="download_retry">Ponów</string>
+    <string name="find_previous">Poprzednie trafienie</string>
+    <string name="find_next">Następne trafienie</string>
 </resources>

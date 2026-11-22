@@ -282,4 +282,6 @@
     <string name="user_agent_custom_label">User agent personalizzato</string>
     <string name="user_agent_error">Inserisci uno user agent senza interruzioni di riga (max 256 caratteri).</string>
     <string name="download_retry">Riprova</string>
+    <string name="find_previous">Risultato precedente</string>
+    <string name="find_next">Risultato successivo</string>
 </resources>

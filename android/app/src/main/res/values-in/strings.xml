@@ -282,4 +282,6 @@
     <string name="user_agent_custom_label">User agent kustom</string>
     <string name="user_agent_error">Masukkan user agent tanpa baris baru (maks. 256 karakter).</string>
     <string name="download_retry">Coba lagi</string>
+    <string name="find_previous">Hasil sebelumnya</string>
+    <string name="find_next">Hasil berikutnya</string>
 </resources>

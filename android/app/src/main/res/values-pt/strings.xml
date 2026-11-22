@@ -282,4 +282,6 @@
     <string name="user_agent_custom_label">Agente do utilizador personalizado</string>
     <string name="user_agent_error">Introduza um agente do utilizador sem quebras de linha (até 256 carateres).</string>
     <string name="download_retry">Tentar novamente</string>
+    <string name="find_previous">Resultado anterior</string>
+    <string name="find_next">Resultado seguinte</string>
 </resources>

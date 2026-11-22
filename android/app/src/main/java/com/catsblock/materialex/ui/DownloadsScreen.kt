@@ -42,6 +42,8 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.catsblock.materialex.R
+import com.catsblock.materialex.core.DownloadFilter
+import androidx.compose.material3.OutlinedTextField
 import com.catsblock.materialex.core.DownloadSafety
 import com.catsblock.materialex.core.DownloadStatus
 import com.catsblock.materialex.data.DownloadController
@@ -58,6 +60,8 @@ fun DownloadsScreen(controller: DownloadController, onRetry: (String) -> Unit, o
     val context = LocalContext.current
     var detailId by remember { mutableStateOf<Long?>(null) }
     var confirmOpen by remember { mutableStateOf<DownloadRecord?>(null) }
+    var filter by remember { mutableStateOf("") }
+    val visible = records.filter { DownloadFilter.matches(it.fileName, it.sourceUrl, filter) }
 
     fun open(record: DownloadRecord) {
         scope.launch {
@@ -100,8 +104,24 @@ fun DownloadsScreen(controller: DownloadController, onRetry: (String) -> Unit, o
                 )
             }
         } else {
-            LazyColumn(modifier = Modifier.padding(padding)) {
-                items(records, key = { it.id }) { record ->
+            Column(modifier = Modifier.padding(padding)) {
+            OutlinedTextField(
+                value = filter,
+                onValueChange = { filter = it.take(200) },
+                singleLine = true,
+                placeholder = { Text(stringResource(R.string.download_search_hint)) },
+                modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp, vertical = 8.dp)
+            )
+            if (visible.isEmpty()) {
+                Text(
+                    stringResource(R.string.download_no_matches),
+                    style = MaterialTheme.typography.bodyLarge,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    modifier = Modifier.padding(16.dp)
+                )
+            }
+            LazyColumn {
+                items(visible, key = { it.id }) { record ->
                     DownloadRow(
                         record = record,
                         live = live[record.id],
@@ -116,6 +136,7 @@ fun DownloadsScreen(controller: DownloadController, onRetry: (String) -> Unit, o
                         onDelete = { scope.launch { controller.delete(record) } }
                     )
                 }
+            }
             }
         }
     }

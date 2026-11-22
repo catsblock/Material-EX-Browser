@@ -177,7 +177,7 @@ private fun PopupSurface(engine: BrowserEngine, popup: PopupWindow, page: PageSt
                 val secure = page.url.startsWith("https://") && page.isSecure
                 Icon(
                     imageVector = if (secure) Icons.Default.Lock else Icons.Default.Warning,
-                    contentDescription = null,
+                    contentDescription = stringResource(if (secure) R.string.security_secure else R.string.security_insecure),
                     tint = if (secure) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.error,
                     modifier = Modifier.size(18.dp)
                 )

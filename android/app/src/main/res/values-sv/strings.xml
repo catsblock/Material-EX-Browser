@@ -282,4 +282,6 @@
     <string name="user_agent_custom_label">Anpassad user agent</string>
     <string name="user_agent_error">Ange en user agent utan radbrytningar (högst 256 tecken).</string>
     <string name="download_retry">Försök igen</string>
+    <string name="find_previous">Föregående träff</string>
+    <string name="find_next">Nästa träff</string>
 </resources>

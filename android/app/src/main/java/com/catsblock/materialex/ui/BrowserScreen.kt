@@ -390,10 +390,10 @@ private fun FindBar(engine: BrowserEngine, onClose: () -> Unit, modifier: Modifi
                 Text(total.toString(), style = MaterialTheme.typography.labelLarge, color = MaterialTheme.colorScheme.onSurfaceVariant)
             }
             IconButton(onClick = { engine.find(query, false) { count -> total = count } }, enabled = query.isNotEmpty()) {
-                Icon(Icons.Default.KeyboardArrowUp, contentDescription = null)
+                Icon(Icons.Default.KeyboardArrowUp, contentDescription = stringResource(R.string.find_previous))
             }
             IconButton(onClick = { engine.find(query, true) { count -> total = count } }, enabled = query.isNotEmpty()) {
-                Icon(Icons.Default.KeyboardArrowDown, contentDescription = null)
+                Icon(Icons.Default.KeyboardArrowDown, contentDescription = stringResource(R.string.find_next))
             }
             IconButton(onClick = onClose) {
                 Icon(Icons.Default.Close, contentDescription = stringResource(R.string.onboarding_close))

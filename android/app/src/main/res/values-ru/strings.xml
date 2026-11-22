@@ -282,4 +282,6 @@
     <string name="user_agent_custom_label">Свой user agent</string>
     <string name="user_agent_error">Введите user agent без переносов строк (до 256 символов).</string>
     <string name="download_retry">Повторить</string>
+    <string name="find_previous">Предыдущее совпадение</string>
+    <string name="find_next">Следующее совпадение</string>
 </resources>

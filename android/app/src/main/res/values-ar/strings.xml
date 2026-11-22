@@ -284,4 +284,6 @@
     <string name="user_agent_custom_label">وكيل مستخدم مخصص</string>
     <string name="user_agent_error">أدخل وكيل مستخدم بدون فواصل أسطر (حتى 256 حرفًا).</string>
     <string name="download_retry">إعادة المحاولة</string>
+    <string name="find_previous">النتيجة السابقة</string>
+    <string name="find_next">النتيجة التالية</string>
 </resources>

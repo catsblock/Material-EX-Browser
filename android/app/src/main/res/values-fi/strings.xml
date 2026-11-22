@@ -282,4 +282,6 @@
     <string name="user_agent_custom_label">Oma user agent</string>
     <string name="user_agent_error">Anna user agent ilman rivinvaihtoja (enintään 256 merkkiä).</string>
     <string name="download_retry">Yritä uudelleen</string>
+    <string name="find_previous">Edellinen osuma</string>
+    <string name="find_next">Seuraava osuma</string>
 </resources>

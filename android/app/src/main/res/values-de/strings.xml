@@ -282,4 +282,6 @@
     <string name="user_agent_custom_label">Benutzerdefinierter User-Agent</string>
     <string name="user_agent_error">Gib einen User-Agent ohne Zeilenumbrüche ein (max. 256 Zeichen).</string>
     <string name="download_retry">Erneut versuchen</string>
+    <string name="find_previous">Vorheriger Treffer</string>
+    <string name="find_next">Nächster Treffer</string>
 </resources>
