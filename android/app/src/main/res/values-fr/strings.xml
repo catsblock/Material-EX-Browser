@@ -284,4 +284,6 @@
     <string name="download_retry">Réessayer</string>
     <string name="find_previous">Résultat précédent</string>
     <string name="find_next">Résultat suivant</string>
+    <string name="download_search_hint">Rechercher des téléchargements</string>
+    <string name="download_no_matches">Aucun téléchargement correspondant</string>
 </resources>

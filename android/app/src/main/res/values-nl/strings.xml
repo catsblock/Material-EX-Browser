@@ -284,4 +284,6 @@
     <string name="download_retry">Opnieuw proberen</string>
     <string name="find_previous">Vorige overeenkomst</string>
     <string name="find_next">Volgende overeenkomst</string>
+    <string name="download_search_hint">Downloads zoeken</string>
+    <string name="download_no_matches">Geen overeenkomende downloads</string>
 </resources>

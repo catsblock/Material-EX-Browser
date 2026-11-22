@@ -284,4 +284,6 @@
     <string name="download_retry">Försök igen</string>
     <string name="find_previous">Föregående träff</string>
     <string name="find_next">Nästa träff</string>
+    <string name="download_search_hint">Sök nedladdningar</string>
+    <string name="download_no_matches">Inga matchande nedladdningar</string>
 </resources>

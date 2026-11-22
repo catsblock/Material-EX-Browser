@@ -286,4 +286,6 @@
     <string name="download_retry">إعادة المحاولة</string>
     <string name="find_previous">النتيجة السابقة</string>
     <string name="find_next">النتيجة التالية</string>
+    <string name="download_search_hint">البحث في التنزيلات</string>
+    <string name="download_no_matches">لا توجد تنزيلات مطابقة</string>
 </resources>

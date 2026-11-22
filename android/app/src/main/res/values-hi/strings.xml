@@ -284,4 +284,6 @@
     <string name="download_retry">फिर कोशिश करें</string>
     <string name="find_previous">पिछला परिणाम</string>
     <string name="find_next">अगला परिणाम</string>
+    <string name="download_search_hint">डाउनलोड खोजें</string>
+    <string name="download_no_matches">कोई मेल खाता डाउनलोड नहीं</string>
 </resources>

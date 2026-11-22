@@ -284,4 +284,6 @@
     <string name="download_retry">Ponów</string>
     <string name="find_previous">Poprzednie trafienie</string>
     <string name="find_next">Następne trafienie</string>
+    <string name="download_search_hint">Szukaj pobrań</string>
+    <string name="download_no_matches">Brak pasujących pobrań</string>
 </resources>

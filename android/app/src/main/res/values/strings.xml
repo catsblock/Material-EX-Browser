@@ -286,4 +286,6 @@
     <string name="download_retry">Retry</string>
     <string name="find_previous">Previous match</string>
     <string name="find_next">Next match</string>
+    <string name="download_search_hint">Search downloads</string>
+    <string name="download_no_matches">No matching downloads</string>
 </resources>

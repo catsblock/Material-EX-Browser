@@ -284,4 +284,6 @@
     <string name="download_retry">Thử lại</string>
     <string name="find_previous">Kết quả trước</string>
     <string name="find_next">Kết quả tiếp theo</string>
+    <string name="download_search_hint">Tìm tệp tải xuống</string>
+    <string name="download_no_matches">Không có tệp tải xuống phù hợp</string>
 </resources>

@@ -284,4 +284,6 @@
     <string name="download_retry">再試行</string>
     <string name="find_previous">前の検索結果</string>
     <string name="find_next">次の検索結果</string>
+    <string name="download_search_hint">ダウンロードを検索</string>
+    <string name="download_no_matches">一致するダウンロードはありません</string>
 </resources>

@@ -284,4 +284,6 @@
     <string name="download_retry">Coba lagi</string>
     <string name="find_previous">Hasil sebelumnya</string>
     <string name="find_next">Hasil berikutnya</string>
+    <string name="download_search_hint">Cari unduhan</string>
+    <string name="download_no_matches">Tidak ada unduhan yang cocok</string>
 </resources>

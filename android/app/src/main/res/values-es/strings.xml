@@ -284,4 +284,6 @@
     <string name="download_retry">Reintentar</string>
     <string name="find_previous">Coincidencia anterior</string>
     <string name="find_next">Coincidencia siguiente</string>
+    <string name="download_search_hint">Buscar descargas</string>
+    <string name="download_no_matches">No hay descargas coincidentes</string>
 </resources>

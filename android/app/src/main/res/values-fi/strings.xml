@@ -284,4 +284,6 @@
     <string name="download_retry">Yritä uudelleen</string>
     <string name="find_previous">Edellinen osuma</string>
     <string name="find_next">Seuraava osuma</string>
+    <string name="download_search_hint">Hae latauksia</string>
+    <string name="download_no_matches">Ei vastaavia latauksia</string>
 </resources>

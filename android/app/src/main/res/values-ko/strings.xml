@@ -284,4 +284,6 @@
     <string name="download_retry">다시 시도</string>
     <string name="find_previous">이전 결과</string>
     <string name="find_next">다음 결과</string>
+    <string name="download_search_hint">다운로드 검색</string>
+    <string name="download_no_matches">일치하는 다운로드가 없습니다</string>
 </resources>

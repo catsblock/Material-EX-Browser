@@ -284,4 +284,6 @@
     <string name="download_retry">Повторить</string>
     <string name="find_previous">Предыдущее совпадение</string>
     <string name="find_next">Следующее совпадение</string>
+    <string name="download_search_hint">Поиск загрузок</string>
+    <string name="download_no_matches">Нет подходящих загрузок</string>
 </resources>

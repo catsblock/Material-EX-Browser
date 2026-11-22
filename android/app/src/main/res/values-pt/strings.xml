@@ -284,4 +284,6 @@
     <string name="download_retry">Tentar novamente</string>
     <string name="find_previous">Resultado anterior</string>
     <string name="find_next">Resultado seguinte</string>
+    <string name="download_search_hint">Pesquisar transferências</string>
+    <string name="download_no_matches">Nenhuma transferência correspondente</string>
 </resources>
