@@ -11,6 +11,7 @@
 #include "downloads.h"
 #include "include/cef_app.h"
 #include "include/cef_browser.h"
+#include "include/cef_cookie.h"
 #include "include/cef_version.h"
 #include "include/wrapper/cef_helpers.h"
 #include "panels.h"
@@ -37,6 +38,8 @@ enum Command {
   kCmdTabs = 121,
   kCmdSecurity = 122,
   kCmdNewWindow = 200,
+  kCmdNewPrivateWindow,
+  kCmdClearData,
   kCmdCloseTab,
   kCmdCloseOthers,
   kCmdBookmarks,
@@ -99,6 +102,7 @@ int g_live_windows = 0;
 MainWindow::MainWindow() { ++g_live_windows; }
 
 MainWindow::~MainWindow() {
+  if (private_) DownloadManager::Get().RemoveFinishedPrivate();
   if (--g_live_windows == 0) {
     DownloadManager::Get().MarkAllInterrupted();
     DownloadManager::Get().Save();
@@ -107,15 +111,19 @@ MainWindow::~MainWindow() {
   }
 }
 
+PermissionPolicyStore& MainWindow::Permissions() {
+  return private_ ? private_permissions_ : Profile::Get().permissions;
+}
+
 void MainWindow::MaybeDelete() {
   if (destroyed_ && owned_ids_.empty() && client_->PopupCount() == 0) delete this;
 }
 
 MainWindow* MainWindow::Last() { return Windows().empty() ? nullptr : Windows().back(); }
 
-MainWindow* MainWindow::Create(const std::string& url) {
+MainWindow* MainWindow::Create(const std::string& url, bool is_private) {
   MainWindow* w = new MainWindow();
-  if (!w->Init(url)) {
+  if (!w->Init(url, is_private)) {
     if (w->hwnd_) DestroyWindow(w->hwnd_);
     else delete w;
     return nullptr;
@@ -123,14 +131,20 @@ MainWindow* MainWindow::Create(const std::string& url) {
   return w;
 }
 
-bool MainWindow::Init(const std::string& url) {
+bool MainWindow::Init(const std::string& url, bool is_private) {
   rtl_ = IsRtlUi();
+  private_ = is_private;
+  if (private_) {
+    CefRequestContextSettings context_settings;
+    context_settings.persist_session_cookies = false;
+    context_ = CefRequestContext::CreateContext(context_settings, nullptr);
+  }
   client_ = new Client(this);
   hwnd_ = CreateWindowExW(0, kWindowClass, Tr(Str::AppName), WS_OVERLAPPEDWINDOW,
                           CW_USEDEFAULT, CW_USEDEFAULT, 1280, 800, nullptr, nullptr, GetModuleHandleW(nullptr), this);
   if (!hwnd_) return false;
   Windows().push_back(this);
-  RestorePlacement();
+  if (!private_) RestorePlacement();
   ShowWindow(hwnd_, saved_placement_.showCmd == SW_SHOWMAXIMIZED ? SW_SHOWMAXIMIZED : SW_SHOW);
   UpdateWindow(hwnd_);
   AddTab(url, true);
@@ -259,7 +273,7 @@ void MainWindow::AddTab(const std::string& url, bool foreground) {
   info.SetAsChild(hwnd_, CefRect(br.left, br.top, br.right - br.left, br.bottom - br.top));
   info.runtime_style = CEF_RUNTIME_STYLE_ALLOY;
   CefBrowserSettings settings;
-  CefRefPtr<CefBrowser> browser = CefBrowserHost::CreateBrowserSync(info, client_, target, settings, nullptr, nullptr);
+  CefRefPtr<CefBrowser> browser = CefBrowserHost::CreateBrowserSync(info, client_, target, settings, nullptr, context_);
   if (!browser) return;
   Tab tab;
   tab.browser_id = browser->GetIdentifier();
@@ -381,8 +395,10 @@ void MainWindow::UpdateChrome() {
   SetWindowTextW(security_, label);
   SetWindowTextW(GetDlgItem(hwnd_, kCmdBookmark),
                  Profile::Get().bookmarks.Contains(t->url) ? Tr(Str::RemoveBookmark) : Tr(Str::AddBookmark));
+  EnableWindow(GetDlgItem(hwnd_, kCmdBookmark), !private_);
   std::string title = t->title.empty() ? HostOf(t->url) : t->title;
   std::wstring window_title = (title.empty() ? std::wstring() : Widen(title) + L" - ") + Tr(Str::AppName);
+  if (private_) window_title += std::wstring(L" (") + Tr(Str::PrivateSuffix) + L")";
   SetWindowTextW(hwnd_, window_title.c_str());
 }
 
@@ -400,7 +416,7 @@ void MainWindow::OnAddress(CefRefPtr<CefBrowser> browser, const std::string& url
   Tab& t = tabs_list_[static_cast<size_t>(i)];
   std::string origin = OriginOf(url);
   if (origin != t.origin) {
-    Profile::Get().permissions.ClearScope(static_cast<uint64_t>(t.browser_id));
+    Permissions().ClearScope(static_cast<uint64_t>(t.browser_id));
     t.origin = origin;
   }
   t.url = url;
@@ -430,8 +446,10 @@ void MainWindow::OnLoadFinished(CefRefPtr<CefBrowser> browser) {
   std::string url = browser->GetMainFrame()->GetURL().ToString();
   Tab& t = tabs_list_[static_cast<size_t>(i)];
   if (IsWebScheme(SchemeOf(url))) {
-    Profile::Get().history.Add(url, t.title, NowSeconds());
-    Profile::Get().SaveHistory();
+    if (!private_) {
+      Profile::Get().history.Add(url, t.title, NowSeconds());
+      Profile::Get().SaveHistory();
+    }
     std::string css = Profile::Get().SiteCss(HostOf(url));
     if (!css.empty()) InjectSiteCss(browser, css);
   }
@@ -483,7 +501,7 @@ void MainWindow::InjectSiteCss(CefRefPtr<CefBrowser> browser, const std::string&
 
 void MainWindow::SetSiteUa(int menu_id) {
   Tab* t = ActiveTab();
-  if (!t) return;
+  if (private_ || !t) return;
   std::string host = HostOf(t->url);
   if (host.empty() || !IsWebScheme(SchemeOf(t->url))) return;
   Profile& p = Profile::Get();
@@ -508,7 +526,7 @@ void MainWindow::Zoom(double delta, bool reset) {
 
 void MainWindow::ToggleBookmark() {
   Tab* t = ActiveTab();
-  if (!t || !IsWebScheme(SchemeOf(t->url))) return;
+  if (private_ || !t || !IsWebScheme(SchemeOf(t->url))) return;
   Profile::Get().bookmarks.Toggle(t->url, t->title);
   Profile::Get().SaveBookmarks();
   UpdateChrome();
@@ -522,7 +540,7 @@ void MainWindow::ShowDevTools(CefRefPtr<CefBrowser> browser, const CefPoint& ins
 
 void MainWindow::OpenSiteEditor() {
   Tab* t = ActiveTab();
-  if (!t || !IsWebScheme(SchemeOf(t->url))) return;
+  if (private_ || !t || !IsWebScheme(SchemeOf(t->url))) return;
   std::string host = HostOf(t->url);
   CefRefPtr<CefBrowser> browser = t->browser;
   ShowSiteEditorPanel(
@@ -533,6 +551,26 @@ void MainWindow::OpenSiteEditor() {
         }
       },
       [this, browser]() { ShowDevTools(browser, CefPoint()); });
+}
+
+void MainWindow::ClearBrowsingData() {
+  if (private_) return;
+  if (MessageBoxW(hwnd_, Tr(Str::ClearDataConfirm), Tr(Str::ClearData), MB_YESNO | MB_ICONQUESTION | MB_DEFBUTTON2) != IDYES) {
+    return;
+  }
+  Profile& p = Profile::Get();
+  p.history.Clear();
+  p.SaveHistory();
+  p.permissions.ResetAll();
+  p.SavePermissions();
+  DownloadManager::Get().ClearFinished();
+  CefRefPtr<CefCookieManager> cookies = CefCookieManager::GetGlobalManager(nullptr);
+  if (cookies) cookies->DeleteCookies("", "", nullptr);
+  for (const Tab& t : tabs_list_) {
+    CefRefPtr<CefBrowserHost> host = t.browser->GetHost();
+    host->ExecuteDevToolsMethod(0, "Network.clearBrowserCache", nullptr);
+    host->ExecuteDevToolsMethod(0, "Network.clearBrowserCookies", nullptr);
+  }
 }
 
 void MainWindow::SetFullscreen(bool on) {
@@ -588,7 +626,8 @@ bool MainWindow::HandleShortcut(const CefKeyEvent& e) {
       case 'D': cmd = kCmdBookmark; break;
       case 'H': cmd = kCmdHistory; break;
       case 'J': cmd = kCmdDownloads; break;
-      case 'N': cmd = kCmdNewWindow; break;
+      case 'N': cmd = shift ? kCmdNewPrivateWindow : kCmdNewWindow; break;
+      case VK_DELETE: if (shift) cmd = kCmdClearData; break;
       case VK_TAB: cmd = shift ? kCmdPrevTab : kCmdNextTab; break;
       case VK_OEM_PLUS: cmd = kCmdZoomIn; break;
       case VK_OEM_MINUS: cmd = kCmdZoomOut; break;
@@ -627,6 +666,8 @@ void MainWindow::OnCommand(int id) {
     case kCmdBookmark: ToggleBookmark(); break;
     case kCmdMenu: ShowMainMenu(); break;
     case kCmdNewWindow: MainWindow::Create(""); break;
+    case kCmdNewPrivateWindow: MainWindow::Create("", true); break;
+    case kCmdClearData: ClearBrowsingData(); break;
     case kCmdCloseTab: CloseTabAt(active_); break;
     case kCmdCloseOthers:
       for (int i = static_cast<int>(tabs_list_.size()) - 1; i >= 0; --i) {
@@ -693,16 +734,18 @@ void MainWindow::ShowMainMenu() {
     AppendMenuW(ua, MF_STRING | (has_site && mode == m.mode ? MF_CHECKED : 0), m.id, Tr(m.label));
   }
   AppendMenuW(menu, MF_STRING, kCmdNewWindow, Tr(Str::NewWindow));
+  AppendMenuW(menu, MF_STRING, kCmdNewPrivateWindow, Tr(Str::NewPrivateWindow));
   AppendMenuW(menu, MF_SEPARATOR, 0, nullptr);
   AppendMenuW(menu, MF_STRING, kCmdBookmarks, Tr(Str::Bookmarks));
   AppendMenuW(menu, MF_STRING, kCmdHistory, Tr(Str::History));
   AppendMenuW(menu, MF_STRING, kCmdDownloads, Tr(Str::Downloads));
   AppendMenuW(menu, MF_SEPARATOR, 0, nullptr);
-  AppendMenuW(menu, MF_STRING | (web ? 0 : MF_GRAYED), kCmdSiteEditor, Tr(Str::SiteEditor));
-  AppendMenuW(menu, MF_POPUP | (web ? 0 : MF_GRAYED), reinterpret_cast<UINT_PTR>(ua), Tr(Str::UserAgent));
+  AppendMenuW(menu, MF_STRING | (web && !private_ ? 0 : MF_GRAYED), kCmdSiteEditor, Tr(Str::SiteEditor));
+  AppendMenuW(menu, MF_POPUP | (web && !private_ ? 0 : MF_GRAYED), reinterpret_cast<UINT_PTR>(ua), Tr(Str::UserAgent));
   AppendMenuW(menu, MF_STRING, kCmdDevTools, Tr(Str::DevTools));
   AppendMenuW(menu, MF_STRING | (fullscreen_ ? MF_CHECKED : 0), kCmdFullscreen, Tr(Str::Fullscreen));
   AppendMenuW(menu, MF_SEPARATOR, 0, nullptr);
+  AppendMenuW(menu, MF_STRING | (private_ ? MF_GRAYED : 0), kCmdClearData, Tr(Str::ClearData));
   AppendMenuW(menu, MF_STRING, kCmdSettings, Tr(Str::Settings));
   AppendMenuW(menu, MF_STRING, kCmdExit, Tr(Str::Exit));
   RECT r;

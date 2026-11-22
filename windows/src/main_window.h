@@ -6,13 +6,15 @@
 #include <vector>
 
 #include "client.h"
+#include "core/permission_policy.h"
 #include "include/cef_browser.h"
+#include "include/cef_request_context.h"
 
 namespace mex {
 
 class MainWindow : public ClientDelegate {
  public:
-  static MainWindow* Create(const std::string& url);
+  static MainWindow* Create(const std::string& url, bool is_private = false);
   static size_t Count();
   static void RegisterWindowClass(HINSTANCE instance);
   static MainWindow* Last();
@@ -31,6 +33,8 @@ class MainWindow : public ClientDelegate {
   void OpenInNewTab(const std::string& url, bool foreground) override { AddTab(url, foreground); }
   bool HandleShortcut(const CefKeyEvent& event) override;
   void ShowDevTools(CefRefPtr<CefBrowser> browser, const CefPoint& inspect_at) override;
+  bool IsPrivate() const override { return private_; }
+  PermissionPolicyStore& Permissions() override;
 
  private:
   struct Tab {
@@ -52,7 +56,8 @@ class MainWindow : public ClientDelegate {
   static LRESULT CALLBACK TabsProc(HWND hwnd, UINT msg, WPARAM wp, LPARAM lp, UINT_PTR id, DWORD_PTR ref);
   LRESULT HandleMessage(UINT msg, WPARAM wp, LPARAM lp);
 
-  bool Init(const std::string& url);
+  bool Init(const std::string& url, bool is_private);
+  void ClearBrowsingData();
   void CreateControls();
   void Layout();
   RECT BrowserRect() const;
@@ -93,6 +98,9 @@ class MainWindow : public ClientDelegate {
   bool closing_ = false;
   bool destroyed_ = false;
   bool destroying_ = false;
+  bool private_ = false;
+  CefRefPtr<CefRequestContext> context_;
+  PermissionPolicyStore private_permissions_;
   WINDOWPLACEMENT saved_placement_{};
   LONG_PTR saved_style_ = 0;
   std::vector<Tab> tabs_list_;

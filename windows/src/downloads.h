@@ -22,6 +22,7 @@ struct DownloadRecord {
   int64_t finished = 0;
   DownloadState state = DownloadState::kDownloading;
   std::string note;
+  bool is_private = false;
   CefRefPtr<CefDownloadItemCallback> callback;
 };
 
@@ -30,8 +31,10 @@ class DownloadManager {
   static DownloadManager& Get();
   void Load();
   void Save() const;
-  void Update(CefRefPtr<CefDownloadItem> item, CefRefPtr<CefDownloadItemCallback> callback);
-  void AddBlocked(const std::string& url, const std::string& filename, const std::string& note);
+  void Update(CefRefPtr<CefDownloadItem> item, CefRefPtr<CefDownloadItemCallback> callback, bool is_private);
+  void RemoveFinishedPrivate();
+  void AddBlocked(const std::string& url, const std::string& filename, const std::string& note,
+                  bool is_private = false);
   bool AllowNewDownload();
   void Pause(uint32_t id);
   void Resume(uint32_t id);

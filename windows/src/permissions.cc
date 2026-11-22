@@ -19,12 +19,12 @@ const wchar_t* PermissionLabel(const std::string& name) {
 }
 
 PermissionOutcome ResolvePermissions(HWND parent, const std::string& origin,
-                                     const std::vector<PermissionBit>& bits, uint64_t scope) {
-  Profile& profile = Profile::Get();
+                                     const std::vector<PermissionBit>& bits, uint64_t scope,
+                                     PermissionPolicyStore& store, bool persist) {
   PermissionOutcome outcome;
   std::vector<PermissionBit> to_prompt;
   for (const PermissionBit& bit : bits) {
-    switch (profile.permissions.Evaluate(origin, bit.name, scope)) {
+    switch (store.Evaluate(origin, bit.name, scope)) {
       case Decision::kAllow: outcome.allowed_mask |= bit.mask; break;
       case Decision::kPrompt: to_prompt.push_back(bit); break;
       case Decision::kDeny:
@@ -49,11 +49,11 @@ PermissionOutcome ResolvePermissions(HWND parent, const std::string& origin,
                         : answer == IDNO ? PromptResult::kDeny
                                          : PromptResult::kDismiss;
   for (const PermissionBit& bit : to_prompt) {
-    profile.permissions.Record(origin, bit.name, scope, result);
+    store.Record(origin, bit.name, scope, result);
     if (result == PromptResult::kAllowOnce) outcome.allowed_mask |= bit.mask;
   }
   outcome.dismissed = result == PromptResult::kDismiss;
-  profile.SavePermissions();
+  if (persist) Profile::Get().SavePermissions();
   return outcome;
 }
 

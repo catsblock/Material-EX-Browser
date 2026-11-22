@@ -40,6 +40,7 @@ void DownloadManager::Load() {
 void DownloadManager::Save() const {
   std::string out;
   for (const DownloadRecord& r : records_) {
+    if (r.is_private) continue;
     DownloadState state = r.state;
     if (state == DownloadState::kDownloading || state == DownloadState::kPaused) state = DownloadState::kInterrupted;
     out += JoinRow({r.url, r.filename, Narrow(r.path), std::to_string(r.received), std::to_string(r.total),
@@ -64,7 +65,8 @@ const DownloadRecord* DownloadManager::Find(uint32_t id) const {
   return nullptr;
 }
 
-void DownloadManager::Update(CefRefPtr<CefDownloadItem> item, CefRefPtr<CefDownloadItemCallback> callback) {
+void DownloadManager::Update(CefRefPtr<CefDownloadItem> item, CefRefPtr<CefDownloadItemCallback> callback,
+                             bool is_private) {
   if (!item->IsValid()) return;
   DownloadRecord* r = FindMutable(item->GetId());
   if (!r) {
@@ -72,6 +74,7 @@ void DownloadManager::Update(CefRefPtr<CefDownloadItem> item, CefRefPtr<CefDownl
     r = &records_.back();
     r->id = item->GetId();
     r->started = NowSeconds();
+    r->is_private = is_private;
   }
   r->url = item->GetURL().ToString();
   std::wstring path = item->GetFullPath().ToWString();
@@ -102,7 +105,8 @@ void DownloadManager::Update(CefRefPtr<CefDownloadItem> item, CefRefPtr<CefDownl
   if (r->state != DownloadState::kDownloading && r->state != DownloadState::kPaused) Save();
 }
 
-void DownloadManager::AddBlocked(const std::string& url, const std::string& filename, const std::string& note) {
+void DownloadManager::AddBlocked(const std::string& url, const std::string& filename, const std::string& note,
+                                 bool is_private) {
   DownloadRecord r;
   r.id = next_blocked_id_++;
   r.url = url;
@@ -110,6 +114,7 @@ void DownloadManager::AddBlocked(const std::string& url, const std::string& file
   r.state = DownloadState::kBlocked;
   r.started = r.finished = NowSeconds();
   r.note = note;
+  r.is_private = is_private;
   records_.push_back(std::move(r));
   Save();
 }
@@ -155,6 +160,12 @@ void DownloadManager::ClearFinished() {
   records_.erase(std::remove_if(records_.begin(), records_.end(), [](const DownloadRecord& r) { return !r.callback; }),
                  records_.end());
   Save();
+}
+
+void DownloadManager::RemoveFinishedPrivate() {
+  records_.erase(std::remove_if(records_.begin(), records_.end(),
+                                [](const DownloadRecord& r) { return r.is_private && !r.callback; }),
+                 records_.end());
 }
 
 void DownloadManager::MarkAllInterrupted() {

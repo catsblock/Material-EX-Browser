@@ -12,6 +12,10 @@ namespace mex {
   X(Home, L"Home")                                                                               \
   X(NewTab, L"New tab")                                                                          \
   X(NewWindow, L"New window")                                                                    \
+  X(NewPrivateWindow, L"New private window")                                                     \
+  X(PrivateSuffix, L"Private")                                                                   \
+  X(ClearData, L"Clear browsing data")                                                           \
+  X(ClearDataConfirm, L"Clear history, cookies, cache, the download list and saved site permissions? Downloaded files are kept.") \
   X(CloseTab, L"Close tab")                                                                      \
   X(CloseOtherTabs, L"Close other tabs")                                                         \
   X(Menu, L"Menu")                                                                               \

@@ -22,6 +22,7 @@ struct PermissionOutcome {
 
 const wchar_t* PermissionLabel(const std::string& name);
 PermissionOutcome ResolvePermissions(HWND parent, const std::string& origin,
-                                     const std::vector<PermissionBit>& bits, uint64_t scope);
+                                     const std::vector<PermissionBit>& bits, uint64_t scope,
+                                     PermissionPolicyStore& store, bool persist);
 
 }  // namespace mex

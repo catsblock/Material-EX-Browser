@@ -86,7 +86,7 @@ void Client::ClosePopups() {
 void Client::OnBeforeClose(CefRefPtr<CefBrowser> browser) {
   CEF_REQUIRE_UI_THREAD();
   LogLine("BeforeClose id=" + std::to_string(browser->GetIdentifier()));
-  Profile::Get().permissions.ClearScope(static_cast<uint64_t>(browser->GetIdentifier()));
+  delegate_->Permissions().ClearScope(static_cast<uint64_t>(browser->GetIdentifier()));
   popups_.erase(std::remove_if(popups_.begin(), popups_.end(),
                                [&](const CefRefPtr<CefBrowser>& b) { return b->IsSame(browser); }),
                 popups_.end());
@@ -142,7 +142,7 @@ bool Client::OnBeforeDownload(CefRefPtr<CefBrowser> browser, CefRefPtr<CefDownlo
   std::string mime = item->GetMimeType().ToString();
 
   if (!manager.AllowNewDownload()) {
-    manager.AddBlocked(url, name, Narrow(Tr(Str::DownloadBlockedMany)));
+    manager.AddBlocked(url, name, Narrow(Tr(Str::DownloadBlockedMany)), delegate_->IsPrivate());
     return true;
   }
   bool dangerous = IsDangerousExtension(name);
@@ -152,7 +152,7 @@ bool Client::OnBeforeDownload(CefRefPtr<CefBrowser> browser, CefRefPtr<CefDownlo
     std::wstring text = mismatch ? Format(Tr(Str::MimeMismatchBody), Widen(name), Widen(mime), source)
                                  : Format(Tr(Str::DangerBody), Widen(name), source);
     if (!Ask(delegate_->Handle(), text, Tr(Str::DangerTitle))) {
-      manager.AddBlocked(url, name, "user declined");
+      manager.AddBlocked(url, name, "user declined", delegate_->IsPrivate());
       return true;
     }
   }
@@ -167,7 +167,7 @@ bool Client::OnBeforeDownload(CefRefPtr<CefBrowser> browser, CefRefPtr<CefDownlo
 void Client::OnDownloadUpdated(CefRefPtr<CefBrowser>, CefRefPtr<CefDownloadItem> item,
                                CefRefPtr<CefDownloadItemCallback> callback) {
   CEF_REQUIRE_UI_THREAD();
-  DownloadManager::Get().Update(item, callback);
+  DownloadManager::Get().Update(item, callback, delegate_->IsPrivate());
 }
 
 namespace {
@@ -204,7 +204,8 @@ bool Client::OnShowPermissionPrompt(CefRefPtr<CefBrowser> browser, uint64_t, con
   uint32_t known = 0;
   for (const PermissionBit& b : bits) known |= b.mask;
   PermissionOutcome outcome = ResolvePermissions(delegate_->Handle(), OriginOf(requesting_origin.ToString()), bits,
-                                                 static_cast<uint64_t>(browser->GetIdentifier()));
+                                                 static_cast<uint64_t>(browser->GetIdentifier()),
+                                                 delegate_->Permissions(), !delegate_->IsPrivate());
   bool all_allowed = known == requested_permissions && known != 0 && outcome.allowed_mask == known;
   callback->Continue(all_allowed ? CEF_PERMISSION_RESULT_ACCEPT
                      : outcome.dismissed ? CEF_PERMISSION_RESULT_DISMISS
@@ -228,7 +229,8 @@ bool Client::OnRequestMediaAccessPermission(CefRefPtr<CefBrowser> browser, CefRe
                     "screen-capture"});
   }
   PermissionOutcome outcome = ResolvePermissions(delegate_->Handle(), OriginOf(requesting_url.ToString()), bits,
-                                                 static_cast<uint64_t>(browser->GetIdentifier()));
+                                                 static_cast<uint64_t>(browser->GetIdentifier()),
+                                                 delegate_->Permissions(), !delegate_->IsPrivate());
   uint32_t allowed = 0;
   for (const PermissionBit& b : bits) {
     if (outcome.allowed_mask & b.mask) allowed |= b.mask;

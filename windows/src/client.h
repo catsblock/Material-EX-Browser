@@ -5,6 +5,7 @@
 #include <string>
 #include <vector>
 
+#include "core/permission_policy.h"
 #include "include/cef_client.h"
 #include "include/cef_life_span_handler.h"
 
@@ -25,6 +26,8 @@ class ClientDelegate {
   virtual void OpenInNewTab(const std::string& url, bool foreground) = 0;
   virtual bool HandleShortcut(const CefKeyEvent& event) = 0;
   virtual void ShowDevTools(CefRefPtr<CefBrowser> browser, const CefPoint& inspect_at) = 0;
+  virtual bool IsPrivate() const = 0;
+  virtual PermissionPolicyStore& Permissions() = 0;
 };
 
 class Client : public CefClient,
