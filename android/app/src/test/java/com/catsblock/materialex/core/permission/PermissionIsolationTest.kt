@@ -69,3 +69,64 @@ class PermissionIsolationTest {
         assertFalse(broker.isTemporarilyAllowed(site, PermissionType.CAMERA, "private"))
     }
 }
+
+@OptIn(ExperimentalCoroutinesApi::class)
+class PermissionRevocationTest {
+    private val site = "https://example.com"
+
+    @Test
+    fun activeUseIsTakenOnlyForMatchingProfileOriginAndType() {
+        val use = ActivePermissionUse()
+        use.record("t1", "default", site, PermissionType.CAMERA)
+        use.record("t2", "default", site, PermissionType.LOCATION)
+        use.record("t3", "private", site, PermissionType.CAMERA)
+        use.record("t4", "default", "https://other.com", PermissionType.CAMERA)
+        assertEquals(setOf("t1"), use.take(Revocation("default", site, PermissionType.CAMERA)))
+        assertEquals(emptySet<String>(), use.take(Revocation("default", site, PermissionType.CAMERA)))
+        assertEquals(setOf("t2"), use.take(Revocation("default", site, null)))
+        assertEquals(setOf("t4"), use.take(Revocation("default", null, null)))
+        assertEquals(setOf("t3"), use.take(Revocation("private", null, null)))
+    }
+
+    @Test
+    fun navigatingAwayOrClosingForgetsUse() {
+        val use = ActivePermissionUse()
+        use.record("t1", "default", site, PermissionType.CAMERA)
+        use.dropOutside("t1", site)
+        assertEquals(setOf("t1"), use.take(Revocation("default", site, null)))
+        use.record("t1", "default", site, PermissionType.CAMERA)
+        use.dropOutside("t1", "https://other.com")
+        assertEquals(emptySet<String>(), use.take(Revocation("default", site, null)))
+        use.record("t2", "default", site, PermissionType.CAMERA)
+        use.dropTab("t2")
+        assertEquals(emptySet<String>(), use.take(Revocation("default", null, null)))
+    }
+
+    @Test
+    fun revokingAnAllowedPermissionNotifiesAndOtherChangesDoNot() = runTest {
+        val manager = PermissionManager(InMemoryPermissionStore())
+        val seen = mutableListOf<Revocation>()
+        manager.onRevoked = { seen += it }
+        manager.setState("default", site, PermissionType.CAMERA, PermissionState.ALLOW)
+        assertTrue(seen.isEmpty())
+        manager.setState("default", site, PermissionType.CAMERA, PermissionState.DENY)
+        assertEquals(listOf(Revocation("default", site, PermissionType.CAMERA)), seen)
+        manager.setState("default", site, PermissionType.CAMERA, PermissionState.ASK)
+        assertEquals(1, seen.size)
+        manager.clearProfile("default")
+        assertEquals(Revocation("default", null, null), seen.last())
+    }
+
+    @Test
+    fun revokingTemporaryGrantsNotifiesWithTheScopeProfile() = runTest {
+        val broker = PermissionBroker(PermissionManager(InMemoryPermissionStore()), "default", { "p1" })
+        val seen = mutableListOf<Revocation>()
+        broker.onTemporaryRevoked = { seen += it }
+        broker.revokeTemporary(site, PermissionType.MICROPHONE, "tab")
+        broker.revokeTemporaryForOrigin(site, "tab")
+        assertEquals(
+            listOf(Revocation("p1", site, PermissionType.MICROPHONE), Revocation("p1", site, null)),
+            seen
+        )
+    }
+}

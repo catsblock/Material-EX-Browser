@@ -23,6 +23,8 @@ class PermissionBroker(
 
     val prompt: StateFlow<PermissionPrompt?> = current.asStateFlow()
 
+    var onTemporaryRevoked: ((Revocation) -> Unit)? = null
+
     suspend fun resolve(requestOrigin: String?, type: PermissionType, scopeId: String = ""): Boolean {
         val origin = Origin.normalize(requestOrigin) ?: return false
         if (type.requiresSecureOrigin && !Origin.isSecure(origin)) return false
@@ -59,10 +61,17 @@ class PermissionBroker(
     fun isTemporarilyAllowed(origin: String, type: PermissionType, scopeId: String): Boolean =
         temporary.isGranted(profileOf(scopeId), scopeId, origin, type, clock())
 
-    fun revokeTemporary(origin: String, type: PermissionType, scopeId: String) =
-        temporary.revoke(profileOf(scopeId), scopeId, origin, type)
+    fun revokeTemporary(origin: String, type: PermissionType, scopeId: String) {
+        val profile = profileOf(scopeId)
+        temporary.revoke(profile, scopeId, origin, type)
+        onTemporaryRevoked?.invoke(Revocation(profile, origin, type))
+    }
 
-    fun revokeTemporaryForOrigin(origin: String, scopeId: String) = temporary.revokeOrigin(profileOf(scopeId), origin)
+    fun revokeTemporaryForOrigin(origin: String, scopeId: String) {
+        val profile = profileOf(scopeId)
+        temporary.revokeOrigin(profile, origin)
+        onTemporaryRevoked?.invoke(Revocation(profile, origin, null))
+    }
 
     fun tabClosed(scopeId: String) = temporary.revokeScope(scopeId)
 

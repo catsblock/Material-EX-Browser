@@ -60,8 +60,19 @@ class PermissionManager(private val store: PermissionStore) {
     suspend fun choose(profileId: String, origin: String, type: PermissionType, choice: PromptChoice): PermissionRecord =
         update(profileId, origin, type) { PermissionPolicy.applyChoice(it, choice) }
 
-    suspend fun setState(profileId: String, origin: String, type: PermissionType, state: PermissionState): PermissionRecord =
-        update(profileId, origin, type) { PermissionPolicy.setState(it, state) }
+    var onRevoked: ((Revocation) -> Unit)? = null
+
+    suspend fun setState(profileId: String, origin: String, type: PermissionType, state: PermissionState): PermissionRecord {
+        var previous = PermissionRecord()
+        val updated = update(profileId, origin, type) {
+            previous = it
+            PermissionPolicy.setState(it, state)
+        }
+        if (previous.state == PermissionState.ALLOW && updated.state != PermissionState.ALLOW) {
+            onRevoked?.invoke(Revocation(profileId, origin, type))
+        }
+        return updated
+    }
 
     suspend fun resetCounter(profileId: String, origin: String, type: PermissionType): PermissionRecord =
         update(profileId, origin, type) { PermissionPolicy.resetCounter(it) }
@@ -71,7 +82,10 @@ class PermissionManager(private val store: PermissionStore) {
         return PermissionType.entries.associateWith { stored[it] ?: PermissionRecord() }
     }
 
-    suspend fun clearProfile(profileId: String) = store.clearProfile(profileId)
+    suspend fun clearProfile(profileId: String) {
+        store.clearProfile(profileId)
+        onRevoked?.invoke(Revocation(profileId, null, null))
+    }
 
     private suspend fun update(
         profileId: String,

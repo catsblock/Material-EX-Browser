@@ -6,7 +6,9 @@ import com.catsblock.materialex.core.memory.MemoryBudget
 import com.catsblock.materialex.core.extension.ExtensionInfo
 import com.catsblock.materialex.core.extension.ExtensionPrompt
 import com.catsblock.materialex.core.permission.PermissionBroker
+import com.catsblock.materialex.core.permission.ActivePermissionUse
 import com.catsblock.materialex.core.permission.EPHEMERAL_PERMISSION_PROFILE
+import com.catsblock.materialex.core.permission.Revocation
 import com.catsblock.materialex.core.profile.ProfileRules
 import com.catsblock.materialex.core.siteedit.SiteStyleRules
 import com.catsblock.materialex.core.siteedit.UaChoice
@@ -15,6 +17,7 @@ import com.catsblock.materialex.core.security.BypassGate
 import com.catsblock.materialex.core.security.ThreatInfo
 import com.catsblock.materialex.core.security.ThreatKind
 import com.catsblock.materialex.core.permission.PermissionManager
+import com.catsblock.materialex.core.permission.Origin
 import com.catsblock.materialex.core.permission.PermissionType
 import com.catsblock.materialex.core.popup.PopupPolicy
 import com.catsblock.materialex.core.popup.PopupWindow
@@ -91,6 +94,40 @@ class BrowserEngine(context: Context, private val permissionManager: PermissionM
     private var fullscreenId: String? = null
 
     val permissions = PermissionBroker(permissionManager, DEFAULT_PROFILE, ::permissionProfileOf)
+    private val permissionUse = ActivePermissionUse()
+
+    init {
+        permissionManager.onRevoked = { revocation -> scope.launch { applyRevocation(revocation) } }
+        permissions.onTemporaryRevoked = { revocation -> scope.launch { applyRevocation(revocation) } }
+    }
+
+    private fun trackUse(tabId: String, uri: String, type: PermissionType) {
+        val origin = Origin.normalize(uri) ?: return
+        permissionUse.record(tabId, permissionProfileOf(tabId), origin, type)
+    }
+
+    private fun applyRevocation(revocation: Revocation) {
+        if (revocation.origin != null) resetEngineGrant(revocation.origin, revocation.type)
+        for (tabId in permissionUse.take(revocation)) {
+            (sessions[tabId] ?: popupSessions[tabId])?.reload()
+        }
+    }
+
+    private fun resetEngineGrant(origin: String, type: PermissionType?) {
+        runtime.storageController.getPermissions(origin).accept({ stored ->
+            stored?.forEach { perm ->
+                val mapped = when (perm.permission) {
+                    GeckoSession.PermissionDelegate.PERMISSION_GEOLOCATION -> PermissionType.LOCATION
+                    GeckoSession.PermissionDelegate.PERMISSION_DESKTOP_NOTIFICATION -> PermissionType.NOTIFICATIONS
+                    GeckoSession.PermissionDelegate.PERMISSION_PERSISTENT_STORAGE -> PermissionType.PERSISTENT_STORAGE
+                    else -> null
+                }
+                if (mapped != null && (type == null || type == mapped)) {
+                    runtime.storageController.setPermission(perm, GeckoSession.PermissionDelegate.ContentPermission.VALUE_PROMPT)
+                }
+            }
+        }, { })
+    }
     val osBlocked: StateFlow<Boolean> = osBlockedFlow.asStateFlow()
     val chromeVisible: StateFlow<Boolean> = chromeFlow.asStateFlow()
     val atTop: StateFlow<Boolean> = atTopFlow.asStateFlow()
@@ -390,6 +427,7 @@ class BrowserEngine(context: Context, private val permissionManager: PermissionM
         trackers.remove(id)
         scrollTops.remove(id)
         siteUaApplied.remove(id)
+        permissionUse.dropTab(id)
         clearEphemeralPermissionsIfIdle()
     }
 
@@ -626,6 +664,7 @@ class BrowserEngine(context: Context, private val permissionManager: PermissionM
                 change(id) { it.copy(url = shown) }
                 manager.update(id, url = shown)
                 permissions.navigated(id, shown)
+                permissionUse.dropOutside(id, Origin.normalize(shown))
             }
 
             override fun onLoadRequest(
@@ -770,6 +809,7 @@ class BrowserEngine(context: Context, private val permissionManager: PermissionM
                 val result = GeckoResult<Int>()
                 scope.launch {
                     val allowed = permissions.resolve(perm.uri, type, id)
+                    if (allowed) trackUse(id, perm.uri, type)
                     result.complete(
                         if (allowed) {
                             GeckoSession.PermissionDelegate.ContentPermission.VALUE_ALLOW
@@ -793,6 +833,8 @@ class BrowserEngine(context: Context, private val permissionManager: PermissionM
                     val audioSource = audio?.firstOrNull()
                     val videoAllowed = videoSource != null && permissions.resolve(uri, PermissionType.CAMERA, id)
                     val audioAllowed = audioSource != null && permissions.resolve(uri, PermissionType.MICROPHONE, id)
+                    if (videoAllowed) trackUse(id, uri, PermissionType.CAMERA)
+                    if (audioAllowed) trackUse(id, uri, PermissionType.MICROPHONE)
                     if (videoAllowed || audioAllowed) {
                         callback.grant(
                             if (videoAllowed) videoSource else null,
