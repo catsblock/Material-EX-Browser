@@ -71,6 +71,8 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.unit.dp
 import com.catsblock.materialex.R
+import com.catsblock.materialex.core.settings.SearchEntry
+import com.catsblock.materialex.core.settings.SettingsSearch
 import com.catsblock.materialex.core.SearchEngine
 import com.catsblock.materialex.core.SuggestionProvider
 import com.catsblock.materialex.data.BrowserSettings
@@ -172,9 +174,7 @@ fun SettingsScreen(
                         }
                     }
                 } else {
-                    val matches = SettingsCategory.index.filter {
-                        stringResource(it.first).contains(needle, ignoreCase = true)
-                    }
+                    val matches = settingsMatches(needle)
                     if (matches.isEmpty()) {
                         Text(stringResource(R.string.settings_no_results), style = MaterialTheme.typography.bodyLarge)
                     }
@@ -573,7 +573,7 @@ private fun CategoryPane(
                 ) { onSelect(entry) }
             }
         } else {
-            val matches = SettingsCategory.index.filter { stringResource(it.first).contains(needle, ignoreCase = true) }
+            val matches = settingsMatches(needle)
             if (matches.isEmpty()) {
                 Text(stringResource(R.string.settings_no_results), style = MaterialTheme.typography.bodyLarge)
             }
@@ -587,6 +587,19 @@ private fun CategoryPane(
             }
         }
     }
+}
+
+@Composable
+private fun settingsMatches(needle: String): List<Pair<Int, SettingsCategory>> {
+    val entries = SettingsCategory.index.map { (label, target) ->
+        SearchEntry(
+            title = stringResource(label),
+            description = stringResource(target.summary),
+            category = stringResource(target.title),
+            payload = label to target
+        )
+    }
+    return SettingsSearch.results(needle, entries).map { it.payload }
 }
 
 @Composable
