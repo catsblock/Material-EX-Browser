@@ -50,7 +50,8 @@ if(MEX_BUILD_APP AND WIN32)
     src/permissions.cc
     src/profile.cc
     src/platform.cc
-    src/strings.cc)
+    src/strings.cc
+    src/strings_i18n.cc)
 
   if(USE_SANDBOX)
     add_library(materialex SHARED ${MEX_APP_SOURCES})
