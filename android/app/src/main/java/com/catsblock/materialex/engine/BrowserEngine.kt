@@ -307,7 +307,8 @@ class BrowserEngine(context: Context, private val permissionManager: PermissionM
         trimLevel = 0
     }
     var androidPermissionRequester: ((Array<String>, (Boolean) -> Unit) -> Unit)? = null
-    var onDownload: ((WebResponse) -> Unit)? = null
+    var onDownload: ((WebResponse, Boolean) -> Unit)? = null
+    var onPrivateSessionEnded: (() -> Unit)? = null
     var onPageVisited: ((url: String, title: String) -> Unit)? = null
 
     val activeProfile: StateFlow<String> = profileFlow.asStateFlow()
@@ -352,6 +353,7 @@ class BrowserEngine(context: Context, private val permissionManager: PermissionM
             if (manager.state.value.tabs.none { it.isPrivate || !ProfileRules.isRealProfile(it.profileId) }) {
                 permissionManager.clearProfile(EPHEMERAL_PERMISSION_PROFILE)
                 permissions.temporary.revokeProfile(EPHEMERAL_PERMISSION_PROFILE)
+                onPrivateSessionEnded?.invoke()
             }
         }
     }
@@ -885,7 +887,7 @@ class BrowserEngine(context: Context, private val permissionManager: PermissionM
         }
         session.contentDelegate = object : GeckoSession.ContentDelegate {
             override fun onExternalResponse(session: GeckoSession, response: WebResponse) {
-                onDownload?.invoke(response)
+                onDownload?.invoke(response, isPrivateId(id))
             }
 
             override fun onCloseRequest(session: GeckoSession) {

@@ -57,7 +57,14 @@ class DownloadController(
         pausedIds.remove(id)
     }
 
-    fun start(response: WebResponse, verdict: DownloadPolicy.Verdict = DownloadPolicy.Verdict.ALLOW) {
+    suspend fun purgePrivate() = dao.purgePrivate()
+
+    fun start(
+        response: WebResponse,
+        verdict: DownloadPolicy.Verdict = DownloadPolicy.Verdict.ALLOW,
+        isPrivate: Boolean = false
+    ) {
+        val recordedSource = if (isPrivate) PRIVATE_SOURCE else response.uri
         val uri = response.uri
         if (!uri.startsWith("https://") && !uri.startsWith("http://")) return
         val body = response.body ?: return
@@ -67,7 +74,7 @@ class DownloadController(
             scope.launch {
                 dao.insert(
                     DownloadRecord(
-                        fileName = blockedName, sourceUrl = uri, mimeType = "application/octet-stream", fileUri = "",
+                        fileName = blockedName, sourceUrl = recordedSource, mimeType = "application/octet-stream", fileUri = "",
                         totalBytes = -1, downloadedBytes = 0, status = DownloadStatus.BLOCKED.name, createdAt = System.currentTimeMillis()
                     )
                 )
@@ -78,7 +85,7 @@ class DownloadController(
         val mime = headers["content-type"]?.substringBefore(';')?.trim()?.ifEmpty { null } ?: "application/octet-stream"
         val total = headers["content-length"]?.toLongOrNull() ?: -1L
         val name = DownloadNames.resolve(headers["content-disposition"], uri)
-        scope.launch { run(uri, name, mime, total, body) }
+        scope.launch { run(recordedSource, name, mime, total, body) }
     }
 
     fun cancel(id: Long) {
@@ -213,6 +220,7 @@ class DownloadController(
     }
 
     private companion object {
+        const val PRIVATE_SOURCE = "private:"
         const val BUFFER_SIZE = 32 * 1024
         const val PUBLISH_MS = 250L
         const val PERSIST_MS = 1000L

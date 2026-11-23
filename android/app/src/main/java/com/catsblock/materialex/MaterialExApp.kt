@@ -42,14 +42,16 @@ class MaterialExApp : Application() {
     val engine: BrowserEngine by lazy {
         BrowserEngine(this, permissionManager).also { engine ->
             engine.setupExtensions()
-            engine.onDownload = { response ->
+            engine.onPrivateSessionEnded = { ioScope.launch { downloads.purgePrivate() } }
+            engine.onDownload = { response, isPrivate ->
                 downloads.start(
                     response,
                     com.catsblock.materialex.core.DownloadPolicy.evaluate(
                         engine.lastUserGestureAt(),
                         System.currentTimeMillis(),
                         downloads.activeCount()
-                    )
+                    ),
+                    isPrivate
                 )
             }
             engine.onPageVisited = { url, title -> ioScope.launch { library.recordVisit(url, title) } }
@@ -60,6 +62,7 @@ class MaterialExApp : Application() {
         super.onCreate()
         ioScope.launch {
             downloads.recoverInterrupted()
+            downloads.purgePrivate()
             library.purgeHistory(LibraryRepository.DEFAULT_RETENTION_DAYS)
             library.purgeSearches(LibraryRepository.DEFAULT_RETENTION_DAYS)
             if (!settings.shortcutsSeeded()) {

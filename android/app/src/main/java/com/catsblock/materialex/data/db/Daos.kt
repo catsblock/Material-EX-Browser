@@ -151,4 +151,7 @@ interface DownloadDao {
 
     @Query("DELETE FROM downloads WHERE status != 'ACTIVE'")
     suspend fun clearFinished()
+
+    @Query("DELETE FROM downloads WHERE sourceUrl = 'private:' AND status != 'ACTIVE'")
+    suspend fun purgePrivate()
 }
