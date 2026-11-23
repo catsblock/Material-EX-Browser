@@ -182,8 +182,8 @@ class BrowserEngine(context: Context, private val permissionManager: PermissionM
                     version = it.metaData.version,
                     enabled = it.metaData.enabled,
                     description = it.metaData.description.orEmpty(),
-                    permissions = it.metaData.permissions.toList(),
-                    origins = it.metaData.origins.toList()
+                    permissions = (it.metaData.requiredPermissions.toList() + it.metaData.grantedOptionalPermissions.toList()).distinct(),
+                    origins = (it.metaData.requiredOrigins.toList() + it.metaData.grantedOptionalOrigins.toList()).distinct()
                 )
             }
         }, { extensionFlow.value = emptyList() })
