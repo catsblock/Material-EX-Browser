@@ -286,4 +286,12 @@
     <string name="find_next">Volgende overeenkomst</string>
     <string name="download_search_hint">Downloads zoeken</string>
     <string name="download_no_matches">Geen overeenkomende downloads</string>
+    <string name="ext_details_permissions">Machtigingen</string>
+    <string name="ext_details_none">Deze extensie vraagt geen speciale machtigingen.</string>
+    <string name="ext_compat_note">Extensies draaien in de Firefox-engine. Sommige functies die alleen op desktop bestaan, zijn mogelijk niet beschikbaar op Android.</string>
+    <string name="ext_check_updates">Controleren op updates</string>
+    <string name="ext_update_checking">Controleren op updates…</string>
+    <string name="ext_update_done">Bijgewerkt naar de nieuwste versie.</string>
+    <string name="ext_update_latest">Al up-to-date.</string>
+    <string name="ext_update_failed">Controleren op updates is mislukt.</string>
 </resources>

@@ -4,8 +4,15 @@ data class ExtensionInfo(
     val id: String,
     val name: String,
     val version: String,
-    val enabled: Boolean
-)
+    val enabled: Boolean,
+    val description: String = "",
+    val permissions: List<String> = emptyList(),
+    val origins: List<String> = emptyList()
+) {
+    val broadAccess: Boolean get() = ExtensionRules.hasBroadAccess(origins)
+}
+
+enum class ExtensionUpdateStatus { CHECKING, UPDATED, LATEST, FAILED }
 
 data class ExtensionPrompt(
     val extensionName: String,

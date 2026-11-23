@@ -4,6 +4,7 @@ import android.content.Context
 import com.catsblock.materialex.core.ScrollChromeTracker
 import com.catsblock.materialex.core.memory.MemoryBudget
 import com.catsblock.materialex.core.extension.ExtensionInfo
+import com.catsblock.materialex.core.extension.ExtensionUpdateStatus
 import com.catsblock.materialex.core.extension.ExtensionPrompt
 import com.catsblock.materialex.core.permission.PermissionBroker
 import com.catsblock.materialex.core.permission.ActivePermissionUse
@@ -84,6 +85,7 @@ class BrowserEngine(context: Context, private val permissionManager: PermissionM
     private val extensionFlow = MutableStateFlow<List<ExtensionInfo>>(emptyList())
     private val extensionPromptFlow = MutableStateFlow<ExtensionPrompt?>(null)
     private val extensionErrorFlow = MutableStateFlow(false)
+    private val extensionUpdateFlow = MutableStateFlow<Map<String, ExtensionUpdateStatus>>(emptyMap())
     private var extensionDecision: GeckoResult<WebExtension.PermissionPromptResponse>? = null
     private val bypass = BypassGate()
     private val profileFlow = MutableStateFlow(ProfileRules.DEFAULT_ID)
@@ -144,6 +146,7 @@ class BrowserEngine(context: Context, private val permissionManager: PermissionM
     val extensions: StateFlow<List<ExtensionInfo>> = extensionFlow.asStateFlow()
     val extensionPrompt: StateFlow<ExtensionPrompt?> = extensionPromptFlow.asStateFlow()
     val extensionError: StateFlow<Boolean> = extensionErrorFlow.asStateFlow()
+    val extensionUpdates: StateFlow<Map<String, ExtensionUpdateStatus>> = extensionUpdateFlow.asStateFlow()
 
     private val extensionPromptDelegate = object : WebExtensionController.PromptDelegate {
         override fun onInstallPromptRequest(
@@ -173,7 +176,15 @@ class BrowserEngine(context: Context, private val permissionManager: PermissionM
     fun refreshExtensions() {
         runtime.webExtensionController.list().accept({ list ->
             extensionFlow.value = (list ?: emptyList()).filter { it.id != SiteStyleBridge.EXTENSION_ID }.map {
-                ExtensionInfo(it.id, it.metaData.name ?: it.id, it.metaData.version, it.metaData.enabled)
+                ExtensionInfo(
+                    id = it.id,
+                    name = it.metaData.name ?: it.id,
+                    version = it.metaData.version,
+                    enabled = it.metaData.enabled,
+                    description = it.metaData.description.orEmpty(),
+                    permissions = it.metaData.permissions.toList(),
+                    origins = it.metaData.origins.toList()
+                )
             }
         }, { extensionFlow.value = emptyList() })
     }
@@ -198,6 +209,24 @@ class BrowserEngine(context: Context, private val permissionManager: PermissionM
             else controller.disable(target, WebExtensionController.EnableSource.USER)
             action.accept({ refreshExtensions() }, { refreshExtensions() })
         }, { refreshExtensions() })
+    }
+
+    fun checkExtensionUpdate(id: String) {
+        val controller = runtime.webExtensionController
+        extensionUpdateFlow.update { it + (id to ExtensionUpdateStatus.CHECKING) }
+        controller.list().accept({ list ->
+            val target = list?.firstOrNull { it.id == id }
+            if (target == null) {
+                extensionUpdateFlow.update { it + (id to ExtensionUpdateStatus.FAILED) }
+                return@accept
+            }
+            controller.update(target).accept({ updated ->
+                extensionUpdateFlow.update {
+                    it + (id to if (updated != null) ExtensionUpdateStatus.UPDATED else ExtensionUpdateStatus.LATEST)
+                }
+                refreshExtensions()
+            }, { extensionUpdateFlow.update { it + (id to ExtensionUpdateStatus.FAILED) } })
+        }, { extensionUpdateFlow.update { it + (id to ExtensionUpdateStatus.FAILED) } })
     }
 
     fun removeExtension(id: String) {

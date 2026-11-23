@@ -288,4 +288,12 @@
     <string name="find_next">Próximo resultado</string>
     <string name="download_search_hint">Pesquisar downloads</string>
     <string name="download_no_matches">Nenhum download correspondente</string>
+    <string name="ext_details_permissions">Permissões</string>
+    <string name="ext_details_none">Esta extensão não pede permissões especiais.</string>
+    <string name="ext_compat_note">As extensões rodam no mecanismo do Firefox. Alguns recursos exclusivos do computador podem não estar disponíveis no Android.</string>
+    <string name="ext_check_updates">Verificar atualizações</string>
+    <string name="ext_update_checking">Verificando atualizações…</string>
+    <string name="ext_update_done">Atualizada para a versão mais recente.</string>
+    <string name="ext_update_latest">Já está atualizada.</string>
+    <string name="ext_update_failed">Não foi possível verificar atualizações.</string>
 </resources>

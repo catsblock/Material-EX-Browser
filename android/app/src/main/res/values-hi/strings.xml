@@ -286,4 +286,12 @@
     <string name="find_next">अगला परिणाम</string>
     <string name="download_search_hint">डाउनलोड खोजें</string>
     <string name="download_no_matches">कोई मेल खाता डाउनलोड नहीं</string>
+    <string name="ext_details_permissions">अनुमतियाँ</string>
+    <string name="ext_details_none">यह एक्सटेंशन कोई विशेष अनुमति नहीं माँगता।</string>
+    <string name="ext_compat_note">एक्सटेंशन Firefox इंजन पर चलते हैं। कुछ केवल-डेस्कटॉप सुविधाएँ Android पर उपलब्ध नहीं हो सकतीं।</string>
+    <string name="ext_check_updates">अपडेट जाँचें</string>
+    <string name="ext_update_checking">अपडेट जाँचे जा रहे हैं…</string>
+    <string name="ext_update_done">नवीनतम संस्करण में अपडेट हो गया।</string>
+    <string name="ext_update_latest">पहले से अद्यतन है।</string>
+    <string name="ext_update_failed">अपडेट जाँचे नहीं जा सके।</string>
 </resources>

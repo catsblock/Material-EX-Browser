@@ -71,6 +71,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.unit.dp
 import com.catsblock.materialex.R
+import com.catsblock.materialex.core.extension.ExtensionUpdateStatus
 import com.catsblock.materialex.core.settings.SearchEntry
 import com.catsblock.materialex.core.settings.SettingsSearch
 import com.catsblock.materialex.core.SearchEngine
@@ -99,6 +100,8 @@ fun SettingsScreen(
     onInstallExtension: (String) -> Unit,
     onToggleExtension: (String, Boolean) -> Unit,
     onRemoveExtension: (String) -> Unit,
+    extensionUpdates: Map<String, ExtensionUpdateStatus>,
+    onCheckExtensionUpdate: (String) -> Unit,
     onClearData: suspend (com.catsblock.materialex.core.ClearSelection) -> Unit,
     onClose: () -> Unit
 ) {
@@ -409,7 +412,9 @@ fun SettingsScreen(
                     installFailed = extensionInstallFailed,
                     onInstall = onInstallExtension,
                     onToggle = onToggleExtension,
-                    onRemove = onRemoveExtension
+                    onRemove = onRemoveExtension,
+                    updateStatus = extensionUpdates,
+                    onCheckUpdate = onCheckExtensionUpdate
                 )
             }
             if (shown == SettingsCategory.ABOUT) {

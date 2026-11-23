@@ -228,6 +228,7 @@ class MainActivity : ComponentActivity() {
         var siteInfoOpen by rememberSaveable { mutableStateOf(false) }
         val extensions by app.engine.extensions.collectAsStateWithLifecycle()
         val extensionError by app.engine.extensionError.collectAsStateWithLifecycle()
+        val extensionUpdates by app.engine.extensionUpdates.collectAsStateWithLifecycle()
         val extensionPrompt by app.engine.extensionPrompt.collectAsStateWithLifecycle()
         extensionPrompt?.let { ExtensionPromptDialog(it) { allow -> app.engine.answerExtensionPrompt(allow) } }
         val prompt by app.engine.permissions.prompt.collectAsStateWithLifecycle()
@@ -261,6 +262,8 @@ class MainActivity : ComponentActivity() {
                 onInstallExtension = { app.engine.installExtension(it) },
                 onToggleExtension = { id, enabled -> app.engine.setExtensionEnabled(id, enabled) },
                 onRemoveExtension = { app.engine.removeExtension(it) },
+                extensionUpdates = extensionUpdates,
+                onCheckExtensionUpdate = { app.engine.checkExtensionUpdate(it) },
                 onClearData = { selection ->
                     if (selection.history) app.library.clearHistory()
                     if (selection.searches) app.library.clearSearches()

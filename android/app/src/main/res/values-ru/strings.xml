@@ -286,4 +286,12 @@
     <string name="find_next">Следующее совпадение</string>
     <string name="download_search_hint">Поиск загрузок</string>
     <string name="download_no_matches">Нет подходящих загрузок</string>
+    <string name="ext_details_permissions">Разрешения</string>
+    <string name="ext_details_none">Это расширение не запрашивает особых разрешений.</string>
+    <string name="ext_compat_note">Расширения работают на движке Firefox. Некоторые функции, доступные только на компьютере, могут быть недоступны на Android.</string>
+    <string name="ext_check_updates">Проверить обновления</string>
+    <string name="ext_update_checking">Проверка обновлений…</string>
+    <string name="ext_update_done">Обновлено до последней версии.</string>
+    <string name="ext_update_latest">Уже установлена последняя версия.</string>
+    <string name="ext_update_failed">Не удалось проверить обновления.</string>
 </resources>

@@ -288,4 +288,12 @@
     <string name="find_next">النتيجة التالية</string>
     <string name="download_search_hint">البحث في التنزيلات</string>
     <string name="download_no_matches">لا توجد تنزيلات مطابقة</string>
+    <string name="ext_details_permissions">الأذونات</string>
+    <string name="ext_details_none">لا تطلب هذه الإضافة أي أذونات خاصة.</string>
+    <string name="ext_compat_note">تعمل الإضافات على محرك Firefox. قد لا تتوفر بعض ميزات سطح المكتب على أندرويد.</string>
+    <string name="ext_check_updates">التحقق من التحديثات</string>
+    <string name="ext_update_checking">جارٍ التحقق من التحديثات…</string>
+    <string name="ext_update_done">تم التحديث إلى أحدث إصدار.</string>
+    <string name="ext_update_latest">الإصدار محدّث بالفعل.</string>
+    <string name="ext_update_failed">تعذّر التحقق من التحديثات.</string>
 </resources>

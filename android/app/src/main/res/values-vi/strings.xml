@@ -286,4 +286,12 @@
     <string name="find_next">Kết quả tiếp theo</string>
     <string name="download_search_hint">Tìm tệp tải xuống</string>
     <string name="download_no_matches">Không có tệp tải xuống phù hợp</string>
+    <string name="ext_details_permissions">Quyền</string>
+    <string name="ext_details_none">Tiện ích này không yêu cầu quyền đặc biệt nào.</string>
+    <string name="ext_compat_note">Tiện ích chạy trên công cụ Firefox. Một số tính năng chỉ có trên máy tính có thể không dùng được trên Android.</string>
+    <string name="ext_check_updates">Kiểm tra bản cập nhật</string>
+    <string name="ext_update_checking">Đang kiểm tra bản cập nhật…</string>
+    <string name="ext_update_done">Đã cập nhật lên phiên bản mới nhất.</string>
+    <string name="ext_update_latest">Đã là phiên bản mới nhất.</string>
+    <string name="ext_update_failed">Không thể kiểm tra bản cập nhật.</string>
 </resources>

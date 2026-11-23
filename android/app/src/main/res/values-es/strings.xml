@@ -286,4 +286,12 @@
     <string name="find_next">Coincidencia siguiente</string>
     <string name="download_search_hint">Buscar descargas</string>
     <string name="download_no_matches">No hay descargas coincidentes</string>
+    <string name="ext_details_permissions">Permisos</string>
+    <string name="ext_details_none">Esta extensión no solicita permisos especiales.</string>
+    <string name="ext_compat_note">Las extensiones se ejecutan en el motor de Firefox. Algunas funciones solo de escritorio pueden no estar disponibles en Android.</string>
+    <string name="ext_check_updates">Buscar actualizaciones</string>
+    <string name="ext_update_checking">Buscando actualizaciones…</string>
+    <string name="ext_update_done">Actualizada a la última versión.</string>
+    <string name="ext_update_latest">Ya está actualizada.</string>
+    <string name="ext_update_failed">No se pudo buscar actualizaciones.</string>
 </resources>

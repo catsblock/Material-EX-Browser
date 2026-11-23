@@ -286,4 +286,12 @@
     <string name="find_next">次の検索結果</string>
     <string name="download_search_hint">ダウンロードを検索</string>
     <string name="download_no_matches">一致するダウンロードはありません</string>
+    <string name="ext_details_permissions">権限</string>
+    <string name="ext_details_none">この拡張機能は特別な権限を要求しません。</string>
+    <string name="ext_compat_note">拡張機能は Firefox エンジン上で動作します。デスクトップ専用の機能は Android では使えない場合があります。</string>
+    <string name="ext_check_updates">更新を確認</string>
+    <string name="ext_update_checking">更新を確認しています…</string>
+    <string name="ext_update_done">最新バージョンに更新しました。</string>
+    <string name="ext_update_latest">すでに最新です。</string>
+    <string name="ext_update_failed">更新を確認できませんでした。</string>
 </resources>

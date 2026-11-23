@@ -286,4 +286,12 @@
     <string name="find_next">Наступний збіг</string>
     <string name="download_search_hint">Пошук завантажень</string>
     <string name="download_no_matches">Немає відповідних завантажень</string>
+    <string name="ext_details_permissions">Дозволи</string>
+    <string name="ext_details_none">Це розширення не запитує особливих дозволів.</string>
+    <string name="ext_compat_note">Розширення працюють на рушії Firefox. Деякі функції, доступні лише на комп’ютері, можуть бути недоступні в Android.</string>
+    <string name="ext_check_updates">Перевірити оновлення</string>
+    <string name="ext_update_checking">Перевірка оновлень…</string>
+    <string name="ext_update_done">Оновлено до останньої версії.</string>
+    <string name="ext_update_latest">Уже встановлено останню версію.</string>
+    <string name="ext_update_failed">Не вдалося перевірити оновлення.</string>
 </resources>

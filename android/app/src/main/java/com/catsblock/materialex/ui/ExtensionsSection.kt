@@ -31,6 +31,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.catsblock.materialex.R
+import com.catsblock.materialex.core.extension.ExtensionUpdateStatus
+import androidx.compose.foundation.verticalScroll
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.layout.heightIn
+import androidx.compose.foundation.clickable
 import com.catsblock.materialex.core.extension.ExtensionInfo
 import com.catsblock.materialex.core.extension.ExtensionPrompt
 import com.catsblock.materialex.core.extension.ExtensionRules
@@ -42,8 +47,11 @@ fun ExtensionsSection(
     installFailed: Boolean,
     onInstall: (String) -> Unit,
     onToggle: (String, Boolean) -> Unit,
-    onRemove: (String) -> Unit
+    onRemove: (String) -> Unit,
+    updateStatus: Map<String, ExtensionUpdateStatus>,
+    onCheckUpdate: (String) -> Unit
 ) {
+    var detailsId by rememberSaveable { mutableStateOf<String?>(null) }
     var address by rememberSaveable { mutableStateOf("") }
     val normalized = ExtensionRules.normalizeInstallUrl(address)
     val shown = ExtensionRules.sortedForDisplay(extensions)
@@ -66,7 +74,7 @@ fun ExtensionsSection(
                     Modifier.padding(start = 20.dp, end = 8.dp, top = 8.dp, bottom = 8.dp),
                     verticalAlignment = Alignment.CenterVertically
                 ) {
-                    Column(Modifier.weight(1f)) {
+                    Column(Modifier.weight(1f).clickable { detailsId = extension.id }) {
                         Text(extension.name, style = MaterialTheme.typography.titleMedium)
                         Text(
                             extension.version,
@@ -81,6 +89,14 @@ fun ExtensionsSection(
                 }
             }
         }
+    }
+    shown.firstOrNull { it.id == detailsId }?.let { extension ->
+        ExtensionDetailsDialog(
+            extension = extension,
+            status = updateStatus[extension.id],
+            onCheckUpdate = { onCheckUpdate(extension.id) },
+            onDismiss = { detailsId = null }
+        )
     }
     OutlinedTextField(
         value = address,
@@ -132,5 +148,63 @@ fun ExtensionPromptDialog(prompt: ExtensionPrompt, onAnswer: (Boolean) -> Unit) 
         },
         confirmButton = { TextButton(onClick = { onAnswer(true) }) { Text(stringResource(R.string.ext_allow)) } },
         dismissButton = { TextButton(onClick = { onAnswer(false) }) { Text(stringResource(R.string.action_cancel)) } }
+    )
+}
+
+@Composable
+private fun ExtensionDetailsDialog(
+    extension: ExtensionInfo,
+    status: ExtensionUpdateStatus?,
+    onCheckUpdate: () -> Unit,
+    onDismiss: () -> Unit
+) {
+    AlertDialog(
+        onDismissRequest = onDismiss,
+        title = { Text(extension.name) },
+        text = {
+            Column(
+                verticalArrangement = Arrangement.spacedBy(8.dp),
+                modifier = Modifier.heightIn(max = 420.dp).verticalScroll(rememberScrollState())
+            ) {
+                Text(extension.version, style = MaterialTheme.typography.labelLarge, color = MaterialTheme.colorScheme.onSurfaceVariant)
+                if (extension.description.isNotBlank()) Text(extension.description, style = MaterialTheme.typography.bodyMedium)
+                Text(stringResource(R.string.ext_details_permissions), style = MaterialTheme.typography.titleSmall)
+                if (extension.broadAccess) {
+                    Text(stringResource(R.string.ext_perm_all_sites), style = MaterialTheme.typography.bodyMedium, color = MaterialTheme.colorScheme.error)
+                }
+                extension.origins.filterNot { ExtensionRules.hasBroadAccess(listOf(it)) }.forEach {
+                    Text(stringResource(R.string.ext_perm_site, it), style = MaterialTheme.typography.bodyMedium)
+                }
+                extension.permissions.forEach { Text("• $it", style = MaterialTheme.typography.bodyMedium) }
+                if (!extension.broadAccess && extension.origins.isEmpty() && extension.permissions.isEmpty()) {
+                    Text(stringResource(R.string.ext_details_none), style = MaterialTheme.typography.bodyMedium)
+                }
+                Text(
+                    stringResource(R.string.ext_compat_note),
+                    style = MaterialTheme.typography.bodySmall,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant
+                )
+                status?.let {
+                    Text(
+                        stringResource(
+                            when (it) {
+                                ExtensionUpdateStatus.CHECKING -> R.string.ext_update_checking
+                                ExtensionUpdateStatus.UPDATED -> R.string.ext_update_done
+                                ExtensionUpdateStatus.LATEST -> R.string.ext_update_latest
+                                ExtensionUpdateStatus.FAILED -> R.string.ext_update_failed
+                            }
+                        ),
+                        style = MaterialTheme.typography.bodyMedium,
+                        color = if (it == ExtensionUpdateStatus.FAILED) MaterialTheme.colorScheme.error else MaterialTheme.colorScheme.onSurface
+                    )
+                }
+            }
+        },
+        confirmButton = {
+            TextButton(onClick = onCheckUpdate, enabled = status != ExtensionUpdateStatus.CHECKING) {
+                Text(stringResource(R.string.ext_check_updates))
+            }
+        },
+        dismissButton = { TextButton(onClick = onDismiss) { Text(stringResource(R.string.onboarding_close)) } }
     )
 }

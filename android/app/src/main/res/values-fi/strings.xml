@@ -286,4 +286,12 @@
     <string name="find_next">Seuraava osuma</string>
     <string name="download_search_hint">Hae latauksia</string>
     <string name="download_no_matches">Ei vastaavia latauksia</string>
+    <string name="ext_details_permissions">Käyttöoikeudet</string>
+    <string name="ext_details_none">Tämä laajennus ei pyydä erityisiä käyttöoikeuksia.</string>
+    <string name="ext_compat_note">Laajennukset toimivat Firefox-moottorilla. Jotkin vain työpöydälle tarkoitetut ominaisuudet eivät välttämättä toimi Androidilla.</string>
+    <string name="ext_check_updates">Tarkista päivitykset</string>
+    <string name="ext_update_checking">Tarkistetaan päivityksiä…</string>
+    <string name="ext_update_done">Päivitetty uusimpaan versioon.</string>
+    <string name="ext_update_latest">Jo ajan tasalla.</string>
+    <string name="ext_update_failed">Päivitysten tarkistus epäonnistui.</string>
 </resources>

@@ -286,4 +286,12 @@
     <string name="find_next">Hasil berikutnya</string>
     <string name="download_search_hint">Cari unduhan</string>
     <string name="download_no_matches">Tidak ada unduhan yang cocok</string>
+    <string name="ext_details_permissions">Izin</string>
+    <string name="ext_details_none">Ekstensi ini tidak meminta izin khusus.</string>
+    <string name="ext_compat_note">Ekstensi berjalan di mesin Firefox. Beberapa fitur khusus desktop mungkin tidak tersedia di Android.</string>
+    <string name="ext_check_updates">Periksa pembaruan</string>
+    <string name="ext_update_checking">Memeriksa pembaruan…</string>
+    <string name="ext_update_done">Diperbarui ke versi terbaru.</string>
+    <string name="ext_update_latest">Sudah yang terbaru.</string>
+    <string name="ext_update_failed">Tidak dapat memeriksa pembaruan.</string>
 </resources>

@@ -286,4 +286,12 @@
     <string name="find_next">Résultat suivant</string>
     <string name="download_search_hint">Rechercher des téléchargements</string>
     <string name="download_no_matches">Aucun téléchargement correspondant</string>
+    <string name="ext_details_permissions">Autorisations</string>
+    <string name="ext_details_none">Cette extension ne demande aucune autorisation particulière.</string>
+    <string name="ext_compat_note">Les extensions s’exécutent dans le moteur Firefox. Certaines fonctions réservées au bureau peuvent être indisponibles sur Android.</string>
+    <string name="ext_check_updates">Rechercher des mises à jour</string>
+    <string name="ext_update_checking">Recherche de mises à jour…</string>
+    <string name="ext_update_done">Mise à jour vers la dernière version effectuée.</string>
+    <string name="ext_update_latest">Déjà à jour.</string>
+    <string name="ext_update_failed">Impossible de rechercher les mises à jour.</string>
 </resources>

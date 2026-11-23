@@ -286,4 +286,12 @@
     <string name="find_next">Następne trafienie</string>
     <string name="download_search_hint">Szukaj pobrań</string>
     <string name="download_no_matches">Brak pasujących pobrań</string>
+    <string name="ext_details_permissions">Uprawnienia</string>
+    <string name="ext_details_none">To rozszerzenie nie wymaga specjalnych uprawnień.</string>
+    <string name="ext_compat_note">Rozszerzenia działają w silniku Firefox. Niektóre funkcje tylko na komputery mogą być niedostępne w Androidzie.</string>
+    <string name="ext_check_updates">Sprawdź aktualizacje</string>
+    <string name="ext_update_checking">Sprawdzanie aktualizacji…</string>
+    <string name="ext_update_done">Zaktualizowano do najnowszej wersji.</string>
+    <string name="ext_update_latest">Masz już najnowszą wersję.</string>
+    <string name="ext_update_failed">Nie udało się sprawdzić aktualizacji.</string>
 </resources>

@@ -288,4 +288,12 @@
     <string name="find_next">Next match</string>
     <string name="download_search_hint">Search downloads</string>
     <string name="download_no_matches">No matching downloads</string>
+    <string name="ext_details_permissions">Permissions</string>
+    <string name="ext_details_none">This extension asks for no special permissions.</string>
+    <string name="ext_compat_note">Extensions run in the Firefox engine. Some desktop-only features may not be available on Android.</string>
+    <string name="ext_check_updates">Check for updates</string>
+    <string name="ext_update_checking">Checking for updates…</string>
+    <string name="ext_update_done">Updated to the latest version.</string>
+    <string name="ext_update_latest">Already up to date.</string>
+    <string name="ext_update_failed">Couldn\'t check for updates.</string>
 </resources>

@@ -286,4 +286,12 @@
     <string name="find_next">Resultado seguinte</string>
     <string name="download_search_hint">Pesquisar transferências</string>
     <string name="download_no_matches">Nenhuma transferência correspondente</string>
+    <string name="ext_details_permissions">Autorizações</string>
+    <string name="ext_details_none">Esta extensão não pede autorizações especiais.</string>
+    <string name="ext_compat_note">As extensões são executadas no motor do Firefox. Algumas funcionalidades exclusivas do computador podem não estar disponíveis no Android.</string>
+    <string name="ext_check_updates">Procurar atualizações</string>
+    <string name="ext_update_checking">A procurar atualizações…</string>
+    <string name="ext_update_done">Atualizada para a versão mais recente.</string>
+    <string name="ext_update_latest">Já está atualizada.</string>
+    <string name="ext_update_failed">Não foi possível procurar atualizações.</string>
 </resources>

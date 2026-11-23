@@ -286,4 +286,12 @@
     <string name="find_next">Risultato successivo</string>
     <string name="download_search_hint">Cerca download</string>
     <string name="download_no_matches">Nessun download corrispondente</string>
+    <string name="ext_details_permissions">Autorizzazioni</string>
+    <string name="ext_details_none">Questa estensione non richiede autorizzazioni particolari.</string>
+    <string name="ext_compat_note">Le estensioni funzionano nel motore Firefox. Alcune funzioni solo desktop potrebbero non essere disponibili su Android.</string>
+    <string name="ext_check_updates">Verifica aggiornamenti</string>
+    <string name="ext_update_checking">Verifica degli aggiornamenti…</string>
+    <string name="ext_update_done">Aggiornata all’ultima versione.</string>
+    <string name="ext_update_latest">Già aggiornata.</string>
+    <string name="ext_update_failed">Impossibile verificare gli aggiornamenti.</string>
 </resources>
