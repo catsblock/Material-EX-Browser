@@ -180,7 +180,7 @@ fun FloatingSearchFrame(
                 IconButton(
                     onClick = onOpenSiteInfo,
                     enabled = state.url.isNotEmpty(),
-                    modifier = Modifier.padding(start = 4.dp).size(44.dp)
+                    modifier = Modifier.padding(start = 4.dp).size(48.dp)
                 ) {
                     Icon(
                         imageVector = icon,

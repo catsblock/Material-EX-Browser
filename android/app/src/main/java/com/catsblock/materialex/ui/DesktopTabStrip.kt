@@ -131,7 +131,7 @@ fun DesktopTabStrip(
                 )
             }
         }
-        IconButton(onClick = onNewTab, modifier = Modifier.size(36.dp)) {
+        IconButton(onClick = onNewTab, modifier = Modifier.size(48.dp)) {
             Icon(Icons.Default.Add, contentDescription = stringResource(R.string.action_new_tab), modifier = Modifier.size(20.dp))
         }
     }
@@ -214,7 +214,7 @@ private fun DesktopTab(
                 color = if (selected) colors.onSurface else colors.onSurfaceVariant,
                 modifier = Modifier.weight(1f, fill = false).padding(horizontal = 8.dp)
             )
-            IconButton(onClick = onClose, modifier = Modifier.size(24.dp)) {
+            IconButton(onClick = onClose, modifier = Modifier.size(32.dp)) {
                 Icon(
                     Icons.Default.Close,
                     contentDescription = stringResource(R.string.onboarding_close),
