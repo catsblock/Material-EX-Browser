@@ -17,7 +17,7 @@ Kept until you delete them.
 Kept so that they can be restored, until you close them.
 
 5. Download list
-Kept until you remove it. Removing entries with "Clear browsing data" keeps the downloaded files. Deleting a download from the Downloads screen also deletes its file from the Downloads folder. Downloaded files are stored in the Android Downloads folder, are managed by you and are not deleted automatically.
+Kept until you remove it. Removing entries with "Clear browsing data" keeps the downloaded files. Deleting a download from the Downloads screen also deletes its file from the Downloads folder. Downloaded files are stored in the Android Downloads folder, are managed by you and are not deleted automatically. Downloads started from private tabs or guest sessions are saved to the same folder, but the app does not record their source address, and their entries are removed from the Downloads screen when the private session ends or the app restarts.
 
 6. Website permission decisions
 Kept until you change or reset them, or clear them under Clear browsing data. Counts of consecutive denials are kept with the decision.
