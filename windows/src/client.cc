@@ -207,6 +207,11 @@ bool Client::OnShowPermissionPrompt(CefRefPtr<CefBrowser> browser, uint64_t, con
                                                  static_cast<uint64_t>(browser->GetIdentifier()),
                                                  delegate_->Permissions(), !delegate_->IsPrivate());
   bool all_allowed = known == requested_permissions && known != 0 && outcome.allowed_mask == known;
+  if (all_allowed) {
+    std::vector<std::string> names;
+    for (const PermissionBit& b : bits) names.push_back(b.name);
+    delegate_->RecordPermissionUse(browser->GetIdentifier(), OriginOf(requesting_origin.ToString()), names);
+  }
   callback->Continue(all_allowed ? CEF_PERMISSION_RESULT_ACCEPT
                      : outcome.dismissed ? CEF_PERMISSION_RESULT_DISMISS
                                          : CEF_PERMISSION_RESULT_DENY);
@@ -236,6 +241,13 @@ bool Client::OnRequestMediaAccessPermission(CefRefPtr<CefBrowser> browser, CefRe
     if (outcome.allowed_mask & b.mask) allowed |= b.mask;
   }
   allowed &= requested_permissions;
+  std::vector<std::string> granted;
+  for (const PermissionBit& b : bits) {
+    if (allowed & b.mask) granted.push_back(b.name);
+  }
+  if (!granted.empty()) {
+    delegate_->RecordPermissionUse(browser->GetIdentifier(), OriginOf(requesting_url.ToString()), granted);
+  }
   if (allowed == 0) {
     callback->Cancel();
   } else {

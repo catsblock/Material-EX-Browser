@@ -213,6 +213,12 @@ class ListPanel : public Panel {
   std::vector<int> buttons_;
 };
 
+RevocationFn g_revocation;
+
+void NotifyRevoked(const std::string& origin, const std::string& permission) {
+  if (g_revocation) g_revocation(origin, permission);
+}
+
 HWND g_history = nullptr;
 HWND g_bookmarks = nullptr;
 HWND g_downloads = nullptr;
@@ -490,10 +496,14 @@ class SettingsPanel : public ListPanel {
     Profile& p = Profile::Get();
     if (index == 3) {
       p.permissions.ResetAll();
+      NotifyRevoked("", "");
     } else if (selected >= 0 && selected < static_cast<int>(entries_.size())) {
       const PermissionEntry& e = entries_[static_cast<size_t>(selected)];
       Policy policy = index == 0 ? Policy::kAsk : index == 1 ? Policy::kAllow : Policy::kDeny;
-      p.permissions.SetPolicy(e.origin, e.permission, policy);
+      std::string origin = e.origin;
+      std::string permission = e.permission;
+      p.permissions.SetPolicy(origin, permission, policy);
+      if (policy != Policy::kAllow) NotifyRevoked(origin, permission);
     } else {
       return;
     }
@@ -588,6 +598,8 @@ class SiteEditorPanel : public Panel {
 };
 
 }  // namespace
+
+void SetRevocationHandler(RevocationFn handler) { g_revocation = std::move(handler); }
 
 void ShowHistoryPanel(HWND owner, OpenUrlFn open) {
   OpenPanel(owner, Tr(Str::History), std::make_unique<HistoryPanel>(std::move(open)), 720, 520, &g_history);

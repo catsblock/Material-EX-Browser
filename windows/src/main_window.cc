@@ -83,6 +83,7 @@ std::string MajorVersion() { return std::to_string(CHROME_VERSION_MAJOR); }
 }  // namespace
 
 void MainWindow::RegisterWindowClass(HINSTANCE instance) {
+  SetRevocationHandler(&MainWindow::RevokeUse);
   WNDCLASSEXW wc{};
   wc.cbSize = sizeof(wc);
   wc.style = CS_HREDRAW | CS_VREDRAW;
@@ -109,6 +110,32 @@ MainWindow::~MainWindow() {
     LogLine("all windows released, quitting loop");
     CefQuitMessageLoop();
   }
+}
+
+void MainWindow::RecordPermissionUse(int browser_id, const std::string& origin,
+                                     const std::vector<std::string>& permissions) {
+  if (!OwnsBrowser(browser_id) || origin.empty()) return;
+  for (const std::string& p : permissions) uses_.push_back({browser_id, origin, p});
+}
+
+void MainWindow::RevokeLocal(const std::string& origin, const std::string& permission) {
+  std::set<int> to_reload;
+  for (auto it = uses_.begin(); it != uses_.end();) {
+    bool match = (origin.empty() || it->origin == origin) && (permission.empty() || it->permission == permission);
+    if (match) {
+      to_reload.insert(it->browser_id);
+      it = uses_.erase(it);
+    } else {
+      ++it;
+    }
+  }
+  for (const Tab& t : tabs_list_) {
+    if (to_reload.count(t.browser_id)) t.browser->ReloadIgnoreCache();
+  }
+}
+
+void MainWindow::RevokeUse(const std::string& origin, const std::string& permission) {
+  for (MainWindow* w : Windows()) w->RevokeLocal(origin, permission);
 }
 
 PermissionPolicyStore& MainWindow::Permissions() {
@@ -320,6 +347,9 @@ void MainWindow::SwitchTo(int index) {
 void MainWindow::CloseTabAt(int index) {
   if (index < 0 || index >= static_cast<int>(tabs_list_.size())) return;
   CefRefPtr<CefBrowser> browser = tabs_list_[static_cast<size_t>(index)].browser;
+  uses_.erase(std::remove_if(uses_.begin(), uses_.end(),
+                             [&](const PermissionUse& u) { return u.browser_id == browser->GetIdentifier(); }),
+              uses_.end());
   bool was_active = index == active_;
   tabs_list_.erase(tabs_list_.begin() + index);
   TabCtrl_DeleteItem(tabs_, index);
@@ -417,6 +447,9 @@ void MainWindow::OnAddress(CefRefPtr<CefBrowser> browser, const std::string& url
   std::string origin = OriginOf(url);
   if (origin != t.origin) {
     Permissions().ClearScope(static_cast<uint64_t>(t.browser_id));
+    uses_.erase(std::remove_if(uses_.begin(), uses_.end(),
+                               [&](const PermissionUse& u) { return u.browser_id == t.browser_id; }),
+                uses_.end());
     t.origin = origin;
   }
   t.url = url;

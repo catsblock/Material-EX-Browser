@@ -11,6 +11,8 @@ using OpenUrlFn = std::function<void(const std::string&)>;
 void ShowHistoryPanel(HWND owner, OpenUrlFn open);
 void ShowBookmarksPanel(HWND owner, OpenUrlFn open);
 void ShowDownloadsPanel(HWND owner, OpenUrlFn retry);
+using RevocationFn = std::function<void(const std::string& origin, const std::string& permission)>;
+void SetRevocationHandler(RevocationFn handler);
 void ShowSettingsPanel(HWND owner);
 void ShowSiteEditorPanel(HWND owner, const std::string& host, std::function<void(const std::string&)> apply,
                          std::function<void()> dev_tools);

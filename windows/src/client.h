@@ -27,6 +27,8 @@ class ClientDelegate {
   virtual bool HandleShortcut(const CefKeyEvent& event) = 0;
   virtual void ShowDevTools(CefRefPtr<CefBrowser> browser, const CefPoint& inspect_at) = 0;
   virtual bool IsPrivate() const = 0;
+  virtual void RecordPermissionUse(int browser_id, const std::string& origin,
+                                   const std::vector<std::string>& permissions) = 0;
   virtual PermissionPolicyStore& Permissions() = 0;
 };
 

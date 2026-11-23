@@ -34,6 +34,9 @@ class MainWindow : public ClientDelegate {
   bool HandleShortcut(const CefKeyEvent& event) override;
   void ShowDevTools(CefRefPtr<CefBrowser> browser, const CefPoint& inspect_at) override;
   bool IsPrivate() const override { return private_; }
+  void RecordPermissionUse(int browser_id, const std::string& origin,
+                           const std::vector<std::string>& permissions) override;
+  static void RevokeUse(const std::string& origin, const std::string& permission);
   PermissionPolicyStore& Permissions() override;
 
  private:
@@ -99,6 +102,13 @@ class MainWindow : public ClientDelegate {
   bool destroyed_ = false;
   bool destroying_ = false;
   bool private_ = false;
+  struct PermissionUse {
+    int browser_id;
+    std::string origin;
+    std::string permission;
+  };
+  std::vector<PermissionUse> uses_;
+  void RevokeLocal(const std::string& origin, const std::string& permission);
   CefRefPtr<CefRequestContext> context_;
   PermissionPolicyStore private_permissions_;
   WINDOWPLACEMENT saved_placement_{};
