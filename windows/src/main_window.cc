@@ -135,7 +135,9 @@ void MainWindow::RevokeLocal(const std::string& origin, const std::string& permi
 }
 
 void MainWindow::RevokeUse(const std::string& origin, const std::string& permission) {
-  for (MainWindow* w : Windows()) w->RevokeLocal(origin, permission);
+  for (MainWindow* w : Windows()) {
+    if (!w->private_) w->RevokeLocal(origin, permission);
+  }
 }
 
 PermissionPolicyStore& MainWindow::Permissions() {
