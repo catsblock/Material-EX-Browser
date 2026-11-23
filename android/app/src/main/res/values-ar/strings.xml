@@ -296,4 +296,11 @@
     <string name="ext_update_done">تم التحديث إلى أحدث إصدار.</string>
     <string name="ext_update_latest">الإصدار محدّث بالفعل.</string>
     <string name="ext_update_failed">تعذّر التحقق من التحديثات.</string>
+    <string name="settings_web_display">صفحات الويب</string>
+    <string name="settings_force_zoom">السماح بالتكبير في كل صفحة</string>
+    <string name="settings_force_zoom_desc">يتيح لك التكبير بالقرص حتى في الصفحات التي تحاول منعه.</string>
+    <string name="settings_text_follow_system">اتباع حجم خط النظام</string>
+    <string name="settings_text_follow_system_desc">يستخدم حجم الخط المحدد في إعدادات جهازك لصفحات الويب.</string>
+    <string name="settings_text_scale">حجم نص الويب</string>
+    <string name="settings_text_scale_desc">يغيّر حجم النص في صفحات الويب. القيمة الافتراضية 100%. أوقف «اتباع حجم خط النظام» لتغييره.</string>
 </resources>

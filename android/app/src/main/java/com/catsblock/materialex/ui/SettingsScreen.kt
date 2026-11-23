@@ -71,6 +71,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.unit.dp
 import com.catsblock.materialex.R
+import com.catsblock.materialex.core.TextScale
 import com.catsblock.materialex.core.extension.ExtensionUpdateStatus
 import com.catsblock.materialex.core.settings.SearchEntry
 import com.catsblock.materialex.core.settings.SettingsSearch
@@ -332,6 +333,31 @@ fun SettingsScreen(
                         Switch(checked = settings.autoHideFrame, onCheckedChange = null)
                     }
                 }
+                SettingsSection(R.string.settings_web_display) {
+                    SectionSwitch(R.string.settings_force_zoom, settings.forceZoom, R.string.settings_force_zoom_desc) {
+                        scope.launch { repository.setForceZoom(it) }
+                    }
+                    SectionSwitch(R.string.settings_text_follow_system, settings.textFollowSystem, R.string.settings_text_follow_system_desc) {
+                        scope.launch { repository.setTextFollowSystem(it) }
+                    }
+                    Text(
+                        stringResource(R.string.settings_text_scale) + ": " + settings.textScalePercent + "%",
+                        style = MaterialTheme.typography.titleMedium,
+                        modifier = Modifier.padding(top = 8.dp)
+                    )
+                    Text(
+                        stringResource(R.string.settings_text_scale_desc),
+                        style = MaterialTheme.typography.bodyMedium,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant
+                    )
+                    Slider(
+                        value = settings.textScalePercent.toFloat(),
+                        onValueChange = { scope.launch { repository.setTextScale(it.toInt()) } },
+                        valueRange = TextScale.MIN.toFloat()..TextScale.MAX.toFloat(),
+                        steps = (TextScale.MAX - TextScale.MIN) / TextScale.STEP - 1,
+                        enabled = !settings.textFollowSystem
+                    )
+                }
             }
             if (shown == SettingsCategory.PRIVACY) {
                 SettingsSection(null) {
@@ -531,6 +557,9 @@ private enum class SettingsCategory(val title: Int, val summary: Int, val icon: 
             R.string.settings_clear_searches to SEARCH,
             R.string.settings_toolbar_position to APPEARANCE,
             R.string.settings_frame_autohide to APPEARANCE,
+            R.string.settings_force_zoom to APPEARANCE,
+            R.string.settings_text_follow_system to APPEARANCE,
+            R.string.settings_text_scale to APPEARANCE,
             R.string.settings_popup_block to PRIVACY,
             R.string.settings_safe_browsing to PRIVACY,
             R.string.settings_cookie_banner to PRIVACY,

@@ -294,4 +294,11 @@
     <string name="ext_update_done">Auf die neueste Version aktualisiert.</string>
     <string name="ext_update_latest">Bereits auf dem neuesten Stand.</string>
     <string name="ext_update_failed">Die Update-Suche ist fehlgeschlagen.</string>
+    <string name="settings_web_display">Webseiten</string>
+    <string name="settings_force_zoom">Zoom auf jeder Seite erlauben</string>
+    <string name="settings_force_zoom_desc">Ermöglicht Zoomen per Fingergeste, auch auf Seiten, die es blockieren.</string>
+    <string name="settings_text_follow_system">Systemschriftgröße verwenden</string>
+    <string name="settings_text_follow_system_desc">Verwendet die in den Geräteeinstellungen festgelegte Schriftgröße für Webseiten.</string>
+    <string name="settings_text_scale">Webtextgröße</string>
+    <string name="settings_text_scale_desc">Skaliert den Text auf Webseiten. 100 % ist der Standard. Deaktiviere „Systemschriftgröße verwenden“, um sie zu ändern.</string>
 </resources>

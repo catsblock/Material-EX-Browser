@@ -294,4 +294,11 @@
     <string name="ext_update_done">อัปเดตเป็นเวอร์ชันล่าสุดแล้ว</string>
     <string name="ext_update_latest">เป็นเวอร์ชันล่าสุดอยู่แล้ว</string>
     <string name="ext_update_failed">ตรวจสอบอัปเดตไม่สำเร็จ</string>
+    <string name="settings_web_display">หน้าเว็บ</string>
+    <string name="settings_force_zoom">อนุญาตให้ซูมทุกหน้า</string>
+    <string name="settings_force_zoom_desc">ใช้นิ้วถ่างเพื่อซูมได้แม้ในหน้าที่พยายามบล็อก</string>
+    <string name="settings_text_follow_system">ใช้ขนาดตัวอักษรของระบบ</string>
+    <string name="settings_text_follow_system_desc">ใช้ขนาดตัวอักษรจากการตั้งค่าอุปกรณ์สำหรับหน้าเว็บ</string>
+    <string name="settings_text_scale">ขนาดข้อความบนเว็บ</string>
+    <string name="settings_text_scale_desc">ปรับขนาดข้อความบนหน้าเว็บ ค่าเริ่มต้นคือ 100% ปิด “ใช้ขนาดตัวอักษรของระบบ” เพื่อเปลี่ยน</string>
 </resources>

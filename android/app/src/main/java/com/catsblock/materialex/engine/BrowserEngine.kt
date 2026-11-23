@@ -7,6 +7,7 @@ import com.catsblock.materialex.core.extension.ExtensionInfo
 import com.catsblock.materialex.core.extension.ExtensionUpdateStatus
 import com.catsblock.materialex.core.extension.ExtensionPrompt
 import com.catsblock.materialex.core.permission.PermissionBroker
+import com.catsblock.materialex.core.TextScale
 import com.catsblock.materialex.core.permission.ActivePermissionUse
 import com.catsblock.materialex.core.permission.EPHEMERAL_PERMISSION_PROFILE
 import com.catsblock.materialex.core.permission.Revocation
@@ -135,6 +136,13 @@ class BrowserEngine(context: Context, private val permissionManager: PermissionM
     val atTop: StateFlow<Boolean> = atTopFlow.asStateFlow()
     val popups: StateFlow<List<PopupWindow>> = popupFlow.asStateFlow()
     val fullscreen: StateFlow<Boolean> = fullscreenFlow.asStateFlow()
+    fun applyWebDisplay(forceZoom: Boolean, textScalePercent: Int, followSystem: Boolean) {
+        val settings = runtime.settings
+        settings.forceUserScalableEnabled = forceZoom
+        settings.fontSizeFactor = TextScale.factor(textScalePercent)
+        settings.automaticFontSizeAdjustment = followSystem
+    }
+
     var popupBlocking: Boolean = true
     var loadedLimit: Int = TabLifecycle.DEFAULT_LOADED
         set(value) {

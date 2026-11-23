@@ -294,4 +294,11 @@
     <string name="ext_update_done">Mise à jour vers la dernière version effectuée.</string>
     <string name="ext_update_latest">Déjà à jour.</string>
     <string name="ext_update_failed">Impossible de rechercher les mises à jour.</string>
+    <string name="settings_web_display">Pages web</string>
+    <string name="settings_force_zoom">Autoriser le zoom sur toutes les pages</string>
+    <string name="settings_force_zoom_desc">Permet de zoomer avec les doigts même sur les pages qui tentent de l’empêcher.</string>
+    <string name="settings_text_follow_system">Suivre la taille de police du système</string>
+    <string name="settings_text_follow_system_desc">Utilise la taille de police des réglages de l’appareil pour les pages web.</string>
+    <string name="settings_text_scale">Taille du texte web</string>
+    <string name="settings_text_scale_desc">Met à l’échelle le texte des pages web. 100 % par défaut. Désactivez « Suivre la taille de police du système » pour la modifier.</string>
 </resources>

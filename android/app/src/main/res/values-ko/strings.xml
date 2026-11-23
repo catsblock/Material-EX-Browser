@@ -294,4 +294,11 @@
     <string name="ext_update_done">최신 버전으로 업데이트했습니다.</string>
     <string name="ext_update_latest">이미 최신 버전입니다.</string>
     <string name="ext_update_failed">업데이트를 확인하지 못했습니다.</string>
+    <string name="settings_web_display">웹페이지</string>
+    <string name="settings_force_zoom">모든 페이지에서 확대 허용</string>
+    <string name="settings_force_zoom_desc">확대를 막는 페이지에서도 핀치로 확대할 수 있습니다.</string>
+    <string name="settings_text_follow_system">시스템 글꼴 크기 따르기</string>
+    <string name="settings_text_follow_system_desc">웹페이지에 기기 설정의 글꼴 크기를 사용합니다.</string>
+    <string name="settings_text_scale">웹 텍스트 크기</string>
+    <string name="settings_text_scale_desc">웹페이지의 글자 크기를 조절합니다. 기본값은 100%입니다. 변경하려면 ‘시스템 글꼴 크기 따르기’를 끄세요.</string>
 </resources>

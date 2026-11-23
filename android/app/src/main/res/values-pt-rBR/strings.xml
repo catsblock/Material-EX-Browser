@@ -296,4 +296,11 @@
     <string name="ext_update_done">Atualizada para a versão mais recente.</string>
     <string name="ext_update_latest">Já está atualizada.</string>
     <string name="ext_update_failed">Não foi possível verificar atualizações.</string>
+    <string name="settings_web_display">Páginas da web</string>
+    <string name="settings_force_zoom">Permitir zoom em todas as páginas</string>
+    <string name="settings_force_zoom_desc">Permite dar zoom com os dedos mesmo em páginas que tentam bloquear.</string>
+    <string name="settings_text_follow_system">Seguir o tamanho de fonte do sistema</string>
+    <string name="settings_text_follow_system_desc">Usa o tamanho de fonte das configurações do dispositivo nas páginas da web.</string>
+    <string name="settings_text_scale">Tamanho do texto da web</string>
+    <string name="settings_text_scale_desc">Ajusta a escala do texto das páginas da web. O padrão é 100%. Desative “Seguir o tamanho de fonte do sistema” para alterar.</string>
 </resources>

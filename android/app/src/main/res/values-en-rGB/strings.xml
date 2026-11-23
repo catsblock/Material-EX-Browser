@@ -96,4 +96,11 @@
     <string name="ext_update_done">Updated to the latest version.</string>
     <string name="ext_update_latest">Already up to date.</string>
     <string name="ext_update_failed">Couldn\'t check for updates.</string>
+    <string name="settings_web_display">Web pages</string>
+    <string name="settings_force_zoom">Allow zoom on every page</string>
+    <string name="settings_force_zoom_desc">Lets you pinch to zoom even on pages that try to block it.</string>
+    <string name="settings_text_follow_system">Follow system font size</string>
+    <string name="settings_text_follow_system_desc">Uses the font size set in your device settings for web pages.</string>
+    <string name="settings_text_scale">Web text size</string>
+    <string name="settings_text_scale_desc">Scales text on web pages. 100% is the default. Turn off “Follow system font size” to change it.</string>
 </resources>

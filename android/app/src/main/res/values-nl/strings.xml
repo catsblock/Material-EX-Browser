@@ -294,4 +294,11 @@
     <string name="ext_update_done">Bijgewerkt naar de nieuwste versie.</string>
     <string name="ext_update_latest">Al up-to-date.</string>
     <string name="ext_update_failed">Controleren op updates is mislukt.</string>
+    <string name="settings_web_display">Webpagina’s</string>
+    <string name="settings_force_zoom">Zoomen op elke pagina toestaan</string>
+    <string name="settings_force_zoom_desc">Hiermee kun je knijpzoomen, ook op pagina’s die dat proberen te blokkeren.</string>
+    <string name="settings_text_follow_system">Systeemlettergrootte volgen</string>
+    <string name="settings_text_follow_system_desc">Gebruikt de lettergrootte uit de apparaatinstellingen voor webpagina’s.</string>
+    <string name="settings_text_scale">Webtekstgrootte</string>
+    <string name="settings_text_scale_desc">Schaalt tekst op webpagina’s. 100% is de standaard. Zet ‘Systeemlettergrootte volgen’ uit om dit te wijzigen.</string>
 </resources>

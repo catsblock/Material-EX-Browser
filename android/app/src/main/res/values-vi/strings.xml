@@ -294,4 +294,11 @@
     <string name="ext_update_done">Đã cập nhật lên phiên bản mới nhất.</string>
     <string name="ext_update_latest">Đã là phiên bản mới nhất.</string>
     <string name="ext_update_failed">Không thể kiểm tra bản cập nhật.</string>
+    <string name="settings_web_display">Trang web</string>
+    <string name="settings_force_zoom">Cho phép thu phóng trên mọi trang</string>
+    <string name="settings_force_zoom_desc">Cho phép chụm ngón tay để thu phóng, kể cả trên các trang cố chặn.</string>
+    <string name="settings_text_follow_system">Theo cỡ chữ của hệ thống</string>
+    <string name="settings_text_follow_system_desc">Dùng cỡ chữ trong cài đặt thiết bị cho các trang web.</string>
+    <string name="settings_text_scale">Cỡ chữ trên web</string>
+    <string name="settings_text_scale_desc">Điều chỉnh cỡ chữ trên trang web. Mặc định là 100%. Tắt “Theo cỡ chữ của hệ thống” để thay đổi.</string>
 </resources>

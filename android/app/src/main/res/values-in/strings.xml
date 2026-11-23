@@ -294,4 +294,11 @@
     <string name="ext_update_done">Diperbarui ke versi terbaru.</string>
     <string name="ext_update_latest">Sudah yang terbaru.</string>
     <string name="ext_update_failed">Tidak dapat memeriksa pembaruan.</string>
+    <string name="settings_web_display">Laman web</string>
+    <string name="settings_force_zoom">Izinkan zoom di setiap laman</string>
+    <string name="settings_force_zoom_desc">Memungkinkan cubit untuk zoom, bahkan di laman yang mencoba memblokirnya.</string>
+    <string name="settings_text_follow_system">Ikuti ukuran font sistem</string>
+    <string name="settings_text_follow_system_desc">Menggunakan ukuran font dari setelan perangkat untuk laman web.</string>
+    <string name="settings_text_scale">Ukuran teks web</string>
+    <string name="settings_text_scale_desc">Menskalakan teks di laman web. Default 100%. Nonaktifkan “Ikuti ukuran font sistem” untuk mengubahnya.</string>
 </resources>

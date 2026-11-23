@@ -1,5 +1,6 @@
 package com.catsblock.materialex.data
 
+import com.catsblock.materialex.core.TextScale
 import android.content.Context
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.booleanPreferencesKey
@@ -69,7 +70,10 @@ data class BrowserSettings(
     val memoryMode: MemoryMode = MemoryMode.AUTOMATIC,
     val customLoadedTabs: Int = 5,
     val safeBrowsing: Boolean = true,
-    val cookieBanner: Boolean = true
+    val cookieBanner: Boolean = true,
+    val forceZoom: Boolean = false,
+    val textScalePercent: Int = TextScale.DEFAULT,
+    val textFollowSystem: Boolean = true
 ) {
     companion object {
         const val DEFAULT_HOMEPAGE = "https://www.google.com/"
@@ -94,6 +98,9 @@ class SettingsRepository(private val context: Context) {
     private val showBookmarksKey = booleanPreferencesKey("home_show_bookmarks")
     private val tabLayoutKey = stringPreferencesKey("tab_layout")
     private val popupBlockingKey = booleanPreferencesKey("popup_blocking")
+    private val forceZoomKey = booleanPreferencesKey("force_zoom")
+    private val textScaleKey = intPreferencesKey("web_text_scale")
+    private val textFollowSystemKey = booleanPreferencesKey("web_text_follow_system")
     private val safeBrowsingKey = booleanPreferencesKey("safe_browsing")
     private val cookieBannerKey = booleanPreferencesKey("cookie_banner")
     private val profilesKey = stringPreferencesKey("profiles")
@@ -159,6 +166,18 @@ class SettingsRepository(private val context: Context) {
 
     suspend fun setCustomLoadedTabs(count: Int) {
         context.settingsStore.edit { it[customLoadedTabsKey] = count.coerceIn(1, 30) }
+    }
+
+    suspend fun setForceZoom(enabled: Boolean) {
+        context.settingsStore.edit { it[forceZoomKey] = enabled }
+    }
+
+    suspend fun setTextScale(percent: Int) {
+        context.settingsStore.edit { it[textScaleKey] = TextScale.coerce(percent) }
+    }
+
+    suspend fun setTextFollowSystem(enabled: Boolean) {
+        context.settingsStore.edit { it[textFollowSystemKey] = enabled }
     }
 
     suspend fun setPopupBlocking(enabled: Boolean) {
@@ -253,6 +272,9 @@ class SettingsRepository(private val context: Context) {
         memoryMode = MemoryMode.fromId(preferences[memoryModeKey]),
         customLoadedTabs = (preferences[customLoadedTabsKey] ?: 5).coerceIn(1, 30),
         safeBrowsing = preferences[safeBrowsingKey] ?: true,
-        cookieBanner = preferences[cookieBannerKey] ?: true
+        cookieBanner = preferences[cookieBannerKey] ?: true,
+        forceZoom = preferences[forceZoomKey] ?: false,
+        textScalePercent = TextScale.coerce(preferences[textScaleKey] ?: TextScale.DEFAULT),
+        textFollowSystem = preferences[textFollowSystemKey] ?: true
     )
 }

@@ -294,4 +294,11 @@
     <string name="ext_update_done">最新バージョンに更新しました。</string>
     <string name="ext_update_latest">すでに最新です。</string>
     <string name="ext_update_failed">更新を確認できませんでした。</string>
+    <string name="settings_web_display">ウェブページ</string>
+    <string name="settings_force_zoom">すべてのページでズームを許可</string>
+    <string name="settings_force_zoom_desc">ズームを禁止しているページでもピンチ操作で拡大できます。</string>
+    <string name="settings_text_follow_system">システムのフォントサイズに従う</string>
+    <string name="settings_text_follow_system_desc">ウェブページにデバイス設定のフォントサイズを使用します。</string>
+    <string name="settings_text_scale">ウェブの文字サイズ</string>
+    <string name="settings_text_scale_desc">ウェブページの文字を拡大縮小します。標準は 100% です。変更するには「システムのフォントサイズに従う」をオフにしてください。</string>
 </resources>

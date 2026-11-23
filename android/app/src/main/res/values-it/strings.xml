@@ -294,4 +294,11 @@
     <string name="ext_update_done">Aggiornata all’ultima versione.</string>
     <string name="ext_update_latest">Già aggiornata.</string>
     <string name="ext_update_failed">Impossibile verificare gli aggiornamenti.</string>
+    <string name="settings_web_display">Pagine web</string>
+    <string name="settings_force_zoom">Consenti lo zoom su ogni pagina</string>
+    <string name="settings_force_zoom_desc">Permette di fare zoom con le dita anche nelle pagine che cercano di impedirlo.</string>
+    <string name="settings_text_follow_system">Segui la dimensione del carattere di sistema</string>
+    <string name="settings_text_follow_system_desc">Usa la dimensione del carattere delle impostazioni del dispositivo per le pagine web.</string>
+    <string name="settings_text_scale">Dimensione del testo web</string>
+    <string name="settings_text_scale_desc">Ridimensiona il testo delle pagine web. Il valore predefinito è 100%. Disattiva “Segui la dimensione del carattere di sistema” per modificarla.</string>
 </resources>

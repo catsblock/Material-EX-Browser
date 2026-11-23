@@ -294,4 +294,11 @@
     <string name="ext_update_done">Uppdaterad till den senaste versionen.</string>
     <string name="ext_update_latest">Redan uppdaterad.</string>
     <string name="ext_update_failed">Det gick inte att söka efter uppdateringar.</string>
+    <string name="settings_web_display">Webbsidor</string>
+    <string name="settings_force_zoom">Tillåt zoom på alla sidor</string>
+    <string name="settings_force_zoom_desc">Gör att du kan zooma med fingrarna även på sidor som försöker hindra det.</string>
+    <string name="settings_text_follow_system">Följ systemets teckenstorlek</string>
+    <string name="settings_text_follow_system_desc">Använder teckenstorleken från enhetens inställningar för webbsidor.</string>
+    <string name="settings_text_scale">Webbtextstorlek</string>
+    <string name="settings_text_scale_desc">Skalar text på webbsidor. Standard är 100 %. Stäng av ”Följ systemets teckenstorlek” för att ändra.</string>
 </resources>

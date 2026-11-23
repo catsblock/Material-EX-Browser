@@ -294,4 +294,11 @@
     <string name="ext_update_done">Zaktualizowano do najnowszej wersji.</string>
     <string name="ext_update_latest">Masz już najnowszą wersję.</string>
     <string name="ext_update_failed">Nie udało się sprawdzić aktualizacji.</string>
+    <string name="settings_web_display">Strony internetowe</string>
+    <string name="settings_force_zoom">Zezwalaj na powiększanie na każdej stronie</string>
+    <string name="settings_force_zoom_desc">Pozwala powiększać gestem szczypnięcia nawet na stronach, które próbują to blokować.</string>
+    <string name="settings_text_follow_system">Używaj rozmiaru czcionki systemu</string>
+    <string name="settings_text_follow_system_desc">Używa rozmiaru czcionki z ustawień urządzenia na stronach internetowych.</string>
+    <string name="settings_text_scale">Rozmiar tekstu stron</string>
+    <string name="settings_text_scale_desc">Skaluje tekst na stronach. Domyślnie 100%. Wyłącz „Używaj rozmiaru czcionki systemu”, aby go zmienić.</string>
 </resources>

@@ -294,4 +294,11 @@
     <string name="ext_update_done">Päivitetty uusimpaan versioon.</string>
     <string name="ext_update_latest">Jo ajan tasalla.</string>
     <string name="ext_update_failed">Päivitysten tarkistus epäonnistui.</string>
+    <string name="settings_web_display">Verkkosivut</string>
+    <string name="settings_force_zoom">Salli zoomaus kaikilla sivuilla</string>
+    <string name="settings_force_zoom_desc">Voit zoomata nipistämällä myös sivuilla, jotka yrittävät estää sen.</string>
+    <string name="settings_text_follow_system">Seuraa järjestelmän fonttikokoa</string>
+    <string name="settings_text_follow_system_desc">Käyttää laitteen asetuksissa määritettyä fonttikokoa verkkosivuilla.</string>
+    <string name="settings_text_scale">Verkkotekstin koko</string>
+    <string name="settings_text_scale_desc">Skaalaa verkkosivujen tekstiä. Oletus on 100 %. Poista ”Seuraa järjestelmän fonttikokoa” käytöstä muuttaaksesi sitä.</string>
 </resources>

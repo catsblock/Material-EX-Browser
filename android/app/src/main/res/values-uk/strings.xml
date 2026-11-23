@@ -294,4 +294,11 @@
     <string name="ext_update_done">Оновлено до останньої версії.</string>
     <string name="ext_update_latest">Уже встановлено останню версію.</string>
     <string name="ext_update_failed">Не вдалося перевірити оновлення.</string>
+    <string name="settings_web_display">Вебсторінки</string>
+    <string name="settings_force_zoom">Дозволити масштабування на всіх сторінках</string>
+    <string name="settings_force_zoom_desc">Дає змогу масштабувати щипком навіть на сторінках, які це забороняють.</string>
+    <string name="settings_text_follow_system">Використовувати розмір шрифту системи</string>
+    <string name="settings_text_follow_system_desc">Використовує розмір шрифту з налаштувань пристрою для вебсторінок.</string>
+    <string name="settings_text_scale">Розмір тексту на сайтах</string>
+    <string name="settings_text_scale_desc">Масштабує текст на вебсторінках. За замовчуванням 100%. Вимкніть «Використовувати розмір шрифту системи», щоб змінити.</string>
 </resources>
