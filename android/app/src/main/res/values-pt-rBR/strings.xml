@@ -20,7 +20,6 @@
     <string name="settings_homepage_invalid">Informe um endereço http ou https válido</string>
     <string name="settings_search_engine">Mecanismo de busca padrão</string>
     <string name="settings_custom_template">URL de busca personalizada</string>
-    <string name="settings_custom_template_hint" formatted="false">https://exemplo.com/busca?q=%s</string>
     <string name="settings_custom_template_invalid" formatted="false">A URL deve começar com https:// e conter %s exatamente uma vez</string>
     <string name="settings_search_engine_custom">Personalizado</string>
     <string name="tabs_title">Abas</string>

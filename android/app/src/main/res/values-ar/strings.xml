@@ -20,7 +20,6 @@
     <string name="settings_homepage_invalid">أدخل عنوان http أو https صالحًا</string>
     <string name="settings_search_engine">محرك البحث الافتراضي</string>
     <string name="settings_custom_template">رابط بحث مخصص</string>
-    <string name="settings_custom_template_hint" formatted="false">https://example.com/search?q=%s</string>
     <string name="settings_custom_template_invalid" formatted="false">يجب أن يبدأ الرابط بـ https:// وأن يحتوي على %s مرة واحدة فقط</string>
     <string name="settings_search_engine_custom">مخصص</string>
     <string name="tabs_title">علامات التبويب</string>
