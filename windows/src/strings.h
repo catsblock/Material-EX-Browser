@@ -58,7 +58,7 @@ namespace mex {
   X(ExternalTitle, L"Open external application")                                                 \
   X(ExternalBody, L"%s wants to open an external application with:\n%s\n\nAllow?")               \
   X(ErrorTitle, L"This page can't be displayed")                                                 \
-  X(ErrorDetail, L"Error: %s (%d)")                                                              \
+  X(ErrorDetail, L"Error: %s (%s)")                                                              \
   X(Close, L"Close")                                                                             \
   X(Open, L"Open")                                                                               \
   X(OpenInTab, L"Open in new tab")                                                               \

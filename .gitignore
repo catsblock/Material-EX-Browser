@@ -12,3 +12,4 @@ local.properties
 keystore.properties
 windows/build/
 windows/build_local/
+__pycache__/
