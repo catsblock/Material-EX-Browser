@@ -51,6 +51,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.graphicsLayer
+import androidx.compose.ui.unit.LayoutDirection
+import androidx.compose.ui.platform.LocalLayoutDirection
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
@@ -141,6 +143,7 @@ fun TabSwitcherScreen(
             }
             TabLayout.COVER_FLOW -> {
                 val tabs = tabsState.tabs
+                val tilt = if (LocalLayoutDirection.current == LayoutDirection.Rtl) -24f else 24f
                 val pager = rememberPagerState(
                     initialPage = tabs.indexOfFirst { it.id == tabsState.activeId }.coerceAtLeast(0)
                 ) { tabs.size }
@@ -161,7 +164,7 @@ fun TabSwitcherScreen(
                                 val scale = 1f - 0.14f * distance
                                 scaleX = scale
                                 scaleY = scale
-                                rotationY = offset.coerceIn(-1f, 1f) * 24f
+                                rotationY = offset.coerceIn(-1f, 1f) * tilt
                                 alpha = 1f - 0.35f * distance
                             }
                         )
