@@ -53,8 +53,28 @@ jobs:
       - name: Report lint findings
         if: failure()
         run: |
-          report=$(find android -name 'lint-results-debug.txt' | head -n 1)
-          { [ -n "$report" ] && grep -E "^(.*\.(kt|xml)):[0-9]+: (Error|Warning):" "$report" | grep ": Error:" | sed 's#/home/runner/work/Material-EX-Browser/Material-EX-Browser/##' | cut -c1-300 | awk '!seen[$0]++' | head -n 12; grep -A8 "What went wrong" "$RUNNER_TEMP/gradle-lint.log" | cut -c1-300 | tr '\n' '~' | sed 's/~/ | /g'; echo; } | while IFS= read -r line; do [ -n "$line" ] && echo "::error::$line"; done
+          python3 - <<'PY'
+          import glob, re
+          import xml.etree.ElementTree as ET
+          files = glob.glob("android/**/lint-results-debug.xml", recursive=True)
+          if not files:
+              print("::error::lint xml report not found")
+          for f in files[:1]:
+              seen = set()
+              for issue in ET.parse(f).getroot().iter("issue"):
+                  if issue.get("severity") not in ("Error", "Fatal"):
+                      continue
+                  loc = issue.find("location")
+                  where = ""
+                  if loc is not None:
+                      where = re.sub(r".*/(app/src/)", r"\1", loc.get("file", "")) + ":" + str(loc.get("line", ""))
+                  msg = "[%s] %s %s" % (issue.get("id"), where, issue.get("message", "")[:200])
+                  if msg not in seen:
+                      seen.add(msg)
+                      print("::error::" + msg)
+                  if len(seen) >= 12:
+                      break
+          PY
 
       - name: Assemble debug APK
         run: |
