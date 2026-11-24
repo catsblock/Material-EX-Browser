@@ -41,7 +41,6 @@
     <string name="settings_toolbar_position_description">Dove appare il riquadro di ricerca flottante</string>
     <string name="settings_toolbar_top">In alto</string>
     <string name="settings_toolbar_bottom">In basso</string>
-    <string name="settings_homepage">Home page</string>
     <string name="settings_homepage_invalid">Inserisci un indirizzo http o https valido</string>
     <string name="settings_search_engine">Motore di ricerca predefinito</string>
     <string name="settings_custom_template">URL di ricerca personalizzato</string>

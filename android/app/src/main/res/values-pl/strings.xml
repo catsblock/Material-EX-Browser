@@ -41,7 +41,6 @@
     <string name="settings_toolbar_position_description">Gdzie pojawia się pływające pole wyszukiwania</string>
     <string name="settings_toolbar_top">Góra</string>
     <string name="settings_toolbar_bottom">Dół</string>
-    <string name="settings_homepage">Strona startowa</string>
     <string name="settings_homepage_invalid">Wpisz prawidłowy adres http lub https</string>
     <string name="settings_search_engine">Domyślna wyszukiwarka</string>
     <string name="settings_custom_template">Niestandardowy adres wyszukiwania</string>

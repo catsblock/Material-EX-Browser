@@ -41,7 +41,6 @@
     <string name="settings_toolbar_position_description">Var det flytande sökfältet visas</string>
     <string name="settings_toolbar_top">Överst</string>
     <string name="settings_toolbar_bottom">Nederst</string>
-    <string name="settings_homepage">Startsida</string>
     <string name="settings_homepage_invalid">Ange en giltig http- eller https-adress</string>
     <string name="settings_search_engine">Standardsökmotor</string>
     <string name="settings_custom_template">Anpassad sök-URL</string>

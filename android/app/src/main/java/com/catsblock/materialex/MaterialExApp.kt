@@ -63,6 +63,7 @@ class MaterialExApp : Application() {
         ioScope.launch {
             downloads.recoverInterrupted()
             downloads.purgePrivate()
+            settings.dropLegacyHomepage()
             library.purgeHistory(LibraryRepository.DEFAULT_RETENTION_DAYS)
             library.purgeSearches(LibraryRepository.DEFAULT_RETENTION_DAYS)
             if (!settings.shortcutsSeeded()) {

@@ -41,7 +41,6 @@
     <string name="settings_toolbar_position_description">Где отображается плавающая строка поиска</string>
     <string name="settings_toolbar_top">Вверху</string>
     <string name="settings_toolbar_bottom">Внизу</string>
-    <string name="settings_homepage">Домашняя страница</string>
     <string name="settings_homepage_invalid">Введите корректный адрес http или https</string>
     <string name="settings_search_engine">Поисковая система по умолчанию</string>
     <string name="settings_custom_template">Свой URL поиска</string>

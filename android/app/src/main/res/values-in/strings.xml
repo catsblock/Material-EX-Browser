@@ -41,7 +41,6 @@
     <string name="settings_toolbar_position_description">Tempat bingkai pencarian mengambang muncul</string>
     <string name="settings_toolbar_top">Atas</string>
     <string name="settings_toolbar_bottom">Bawah</string>
-    <string name="settings_homepage">Beranda</string>
     <string name="settings_homepage_invalid">Masukkan alamat http atau https yang valid</string>
     <string name="settings_search_engine">Mesin pencari default</string>
     <string name="settings_custom_template">URL pencarian khusus</string>

@@ -7,7 +7,7 @@ Material EX does not operate servers that collect your personal data, does not r
 
 2. Data stored on your device
 The following data is stored locally in the application's private storage on your device:
-- Settings (language, toolbar position, homepage, search engine and similar choices).
+- Settings (language, toolbar position, search engine and similar choices).
 - Browsing history (page titles, addresses and visit times).
 - Bookmarks.
 - Open tabs and their navigation state.
@@ -19,7 +19,7 @@ The following data is stored locally in the application's private storage on you
 This data is not sent to the developers. Uninstalling the application removes it.
 
 3. Data sent over the network
-- Websites: when you visit a website, your device sends the requests needed to load it. The website operator receives standard request data such as your IP address and browser identification. Your homepage defaults to https://www.google.com/, so a request is made to that address when the homepage loads.
+- Websites: when you visit a website, your device sends the requests needed to load it. The website operator receives standard request data such as your IP address and browser identification. The app opens its own home page, which is shown on your device and does not load a website.
 - Search: text you enter in the address field that is not recognised as a web address is sent to the search engine you selected, using that engine's own privacy practices.
 - Browser engine: Material EX uses GeckoView, provided by Mozilla. Material EX does not add telemetry to it. Its behaviour is documented by Mozilla.
 

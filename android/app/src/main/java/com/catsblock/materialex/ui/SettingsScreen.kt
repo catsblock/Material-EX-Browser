@@ -107,8 +107,6 @@ fun SettingsScreen(
     onClose: () -> Unit
 ) {
     val scope = rememberCoroutineScope()
-    var homepage by remember(settings.homepage) { mutableStateOf(settings.homepage) }
-    var homepageInvalid by remember { mutableStateOf(false) }
     var template by remember(settings.customSearchTemplate) { mutableStateOf(settings.customSearchTemplate) }
     var templateInvalid by remember { mutableStateOf(false) }
     var category by rememberSaveable { mutableStateOf<SettingsCategory?>(null) }
@@ -198,28 +196,6 @@ fun SettingsScreen(
                 }
             }
             if (shown == SettingsCategory.GENERAL) {
-                SettingsSection(R.string.settings_homepage) {
-                    OutlinedTextField(
-                        value = homepage,
-                        onValueChange = {
-                            homepage = it
-                            homepageInvalid = false
-                        },
-                        singleLine = true,
-                        isError = homepageInvalid,
-                        supportingText = if (homepageInvalid) {
-                            { Text(stringResource(R.string.settings_homepage_invalid)) }
-                        } else {
-                            null
-                        },
-                        modifier = Modifier.fillMaxWidth()
-                    )
-                    Button(onClick = {
-                        scope.launch { homepageInvalid = !repository.setHomepage(homepage) }
-                    }) {
-                        Text(stringResource(R.string.action_save))
-                    }
-                }
                 SettingsSection(R.string.settings_home_sections) {
                     SectionSwitch(R.string.settings_show_shortcuts, settings.showShortcuts) {
                         scope.launch { repository.setHomeSection(HomeSection.SHORTCUTS, it) }
@@ -548,7 +524,6 @@ private enum class SettingsCategory(val title: Int, val summary: Int, val icon: 
 
     companion object {
         val index: List<Pair<Int, SettingsCategory>> = listOf(
-            R.string.settings_homepage to GENERAL,
             R.string.settings_home_sections to GENERAL,
             R.string.settings_restore_home to GENERAL,
             R.string.settings_search_engine to SEARCH,

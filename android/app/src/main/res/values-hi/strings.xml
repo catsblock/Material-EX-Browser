@@ -41,7 +41,6 @@
     <string name="settings_toolbar_position_description">फ़्लोटिंग खोज फ़्रेम कहाँ दिखे</string>
     <string name="settings_toolbar_top">ऊपर</string>
     <string name="settings_toolbar_bottom">नीचे</string>
-    <string name="settings_homepage">होमपेज</string>
     <string name="settings_homepage_invalid">मान्य http या https पता दर्ज करें</string>
     <string name="settings_search_engine">डिफ़ॉल्ट सर्च इंजन</string>
     <string name="settings_custom_template">कस्टम खोज URL</string>

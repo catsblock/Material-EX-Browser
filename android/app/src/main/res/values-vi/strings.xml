@@ -41,7 +41,6 @@
     <string name="settings_toolbar_position_description">Nơi khung tìm kiếm nổi xuất hiện</string>
     <string name="settings_toolbar_top">Trên cùng</string>
     <string name="settings_toolbar_bottom">Dưới cùng</string>
-    <string name="settings_homepage">Trang chủ</string>
     <string name="settings_homepage_invalid">Nhập địa chỉ http hoặc https hợp lệ</string>
     <string name="settings_search_engine">Công cụ tìm kiếm mặc định</string>
     <string name="settings_custom_template">URL tìm kiếm tùy chỉnh</string>

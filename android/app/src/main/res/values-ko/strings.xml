@@ -41,7 +41,6 @@
     <string name="settings_toolbar_position_description">떠 있는 검색창이 표시되는 위치</string>
     <string name="settings_toolbar_top">상단</string>
     <string name="settings_toolbar_bottom">하단</string>
-    <string name="settings_homepage">홈페이지</string>
     <string name="settings_homepage_invalid">올바른 http 또는 https 주소를 입력하세요</string>
     <string name="settings_search_engine">기본 검색엔진</string>
     <string name="settings_custom_template">사용자 지정 검색 URL</string>

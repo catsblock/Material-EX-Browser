@@ -41,7 +41,6 @@
     <string name="settings_toolbar_position_description">Onde aparece a moldura de pesquisa flutuante</string>
     <string name="settings_toolbar_top">Topo</string>
     <string name="settings_toolbar_bottom">Fundo</string>
-    <string name="settings_homepage">Página inicial</string>
     <string name="settings_homepage_invalid">Introduza um endereço http ou https válido</string>
     <string name="settings_search_engine">Motor de pesquisa predefinido</string>
     <string name="settings_custom_template">URL de pesquisa personalizado</string>

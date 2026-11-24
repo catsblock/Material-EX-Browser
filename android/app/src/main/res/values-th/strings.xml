@@ -41,7 +41,6 @@
     <string name="settings_toolbar_position_description">ตำแหน่งที่กรอบค้นหาแบบลอยปรากฏ</string>
     <string name="settings_toolbar_top">ด้านบน</string>
     <string name="settings_toolbar_bottom">ด้านล่าง</string>
-    <string name="settings_homepage">หน้าแรก</string>
     <string name="settings_homepage_invalid">ป้อนที่อยู่ http หรือ https ที่ถูกต้อง</string>
     <string name="settings_search_engine">เครื่องมือค้นหาเริ่มต้น</string>
     <string name="settings_custom_template">URL ค้นหาที่กำหนดเอง</string>

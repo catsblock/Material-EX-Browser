@@ -41,7 +41,6 @@
     <string name="settings_toolbar_position_description">Où apparaît le cadre de recherche flottant</string>
     <string name="settings_toolbar_top">Haut</string>
     <string name="settings_toolbar_bottom">Bas</string>
-    <string name="settings_homepage">Page d\'accueil</string>
     <string name="settings_homepage_invalid">Saisissez une adresse http ou https valide</string>
     <string name="settings_search_engine">Moteur de recherche par défaut</string>
     <string name="settings_custom_template">URL de recherche personnalisée</string>

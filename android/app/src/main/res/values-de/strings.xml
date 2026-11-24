@@ -25,7 +25,7 @@
     <string name="doc_terms">Nutzungsbedingungen</string>
     <string name="doc_privacy">Datenschutzerklärung</string>
     <string name="doc_license">Informationen zur GPL-3.0-Lizenz</string>
-    <string name="address_placeholder">Suchen oder URL eingeben</string>
+    <string name="address_placeholder">Suchen</string>
     <string name="action_back">Zurück</string>
     <string name="action_forward">Vorwärts</string>
     <string name="action_reload">Neu laden</string>
@@ -41,7 +41,6 @@
     <string name="settings_toolbar_position_description">Wo das schwebende Suchfeld erscheint</string>
     <string name="settings_toolbar_top">Oben</string>
     <string name="settings_toolbar_bottom">Unten</string>
-    <string name="settings_homepage">Startseite</string>
     <string name="settings_homepage_invalid">Gib eine gültige http- oder https-Adresse ein</string>
     <string name="settings_search_engine">Standardsuchmaschine</string>
     <string name="settings_custom_template">Benutzerdefinierte Such-URL</string>

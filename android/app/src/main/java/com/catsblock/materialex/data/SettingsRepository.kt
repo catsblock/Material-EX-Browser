@@ -9,14 +9,12 @@ import androidx.datastore.preferences.core.intPreferencesKey
 import androidx.datastore.preferences.core.longPreferencesKey
 import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.datastore.preferences.preferencesDataStore
-import com.catsblock.materialex.core.Resolution
 import com.catsblock.materialex.core.memory.MemoryMode
 import com.catsblock.materialex.core.profile.Profile
 import com.catsblock.materialex.core.profile.ProfileRules
 import com.catsblock.materialex.core.SearchEngine
 import com.catsblock.materialex.core.SearchTemplates
 import com.catsblock.materialex.core.SuggestionProvider
-import com.catsblock.materialex.core.UrlResolver
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
@@ -51,7 +49,6 @@ enum class ToolbarPosition {
 
 data class BrowserSettings(
     val toolbarPosition: ToolbarPosition = ToolbarPosition.TOP,
-    val homepage: String = DEFAULT_HOMEPAGE,
     val searchEngine: SearchEngine = SearchEngine.GOOGLE,
     val customSearchTemplate: String = "",
     val onboardingCompleted: Boolean = false,
@@ -76,7 +73,6 @@ data class BrowserSettings(
     val textFollowSystem: Boolean = true
 ) {
     companion object {
-        const val DEFAULT_HOMEPAGE = "https://www.google.com/"
         const val LEGAL_VERSION = 1
     }
 }
@@ -199,7 +195,6 @@ class SettingsRepository(private val context: Context) {
     suspend fun resetHomeSettings() {
         context.settingsStore.edit {
             HomeSection.entries.forEach { section -> it.remove(sectionKey(section)) }
-            it.remove(homepageKey)
         }
     }
 
@@ -216,11 +211,8 @@ class SettingsRepository(private val context: Context) {
         HomeSection.BOOKMARKS -> showBookmarksKey
     }
 
-    suspend fun setHomepage(input: String): Boolean {
-        val resolution = UrlResolver.resolve(input)
-        if (resolution !is Resolution.Navigate) return false
-        context.settingsStore.edit { it[homepageKey] = resolution.url }
-        return true
+    suspend fun dropLegacyHomepage() {
+        context.settingsStore.edit { it.remove(homepageKey) }
     }
 
     suspend fun setSearchEngine(engine: SearchEngine) {
@@ -253,7 +245,6 @@ class SettingsRepository(private val context: Context) {
 
     private fun read(preferences: Preferences): BrowserSettings = BrowserSettings(
         toolbarPosition = ToolbarPosition.fromId(preferences[toolbarKey]),
-        homepage = preferences[homepageKey] ?: BrowserSettings.DEFAULT_HOMEPAGE,
         searchEngine = SearchEngine.fromId(preferences[engineKey]),
         customSearchTemplate = preferences[templateKey].orEmpty(),
         onboardingCompleted = preferences[onboardingKey] ?: false,

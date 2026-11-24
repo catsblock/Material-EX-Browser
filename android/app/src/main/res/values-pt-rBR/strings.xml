@@ -17,7 +17,6 @@
     <string name="settings_toolbar_position_description">Onde a barra de pesquisa flutuante aparece</string>
     <string name="settings_toolbar_top">Superior</string>
     <string name="settings_toolbar_bottom">Inferior</string>
-    <string name="settings_homepage">Página inicial</string>
     <string name="settings_homepage_invalid">Informe um endereço http ou https válido</string>
     <string name="settings_search_engine">Mecanismo de busca padrão</string>
     <string name="settings_custom_template">URL de busca personalizada</string>

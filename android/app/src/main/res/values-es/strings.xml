@@ -41,7 +41,6 @@
     <string name="settings_toolbar_position_description">Dónde aparece el marco de búsqueda flotante</string>
     <string name="settings_toolbar_top">Arriba</string>
     <string name="settings_toolbar_bottom">Abajo</string>
-    <string name="settings_homepage">Página de inicio</string>
     <string name="settings_homepage_invalid">Introduce una dirección http o https válida</string>
     <string name="settings_search_engine">Motor de búsqueda predeterminado</string>
     <string name="settings_custom_template">URL de búsqueda personalizada</string>

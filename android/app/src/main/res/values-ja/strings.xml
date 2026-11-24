@@ -41,7 +41,6 @@
     <string name="settings_toolbar_position_description">フローティング検索バーを表示する場所</string>
     <string name="settings_toolbar_top">上</string>
     <string name="settings_toolbar_bottom">下</string>
-    <string name="settings_homepage">ホームページ</string>
     <string name="settings_homepage_invalid">有効な http または https アドレスを入力してください</string>
     <string name="settings_search_engine">既定の検索エンジン</string>
     <string name="settings_custom_template">カスタム検索URL</string>

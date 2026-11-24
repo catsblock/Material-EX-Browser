@@ -41,7 +41,6 @@
     <string name="settings_toolbar_position_description">Де з’являється плаваюче поле пошуку</string>
     <string name="settings_toolbar_top">Угорі</string>
     <string name="settings_toolbar_bottom">Унизу</string>
-    <string name="settings_homepage">Домашня сторінка</string>
     <string name="settings_homepage_invalid">Введіть дійсну адресу http або https</string>
     <string name="settings_search_engine">Пошукова система за промовчанням</string>
     <string name="settings_custom_template">Власна URL-адреса пошуку</string>

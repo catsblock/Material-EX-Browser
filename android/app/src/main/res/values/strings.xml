@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">Material EX</string>
-    <string name="address_placeholder">Search or type a URL</string>
+    <string name="address_placeholder">Search</string>
     <string name="action_back">Back</string>
     <string name="action_forward">Forward</string>
     <string name="action_reload">Reload</string>
@@ -17,7 +17,6 @@
     <string name="settings_toolbar_position_description">Where the floating search frame appears</string>
     <string name="settings_toolbar_top">Top</string>
     <string name="settings_toolbar_bottom">Bottom</string>
-    <string name="settings_homepage">Homepage</string>
     <string name="settings_homepage_invalid">Enter a valid http or https address</string>
     <string name="settings_search_engine">Default search engine</string>
     <string name="settings_custom_template">Custom search URL</string>

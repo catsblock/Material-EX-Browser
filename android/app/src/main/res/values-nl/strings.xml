@@ -41,7 +41,6 @@
     <string name="settings_toolbar_position_description">Waar het zwevende zoekvak verschijnt</string>
     <string name="settings_toolbar_top">Boven</string>
     <string name="settings_toolbar_bottom">Onder</string>
-    <string name="settings_homepage">Startpagina</string>
     <string name="settings_homepage_invalid">Voer een geldig http- of https-adres in</string>
     <string name="settings_search_engine">Standaardzoekmachine</string>
     <string name="settings_custom_template">Aangepaste zoek-URL</string>

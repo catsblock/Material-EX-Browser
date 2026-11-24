@@ -76,12 +76,12 @@ class MainActivity : ComponentActivity() {
         return super.dispatchKeyEvent(event)
     }
 
-    private fun handleShortcut(action: ShortcutAction, homepage: String, bookmarked: Boolean, page: PageState): Boolean {
+    private fun handleShortcut(action: ShortcutAction, bookmarked: Boolean, page: PageState): Boolean {
         val engine = app.engine
         val state = engine.tabs.value
         when (action) {
             ShortcutAction.NEW_TAB -> engine.openTab("")
-            ShortcutAction.CLOSE_TAB -> state.activeId?.let { closeTab(it, homepage) }
+            ShortcutAction.CLOSE_TAB -> state.activeId?.let { closeTab(it) }
             ShortcutAction.RESTORE_TAB -> engine.restoreClosedTab()
             ShortcutAction.FOCUS_ADDRESS -> addressFocusTick += 1
             ShortcutAction.RELOAD -> engine.reload()
@@ -223,7 +223,7 @@ class MainActivity : ComponentActivity() {
                         screen = Screen.DOWNLOADS
                         true
                     }
-                    else -> handleShortcut(action, settings.homepage, isBookmarked, pageState)
+                    else -> handleShortcut(action, isBookmarked, pageState)
                 }
             }
         }
@@ -313,7 +313,7 @@ class MainActivity : ComponentActivity() {
                     app.engine.openTab("")
                     screen = Screen.BROWSER
                 },
-                onCloseTab = { id -> closeTab(id, settings.homepage) }
+                onCloseTab = { id -> closeTab(id) }
             )
             Screen.BROWSER -> BrowserScreen(
                 engine = app.engine,
@@ -333,7 +333,7 @@ class MainActivity : ComponentActivity() {
                 },
                 onShare = { share(pageState.url) },
                 onOpenDownloads = { screen = Screen.DOWNLOADS },
-                onCloseTab = { id -> closeTab(id, settings.homepage) },
+                onCloseTab = { id -> closeTab(id) },
                 focusTick = addressFocusTick,
                 findTick = findTick,
                 newTabContent = {
@@ -410,10 +410,10 @@ class MainActivity : ComponentActivity() {
         lifecycleScope.launch { openFromIntent(intent) }
     }
 
-    private fun closeTab(id: String, homepage: String) {
+    private fun closeTab(id: String) {
         app.engine.closeTab(id)
         app.engine.flushClosed()
-        if (app.engine.tabs.value.tabs.isEmpty()) app.engine.openTab(homepage)
+        if (app.engine.tabs.value.tabs.isEmpty()) app.engine.openTab("")
     }
 
     private suspend fun openFromIntent(intent: Intent?) {
@@ -423,7 +423,7 @@ class MainActivity : ComponentActivity() {
             return
         }
         if (app.engine.tabs.value.tabs.isEmpty()) {
-            app.engine.openTab(app.settings.settings.first().homepage)
+            app.engine.openTab("")
         }
     }
 

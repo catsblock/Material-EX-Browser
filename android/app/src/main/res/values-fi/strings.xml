@@ -41,7 +41,6 @@
     <string name="settings_toolbar_position_description">Missä kelluva hakukehys näkyy</string>
     <string name="settings_toolbar_top">Ylhäällä</string>
     <string name="settings_toolbar_bottom">Alhaalla</string>
-    <string name="settings_homepage">Aloitussivu</string>
     <string name="settings_homepage_invalid">Anna kelvollinen http- tai https-osoite</string>
     <string name="settings_search_engine">Oletushakukone</string>
     <string name="settings_custom_template">Mukautettu hakuosoite</string>

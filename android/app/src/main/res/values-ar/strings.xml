@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">Material EX</string>
-    <string name="address_placeholder">ابحث أو اكتب عنوانًا</string>
+    <string name="address_placeholder">بحث</string>
     <string name="action_back">رجوع</string>
     <string name="action_forward">تقدّم</string>
     <string name="action_reload">إعادة التحميل</string>
@@ -17,7 +17,6 @@
     <string name="settings_toolbar_position_description">مكان ظهور إطار البحث العائم</string>
     <string name="settings_toolbar_top">أعلى</string>
     <string name="settings_toolbar_bottom">أسفل</string>
-    <string name="settings_homepage">الصفحة الرئيسية</string>
     <string name="settings_homepage_invalid">أدخل عنوان http أو https صالحًا</string>
     <string name="settings_search_engine">محرك البحث الافتراضي</string>
     <string name="settings_custom_template">رابط بحث مخصص</string>

@@ -11,6 +11,9 @@ import androidx.compose.animation.slideInVertically
 import androidx.compose.animation.slideOutVertically
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.border
+import androidx.compose.ui.semantics.Role
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.widthIn
 import androidx.compose.ui.graphics.Color
@@ -124,10 +127,16 @@ fun FloatingSearchFrame(
     var focused by remember { mutableStateOf(false) }
     var field by remember { mutableStateOf(TextFieldValue("")) }
     var rejected by remember { mutableStateOf(false) }
+    var editing by remember { mutableStateOf(false) }
     val focusRequester = remember { FocusRequester() }
+    val displayScroll = rememberScrollState()
     LaunchedEffect(focusTick) {
-        if (focusTick > 0) focusRequester.requestFocus()
+        if (focusTick > 0) editing = true
     }
+    LaunchedEffect(editing) {
+        if (editing) focusRequester.requestFocus()
+    }
+    LaunchedEffect(state.url) { displayScroll.scrollTo(0) }
 
     val edge = if (position == ToolbarPosition.TOP) WindowInsetsSides.Top else WindowInsetsSides.Bottom
     val insets = WindowInsets.safeDrawing.only(WindowInsetsSides.Horizontal + edge)
@@ -177,62 +186,90 @@ fun FloatingSearchFrame(
                     secure -> stringResource(R.string.security_secure)
                     else -> stringResource(R.string.security_insecure)
                 }
-                IconButton(
-                    onClick = onOpenSiteInfo,
-                    enabled = state.url.isNotEmpty(),
-                    modifier = Modifier.padding(start = 4.dp).size(48.dp)
-                ) {
-                    Icon(
-                        imageVector = icon,
-                        contentDescription = description,
-                        modifier = Modifier.size(20.dp),
-                        tint = if (icon == Icons.Default.Warning) MaterialTheme.colorScheme.error else MaterialTheme.colorScheme.onSurfaceVariant
-                    )
-                }
-                BasicTextField(
-                    value = shown,
-                    onValueChange = {
-                        field = it
-                        rejected = false
-                        onQueryChange(it.text)
-                    },
-                    singleLine = true,
-                    textStyle = LocalTextStyle.current.copy(
-                        color = MaterialTheme.colorScheme.onSurface,
-                        textDirection = TextDirection.Content
-                    ),
-                    cursorBrush = SolidColor(MaterialTheme.colorScheme.primary),
-                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Uri, imeAction = ImeAction.Go),
-                    keyboardActions = KeyboardActions(onGo = {
-                        val accepted = onSubmit(field.text)
-                        rejected = !accepted
-                        if (accepted) focusManager.clearFocus()
-                    }),
-                    modifier = Modifier
-                        .weight(1f)
-                        .padding(horizontal = 12.dp, vertical = 16.dp)
-                        .focusRequester(focusRequester)
-                        .onFocusChanged {
-                            if (it.isFocused && !focused) {
-                                field = TextFieldValue(state.url, TextRange(0, state.url.length))
-                                rejected = false
-                            }
-                            if (!it.isFocused && focused) onQueryChange("")
-                            focused = it.isFocused
-                        },
-                    decorationBox = { inner ->
-                        Box(contentAlignment = Alignment.CenterStart) {
-                            if (shown.text.isEmpty()) {
-                                Text(
-                                    text = stringResource(R.string.address_placeholder),
-                                    color = MaterialTheme.colorScheme.onSurfaceVariant,
-                                    style = LocalTextStyle.current
-                                )
-                            }
-                            inner()
-                        }
+                if (state.url.isNotEmpty()) {
+                    IconButton(
+                        onClick = onOpenSiteInfo,
+                        enabled = state.url.isNotEmpty(),
+                        modifier = Modifier.padding(start = 4.dp).size(48.dp)
+                    ) {
+                        Icon(
+                            imageVector = icon,
+                            contentDescription = description,
+                            modifier = Modifier.size(20.dp),
+                            tint = if (icon == Icons.Default.Warning) MaterialTheme.colorScheme.error else MaterialTheme.colorScheme.onSurfaceVariant
+                        )
                     }
-                )
+                }
+                if (editing || focused) {
+                    BasicTextField(
+                        value = shown,
+                        onValueChange = {
+                            field = it
+                            rejected = false
+                            onQueryChange(it.text)
+                        },
+                        singleLine = true,
+                        textStyle = LocalTextStyle.current.copy(
+                            color = MaterialTheme.colorScheme.onSurface,
+                            textDirection = TextDirection.Content
+                        ),
+                        cursorBrush = SolidColor(MaterialTheme.colorScheme.primary),
+                        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Uri, imeAction = ImeAction.Go),
+                        keyboardActions = KeyboardActions(onGo = {
+                            val accepted = onSubmit(field.text)
+                            rejected = !accepted
+                            if (accepted) focusManager.clearFocus()
+                        }),
+                        modifier = Modifier
+                            .weight(1f)
+                            .padding(horizontal = 12.dp, vertical = 16.dp)
+                            .focusRequester(focusRequester)
+                            .onFocusChanged {
+                                if (it.isFocused && !focused) {
+                                    field = TextFieldValue(state.url, TextRange(0, state.url.length))
+                                    rejected = false
+                                }
+                                if (!it.isFocused && focused) {
+                                    onQueryChange("")
+                                    editing = false
+                                }
+                                focused = it.isFocused
+                            },
+                        decorationBox = { inner ->
+                            Box(contentAlignment = Alignment.CenterStart) {
+                                if (shown.text.isEmpty()) {
+                                    Text(
+                                        text = stringResource(R.string.address_placeholder),
+                                        color = MaterialTheme.colorScheme.onSurfaceVariant,
+                                        style = LocalTextStyle.current
+                                    )
+                                }
+                                inner()
+                            }
+                        }
+                    )
+                } else {
+                    val readOnlyText = state.url.ifEmpty { stringResource(R.string.address_placeholder) }
+                    Box(
+                        modifier = Modifier
+                            .weight(1f)
+                            .horizontalScroll(displayScroll)
+                            .clickable(role = Role.Button) { editing = true }
+                            .padding(horizontal = 12.dp, vertical = 16.dp)
+                    ) {
+                        Text(
+                            text = readOnlyText,
+                            maxLines = 1,
+                            softWrap = false,
+                            style = LocalTextStyle.current.copy(textDirection = TextDirection.Content),
+                            color = if (state.url.isEmpty()) {
+                                MaterialTheme.colorScheme.onSurfaceVariant
+                            } else {
+                                MaterialTheme.colorScheme.onSurface
+                            }
+                        )
+                    }
+                }
                 if (state.isLoading) {
                     IconButton(onClick = onStop) {
                         Icon(Icons.Default.Close, contentDescription = stringResource(R.string.action_stop))
