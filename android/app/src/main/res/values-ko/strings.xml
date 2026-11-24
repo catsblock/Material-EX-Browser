@@ -25,7 +25,7 @@
     <string name="doc_terms">서비스 약관</string>
     <string name="doc_privacy">개인정보 처리방침</string>
     <string name="doc_license">GPL 3.0 라이선스 정보</string>
-    <string name="address_placeholder">검색하거나 URL 입력</string>
+    <string name="address_placeholder">검색</string>
     <string name="action_back">뒤로</string>
     <string name="action_forward">앞으로</string>
     <string name="action_reload">새로고침</string>

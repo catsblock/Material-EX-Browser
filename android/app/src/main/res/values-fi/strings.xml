@@ -25,7 +25,7 @@
     <string name="doc_terms">Käyttöehdot</string>
     <string name="doc_privacy">Tietosuojakäytäntö</string>
     <string name="doc_license">GPL 3.0 -lisenssin tiedot</string>
-    <string name="address_placeholder">Hae tai kirjoita URL</string>
+    <string name="address_placeholder">Hae</string>
     <string name="action_back">Takaisin</string>
     <string name="action_forward">Eteenpäin</string>
     <string name="action_reload">Lataa uudelleen</string>

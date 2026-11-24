@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">Material EX</string>
-    <string name="address_placeholder">Pesquise ou digite um endereço</string>
+    <string name="address_placeholder">Pesquisar</string>
     <string name="action_back">Voltar</string>
     <string name="action_forward">Avançar</string>
     <string name="action_reload">Recarregar</string>

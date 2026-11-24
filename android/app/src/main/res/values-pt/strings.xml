@@ -25,7 +25,7 @@
     <string name="doc_terms">Termos de Serviço</string>
     <string name="doc_privacy">Política de Privacidade</string>
     <string name="doc_license">Informações da licença GPL 3.0</string>
-    <string name="address_placeholder">Pesquise ou escreva um endereço</string>
+    <string name="address_placeholder">Pesquisar</string>
     <string name="action_back">Voltar</string>
     <string name="action_forward">Avançar</string>
     <string name="action_reload">Recarregar</string>

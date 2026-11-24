@@ -25,7 +25,7 @@
     <string name="doc_terms">Điều khoản dịch vụ</string>
     <string name="doc_privacy">Chính sách quyền riêng tư</string>
     <string name="doc_license">Thông tin giấy phép GPL 3.0</string>
-    <string name="address_placeholder">Tìm kiếm hoặc nhập URL</string>
+    <string name="address_placeholder">Tìm kiếm</string>
     <string name="action_back">Quay lại</string>
     <string name="action_forward">Tiến tới</string>
     <string name="action_reload">Tải lại</string>

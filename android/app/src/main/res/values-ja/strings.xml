@@ -25,7 +25,7 @@
     <string name="doc_terms">利用規約</string>
     <string name="doc_privacy">プライバシーポリシー</string>
     <string name="doc_license">GPL 3.0 ライセンス情報</string>
-    <string name="address_placeholder">検索またはURLを入力</string>
+    <string name="address_placeholder">検索</string>
     <string name="action_back">戻る</string>
     <string name="action_forward">進む</string>
     <string name="action_reload">再読み込み</string>

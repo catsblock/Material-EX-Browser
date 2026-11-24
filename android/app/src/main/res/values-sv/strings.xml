@@ -25,7 +25,7 @@
     <string name="doc_terms">Användarvillkor</string>
     <string name="doc_privacy">Integritetspolicy</string>
     <string name="doc_license">Information om GPL 3.0-licensen</string>
-    <string name="address_placeholder">Sök eller ange en URL</string>
+    <string name="address_placeholder">Sök</string>
     <string name="action_back">Tillbaka</string>
     <string name="action_forward">Framåt</string>
     <string name="action_reload">Ladda om</string>

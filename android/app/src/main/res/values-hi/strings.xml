@@ -25,7 +25,7 @@
     <string name="doc_terms">सेवा की शर्तें</string>
     <string name="doc_privacy">गोपनीयता नीति</string>
     <string name="doc_license">GPL 3.0 लाइसेंस की जानकारी</string>
-    <string name="address_placeholder">खोजें या URL लिखें</string>
+    <string name="address_placeholder">खोजें</string>
     <string name="action_back">वापस</string>
     <string name="action_forward">आगे</string>
     <string name="action_reload">रीलोड करें</string>

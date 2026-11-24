@@ -25,7 +25,7 @@
     <string name="doc_terms">Условия использования</string>
     <string name="doc_privacy">Политика конфиденциальности</string>
     <string name="doc_license">Сведения о лицензии GPL 3.0</string>
-    <string name="address_placeholder">Введите запрос или URL</string>
+    <string name="address_placeholder">Поиск</string>
     <string name="action_back">Назад</string>
     <string name="action_forward">Вперёд</string>
     <string name="action_reload">Обновить</string>

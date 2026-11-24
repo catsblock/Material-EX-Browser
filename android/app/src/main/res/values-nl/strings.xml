@@ -25,7 +25,7 @@
     <string name="doc_terms">Servicevoorwaarden</string>
     <string name="doc_privacy">Privacybeleid</string>
     <string name="doc_license">Informatie over de GPL 3.0-licentie</string>
-    <string name="address_placeholder">Zoek of typ een URL</string>
+    <string name="address_placeholder">Zoeken</string>
     <string name="action_back">Terug</string>
     <string name="action_forward">Vooruit</string>
     <string name="action_reload">Vernieuwen</string>
