@@ -2,6 +2,8 @@ package com.catsblock.materialex.ui
 
 import androidx.activity.compose.BackHandler
 import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.ExitTransition
+import androidx.compose.animation.EnterTransition
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
@@ -83,11 +85,12 @@ fun PopupHost(
         if (pages[id]?.canGoBack == true) engine.popupGoBack(id) else engine.closePopup(id)
     }
 
+    val reduceMotion = rememberReduceMotion()
     Box(modifier = modifier.fillMaxSize()) {
         AnimatedVisibility(
             visible = foreground != null,
-            enter = fadeIn(tween(180)),
-            exit = fadeOut(tween(160))
+            enter = if (reduceMotion) EnterTransition.None else fadeIn(tween(180)),
+            exit = if (reduceMotion) ExitTransition.None else fadeOut(tween(160))
         ) {
             Box(
                 modifier = Modifier
@@ -98,8 +101,8 @@ fun PopupHost(
         }
         AnimatedVisibility(
             visible = foreground != null,
-            enter = fadeIn(effects) + scaleIn(spatial, initialScale = 0.86f),
-            exit = fadeOut(effects) + scaleOut(spatial, targetScale = 0.9f),
+            enter = if (reduceMotion) EnterTransition.None else fadeIn(effects) + scaleIn(spatial, initialScale = 0.86f),
+            exit = if (reduceMotion) ExitTransition.None else fadeOut(effects) + scaleOut(spatial, targetScale = 0.9f),
             modifier = Modifier.align(Alignment.Center)
         ) {
             shown?.let { popup ->
@@ -121,7 +124,7 @@ fun PopupHost(
                 val page = pages[popup.id] ?: PageState()
                 AnimatedVisibility(
                     visible = true,
-                    enter = fadeIn(effects) + scaleIn(spatial, initialScale = 0.6f)
+                    enter = if (reduceMotion) EnterTransition.None else fadeIn(effects) + scaleIn(spatial, initialScale = 0.6f)
                 ) {
                     Surface(
                         shape = MaterialTheme.shapes.large,

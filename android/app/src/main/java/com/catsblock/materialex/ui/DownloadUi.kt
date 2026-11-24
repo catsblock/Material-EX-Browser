@@ -2,6 +2,8 @@ package com.catsblock.materialex.ui
 
 import android.net.Uri
 import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.ExitTransition
+import androidx.compose.animation.EnterTransition
 import androidx.compose.animation.expandVertically
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
@@ -192,12 +194,13 @@ fun DownloadPanel(controller: DownloadController, onOpenAll: () -> Unit, modifie
         if (shown.isNotEmpty()) held = shown
     }
     val items = if (shown.isNotEmpty()) shown else held
+    val reduceMotion = rememberReduceMotion()
 
     AnimatedVisibility(
         visible = shown.isNotEmpty(),
         modifier = modifier,
-        enter = fadeIn(tween(200)) + expandVertically(tween(260)),
-        exit = fadeOut(tween(160)) + shrinkVertically(tween(200))
+        enter = if (reduceMotion) EnterTransition.None else fadeIn(tween(200)) + expandVertically(tween(260)),
+        exit = if (reduceMotion) ExitTransition.None else fadeOut(tween(160)) + shrinkVertically(tween(200))
     ) {
         Surface(
             shape = RoundedCornerShape(24.dp),
