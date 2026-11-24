@@ -20,7 +20,7 @@
     <string name="settings_homepage_invalid">Enter a valid http or https address</string>
     <string name="settings_search_engine">Default search engine</string>
     <string name="settings_custom_template">Custom search URL</string>
-    <string name="settings_custom_template_hint" formatted="false">https://example.com/search?q=%s</string>
+    <string name="settings_custom_template_hint" translatable="false" formatted="false">https://example.com/search?q=%s</string>
     <string name="settings_custom_template_invalid" formatted="false">The URL must start with https:// and contain %s exactly once</string>
     <string name="settings_search_engine_custom">Custom</string>
     <string name="tabs_title">Tabs</string>
