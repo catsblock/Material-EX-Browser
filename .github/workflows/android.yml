@@ -56,7 +56,7 @@ jobs:
           python3 - <<'PY'
           import glob, re
           import xml.etree.ElementTree as ET
-          files = glob.glob("android/**/lint-results-debug.xml", recursive=True)
+          files = glob.glob("**/lint-results-debug.xml", recursive=True)
           if not files:
               print("::error::lint xml report not found")
           for f in files[:1]:
