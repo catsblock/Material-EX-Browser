@@ -299,5 +299,5 @@
     <string name="settings_text_follow_system">시스템 글꼴 크기 따르기</string>
     <string name="settings_text_follow_system_desc">웹페이지에 기기 설정의 글꼴 크기를 사용합니다.</string>
     <string name="settings_text_scale">웹 텍스트 크기</string>
-    <string name="settings_text_scale_desc">웹페이지의 글자 크기를 조절합니다. 기본값은 100%입니다. 변경하려면 ‘시스템 글꼴 크기 따르기’를 끄세요.</string>
+    <string name="settings_text_scale_desc" formatted="false">웹페이지의 글자 크기를 조절합니다. 기본값은 100%입니다. 변경하려면 ‘시스템 글꼴 크기 따르기’를 끄세요.</string>
 </resources>

@@ -299,5 +299,5 @@
     <string name="settings_text_follow_system">सिस्टम फ़ॉन्ट आकार का पालन करें</string>
     <string name="settings_text_follow_system_desc">वेब पेज के लिए आपके डिवाइस सेटिंग का फ़ॉन्ट आकार इस्तेमाल करता है।</string>
     <string name="settings_text_scale">वेब टेक्स्ट आकार</string>
-    <string name="settings_text_scale_desc">वेब पेज का टेक्स्ट बड़ा या छोटा करता है। डिफ़ॉल्ट 100% है। बदलने के लिए “सिस्टम फ़ॉन्ट आकार का पालन करें” बंद करें।</string>
+    <string name="settings_text_scale_desc" formatted="false">वेब पेज का टेक्स्ट बड़ा या छोटा करता है। डिफ़ॉल्ट 100% है। बदलने के लिए “सिस्टम फ़ॉन्ट आकार का पालन करें” बंद करें।</string>
 </resources>

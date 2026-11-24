@@ -102,5 +102,9 @@
     <string name="settings_text_follow_system">Follow system font size</string>
     <string name="settings_text_follow_system_desc">Uses the font size set in your device settings for web pages.</string>
     <string name="settings_text_scale">Web text size</string>
-    <string name="settings_text_scale_desc">Scales text on web pages. 100% is the default. Turn off “Follow system font size” to change it.</string>
+    <string name="settings_text_scale_desc" formatted="false">Scales text on web pages. 100% is the default. Turn off “Follow system font size” to change it.</string>
+    <string name="address_placeholder">Search</string>
+    <string name="action_back">Back</string>
+    <string name="action_forward">Forward</string>
+    <string name="action_reload">Reload</string>
 </resources>

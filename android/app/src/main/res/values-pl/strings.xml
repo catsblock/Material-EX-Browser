@@ -299,5 +299,5 @@
     <string name="settings_text_follow_system">Używaj rozmiaru czcionki systemu</string>
     <string name="settings_text_follow_system_desc">Używa rozmiaru czcionki z ustawień urządzenia na stronach internetowych.</string>
     <string name="settings_text_scale">Rozmiar tekstu stron</string>
-    <string name="settings_text_scale_desc">Skaluje tekst na stronach. Domyślnie 100%. Wyłącz „Używaj rozmiaru czcionki systemu”, aby go zmienić.</string>
+    <string name="settings_text_scale_desc" formatted="false">Skaluje tekst na stronach. Domyślnie 100%. Wyłącz „Używaj rozmiaru czcionki systemu”, aby go zmienić.</string>
 </resources>

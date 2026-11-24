@@ -8,6 +8,7 @@ import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.SideEffect
 import android.view.KeyEvent
 import android.app.ActivityManager
+import android.annotation.SuppressLint
 import android.content.Intent
 import android.net.Uri
 import android.provider.Settings
@@ -68,6 +69,7 @@ class MainActivity : ComponentActivity() {
     private var addressFocusTick by mutableIntStateOf(0)
     private var findTick by mutableIntStateOf(0)
 
+    @SuppressLint("RestrictedApi")
     override fun dispatchKeyEvent(event: KeyEvent): Boolean {
         if (event.action == KeyEvent.ACTION_DOWN && event.repeatCount == 0) {
             val action = Shortcuts.resolve(event.keyCode, event.isCtrlPressed, event.isShiftPressed, event.isAltPressed)

@@ -301,5 +301,5 @@
     <string name="settings_text_follow_system">اتباع حجم خط النظام</string>
     <string name="settings_text_follow_system_desc">يستخدم حجم الخط المحدد في إعدادات جهازك لصفحات الويب.</string>
     <string name="settings_text_scale">حجم نص الويب</string>
-    <string name="settings_text_scale_desc">يغيّر حجم النص في صفحات الويب. القيمة الافتراضية 100%. أوقف «اتباع حجم خط النظام» لتغييره.</string>
+    <string name="settings_text_scale_desc" formatted="false">يغيّر حجم النص في صفحات الويب. القيمة الافتراضية 100%. أوقف «اتباع حجم خط النظام» لتغييره.</string>
 </resources>

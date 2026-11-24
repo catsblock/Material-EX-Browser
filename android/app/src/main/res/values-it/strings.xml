@@ -299,5 +299,5 @@
     <string name="settings_text_follow_system">Segui la dimensione del carattere di sistema</string>
     <string name="settings_text_follow_system_desc">Usa la dimensione del carattere delle impostazioni del dispositivo per le pagine web.</string>
     <string name="settings_text_scale">Dimensione del testo web</string>
-    <string name="settings_text_scale_desc">Ridimensiona il testo delle pagine web. Il valore predefinito è 100%. Disattiva “Segui la dimensione del carattere di sistema” per modificarla.</string>
+    <string name="settings_text_scale_desc" formatted="false">Ridimensiona il testo delle pagine web. Il valore predefinito è 100%. Disattiva “Segui la dimensione del carattere di sistema” per modificarla.</string>
 </resources>

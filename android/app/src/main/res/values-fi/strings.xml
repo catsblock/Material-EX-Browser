@@ -299,5 +299,5 @@
     <string name="settings_text_follow_system">Seuraa järjestelmän fonttikokoa</string>
     <string name="settings_text_follow_system_desc">Käyttää laitteen asetuksissa määritettyä fonttikokoa verkkosivuilla.</string>
     <string name="settings_text_scale">Verkkotekstin koko</string>
-    <string name="settings_text_scale_desc">Skaalaa verkkosivujen tekstiä. Oletus on 100 %. Poista ”Seuraa järjestelmän fonttikokoa” käytöstä muuttaaksesi sitä.</string>
+    <string name="settings_text_scale_desc" formatted="false">Skaalaa verkkosivujen tekstiä. Oletus on 100 %. Poista ”Seuraa järjestelmän fonttikokoa” käytöstä muuttaaksesi sitä.</string>
 </resources>

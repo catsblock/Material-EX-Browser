@@ -299,5 +299,5 @@
     <string name="settings_text_follow_system">Systeemlettergrootte volgen</string>
     <string name="settings_text_follow_system_desc">Gebruikt de lettergrootte uit de apparaatinstellingen voor webpagina’s.</string>
     <string name="settings_text_scale">Webtekstgrootte</string>
-    <string name="settings_text_scale_desc">Schaalt tekst op webpagina’s. 100% is de standaard. Zet ‘Systeemlettergrootte volgen’ uit om dit te wijzigen.</string>
+    <string name="settings_text_scale_desc" formatted="false">Schaalt tekst op webpagina’s. 100% is de standaard. Zet ‘Systeemlettergrootte volgen’ uit om dit te wijzigen.</string>
 </resources>

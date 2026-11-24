@@ -72,7 +72,7 @@ jobs:
                   if msg not in seen:
                       seen.add(msg)
                       print("::error::" + msg)
-                  if len(seen) >= 12:
+                  if len(seen) >= 30:
                       break
           PY
 

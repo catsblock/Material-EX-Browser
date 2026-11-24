@@ -299,5 +299,5 @@
     <string name="settings_text_follow_system">ใช้ขนาดตัวอักษรของระบบ</string>
     <string name="settings_text_follow_system_desc">ใช้ขนาดตัวอักษรจากการตั้งค่าอุปกรณ์สำหรับหน้าเว็บ</string>
     <string name="settings_text_scale">ขนาดข้อความบนเว็บ</string>
-    <string name="settings_text_scale_desc">ปรับขนาดข้อความบนหน้าเว็บ ค่าเริ่มต้นคือ 100% ปิด “ใช้ขนาดตัวอักษรของระบบ” เพื่อเปลี่ยน</string>
+    <string name="settings_text_scale_desc" formatted="false">ปรับขนาดข้อความบนหน้าเว็บ ค่าเริ่มต้นคือ 100% ปิด “ใช้ขนาดตัวอักษรของระบบ” เพื่อเปลี่ยน</string>
 </resources>

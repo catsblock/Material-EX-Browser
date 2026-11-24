@@ -299,5 +299,5 @@
     <string name="settings_text_follow_system">システムのフォントサイズに従う</string>
     <string name="settings_text_follow_system_desc">ウェブページにデバイス設定のフォントサイズを使用します。</string>
     <string name="settings_text_scale">ウェブの文字サイズ</string>
-    <string name="settings_text_scale_desc">ウェブページの文字を拡大縮小します。標準は 100% です。変更するには「システムのフォントサイズに従う」をオフにしてください。</string>
+    <string name="settings_text_scale_desc" formatted="false">ウェブページの文字を拡大縮小します。標準は 100% です。変更するには「システムのフォントサイズに従う」をオフにしてください。</string>
 </resources>

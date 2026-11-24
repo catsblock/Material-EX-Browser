@@ -1,6 +1,8 @@
 package com.catsblock.materialex.engine
 
 import android.content.Context
+import android.os.Handler
+import android.os.Looper
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.datastore.preferences.preferencesDataStore
@@ -27,6 +29,7 @@ class SiteStyleBridge(context: Context, scope: CoroutineScope) {
     private val stylesFlow = MutableStateFlow<Map<String, String>>(emptyMap())
     private val agentsFlow = MutableStateFlow<Map<String, UaChoice>>(emptyMap())
     private var contentPort: WebExtension.Port? = null
+    private val mainHandler = Handler(Looper.getMainLooper())
 
     val styles: StateFlow<Map<String, String>> = stylesFlow.asStateFlow()
     val userAgents: StateFlow<Map<String, UaChoice>> = agentsFlow.asStateFlow()
@@ -66,7 +69,7 @@ class SiteStyleBridge(context: Context, scope: CoroutineScope) {
 
     fun install(runtime: GeckoRuntime) {
         runtime.webExtensionController.ensureBuiltIn(ASSET_URI, EXTENSION_ID).accept(
-            { extension -> extension?.setMessageDelegate(messages, APP) },
+            { extension -> mainHandler.post { extension?.setMessageDelegate(messages, APP) } },
             { }
         )
     }

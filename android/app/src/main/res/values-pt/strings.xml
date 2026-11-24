@@ -299,5 +299,5 @@
     <string name="settings_text_follow_system">Seguir o tamanho de letra do sistema</string>
     <string name="settings_text_follow_system_desc">Usa o tamanho de letra das definições do dispositivo nas páginas Web.</string>
     <string name="settings_text_scale">Tamanho do texto Web</string>
-    <string name="settings_text_scale_desc">Ajusta a escala do texto das páginas Web. O predefinido é 100%. Desative “Seguir o tamanho de letra do sistema” para o alterar.</string>
+    <string name="settings_text_scale_desc" formatted="false">Ajusta a escala do texto das páginas Web. O predefinido é 100%. Desative “Seguir o tamanho de letra do sistema” para o alterar.</string>
 </resources>

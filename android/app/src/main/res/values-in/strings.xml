@@ -299,5 +299,5 @@
     <string name="settings_text_follow_system">Ikuti ukuran font sistem</string>
     <string name="settings_text_follow_system_desc">Menggunakan ukuran font dari setelan perangkat untuk laman web.</string>
     <string name="settings_text_scale">Ukuran teks web</string>
-    <string name="settings_text_scale_desc">Menskalakan teks di laman web. Default 100%. Nonaktifkan “Ikuti ukuran font sistem” untuk mengubahnya.</string>
+    <string name="settings_text_scale_desc" formatted="false">Menskalakan teks di laman web. Default 100%. Nonaktifkan “Ikuti ukuran font sistem” untuk mengubahnya.</string>
 </resources>

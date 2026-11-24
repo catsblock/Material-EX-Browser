@@ -299,5 +299,5 @@
     <string name="settings_text_follow_system">Следовать размеру шрифта системы</string>
     <string name="settings_text_follow_system_desc">Использует размер шрифта из настроек устройства для веб-страниц.</string>
     <string name="settings_text_scale">Размер текста на сайтах</string>
-    <string name="settings_text_scale_desc">Масштабирует текст на веб-страницах. По умолчанию 100%. Чтобы изменить, отключите «Следовать размеру шрифта системы».</string>
+    <string name="settings_text_scale_desc" formatted="false">Масштабирует текст на веб-страницах. По умолчанию 100%. Чтобы изменить, отключите «Следовать размеру шрифта системы».</string>
 </resources>

@@ -299,5 +299,5 @@
     <string name="settings_text_follow_system">Suivre la taille de police du système</string>
     <string name="settings_text_follow_system_desc">Utilise la taille de police des réglages de l’appareil pour les pages web.</string>
     <string name="settings_text_scale">Taille du texte web</string>
-    <string name="settings_text_scale_desc">Met à l’échelle le texte des pages web. 100 % par défaut. Désactivez « Suivre la taille de police du système » pour la modifier.</string>
+    <string name="settings_text_scale_desc" formatted="false">Met à l’échelle le texte des pages web. 100 % par défaut. Désactivez « Suivre la taille de police du système » pour la modifier.</string>
 </resources>

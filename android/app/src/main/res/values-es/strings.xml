@@ -299,5 +299,5 @@
     <string name="settings_text_follow_system">Usar el tamaño de fuente del sistema</string>
     <string name="settings_text_follow_system_desc">Usa el tamaño de fuente de los ajustes del dispositivo en las páginas web.</string>
     <string name="settings_text_scale">Tamaño del texto web</string>
-    <string name="settings_text_scale_desc">Escala el texto de las páginas web. 100 % es el valor predeterminado. Desactiva «Usar el tamaño de fuente del sistema» para cambiarlo.</string>
+    <string name="settings_text_scale_desc" formatted="false">Escala el texto de las páginas web. 100 % es el valor predeterminado. Desactiva «Usar el tamaño de fuente del sistema» para cambiarlo.</string>
 </resources>
