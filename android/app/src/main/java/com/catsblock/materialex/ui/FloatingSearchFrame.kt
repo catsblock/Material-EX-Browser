@@ -4,6 +4,8 @@ import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.ExitTransition
+import androidx.compose.animation.EnterTransition
 import androidx.compose.animation.core.spring
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
@@ -144,14 +146,19 @@ fun FloatingSearchFrame(
 
     val concealed = hidden && !focused && !menuOpen
     val fromTop = position == ToolbarPosition.TOP
+    val reduceMotion = rememberReduceMotion()
 
     AnimatedVisibility(
         visible = !concealed,
         modifier = modifier,
-        enter = slideInVertically(spring(dampingRatio = 0.8f, stiffness = 380f)) { full -> if (fromTop) -full else full } +
-            fadeIn(spring(stiffness = 380f)),
-        exit = slideOutVertically(spring(dampingRatio = 0.9f, stiffness = 500f)) { full -> if (fromTop) -full else full } +
-            fadeOut(spring(stiffness = 500f))
+        enter = if (reduceMotion) EnterTransition.None else {
+            slideInVertically(spring(dampingRatio = 0.8f, stiffness = 380f)) { full -> if (fromTop) -full else full } +
+                fadeIn(spring(stiffness = 380f))
+        },
+        exit = if (reduceMotion) ExitTransition.None else {
+            slideOutVertically(spring(dampingRatio = 0.9f, stiffness = 500f)) { full -> if (fromTop) -full else full } +
+                fadeOut(spring(stiffness = 500f))
+        }
     ) {
     Surface(
         modifier = Modifier
