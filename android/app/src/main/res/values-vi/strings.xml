@@ -300,4 +300,15 @@
     <string name="settings_text_follow_system_desc">Dùng cỡ chữ trong cài đặt thiết bị cho các trang web.</string>
     <string name="settings_text_scale">Cỡ chữ trên web</string>
     <string name="settings_text_scale_desc" formatted="false">Điều chỉnh cỡ chữ trên trang web. Mặc định là 100%. Tắt “Theo cỡ chữ của hệ thống” để thay đổi.</string>
+    <string name="ext_store_open">Duyệt cửa hàng tiện ích</string>
+    <string name="ext_store_title">Cửa hàng tiện ích</string>
+    <string name="ext_store_search">Tìm tiện ích</string>
+    <string name="ext_store_install">Cài đặt</string>
+    <string name="ext_store_installed">Đã cài đặt</string>
+    <string name="ext_store_loading">Đang tải…</string>
+    <string name="ext_store_error">Không thể tải cửa hàng tiện ích. Hãy kiểm tra kết nối.</string>
+    <string name="ext_store_empty">Không tìm thấy tiện ích.</string>
+    <string name="ext_store_more">Tải thêm</string>
+    <string name="ext_store_users">%1$s người dùng</string>
+    <string name="ext_store_source">Tiện ích đến từ addons.mozilla.org (Mozilla). Trước khi cài đặt, bạn xem xét quyền của tiện ích.</string>
 </resources>

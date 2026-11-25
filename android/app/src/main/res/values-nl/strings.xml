@@ -300,4 +300,15 @@
     <string name="settings_text_follow_system_desc">Gebruikt de lettergrootte uit de apparaatinstellingen voor webpagina’s.</string>
     <string name="settings_text_scale">Webtekstgrootte</string>
     <string name="settings_text_scale_desc" formatted="false">Schaalt tekst op webpagina’s. 100% is de standaard. Zet ‘Systeemlettergrootte volgen’ uit om dit te wijzigen.</string>
+    <string name="ext_store_open">Extensiewinkel bekijken</string>
+    <string name="ext_store_title">Extensiewinkel</string>
+    <string name="ext_store_search">Extensies zoeken</string>
+    <string name="ext_store_install">Installeren</string>
+    <string name="ext_store_installed">Geïnstalleerd</string>
+    <string name="ext_store_loading">Laden…</string>
+    <string name="ext_store_error">De extensiewinkel kon niet worden geladen. Controleer je verbinding.</string>
+    <string name="ext_store_empty">Geen extensies gevonden.</string>
+    <string name="ext_store_more">Meer laden</string>
+    <string name="ext_store_users">%1$s gebruikers</string>
+    <string name="ext_store_source">Extensies komen van addons.mozilla.org (Mozilla). Voor het installeren controleer je de machtigingen.</string>
 </resources>

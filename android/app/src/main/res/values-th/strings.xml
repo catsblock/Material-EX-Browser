@@ -300,4 +300,15 @@
     <string name="settings_text_follow_system_desc">ใช้ขนาดตัวอักษรจากการตั้งค่าอุปกรณ์สำหรับหน้าเว็บ</string>
     <string name="settings_text_scale">ขนาดข้อความบนเว็บ</string>
     <string name="settings_text_scale_desc" formatted="false">ปรับขนาดข้อความบนหน้าเว็บ ค่าเริ่มต้นคือ 100% ปิด “ใช้ขนาดตัวอักษรของระบบ” เพื่อเปลี่ยน</string>
+    <string name="ext_store_open">เรียกดูร้านส่วนขยาย</string>
+    <string name="ext_store_title">ร้านส่วนขยาย</string>
+    <string name="ext_store_search">ค้นหาส่วนขยาย</string>
+    <string name="ext_store_install">ติดตั้ง</string>
+    <string name="ext_store_installed">ติดตั้งแล้ว</string>
+    <string name="ext_store_loading">กำลังโหลด…</string>
+    <string name="ext_store_error">โหลดร้านส่วนขยายไม่สำเร็จ ตรวจสอบการเชื่อมต่อของคุณ</string>
+    <string name="ext_store_empty">ไม่พบส่วนขยาย</string>
+    <string name="ext_store_more">โหลดเพิ่มเติม</string>
+    <string name="ext_store_users">ผู้ใช้ %1$s คน</string>
+    <string name="ext_store_source">ส่วนขยายมาจาก addons.mozilla.org (Mozilla) ก่อนติดตั้ง คุณจะได้ตรวจสอบสิทธิ์ของส่วนขยาย</string>
 </resources>

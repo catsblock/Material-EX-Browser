@@ -300,4 +300,15 @@
     <string name="settings_text_follow_system_desc">Używa rozmiaru czcionki z ustawień urządzenia na stronach internetowych.</string>
     <string name="settings_text_scale">Rozmiar tekstu stron</string>
     <string name="settings_text_scale_desc" formatted="false">Skaluje tekst na stronach. Domyślnie 100%. Wyłącz „Używaj rozmiaru czcionki systemu”, aby go zmienić.</string>
+    <string name="ext_store_open">Przeglądaj sklep z rozszerzeniami</string>
+    <string name="ext_store_title">Sklep z rozszerzeniami</string>
+    <string name="ext_store_search">Szukaj rozszerzeń</string>
+    <string name="ext_store_install">Zainstaluj</string>
+    <string name="ext_store_installed">Zainstalowano</string>
+    <string name="ext_store_loading">Wczytywanie…</string>
+    <string name="ext_store_error">Nie udało się wczytać sklepu z rozszerzeniami. Sprawdź połączenie.</string>
+    <string name="ext_store_empty">Nie znaleziono rozszerzeń.</string>
+    <string name="ext_store_more">Wczytaj więcej</string>
+    <string name="ext_store_users">Użytkownicy: %1$s</string>
+    <string name="ext_store_source">Rozszerzenia pochodzą z addons.mozilla.org (Mozilla). Przed instalacją sprawdzasz ich uprawnienia.</string>
 </resources>

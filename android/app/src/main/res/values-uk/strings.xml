@@ -300,4 +300,15 @@
     <string name="settings_text_follow_system_desc">Використовує розмір шрифту з налаштувань пристрою для вебсторінок.</string>
     <string name="settings_text_scale">Розмір тексту на сайтах</string>
     <string name="settings_text_scale_desc" formatted="false">Масштабує текст на вебсторінках. За замовчуванням 100%. Вимкніть «Використовувати розмір шрифту системи», щоб змінити.</string>
+    <string name="ext_store_open">Переглянути магазин розширень</string>
+    <string name="ext_store_title">Магазин розширень</string>
+    <string name="ext_store_search">Пошук розширень</string>
+    <string name="ext_store_install">Установити</string>
+    <string name="ext_store_installed">Установлено</string>
+    <string name="ext_store_loading">Завантаження…</string>
+    <string name="ext_store_error">Не вдалося завантажити магазин розширень. Перевірте підключення.</string>
+    <string name="ext_store_empty">Розширень не знайдено.</string>
+    <string name="ext_store_more">Завантажити ще</string>
+    <string name="ext_store_users">Користувачів: %1$s</string>
+    <string name="ext_store_source">Розширення надходять із addons.mozilla.org (Mozilla). Перед установленням ви перевіряєте їхні дозволи.</string>
 </resources>

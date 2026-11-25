@@ -300,4 +300,15 @@
     <string name="settings_text_follow_system_desc">Verwendet die in den Geräteeinstellungen festgelegte Schriftgröße für Webseiten.</string>
     <string name="settings_text_scale">Webtextgröße</string>
     <string name="settings_text_scale_desc" formatted="false">Skaliert den Text auf Webseiten. 100 % ist der Standard. Deaktiviere „Systemschriftgröße verwenden“, um sie zu ändern.</string>
+    <string name="ext_store_open">Erweiterungsstore durchsuchen</string>
+    <string name="ext_store_title">Erweiterungsstore</string>
+    <string name="ext_store_search">Erweiterungen suchen</string>
+    <string name="ext_store_install">Installieren</string>
+    <string name="ext_store_installed">Installiert</string>
+    <string name="ext_store_loading">Wird geladen …</string>
+    <string name="ext_store_error">Der Erweiterungsstore konnte nicht geladen werden. Prüfe deine Verbindung.</string>
+    <string name="ext_store_empty">Keine Erweiterungen gefunden.</string>
+    <string name="ext_store_more">Mehr laden</string>
+    <string name="ext_store_users">%1$s Nutzer</string>
+    <string name="ext_store_source">Erweiterungen stammen von addons.mozilla.org (Mozilla). Vor der Installation prüfst du ihre Berechtigungen.</string>
 </resources>

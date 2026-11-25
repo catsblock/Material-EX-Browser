@@ -300,4 +300,15 @@
     <string name="settings_text_follow_system_desc">ウェブページにデバイス設定のフォントサイズを使用します。</string>
     <string name="settings_text_scale">ウェブの文字サイズ</string>
     <string name="settings_text_scale_desc" formatted="false">ウェブページの文字を拡大縮小します。標準は 100% です。変更するには「システムのフォントサイズに従う」をオフにしてください。</string>
+    <string name="ext_store_open">拡張機能ストアを見る</string>
+    <string name="ext_store_title">拡張機能ストア</string>
+    <string name="ext_store_search">拡張機能を検索</string>
+    <string name="ext_store_install">インストール</string>
+    <string name="ext_store_installed">インストール済み</string>
+    <string name="ext_store_loading">読み込み中…</string>
+    <string name="ext_store_error">拡張機能ストアを読み込めませんでした。接続を確認してください。</string>
+    <string name="ext_store_empty">拡張機能が見つかりません。</string>
+    <string name="ext_store_more">さらに読み込む</string>
+    <string name="ext_store_users">%1$s 人のユーザー</string>
+    <string name="ext_store_source">拡張機能は addons.mozilla.org（Mozilla）から提供されます。インストール前に権限を確認します。</string>
 </resources>

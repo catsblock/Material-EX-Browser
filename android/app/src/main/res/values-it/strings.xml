@@ -300,4 +300,15 @@
     <string name="settings_text_follow_system_desc">Usa la dimensione del carattere delle impostazioni del dispositivo per le pagine web.</string>
     <string name="settings_text_scale">Dimensione del testo web</string>
     <string name="settings_text_scale_desc" formatted="false">Ridimensiona il testo delle pagine web. Il valore predefinito è 100%. Disattiva “Segui la dimensione del carattere di sistema” per modificarla.</string>
+    <string name="ext_store_open">Sfoglia lo store di estensioni</string>
+    <string name="ext_store_title">Store di estensioni</string>
+    <string name="ext_store_search">Cerca estensioni</string>
+    <string name="ext_store_install">Installa</string>
+    <string name="ext_store_installed">Installata</string>
+    <string name="ext_store_loading">Caricamento…</string>
+    <string name="ext_store_error">Impossibile caricare lo store di estensioni. Controlla la connessione.</string>
+    <string name="ext_store_empty">Nessuna estensione trovata.</string>
+    <string name="ext_store_more">Carica altro</string>
+    <string name="ext_store_users">%1$s utenti</string>
+    <string name="ext_store_source">Le estensioni provengono da addons.mozilla.org (Mozilla). Prima dell’installazione ne verifichi le autorizzazioni.</string>
 </resources>

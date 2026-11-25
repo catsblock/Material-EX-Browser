@@ -301,4 +301,15 @@
     <string name="settings_text_follow_system_desc">يستخدم حجم الخط المحدد في إعدادات جهازك لصفحات الويب.</string>
     <string name="settings_text_scale">حجم نص الويب</string>
     <string name="settings_text_scale_desc" formatted="false">يغيّر حجم النص في صفحات الويب. القيمة الافتراضية 100%. أوقف «اتباع حجم خط النظام» لتغييره.</string>
+    <string name="ext_store_open">تصفح متجر الإضافات</string>
+    <string name="ext_store_title">متجر الإضافات</string>
+    <string name="ext_store_search">ابحث عن إضافات</string>
+    <string name="ext_store_install">تثبيت</string>
+    <string name="ext_store_installed">مثبّتة</string>
+    <string name="ext_store_loading">جارٍ التحميل…</string>
+    <string name="ext_store_error">تعذّر تحميل متجر الإضافات. تحقق من اتصالك.</string>
+    <string name="ext_store_empty">لم يتم العثور على إضافات.</string>
+    <string name="ext_store_more">تحميل المزيد</string>
+    <string name="ext_store_users">%1$s مستخدم</string>
+    <string name="ext_store_source">تأتي الإضافات من addons.mozilla.org (Mozilla). يُطلب منك مراجعة أذوناتها قبل التثبيت.</string>
 </resources>

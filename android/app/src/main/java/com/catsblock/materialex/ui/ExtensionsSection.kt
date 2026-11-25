@@ -52,6 +52,7 @@ fun ExtensionsSection(
     onCheckUpdate: (String) -> Unit
 ) {
     var detailsId by rememberSaveable { mutableStateOf<String?>(null) }
+    var storeOpen by rememberSaveable { mutableStateOf(false) }
     var address by rememberSaveable { mutableStateOf("") }
     val normalized = ExtensionRules.normalizeInstallUrl(address)
     val shown = ExtensionRules.sortedForDisplay(extensions)
@@ -89,6 +90,16 @@ fun ExtensionsSection(
                 }
             }
         }
+    }
+    if (storeOpen) {
+        ExtensionStoreDialog(
+            installedIds = extensions.mapTo(HashSet()) { it.id },
+            onInstall = onInstall,
+            onDismiss = { storeOpen = false }
+        )
+    }
+    Button(onClick = { storeOpen = true }, modifier = Modifier.fillMaxWidth()) {
+        Text(stringResource(R.string.ext_store_open))
     }
     shown.firstOrNull { it.id == detailsId }?.let { extension ->
         ExtensionDetailsDialog(

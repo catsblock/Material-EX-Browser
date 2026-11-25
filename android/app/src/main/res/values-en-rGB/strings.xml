@@ -300,4 +300,15 @@
     <string name="ext_perm_all_sites">Read and change your data on all websites</string>
     <string name="ext_perm_site">Access to: %1$s</string>
     <string name="ext_allow">Add</string>
+    <string name="ext_store_open">Browse extension store</string>
+    <string name="ext_store_title">Extension store</string>
+    <string name="ext_store_search">Search extensions</string>
+    <string name="ext_store_install">Install</string>
+    <string name="ext_store_installed">Installed</string>
+    <string name="ext_store_loading">Loading…</string>
+    <string name="ext_store_error">Couldn\'t load the extension store. Check your connection.</string>
+    <string name="ext_store_empty">No extensions found.</string>
+    <string name="ext_store_more">Load more</string>
+    <string name="ext_store_users">%1$s users</string>
+    <string name="ext_store_source">Extensions come from addons.mozilla.org (Mozilla). Installing one asks you to review its permissions first.</string>
 </resources>

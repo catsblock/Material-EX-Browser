@@ -300,4 +300,15 @@
     <string name="settings_text_follow_system_desc">Käyttää laitteen asetuksissa määritettyä fonttikokoa verkkosivuilla.</string>
     <string name="settings_text_scale">Verkkotekstin koko</string>
     <string name="settings_text_scale_desc" formatted="false">Skaalaa verkkosivujen tekstiä. Oletus on 100 %. Poista ”Seuraa järjestelmän fonttikokoa” käytöstä muuttaaksesi sitä.</string>
+    <string name="ext_store_open">Selaa laajennuskauppaa</string>
+    <string name="ext_store_title">Laajennuskauppa</string>
+    <string name="ext_store_search">Hae laajennuksia</string>
+    <string name="ext_store_install">Asenna</string>
+    <string name="ext_store_installed">Asennettu</string>
+    <string name="ext_store_loading">Ladataan…</string>
+    <string name="ext_store_error">Laajennuskaupan lataus epäonnistui. Tarkista yhteytesi.</string>
+    <string name="ext_store_empty">Laajennuksia ei löytynyt.</string>
+    <string name="ext_store_more">Lataa lisää</string>
+    <string name="ext_store_users">%1$s käyttäjää</string>
+    <string name="ext_store_source">Laajennukset tulevat osoitteesta addons.mozilla.org (Mozilla). Ennen asennusta tarkistat niiden käyttöoikeudet.</string>
 </resources>

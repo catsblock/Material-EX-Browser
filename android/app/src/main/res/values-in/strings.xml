@@ -300,4 +300,15 @@
     <string name="settings_text_follow_system_desc">Menggunakan ukuran font dari setelan perangkat untuk laman web.</string>
     <string name="settings_text_scale">Ukuran teks web</string>
     <string name="settings_text_scale_desc" formatted="false">Menskalakan teks di laman web. Default 100%. Nonaktifkan “Ikuti ukuran font sistem” untuk mengubahnya.</string>
+    <string name="ext_store_open">Jelajahi toko ekstensi</string>
+    <string name="ext_store_title">Toko ekstensi</string>
+    <string name="ext_store_search">Cari ekstensi</string>
+    <string name="ext_store_install">Pasang</string>
+    <string name="ext_store_installed">Terpasang</string>
+    <string name="ext_store_loading">Memuat…</string>
+    <string name="ext_store_error">Toko ekstensi tidak dapat dimuat. Periksa koneksi Anda.</string>
+    <string name="ext_store_empty">Ekstensi tidak ditemukan.</string>
+    <string name="ext_store_more">Muat lebih banyak</string>
+    <string name="ext_store_users">%1$s pengguna</string>
+    <string name="ext_store_source">Ekstensi berasal dari addons.mozilla.org (Mozilla). Sebelum memasang, Anda meninjau izinnya.</string>
 </resources>

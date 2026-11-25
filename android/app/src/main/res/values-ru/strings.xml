@@ -300,4 +300,15 @@
     <string name="settings_text_follow_system_desc">Использует размер шрифта из настроек устройства для веб-страниц.</string>
     <string name="settings_text_scale">Размер текста на сайтах</string>
     <string name="settings_text_scale_desc" formatted="false">Масштабирует текст на веб-страницах. По умолчанию 100%. Чтобы изменить, отключите «Следовать размеру шрифта системы».</string>
+    <string name="ext_store_open">Открыть магазин расширений</string>
+    <string name="ext_store_title">Магазин расширений</string>
+    <string name="ext_store_search">Поиск расширений</string>
+    <string name="ext_store_install">Установить</string>
+    <string name="ext_store_installed">Установлено</string>
+    <string name="ext_store_loading">Загрузка…</string>
+    <string name="ext_store_error">Не удалось загрузить магазин расширений. Проверьте подключение.</string>
+    <string name="ext_store_empty">Расширения не найдены.</string>
+    <string name="ext_store_more">Загрузить ещё</string>
+    <string name="ext_store_users">Пользователей: %1$s</string>
+    <string name="ext_store_source">Расширения берутся с addons.mozilla.org (Mozilla). Перед установкой вы проверяете их разрешения.</string>
 </resources>

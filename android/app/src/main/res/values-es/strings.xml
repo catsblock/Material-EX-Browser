@@ -300,4 +300,15 @@
     <string name="settings_text_follow_system_desc">Usa el tamaño de fuente de los ajustes del dispositivo en las páginas web.</string>
     <string name="settings_text_scale">Tamaño del texto web</string>
     <string name="settings_text_scale_desc" formatted="false">Escala el texto de las páginas web. 100 % es el valor predeterminado. Desactiva «Usar el tamaño de fuente del sistema» para cambiarlo.</string>
+    <string name="ext_store_open">Explorar la tienda de extensiones</string>
+    <string name="ext_store_title">Tienda de extensiones</string>
+    <string name="ext_store_search">Buscar extensiones</string>
+    <string name="ext_store_install">Instalar</string>
+    <string name="ext_store_installed">Instalada</string>
+    <string name="ext_store_loading">Cargando…</string>
+    <string name="ext_store_error">No se pudo cargar la tienda de extensiones. Revisa tu conexión.</string>
+    <string name="ext_store_empty">No se encontraron extensiones.</string>
+    <string name="ext_store_more">Cargar más</string>
+    <string name="ext_store_users">%1$s usuarios</string>
+    <string name="ext_store_source">Las extensiones proceden de addons.mozilla.org (Mozilla). Antes de instalar una, revisarás sus permisos.</string>
 </resources>

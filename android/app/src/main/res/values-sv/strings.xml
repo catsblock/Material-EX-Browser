@@ -300,4 +300,15 @@
     <string name="settings_text_follow_system_desc">Använder teckenstorleken från enhetens inställningar för webbsidor.</string>
     <string name="settings_text_scale">Webbtextstorlek</string>
     <string name="settings_text_scale_desc" formatted="false">Skalar text på webbsidor. Standard är 100 %. Stäng av ”Följ systemets teckenstorlek” för att ändra.</string>
+    <string name="ext_store_open">Bläddra i tilläggsbutiken</string>
+    <string name="ext_store_title">Tilläggsbutik</string>
+    <string name="ext_store_search">Sök tillägg</string>
+    <string name="ext_store_install">Installera</string>
+    <string name="ext_store_installed">Installerad</string>
+    <string name="ext_store_loading">Läser in …</string>
+    <string name="ext_store_error">Det gick inte att läsa in tilläggsbutiken. Kontrollera anslutningen.</string>
+    <string name="ext_store_empty">Inga tillägg hittades.</string>
+    <string name="ext_store_more">Visa fler</string>
+    <string name="ext_store_users">%1$s användare</string>
+    <string name="ext_store_source">Tilläggen kommer från addons.mozilla.org (Mozilla). Före installationen granskar du behörigheterna.</string>
 </resources>

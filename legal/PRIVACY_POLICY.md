@@ -31,6 +31,8 @@ You can delete history, search history, the download list, website permissions, 
 
 Windows version: the Windows application also keeps its data only on your computer (see the Data Retention Policy). It supports separate profiles with their own cookies, site data, history, bookmarks and permissions; deleting a profile removes its data the next time the app starts. Private windows keep cookies, cache and site data in memory only and do not record history, but they do not make you anonymous. "Clear browsing data" in its menu deletes history, cookies, cache, the download list and saved site permissions, and you can delete the MaterialEX folder in %LOCALAPPDATA% to remove everything else. Websites you visit, and the search engine you configure, receive the information any browser sends, such as your IP address and, depending on your settings, your user agent.
 
+Extension store (Android): when you open the extension store inside the app, it sends your search words to Mozilla's add-ons service (addons.mozilla.org) to list extensions, and extensions you choose to install are downloaded from Mozilla's servers. Mozilla's own privacy policy applies to that service. The app does not send anything to that service unless you open the store.
+
 6. Children
 Material EX is a general-purpose browser and is not directed at children.
 

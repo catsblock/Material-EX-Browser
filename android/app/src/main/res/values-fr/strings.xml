@@ -300,4 +300,15 @@
     <string name="settings_text_follow_system_desc">Utilise la taille de police des réglages de l’appareil pour les pages web.</string>
     <string name="settings_text_scale">Taille du texte web</string>
     <string name="settings_text_scale_desc" formatted="false">Met à l’échelle le texte des pages web. 100 % par défaut. Désactivez « Suivre la taille de police du système » pour la modifier.</string>
+    <string name="ext_store_open">Parcourir la boutique d’extensions</string>
+    <string name="ext_store_title">Boutique d’extensions</string>
+    <string name="ext_store_search">Rechercher des extensions</string>
+    <string name="ext_store_install">Installer</string>
+    <string name="ext_store_installed">Installée</string>
+    <string name="ext_store_loading">Chargement…</string>
+    <string name="ext_store_error">Impossible de charger la boutique d’extensions. Vérifiez votre connexion.</string>
+    <string name="ext_store_empty">Aucune extension trouvée.</string>
+    <string name="ext_store_more">Charger plus</string>
+    <string name="ext_store_users">%1$s utilisateurs</string>
+    <string name="ext_store_source">Les extensions proviennent de addons.mozilla.org (Mozilla). Avant l’installation, vous vérifiez leurs autorisations.</string>
 </resources>
