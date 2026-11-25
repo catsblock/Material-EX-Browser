@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.WindowInsetsSides
 import androidx.compose.foundation.layout.only
 import androidx.compose.animation.core.Spring
 import androidx.compose.animation.core.animateFloatAsState
+import androidx.compose.animation.core.snap
 import androidx.compose.animation.core.spring
 import androidx.compose.foundation.gestures.awaitEachGesture
 import androidx.compose.foundation.gestures.awaitFirstDown
@@ -120,9 +121,10 @@ fun BrowserScreen(
     val frameAllowancePx = with(density) { (if (atTop) 76.dp else 8.dp).toPx() }
     val indicatorPx = with(density) { 48.dp.toPx() }
     var pull by remember { mutableFloatStateOf(0f) }
+    val reduceMotion = rememberReduceMotion()
     val shownPull by animateFloatAsState(
         targetValue = pull,
-        animationSpec = spring(dampingRatio = 0.75f, stiffness = Spring.StiffnessMediumLow),
+        animationSpec = if (reduceMotion) snap() else spring(dampingRatio = 0.75f, stiffness = Spring.StiffnessMediumLow),
         label = "pull"
     )
 

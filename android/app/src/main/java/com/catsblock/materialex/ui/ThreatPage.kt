@@ -1,6 +1,8 @@
 package com.catsblock.materialex.ui
 
 import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.EnterTransition
+import androidx.compose.animation.ExitTransition
 import androidx.compose.animation.expandVertically
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
@@ -79,10 +81,11 @@ fun ThreatPage(threat: ThreatInfo, onLeave: () -> Unit, onContinue: () -> Unit, 
             onClick = { advanced = !advanced },
             colors = ButtonDefaults.textButtonColors(contentColor = OnDanger)
         ) { Text(stringResource(R.string.threat_advanced)) }
+        val reduceMotion = rememberReduceMotion()
         AnimatedVisibility(
             visible = advanced,
-            enter = expandVertically() + fadeIn(),
-            exit = shrinkVertically() + fadeOut()
+            enter = if (reduceMotion) EnterTransition.None else expandVertically() + fadeIn(),
+            exit = if (reduceMotion) ExitTransition.None else shrinkVertically() + fadeOut()
         ) {
             Column(verticalArrangement = Arrangement.spacedBy(12.dp)) {
                 Detail(R.string.threat_detail_source, stringResource(R.string.threat_source_value))

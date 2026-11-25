@@ -11,6 +11,8 @@ import androidx.activity.compose.BackHandler
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.animation.AnimatedContent
+import androidx.compose.animation.EnterTransition
+import androidx.compose.animation.ExitTransition
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.animation.core.spring
 import androidx.compose.animation.fadeIn
@@ -19,6 +21,7 @@ import androidx.compose.animation.slideInHorizontally
 import androidx.compose.animation.slideOutHorizontally
 import androidx.compose.animation.togetherWith
 import androidx.compose.animation.core.animateFloatAsState
+import androidx.compose.animation.core.snap
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -112,9 +115,10 @@ fun OnboardingScreen(
     var openDoc by rememberSaveable { mutableStateOf<String?>(null) }
     val steps = Step.entries
     val step = steps[stepIndex]
+    val reduceMotion = rememberReduceMotion()
     val progress by animateFloatAsState(
         targetValue = (stepIndex + 1f) / steps.size,
-        animationSpec = spring(),
+        animationSpec = if (reduceMotion) snap() else spring(),
         label = "onboardingProgress"
     )
 
@@ -137,7 +141,7 @@ fun OnboardingScreen(
                 modifier = Modifier.weight(1f),
                 transitionSpec = {
                     val forward = targetState > initialState
-                    (slideInHorizontally(spring()) { if (forward) it / 4 else -it / 4 } + fadeIn(spring()))
+                    if (reduceMotion) EnterTransition.None togetherWith ExitTransition.None else (slideInHorizontally(spring()) { if (forward) it / 4 else -it / 4 } + fadeIn(spring()))
                         .togetherWith(slideOutHorizontally(spring()) { if (forward) -it / 4 else it / 4 } + fadeOut(spring()))
                 },
                 label = "onboardingStep"

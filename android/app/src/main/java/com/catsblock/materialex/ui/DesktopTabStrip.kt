@@ -2,6 +2,8 @@ package com.catsblock.materialex.ui
 
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.core.animateFloatAsState
+import androidx.compose.animation.core.snap
+import androidx.compose.animation.core.spring
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.combinedClickable
@@ -95,6 +97,7 @@ fun DesktopTabStrip(
     onMove: (String, Int) -> Unit,
     modifier: Modifier = Modifier
 ) {
+    val reduceMotion = rememberReduceMotion()
     val listState = rememberLazyListState()
     val activeIndex = tabs.tabs.indexOfFirst { it.id == tabs.activeId }
     LaunchedEffect(tabs.activeId) {
@@ -127,7 +130,7 @@ fun DesktopTabStrip(
                     onCloseRight = { onCloseRight(tab.id) },
                     onRestore = onRestore,
                     onMove = { delta -> onMove(tab.id, delta) },
-                    modifier = Modifier.animateItem()
+                    modifier = if (reduceMotion) Modifier.animateItem(null, null, null) else Modifier.animateItem()
                 )
             }
         }
@@ -157,15 +160,21 @@ private fun DesktopTab(
     val hover = remember { MutableInteractionSource() }
     val hovered by hover.collectIsHoveredAsState()
     val colors = MaterialTheme.colorScheme
+    val reduceMotion = rememberReduceMotion()
     val background by animateColorAsState(
         targetValue = when {
             selected -> colors.surfaceContainerHighest
             hovered -> colors.surfaceContainerHigh
             else -> Color.Transparent
         },
+        animationSpec = if (reduceMotion) snap() else spring(),
         label = "tabBackground"
     )
-    val indicator by animateFloatAsState(if (selected) 0.5f else 0f, label = "tabIndicator")
+    val indicator by animateFloatAsState(
+        if (selected) 0.5f else 0f,
+        animationSpec = if (reduceMotion) snap() else spring(),
+        label = "tabIndicator"
+    )
     val title = page?.title?.ifBlank { null } ?: tab.title.ifBlank { null } ?: stringResource(R.string.tab_untitled)
     val address = page?.url?.ifBlank { null } ?: tab.url
     val currentMove by rememberUpdatedState(onMove)
