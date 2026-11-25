@@ -40,6 +40,8 @@ enum Command {
   kCmdNewWindow = 200,
   kCmdNewPrivateWindow,
   kCmdClearData,
+  kCmdProfileNew,
+  kCmdProfileDelete,
   kCmdCloseTab,
   kCmdCloseOthers,
   kCmdBookmarks,
@@ -56,6 +58,7 @@ enum Command {
   kCmdZoomIn,
   kCmdZoomOut,
   kCmdZoomReset,
+  kCmdProfileOpenBase = 400,
   kCmdUaGlobal = 300,
   kCmdUaDefault,
   kCmdUaDesktop,
@@ -134,14 +137,20 @@ void MainWindow::RevokeLocal(const std::string& origin, const std::string& permi
   }
 }
 
-void MainWindow::RevokeUse(const std::string& origin, const std::string& permission) {
+void MainWindow::RevokeUse(ProfileData* data, const std::string& origin, const std::string& permission) {
   for (MainWindow* w : Windows()) {
-    if (!w->private_) w->RevokeLocal(origin, permission);
+    if (!w->private_ && w->data_ == data) w->RevokeLocal(origin, permission);
   }
 }
 
 PermissionPolicyStore& MainWindow::Permissions() {
-  return private_ ? private_permissions_ : Profile::Get().permissions;
+  return private_ ? private_permissions_ : data_->permissions;
+}
+
+std::function<void()> MainWindow::PermissionsChanged() {
+  if (private_) return nullptr;
+  ProfileData* data = data_;
+  return [data] { data->SavePermissions(); };
 }
 
 void MainWindow::MaybeDelete() {
@@ -150,9 +159,9 @@ void MainWindow::MaybeDelete() {
 
 MainWindow* MainWindow::Last() { return Windows().empty() ? nullptr : Windows().back(); }
 
-MainWindow* MainWindow::Create(const std::string& url, bool is_private) {
+MainWindow* MainWindow::Create(const std::string& url, bool is_private, const std::string& profile_id) {
   MainWindow* w = new MainWindow();
-  if (!w->Init(url, is_private)) {
+  if (!w->Init(url, is_private, profile_id)) {
     if (w->hwnd_) DestroyWindow(w->hwnd_);
     else delete w;
     return nullptr;
@@ -160,12 +169,20 @@ MainWindow* MainWindow::Create(const std::string& url, bool is_private) {
   return w;
 }
 
-bool MainWindow::Init(const std::string& url, bool is_private) {
+bool MainWindow::Init(const std::string& url, bool is_private, const std::string& profile_id) {
   rtl_ = IsRtlUi();
   private_ = is_private;
+  Profile& profile = Profile::Get();
+  profile_id_ = profile.registry.Find(profile_id) ? profile_id : ProfileRegistry::kDefaultId;
+  data_ = &profile.Data(profile_id_);
   if (private_) {
     CefRequestContextSettings context_settings;
     context_settings.persist_session_cookies = false;
+    context_ = CefRequestContext::CreateContext(context_settings, nullptr);
+  } else if (profile_id_ != ProfileRegistry::kDefaultId) {
+    CefRequestContextSettings context_settings;
+    CefString(&context_settings.cache_path) = profile.CacheDir(profile_id_);
+    context_settings.persist_session_cookies = true;
     context_ = CefRequestContext::CreateContext(context_settings, nullptr);
   }
   client_ = new Client(this);
@@ -426,11 +443,12 @@ void MainWindow::UpdateChrome() {
   }
   SetWindowTextW(security_, label);
   SetWindowTextW(GetDlgItem(hwnd_, kCmdBookmark),
-                 Profile::Get().bookmarks.Contains(t->url) ? Tr(Str::RemoveBookmark) : Tr(Str::AddBookmark));
+                 data_->bookmarks.Contains(t->url) ? Tr(Str::RemoveBookmark) : Tr(Str::AddBookmark));
   EnableWindow(GetDlgItem(hwnd_, kCmdBookmark), !private_);
   std::string title = t->title.empty() ? HostOf(t->url) : t->title;
   std::wstring window_title = (title.empty() ? std::wstring() : Widen(title) + L" - ") + Tr(Str::AppName);
   if (private_) window_title += std::wstring(L" (") + Tr(Str::PrivateSuffix) + L")";
+  else if (profile_id_ != ProfileRegistry::kDefaultId) window_title += L" - " + Profile::Get().DisplayName(profile_id_);
   SetWindowTextW(hwnd_, window_title.c_str());
 }
 
@@ -482,8 +500,8 @@ void MainWindow::OnLoadFinished(CefRefPtr<CefBrowser> browser) {
   Tab& t = tabs_list_[static_cast<size_t>(i)];
   if (IsWebScheme(SchemeOf(url))) {
     if (!private_) {
-      Profile::Get().history.Add(url, t.title, NowSeconds());
-      Profile::Get().SaveHistory();
+      data_->history.Add(url, t.title, NowSeconds());
+      data_->SaveHistory();
     }
     std::string css = Profile::Get().SiteCss(HostOf(url));
     if (!css.empty()) InjectSiteCss(browser, css);
@@ -562,8 +580,8 @@ void MainWindow::Zoom(double delta, bool reset) {
 void MainWindow::ToggleBookmark() {
   Tab* t = ActiveTab();
   if (private_ || !t || !IsWebScheme(SchemeOf(t->url))) return;
-  Profile::Get().bookmarks.Toggle(t->url, t->title);
-  Profile::Get().SaveBookmarks();
+  data_->bookmarks.Toggle(t->url, t->title);
+  data_->SaveBookmarks();
   UpdateChrome();
 }
 
@@ -593,19 +611,36 @@ void MainWindow::ClearBrowsingData() {
   if (MessageBoxW(hwnd_, Tr(Str::ClearDataConfirm), Tr(Str::ClearData), MB_YESNO | MB_ICONQUESTION | MB_DEFBUTTON2) != IDYES) {
     return;
   }
-  Profile& p = Profile::Get();
-  p.history.Clear();
-  p.SaveHistory();
-  p.permissions.ResetAll();
-  p.SavePermissions();
+  data_->history.Clear();
+  data_->SaveHistory();
+  data_->permissions.ResetAll();
+  data_->SavePermissions();
   DownloadManager::Get().ClearFinished();
-  CefRefPtr<CefCookieManager> cookies = CefCookieManager::GetGlobalManager(nullptr);
+  CefRefPtr<CefCookieManager> cookies = context_ ? context_->GetCookieManager(nullptr) : CefCookieManager::GetGlobalManager(nullptr);
   if (cookies) cookies->DeleteCookies("", "", nullptr);
   for (const Tab& t : tabs_list_) {
     CefRefPtr<CefBrowserHost> host = t.browser->GetHost();
     host->ExecuteDevToolsMethod(0, "Network.clearBrowserCache", nullptr);
     host->ExecuteDevToolsMethod(0, "Network.clearBrowserCookies", nullptr);
   }
+}
+
+void MainWindow::DeleteThisProfile() {
+  if (private_ || profile_id_ == ProfileRegistry::kDefaultId) return;
+  std::wstring name = Profile::Get().DisplayName(profile_id_);
+  std::wstring text(1024, L'\0');
+  int n = swprintf(text.data(), text.size(), Tr(Str::ProfileDeleteConfirm), name.c_str());
+  text.resize(n > 0 ? static_cast<size_t>(n) : 0);
+  if (MessageBoxW(hwnd_, text.c_str(), Tr(Str::ProfileDelete), MB_YESNO | MB_ICONWARNING | MB_DEFBUTTON2) != IDYES) return;
+  std::string id = profile_id_;
+  Profile::Get().registry.Delete(id);
+  Profile::Get().SaveProfiles();
+  std::vector<HWND> to_close;
+  for (MainWindow* w : Windows()) {
+    if (w->profile_id_ == id) to_close.push_back(w->hwnd_);
+  }
+  if (Windows().size() == to_close.size()) MainWindow::Create("");
+  for (HWND h : to_close) PostMessageW(h, WM_CLOSE, 0, 0);
 }
 
 void MainWindow::SetFullscreen(bool on) {
@@ -682,6 +717,12 @@ bool MainWindow::HandleShortcut(const CefKeyEvent& e) {
 }
 
 void MainWindow::OnCommand(int id) {
+  if (id >= kCmdProfileOpenBase && id < kCmdProfileOpenBase + static_cast<int>(ProfileRegistry::kMaxProfiles)) {
+    const auto& list = Profile::Get().registry.Profiles();
+    size_t index = static_cast<size_t>(id - kCmdProfileOpenBase);
+    if (index < list.size()) MainWindow::Create("", false, list[index].id);
+    return;
+  }
   Tab* t = ActiveTab();
   switch (id) {
     case kCmdBack:
@@ -703,6 +744,17 @@ void MainWindow::OnCommand(int id) {
     case kCmdNewWindow: MainWindow::Create(""); break;
     case kCmdNewPrivateWindow: MainWindow::Create("", true); break;
     case kCmdClearData: ClearBrowsingData(); break;
+    case kCmdProfileNew: {
+      Profile& profile = Profile::Get();
+      const ProfileInfo* created = profile.registry.Create("");
+      if (created) {
+        std::string new_id = created->id;
+        profile.SaveProfiles();
+        MainWindow::Create("", false, new_id);
+      }
+      break;
+    }
+    case kCmdProfileDelete: DeleteThisProfile(); break;
     case kCmdCloseTab: CloseTabAt(active_); break;
     case kCmdCloseOthers:
       for (int i = static_cast<int>(tabs_list_.size()) - 1; i >= 0; --i) {
@@ -710,10 +762,10 @@ void MainWindow::OnCommand(int id) {
       }
       break;
     case kCmdBookmarks:
-      ShowBookmarksPanel(hwnd_, [this](const std::string& u) { AddTab(u, true); });
+      ShowBookmarksPanel(hwnd_, *data_, [this](const std::string& u) { AddTab(u, true); });
       break;
     case kCmdHistory:
-      ShowHistoryPanel(hwnd_, [this](const std::string& u) { AddTab(u, true); });
+      ShowHistoryPanel(hwnd_, *data_, [this](const std::string& u) { AddTab(u, true); });
       break;
     case kCmdDownloads:
       ShowDownloadsPanel(hwnd_, [this](const std::string& u) {
@@ -722,7 +774,7 @@ void MainWindow::OnCommand(int id) {
       });
       break;
     case kCmdSiteEditor: OpenSiteEditor(); break;
-    case kCmdSettings: ShowSettingsPanel(hwnd_); break;
+    case kCmdSettings: ShowSettingsPanel(hwnd_, *data_); break;
     case kCmdDevTools:
       if (t) ShowDevTools(t->browser, CefPoint());
       break;
@@ -770,6 +822,17 @@ void MainWindow::ShowMainMenu() {
   }
   AppendMenuW(menu, MF_STRING, kCmdNewWindow, Tr(Str::NewWindow));
   AppendMenuW(menu, MF_STRING, kCmdNewPrivateWindow, Tr(Str::NewPrivateWindow));
+  HMENU profiles = CreatePopupMenu();
+  const auto& profile_list = Profile::Get().registry.Profiles();
+  for (size_t i = 0; i < profile_list.size(); ++i) {
+    bool current = !private_ && profile_list[i].id == profile_id_;
+    AppendMenuW(profiles, MF_STRING | (current ? MF_CHECKED : 0), static_cast<UINT_PTR>(kCmdProfileOpenBase + static_cast<int>(i)),
+                Profile::Get().DisplayName(profile_list[i].id).c_str());
+  }
+  AppendMenuW(profiles, MF_SEPARATOR, 0, nullptr);
+  AppendMenuW(profiles, MF_STRING | (profile_list.size() >= ProfileRegistry::kMaxProfiles ? MF_GRAYED : 0), kCmdProfileNew, Tr(Str::ProfileNew));
+  AppendMenuW(profiles, MF_STRING | (private_ || profile_id_ == ProfileRegistry::kDefaultId ? MF_GRAYED : 0), kCmdProfileDelete, Tr(Str::ProfileDelete));
+  AppendMenuW(menu, MF_POPUP, reinterpret_cast<UINT_PTR>(profiles), Tr(Str::ProfilesMenu));
   AppendMenuW(menu, MF_SEPARATOR, 0, nullptr);
   AppendMenuW(menu, MF_STRING, kCmdBookmarks, Tr(Str::Bookmarks));
   AppendMenuW(menu, MF_STRING, kCmdHistory, Tr(Str::History));
@@ -962,7 +1025,7 @@ LRESULT MainWindow::HandleMessage(UINT msg, WPARAM wp, LPARAM lp) {
       LogLine("WM_CLOSE");
       closing_ = true;
       SavePlacement();
-      Profile::Get().SaveHistory();
+      if (!private_) data_->SaveHistory();
       std::vector<Tab> tabs;
       tabs.swap(tabs_list_);
       active_ = -1;

@@ -5,6 +5,7 @@
 
 #include "core/filename.h"
 #include "core/permission_policy.h"
+#include "core/profile_registry.h"
 #include "core/records.h"
 #include "core/text_store.h"
 #include "core/url_utils.h"
@@ -143,7 +144,41 @@ static void TestRecords() {
   CHECK(kv2.Get("missing", "d") == "d");
 }
 
+static void TestProfiles() {
+  ProfileRegistry r;
+  CHECK(r.Profiles().size() == 1 && r.Profiles()[0].id == "default");
+  CHECK(!r.Delete("default"));
+  CHECK(r.NextDefaultName() == "Profile 2");
+  const ProfileInfo* a = r.Create("  Work\n ");
+  CHECK(a && a->id == "p1" && a->name == "Work");
+  const ProfileInfo* b = r.Create("");
+  CHECK(b && b->id == "p2" && b->name == "Profile 2");
+  CHECK(ProfileRegistry::SanitizeName(std::string(100, 'x')).size() == ProfileRegistry::kMaxNameLength);
+  CHECK(r.Delete("p1"));
+  CHECK(r.Find("p1") == nullptr);
+  const ProfileInfo* c = r.Create("Again");
+  CHECK(c && c->id == "p3");
+
+  ProfileRegistry loaded;
+  loaded.Deserialize(r.Serialize());
+  CHECK(loaded.Profiles().size() == 3 && loaded.Find("p2")->name == "Profile 2");
+  std::vector<std::string> pending = loaded.TakePendingDeletes();
+  CHECK(pending.size() == 1 && pending[0] == "p1");
+  CHECK(loaded.TakePendingDeletes().empty());
+  const ProfileInfo* d = loaded.Create("Next");
+  CHECK(d && d->id == "p4");
+
+  ProfileRegistry bad;
+  bad.Deserialize(JoinRow({"profile", "../evil", "x"}) + "\n" + JoinRow({"profile", "p9", "ok"}) + "\n");
+  CHECK(bad.Profiles().size() == 2 && bad.Find("p9") != nullptr);
+
+  ProfileRegistry full;
+  for (size_t i = 1; i < ProfileRegistry::kMaxProfiles; ++i) CHECK(full.Create("x") != nullptr);
+  CHECK(full.Create("overflow") == nullptr);
+}
+
 int main() {
+  TestProfiles();
   TestUrls();
   TestFilenames();
   TestPermissions();

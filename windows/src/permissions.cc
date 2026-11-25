@@ -20,7 +20,7 @@ const wchar_t* PermissionLabel(const std::string& name) {
 
 PermissionOutcome ResolvePermissions(HWND parent, const std::string& origin,
                                      const std::vector<PermissionBit>& bits, uint64_t scope,
-                                     PermissionPolicyStore& store, bool persist) {
+                                     PermissionPolicyStore& store, const std::function<void()>& on_changed) {
   PermissionOutcome outcome;
   std::vector<PermissionBit> to_prompt;
   for (const PermissionBit& bit : bits) {
@@ -53,7 +53,7 @@ PermissionOutcome ResolvePermissions(HWND parent, const std::string& origin,
     if (result == PromptResult::kAllowOnce) outcome.allowed_mask |= bit.mask;
   }
   outcome.dismissed = result == PromptResult::kDismiss;
-  if (persist) Profile::Get().SavePermissions();
+  if (on_changed) on_changed();
   return outcome;
 }
 

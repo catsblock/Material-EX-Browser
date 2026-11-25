@@ -205,7 +205,7 @@ bool Client::OnShowPermissionPrompt(CefRefPtr<CefBrowser> browser, uint64_t, con
   for (const PermissionBit& b : bits) known |= b.mask;
   PermissionOutcome outcome = ResolvePermissions(delegate_->Handle(), OriginOf(requesting_origin.ToString()), bits,
                                                  static_cast<uint64_t>(browser->GetIdentifier()),
-                                                 delegate_->Permissions(), !delegate_->IsPrivate());
+                                                 delegate_->Permissions(), delegate_->PermissionsChanged());
   bool all_allowed = known == requested_permissions && known != 0 && outcome.allowed_mask == known;
   if (all_allowed) {
     std::vector<std::string> names;
@@ -235,7 +235,7 @@ bool Client::OnRequestMediaAccessPermission(CefRefPtr<CefBrowser> browser, CefRe
   }
   PermissionOutcome outcome = ResolvePermissions(delegate_->Handle(), OriginOf(requesting_url.ToString()), bits,
                                                  static_cast<uint64_t>(browser->GetIdentifier()),
-                                                 delegate_->Permissions(), !delegate_->IsPrivate());
+                                                 delegate_->Permissions(), delegate_->PermissionsChanged());
   uint32_t allowed = 0;
   for (const PermissionBit& b : bits) {
     if (outcome.allowed_mask & b.mask) allowed |= b.mask;

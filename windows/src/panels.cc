@@ -34,6 +34,7 @@ class Panel {
   HFONT font = nullptr;
   UINT dpi = 96;
   HWND* slot = nullptr;
+  const void* key = nullptr;
 
  protected:
   int S(int px) const { return Scale(px, dpi); }
@@ -111,12 +112,19 @@ LRESULT CALLBACK PanelProc(HWND hwnd, UINT msg, WPARAM wp, LPARAM lp) {
   return DefWindowProcW(hwnd, msg, wp, lp);
 }
 
-void OpenPanel(HWND owner, const wchar_t* title, std::unique_ptr<Panel> panel, int w, int h, HWND* slot) {
+void OpenPanel(HWND owner, const wchar_t* title, std::unique_ptr<Panel> panel, int w, int h, HWND* slot,
+               const void* key) {
   if (*slot && IsWindow(*slot)) {
-    ShowWindow(*slot, SW_RESTORE);
-    SetForegroundWindow(*slot);
-    return;
+    Panel* existing = reinterpret_cast<Panel*>(GetWindowLongPtrW(*slot, GWLP_USERDATA));
+    if (existing && existing->key == key) {
+      ShowWindow(*slot, SW_RESTORE);
+      SetForegroundWindow(*slot);
+      return;
+    }
+    DestroyWindow(*slot);
+    *slot = nullptr;
   }
+  panel->key = key;
   static bool registered = false;
   if (!registered) {
     WNDCLASSEXW wc{};
@@ -215,8 +223,8 @@ class ListPanel : public Panel {
 
 RevocationFn g_revocation;
 
-void NotifyRevoked(const std::string& origin, const std::string& permission) {
-  if (g_revocation) g_revocation(origin, permission);
+void NotifyRevoked(ProfileData* data, const std::string& origin, const std::string& permission) {
+  if (g_revocation) g_revocation(data, origin, permission);
 }
 
 HWND g_history = nullptr;
@@ -227,7 +235,7 @@ HWND g_editor = nullptr;
 
 class HistoryPanel : public ListPanel {
  public:
-  explicit HistoryPanel(OpenUrlFn open) : open_(std::move(open)) {}
+  HistoryPanel(ProfileData& data, OpenUrlFn open) : data_(data), open_(std::move(open)) {}
 
  protected:
   void CreateButtons() override {
@@ -236,7 +244,7 @@ class HistoryPanel : public ListPanel {
   }
   void Refresh() override {
     std::vector<std::wstring> rows;
-    const auto& entries = Profile::Get().history.Entries();
+    const auto& entries = data_.history.Entries();
     order_.clear();
     for (size_t i = entries.size(); i-- > 0;) {
       order_.push_back(entries[i].url);
@@ -252,20 +260,21 @@ class HistoryPanel : public ListPanel {
     if (index == 0) {
       OnActivate(selected);
     } else {
-      Profile::Get().history.Clear();
-      Profile::Get().SaveHistory();
+      data_.history.Clear();
+      data_.SaveHistory();
       Refresh();
     }
   }
 
  private:
+  ProfileData& data_;
   OpenUrlFn open_;
   std::vector<std::string> order_;
 };
 
 class BookmarksPanel : public ListPanel {
  public:
-  explicit BookmarksPanel(OpenUrlFn open) : open_(std::move(open)) {}
+  BookmarksPanel(ProfileData& data, OpenUrlFn open) : data_(data), open_(std::move(open)) {}
 
  protected:
   void CreateButtons() override {
@@ -274,13 +283,13 @@ class BookmarksPanel : public ListPanel {
   }
   void Refresh() override {
     std::vector<std::wstring> rows;
-    for (const Bookmark& b : Profile::Get().bookmarks.Entries()) {
+    for (const Bookmark& b : data_.bookmarks.Entries()) {
       rows.push_back((b.title.empty() ? Widen(b.url) : Widen(b.title)) + L"  -  " + Widen(b.url));
     }
     Reload(rows);
   }
   void OnActivate(int index) override {
-    const auto& entries = Profile::Get().bookmarks.Entries();
+    const auto& entries = data_.bookmarks.Entries();
     if (index >= 0 && index < static_cast<int>(entries.size())) open_(entries[static_cast<size_t>(index)].url);
   }
   void OnButton(int index, int selected) override {
@@ -288,16 +297,17 @@ class BookmarksPanel : public ListPanel {
       OnActivate(selected);
       return;
     }
-    const auto& entries = Profile::Get().bookmarks.Entries();
+    const auto& entries = data_.bookmarks.Entries();
     if (selected >= 0 && selected < static_cast<int>(entries.size())) {
       std::string url = entries[static_cast<size_t>(selected)].url;
-      Profile::Get().bookmarks.Remove(url);
-      Profile::Get().SaveBookmarks();
+      data_.bookmarks.Remove(url);
+      data_.SaveBookmarks();
       Refresh();
     }
   }
 
  private:
+  ProfileData& data_;
   OpenUrlFn open_;
 };
 
@@ -419,6 +429,8 @@ class DownloadsPanel : public ListPanel {
 
 class SettingsPanel : public ListPanel {
  public:
+  explicit SettingsPanel(ProfileData& data) : data_(data) {}
+
   void OnCreate() override {
     Child(L"STATIC", Tr(Str::HomePage), 0, 2001);
     Child(L"EDIT", Widen(Profile::Get().HomeUrl()).c_str(), WS_TABSTOP | WS_BORDER | ES_AUTOHSCROLL, 2002);
@@ -480,7 +492,7 @@ class SettingsPanel : public ListPanel {
   }
 
   void Refresh() override {
-    entries_ = Profile::Get().permissions.Entries();
+    entries_ = data_.permissions.Entries();
     std::vector<std::wstring> rows;
     for (const PermissionEntry& e : entries_) {
       std::wstring state = e.policy == Policy::kAllow ? Tr(Str::PolicyAllow)
@@ -493,21 +505,20 @@ class SettingsPanel : public ListPanel {
   }
 
   void OnButton(int index, int selected) override {
-    Profile& p = Profile::Get();
     if (index == 3) {
-      p.permissions.ResetAll();
-      NotifyRevoked("", "");
+      data_.permissions.ResetAll();
+      NotifyRevoked(&data_, "", "");
     } else if (selected >= 0 && selected < static_cast<int>(entries_.size())) {
       const PermissionEntry& e = entries_[static_cast<size_t>(selected)];
       Policy policy = index == 0 ? Policy::kAsk : index == 1 ? Policy::kAllow : Policy::kDeny;
       std::string origin = e.origin;
       std::string permission = e.permission;
-      p.permissions.SetPolicy(origin, permission, policy);
-      if (policy != Policy::kAllow) NotifyRevoked(origin, permission);
+      data_.permissions.SetPolicy(origin, permission, policy);
+      if (policy != Policy::kAllow) NotifyRevoked(&data_, origin, permission);
     } else {
       return;
     }
-    p.SavePermissions();
+    data_.SavePermissions();
     Refresh();
   }
 
@@ -536,6 +547,7 @@ class SettingsPanel : public ListPanel {
     p.SaveSettings();
   }
 
+  ProfileData& data_;
   std::vector<PermissionEntry> entries_;
 };
 
@@ -601,26 +613,30 @@ class SiteEditorPanel : public Panel {
 
 void SetRevocationHandler(RevocationFn handler) { g_revocation = std::move(handler); }
 
-void ShowHistoryPanel(HWND owner, OpenUrlFn open) {
-  OpenPanel(owner, Tr(Str::History), std::make_unique<HistoryPanel>(std::move(open)), 720, 520, &g_history);
+void ShowHistoryPanel(HWND owner, ProfileData& data, OpenUrlFn open) {
+  OpenPanel(owner, Tr(Str::History), std::make_unique<HistoryPanel>(data, std::move(open)), 720, 520, &g_history,
+            &data);
 }
 
-void ShowBookmarksPanel(HWND owner, OpenUrlFn open) {
-  OpenPanel(owner, Tr(Str::Bookmarks), std::make_unique<BookmarksPanel>(std::move(open)), 720, 520, &g_bookmarks);
+void ShowBookmarksPanel(HWND owner, ProfileData& data, OpenUrlFn open) {
+  OpenPanel(owner, Tr(Str::Bookmarks), std::make_unique<BookmarksPanel>(data, std::move(open)), 720, 520,
+            &g_bookmarks, &data);
 }
 
 void ShowDownloadsPanel(HWND owner, OpenUrlFn retry) {
-  OpenPanel(owner, Tr(Str::Downloads), std::make_unique<DownloadsPanel>(std::move(retry)), 820, 560, &g_downloads);
+  OpenPanel(owner, Tr(Str::Downloads), std::make_unique<DownloadsPanel>(std::move(retry)), 820, 560, &g_downloads,
+            nullptr);
 }
 
-void ShowSettingsPanel(HWND owner) {
-  OpenPanel(owner, Tr(Str::Settings), std::make_unique<SettingsPanel>(), 640, 640, &g_settings);
+void ShowSettingsPanel(HWND owner, ProfileData& data) {
+  OpenPanel(owner, Tr(Str::Settings), std::make_unique<SettingsPanel>(data), 640, 640, &g_settings, &data);
 }
 
 void ShowSiteEditorPanel(HWND owner, const std::string& host, std::function<void(const std::string&)> apply,
                          std::function<void()> dev_tools) {
   OpenPanel(owner, Tr(Str::SiteEditor),
-            std::make_unique<SiteEditorPanel>(host, std::move(apply), std::move(dev_tools)), 640, 520, &g_editor);
+            std::make_unique<SiteEditorPanel>(host, std::move(apply), std::move(dev_tools)), 640, 520, &g_editor,
+            nullptr);
 }
 
 }  // namespace mex

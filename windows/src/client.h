@@ -2,6 +2,7 @@
 #include <windows.h>
 
 #include <cstdint>
+#include <functional>
 #include <string>
 #include <vector>
 
@@ -30,6 +31,7 @@ class ClientDelegate {
   virtual void RecordPermissionUse(int browser_id, const std::string& origin,
                                    const std::vector<std::string>& permissions) = 0;
   virtual PermissionPolicyStore& Permissions() = 0;
+  virtual std::function<void()> PermissionsChanged() = 0;
 };
 
 class Client : public CefClient,

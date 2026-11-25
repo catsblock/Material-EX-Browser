@@ -17,6 +17,7 @@ add_library(materialex_core STATIC
   src/core/filename.cc
   src/core/text_store.cc
   src/core/permission_policy.cc
+  src/core/profile_registry.cc
   src/core/records.cc)
 target_include_directories(materialex_core PUBLIC src)
 

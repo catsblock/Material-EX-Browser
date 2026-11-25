@@ -1,11 +1,13 @@
 #pragma once
 #include <windows.h>
 
+#include <functional>
 #include <set>
 #include <string>
 #include <vector>
 
 #include "client.h"
+#include "profile.h"
 #include "core/permission_policy.h"
 #include "include/cef_browser.h"
 #include "include/cef_request_context.h"
@@ -14,7 +16,8 @@ namespace mex {
 
 class MainWindow : public ClientDelegate {
  public:
-  static MainWindow* Create(const std::string& url, bool is_private = false);
+  static MainWindow* Create(const std::string& url, bool is_private = false,
+                            const std::string& profile_id = "default");
   static size_t Count();
   static void RegisterWindowClass(HINSTANCE instance);
   static MainWindow* Last();
@@ -36,8 +39,9 @@ class MainWindow : public ClientDelegate {
   bool IsPrivate() const override { return private_; }
   void RecordPermissionUse(int browser_id, const std::string& origin,
                            const std::vector<std::string>& permissions) override;
-  static void RevokeUse(const std::string& origin, const std::string& permission);
+  static void RevokeUse(ProfileData* data, const std::string& origin, const std::string& permission);
   PermissionPolicyStore& Permissions() override;
+  std::function<void()> PermissionsChanged() override;
 
  private:
   struct Tab {
@@ -59,7 +63,8 @@ class MainWindow : public ClientDelegate {
   static LRESULT CALLBACK TabsProc(HWND hwnd, UINT msg, WPARAM wp, LPARAM lp, UINT_PTR id, DWORD_PTR ref);
   LRESULT HandleMessage(UINT msg, WPARAM wp, LPARAM lp);
 
-  bool Init(const std::string& url, bool is_private);
+  bool Init(const std::string& url, bool is_private, const std::string& profile_id);
+  void DeleteThisProfile();
   void ClearBrowsingData();
   void CreateControls();
   void Layout();
@@ -102,6 +107,8 @@ class MainWindow : public ClientDelegate {
   bool destroyed_ = false;
   bool destroying_ = false;
   bool private_ = false;
+  std::string profile_id_;
+  ProfileData* data_ = nullptr;
   struct PermissionUse {
     int browser_id;
     std::string origin;

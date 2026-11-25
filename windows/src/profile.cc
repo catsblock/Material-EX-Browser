@@ -2,7 +2,11 @@
 
 #include <functional>
 
+#include <filesystem>
+#include <vector>
+
 #include "platform.h"
+#include "strings.h"
 
 namespace mex {
 
@@ -20,17 +24,64 @@ Profile& Profile::Get() {
   return p;
 }
 
+void ProfileData::Load() {
+  auto read = [&](const wchar_t* name, const std::function<void(const std::string&)>& fn) {
+    std::string text;
+    if (ReadTextFile(dir + L"\\" + name, &text)) fn(text);
+  };
+  read(L"permissions.tsv", [&](const std::string& t) { permissions.Deserialize(t); });
+  read(L"history.tsv", [&](const std::string& t) { history.Deserialize(t); });
+  read(L"bookmarks.tsv", [&](const std::string& t) { bookmarks.Deserialize(t); });
+}
+
+void ProfileData::SaveHistory() { WriteTextFile(dir + L"\\history.tsv", history.Serialize()); }
+void ProfileData::SaveBookmarks() { WriteTextFile(dir + L"\\bookmarks.tsv", bookmarks.Serialize()); }
+void ProfileData::SavePermissions() { WriteTextFile(dir + L"\\permissions.tsv", permissions.Serialize()); }
+
 void Profile::Load() {
   mex::Load(L"settings.tsv", [&](const std::string& t) { settings.Deserialize(t); });
-  mex::Load(L"permissions.tsv", [&](const std::string& t) { permissions.Deserialize(t); });
-  mex::Load(L"history.tsv", [&](const std::string& t) { history.Deserialize(t); });
-  mex::Load(L"bookmarks.tsv", [&](const std::string& t) { bookmarks.Deserialize(t); });
+  mex::Load(L"profiles.tsv", [&](const std::string& t) { registry.Deserialize(t); });
+  std::vector<std::string> pending = registry.TakePendingDeletes();
+  std::error_code ec;
+  for (const std::string& id : pending) {
+    std::filesystem::remove_all(DataDir() + L"\\profiles\\" + Widen(id), ec);
+    std::filesystem::remove_all(CacheDir(id), ec);
+  }
+  if (!pending.empty()) SaveProfiles();
+}
+
+void Profile::SaveProfiles() { WriteTextFile(PathFor(L"profiles.tsv"), registry.Serialize()); }
+
+ProfileData& Profile::Data(const std::string& id) {
+  auto it = data_.find(id);
+  if (it != data_.end()) return *it->second;
+  auto data = std::make_unique<ProfileData>();
+  data->id = id;
+  if (id == ProfileRegistry::kDefaultId) {
+    data->dir = DataDir();
+  } else {
+    data->dir = DataDir() + L"\\profiles";
+    CreateDirectoryW(data->dir.c_str(), nullptr);
+    data->dir += L"\\" + Widen(id);
+    CreateDirectoryW(data->dir.c_str(), nullptr);
+  }
+  data->Load();
+  ProfileData& ref = *data;
+  data_[id] = std::move(data);
+  return ref;
+}
+
+std::wstring Profile::CacheDir(const std::string& id) const {
+  return DataDir() + L"\\Profile\\" + (id == ProfileRegistry::kDefaultId ? L"Default" : Widen(id));
+}
+
+std::wstring Profile::DisplayName(const std::string& id) const {
+  const ProfileInfo* info = registry.Find(id);
+  if (!info || id == ProfileRegistry::kDefaultId) return Tr(Str::ProfileDefaultName);
+  return Widen(info->name);
 }
 
 void Profile::SaveSettings() { WriteTextFile(PathFor(L"settings.tsv"), settings.Serialize()); }
-void Profile::SavePermissions() { WriteTextFile(PathFor(L"permissions.tsv"), permissions.Serialize()); }
-void Profile::SaveHistory() { WriteTextFile(PathFor(L"history.tsv"), history.Serialize()); }
-void Profile::SaveBookmarks() { WriteTextFile(PathFor(L"bookmarks.tsv"), bookmarks.Serialize()); }
 
 std::string Profile::HomeUrl() const { return settings.Get("home", "about:blank"); }
 

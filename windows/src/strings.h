@@ -14,6 +14,11 @@ namespace mex {
   X(NewWindow, L"New window")                                                                    \
   X(NewPrivateWindow, L"New private window")                                                     \
   X(PrivateSuffix, L"Private")                                                                   \
+  X(ProfilesMenu, L"Profiles")                                                                   \
+  X(ProfileNew, L"New profile")                                                                  \
+  X(ProfileDelete, L"Delete this profile")                                                       \
+  X(ProfileDeleteConfirm, L"Delete the profile \"%s\"? Its history, bookmarks, permissions, cookies and site data are removed the next time the app starts.") \
+  X(ProfileDefaultName, L"Default profile")                                                      \
   X(ClearData, L"Clear browsing data")                                                           \
   X(ClearDataConfirm, L"Clear history, cookies, cache, the download list and saved site permissions? Downloaded files are kept.") \
   X(CloseTab, L"Close tab")                                                                      \
@@ -96,10 +101,6 @@ namespace mex {
   X(SetAsk, L"Ask")                                                                              \
   X(SetAllow, L"Allow")                                                                          \
   X(SetBlock, L"Block")                                                                          \
-  X(ResetEntry, L"Reset")                                                                        \
-  X(CssSaved, L"Saved.")                                                                         \
-  X(RestartNote, L"Changes apply to new navigations.")                                           \
-  X(PopupBlocked, L"A popup was blocked because the site opened too many windows.")              \
   X(DownloadBlockedMany, L"Download blocked: too many downloads were started at once.")
 
 enum class Str {
