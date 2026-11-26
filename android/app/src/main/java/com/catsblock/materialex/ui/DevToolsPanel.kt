@@ -5,6 +5,7 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -138,7 +139,7 @@ fun DevToolsPanel(
 private data class DomNode(val path: List<Int>, val depth: Int, val label: String, val children: Int, val text: String)
 
 @Composable
-private fun ElementsTab(session: DevSession) {
+private fun ColumnScope.ElementsTab(session: DevSession) {
     val scope = rememberCoroutineScope()
     var nodes by remember { mutableStateOf(emptyList<DomNode>()) }
     var selected by remember { mutableStateOf<List<Int>?>(null) }
@@ -216,7 +217,7 @@ private fun ElementsTab(session: DevSession) {
 }
 
 @Composable
-private fun ConsoleTab(session: DevSession) {
+private fun ColumnScope.ConsoleTab(session: DevSession) {
     val scope = rememberCoroutineScope()
     val allLogs by session.bridge.logs.collectAsStateWithLifecycle()
     var local by remember(session.href) { mutableStateOf(emptyList<ConsoleEntry>()) }
@@ -272,7 +273,7 @@ private fun ConsoleTab(session: DevSession) {
 private data class SourceItem(val kind: String, val url: String, val index: Int, val size: Int)
 
 @Composable
-private fun SourcesTab(session: DevSession) {
+private fun ColumnScope.SourcesTab(session: DevSession) {
     val scope = rememberCoroutineScope()
     var items by remember { mutableStateOf(emptyList<SourceItem>()) }
     var viewer by remember { mutableStateOf("") }
@@ -339,7 +340,7 @@ private fun SourcesTab(session: DevSession) {
 }
 
 @Composable
-private fun NetworkTab(session: DevSession) {
+private fun ColumnScope.NetworkTab(session: DevSession) {
     val scope = rememberCoroutineScope()
     var rows by remember { mutableStateOf(emptyList<JSONObject>()) }
     fun refresh() {
@@ -372,7 +373,7 @@ private fun NetworkTab(session: DevSession) {
 }
 
 @Composable
-private fun StorageTab(session: DevSession) {
+private fun ColumnScope.StorageTab(session: DevSession) {
     val scope = rememberCoroutineScope()
     var kind by remember { mutableStateOf("local") }
     var entries by remember { mutableStateOf(emptyList<Pair<String, String>>()) }
@@ -446,7 +447,7 @@ private data class CookieForm(
 )
 
 @Composable
-private fun CookiesTab(session: DevSession) {
+private fun ColumnScope.CookiesTab(session: DevSession) {
     val scope = rememberCoroutineScope()
     var cookies by remember { mutableStateOf(emptyList<CookieForm>()) }
     var form by remember { mutableStateOf(CookieForm()) }
