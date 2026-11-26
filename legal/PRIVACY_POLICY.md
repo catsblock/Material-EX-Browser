@@ -33,6 +33,8 @@ Windows version: the Windows application also keeps its data only on your comput
 
 Extension store (Android): when you open the extension store inside the app, it sends your search words to Mozilla's add-ons service (addons.mozilla.org) to list extensions, and extensions you choose to install are downloaded from Mozilla's servers. Mozilla's own privacy policy applies to that service. The app does not send anything to that service unless you open the store.
 
+Developer tools (Android): the built-in developer tools read and edit the page you are viewing only on your device, including its HTML, scripts, console output, storage and cookies, and the list of network requests it makes. They are not available in private tabs, and nothing from them is sent anywhere.
+
 6. Children
 Material EX is a general-purpose browser and is not directed at children.
 

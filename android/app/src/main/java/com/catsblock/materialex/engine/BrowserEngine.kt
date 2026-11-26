@@ -67,6 +67,7 @@ class BrowserEngine(context: Context, private val permissionManager: PermissionM
     private val scope = CoroutineScope(SupervisorJob() + Dispatchers.Main.immediate)
     private val manager = TabManager()
     val siteRules = SiteStyleBridge(context, scope)
+    val devTools = DevToolsBridge()
     private val siteUaApplied = HashSet<String>()
     private val sessions = HashMap<String, GeckoSession>()
     private val pendingClose = ArrayList<GeckoSession>()
@@ -178,12 +179,13 @@ class BrowserEngine(context: Context, private val permissionManager: PermissionM
     fun setupExtensions() {
         runtime.webExtensionController.setPromptDelegate(extensionPromptDelegate)
         siteRules.install(runtime)
+        devTools.install(runtime)
         refreshExtensions()
     }
 
     fun refreshExtensions() {
         runtime.webExtensionController.list().accept({ list ->
-            extensionFlow.value = (list ?: emptyList()).filter { it.id != SiteStyleBridge.EXTENSION_ID }.map {
+            extensionFlow.value = (list ?: emptyList()).filter { it.id != SiteStyleBridge.EXTENSION_ID && it.id != DevToolsBridge.EXTENSION_ID }.map {
                 ExtensionInfo(
                     id = it.id,
                     name = it.metaData.name ?: it.id,

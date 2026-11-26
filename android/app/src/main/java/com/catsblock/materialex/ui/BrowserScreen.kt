@@ -28,6 +28,8 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.height
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -107,6 +109,8 @@ fun BrowserScreen(
     val atTop = settings.toolbarPosition == ToolbarPosition.TOP
     var findOpen by remember { mutableStateOf(false) }
     var siteEditorOpen by remember { mutableStateOf(false) }
+    var devToolsOpen by remember { mutableStateOf(false) }
+    val devToolsHeight = (LocalConfiguration.current.screenHeightDp * 0.45f).dp
     var userAgentOpen by remember { mutableStateOf(false) }
     val siteHost = SiteStyleRules.hostOf(state.url)
     val siteToolsEnabled = siteHost != null
@@ -214,10 +218,23 @@ fun BrowserScreen(
                 Modifier
                     .fillMaxSize()
                     .windowInsetsPadding(WindowInsets.safeDrawing)
-                    .padding(top = if (desktop) DesktopStripHeight else 0.dp)
+                    .padding(top = if (desktop) DesktopStripHeight else 0.dp, bottom = if (devToolsOpen) devToolsHeight else 0.dp)
             }
         )
         if (fullscreen) return@Box
+        if (devToolsOpen) {
+            DevToolsPanel(
+                bridge = engine.devTools,
+                href = state.url,
+                isPrivate = tabs.active?.isPrivate == true,
+                onOpenSiteCss = { siteEditorOpen = true },
+                onClose = { devToolsOpen = false },
+                modifier = Modifier
+                    .align(Alignment.BottomCenter)
+                    .height(devToolsHeight)
+                    .windowInsetsPadding(WindowInsets.safeDrawing.only(WindowInsetsSides.Bottom))
+            )
+        }
         if (state.url.isEmpty() && !state.isLoading) {
             Box(
                 modifier = if (desktop) {
@@ -313,6 +330,7 @@ fun BrowserScreen(
             onToggleDesktop = { engine.setDesktopMode(!state.desktopMode) },
             siteToolsEnabled = siteToolsEnabled,
             onOpenSiteEditor = { siteEditorOpen = true },
+            onOpenDevTools = { devToolsOpen = true },
             onOpenUserAgent = { userAgentOpen = true },
             onSubmit = onSubmit,
             onBack = engine::goBack,

@@ -106,6 +106,7 @@ fun FloatingSearchFrame(
     onToggleDesktop: () -> Unit,
     siteToolsEnabled: Boolean,
     onOpenSiteEditor: () -> Unit,
+    onOpenDevTools: () -> Unit,
     onOpenUserAgent: () -> Unit,
     onSubmit: (String) -> Boolean,
     onBack: () -> Unit,
@@ -369,6 +370,14 @@ fun FloatingSearchFrame(
                             onClick = {
                                 menuOpen = false
                                 onOpenSiteEditor()
+                            }
+                        )
+                        DropdownMenuItem(
+                            text = { Text(stringResource(R.string.action_devtools)) },
+                            enabled = siteToolsEnabled,
+                            onClick = {
+                                menuOpen = false
+                                onOpenDevTools()
                             }
                         )
                         DropdownMenuItem(

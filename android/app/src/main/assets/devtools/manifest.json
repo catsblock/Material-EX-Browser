@@ -1,0 +1,19 @@
+{
+  "manifest_version": 2,
+  "name": "Material EX Developer Tools",
+  "version": "1.0",
+  "description": "Lets the browser's developer tools inspect and edit the current page.",
+  "browser_specific_settings": {
+    "gecko": { "id": "devtools@materialex.catsblock.com" }
+  },
+  "permissions": ["nativeMessaging", "cookies", "webRequest", "<all_urls>"],
+  "background": { "scripts": ["background.js"] },
+  "content_scripts": [
+    {
+      "matches": ["http://*/*", "https://*/*"],
+      "js": ["content.js"],
+      "run_at": "document_start",
+      "all_frames": false
+    }
+  ]
+}
